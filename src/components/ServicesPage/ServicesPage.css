@@ -1,0 +1,724 @@
+/* Importa i font Google */
+@import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Orbitron:wght@400;700;900&display=swap');
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+/* Wrapper principale per isolare gli stili */
+.services-page-wrapper {
+    font-family: 'Share Tech Mono', monospace;
+    min-height: 100vh;
+    position: relative;
+    background: #000;
+    color: #fff;
+}
+
+/* Stili per il body quando è attiva la pagina servizi */
+body.services-page-body { 
+    font-family: 'Share Tech Mono', monospace; 
+    background: #000;
+    color: #fff;
+    overflow: hidden;
+    height: 100vh;
+    position: relative;
+}
+
+/* VIGNETTE SHADOW */
+.services-page-wrapper::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    background: radial-gradient(circle at center, transparent 0%, transparent 40%, rgba(0, 0, 0, 0.3) 70%, rgba(0, 0, 0, 0.7) 100%);
+    z-index: 5;
+}
+
+/* LAYER CODICE DI SFONDO */
+.code-background {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    overflow: hidden;
+    pointer-events: none;
+}
+
+.code-line {
+    position: absolute;
+    font-size: 16px;
+    color: rgba(0, 255, 255, 0.4);
+    white-space: nowrap;
+    opacity: 0;
+    animation: typewriter 3s ease-in-out forwards;
+    text-shadow: 0 0 8px rgba(0, 255, 255, 0.3);
+    font-weight: 500;
+}
+
+@keyframes typewriter {
+    0% { 
+        opacity: 0;
+        width: 0;
+        overflow: hidden;
+    }
+    15% {
+        opacity: 1;
+    }
+    100% { 
+        opacity: 1;
+        width: 100%;
+        overflow: visible;
+    }
+}
+
+/* LAYER GRIGLIA ESAGONALE */
+.grid-overlay {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="86.6" height="100" viewBox="0 0 86.6 100"><path d="M43.3 0 L86.6 25 L86.6 75 L43.3 100 L0 75 L0 25 Z" fill="none" stroke="rgba(0,255,255,0.25)" stroke-width="1"/></svg>');
+    background-size: 86.6px 100px;
+    filter: blur(0.3px) drop-shadow(0 0 2px rgba(0, 255, 255, 0.5));
+    animation: breathingGrid 4s ease-in-out infinite;
+    z-index: 2;
+}
+
+@keyframes breathingGrid {
+    0%, 100% {
+        filter: blur(0.3px) drop-shadow(0 0 2px rgba(0, 255, 255, 0.5)) drop-shadow(0 0 18px rgba(0, 255, 255, 0.7));
+        opacity: 1;
+    }
+    50% {
+        filter: blur(0.3px) drop-shadow(0 0 1px rgba(0, 255, 255, 0.3)) drop-shadow(0 0 4px rgba(0, 255, 255, 0.2));
+        opacity: 0.4;
+    }
+}
+
+@keyframes gridFlash {
+    0% {
+        background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="86.6" height="100" viewBox="0 0 86.6 100"><path d="M43.3 0 L86.6 25 L86.6 75 L43.3 100 L0 75 L0 25 Z" fill="none" stroke="rgba(0,255,255,0.25)" stroke-width="1"/></svg>');
+        filter: blur(0.3px) drop-shadow(0 0 2px rgba(0, 255, 255, 0.5)) drop-shadow(0 0 18px rgba(0, 255, 255, 0.7));
+    }
+    15% {
+        background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="86.6" height="100" viewBox="0 0 86.6 100"><path d="M43.3 0 L86.6 25 L86.6 75 L43.3 100 L0 75 L0 25 Z" fill="none" stroke="rgba(0,255,255,0.85)" stroke-width="1.5"/></svg>');
+        filter: blur(0.2px) drop-shadow(0 0 3px rgba(0, 255, 255, 0.8)) drop-shadow(0 0 8px rgba(0, 255, 255, 0.6));
+    }
+    100% {
+        background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="86.6" height="100" viewBox="0 0 86.6 100"><path d="M43.3 0 L86.6 25 L86.6 75 L43.3 100 L0 75 L0 25 Z" fill="none" stroke="rgba(0,255,255,0.25)" stroke-width="1"/></svg>');
+        filter: blur(0.3px) drop-shadow(0 0 2px rgba(0, 255, 255, 0.5)) drop-shadow(0 0 18px rgba(0, 255, 255, 0.7));
+    }
+}
+
+.grid-overlay.flash {
+    animation: gridFlash 0.8s ease-out;
+}
+
+/* HEADER */
+header {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 50;
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(12px);
+    border-bottom: 2px solid rgba(0, 255, 255, 0.3);
+}
+
+.header-content {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 1rem 1.5rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.logo {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 1.875rem;
+    font-weight: 900;
+    letter-spacing: 0.3em;
+    color: #0ff;
+    text-shadow: 0 0 10px #0ff, 0 0 20px #0ff, 0 0 30px #0ff;
+    animation: holoFlicker 4s infinite;
+}
+
+@keyframes holoFlicker {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.97; }
+}
+
+/* FOOTER */
+footer {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    border-top: 2px solid rgba(0, 255, 255, 0.3);
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(12px);
+    padding: 1.5rem 0;
+    z-index: 50;
+}
+
+.footer-content {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+    text-align: center;
+}
+
+.footer-text {
+    color: rgba(103, 232, 249, 0.5);
+    font-size: 0.875rem;
+    letter-spacing: 0.2em;
+}
+
+/* SERVICES CONTAINER */
+.services-container {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 3rem;
+    z-index: 10;
+}
+
+/* SERVICE BOX */
+.service-box {
+    position: relative;
+    width: 420px;
+    height: 220px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    overflow: visible;
+    pointer-events: auto;
+}
+
+.service-box::before {
+    content: '';
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    right: 20px;
+    bottom: 20px;
+    background: rgba(0, 0, 0, 0.25);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    clip-path: polygon(
+        0 40px,
+        40px 0,
+        120px 0,
+        140px 15px,
+        calc(100% - 80px) 15px,
+        calc(100% - 60px) 0,
+        calc(100% - 20px) 0,
+        100% 20px,
+        100% calc(100% - 50px),
+        calc(100% - 30px) calc(100% - 20px),
+        calc(100% - 100px) calc(100% - 20px),
+        calc(100% - 120px) 100%,
+        80px 100%,
+        60px calc(100% - 15px),
+        20px calc(100% - 15px),
+        0 calc(100% - 35px)
+    );
+    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.border-svg {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    width: calc(100% - 40px);
+    height: calc(100% - 40px);
+    pointer-events: none;
+    overflow: visible;
+}
+
+.border-svg path {
+    fill: none;
+    stroke: rgba(255, 255, 255, 0.7);
+    stroke-width: 4;
+    filter: drop-shadow(0 0 6px rgba(255, 255, 255, 0.4)) drop-shadow(0 0 12px rgba(0, 255, 255, 0.25));
+    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.service-box-text {
+    position: absolute;
+    top: 52px;
+    left: 135px;
+    right: 40px;
+    z-index: 1;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: #0ff;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    text-shadow: 0 0 10px rgba(0, 255, 255, 0.8);
+    text-align: left;
+}
+
+.service-box-description {
+    position: absolute;
+    top: 105px;
+    left: 50px;
+    right: 50px;
+    z-index: 1;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.9rem;
+    color: rgba(255, 255, 255, 0.7);
+    line-height: 1.6;
+    text-align: center;
+    letter-spacing: 0.05em;
+}
+
+.service-icon {
+    position: absolute;
+    top: 40px;
+    left: 70px;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1;
+}
+
+/* ICONA 1 - CONSULENZA: Anelli Scanner */
+.icon-consulenza::before {
+    content: '';
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    border: 3px solid rgba(0, 255, 255, 0.6);
+    border-radius: 50%;
+    border-top-color: transparent;
+    border-right-color: transparent;
+    animation: analysisSpin 3s linear infinite;
+    transition: border-color 0.5s ease;
+}
+
+.icon-consulenza::after {
+    content: '';
+    position: absolute;
+    width: 25px;
+    height: 25px;
+    border: 3px solid rgba(0, 255, 255, 0.8);
+    border-radius: 50%;
+    border-bottom-color: transparent;
+    border-left-color: transparent;
+    animation: analysisSpin 2s linear infinite reverse;
+    transition: border-color 0.5s ease;
+}
+
+.icon-consulenza-center {
+    width: 10px;
+    height: 10px;
+    background: rgba(0, 255, 255, 0.9);
+    border-radius: 50%;
+    box-shadow: 0 0 12px rgba(0, 255, 255, 0.8);
+    animation: pulse 2s ease-in-out infinite;
+}
+
+/* ICONA 2 - CREAZIONE SITI: Binario Dinamico */
+.icon-siti {
+    width: 40px;
+    height: 45px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 3px;
+}
+
+.binary-row {
+    display: flex;
+    gap: 4px;
+}
+
+.binary-digit {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 11px;
+    color: rgba(0, 255, 255, 0.9);
+    text-shadow: 0 0 5px rgba(0, 255, 255, 0.6);
+    transition: opacity 0.2s ease;
+}
+
+.binary-digit.changing {
+    opacity: 0.4;
+}
+
+/* ICONA 3 - PRESENZA ONLINE: Radar */
+.icon-presenza {
+    width: 45px;
+    height: 45px;
+}
+
+.radar-circle {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border: 2px solid rgba(0, 255, 255, 0.6);
+    border-radius: 50%;
+}
+
+.radar-circle:nth-child(1) {
+    width: 40px;
+    height: 40px;
+    opacity: 0.8;
+}
+
+.radar-circle:nth-child(2) {
+    width: 28px;
+    height: 28px;
+    opacity: 0.6;
+}
+
+.radar-circle:nth-child(3) {
+    width: 16px;
+    height: 16px;
+    opacity: 0.4;
+}
+
+.radar-sweep {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 20px;
+    height: 2px;
+    background: linear-gradient(90deg, rgba(0, 255, 255, 1), transparent);
+    transform-origin: 0 50%;
+    transform: translate(0, -50%);
+    animation: radarSweep 3s linear infinite;
+    box-shadow: 0 0 8px rgba(0, 255, 255, 0.8);
+}
+
+.radar-dot {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 3px;
+    height: 3px;
+    background: rgba(0, 255, 255, 1);
+    border-radius: 50%;
+    box-shadow: 0 0 10px rgba(0, 255, 255, 1);
+    animation: radarPulse 3s ease-in-out infinite;
+    transform: translate(8px, -50%);
+}
+
+@keyframes radarSweep {
+    0% { transform: translate(0, -50%) rotate(0deg); }
+    100% { transform: translate(0, -50%) rotate(360deg); }
+}
+
+@keyframes radarPulse {
+    0%, 100% { 
+        opacity: 0.3;
+        transform: translate(8px, -50%) scale(1);
+    }
+    50% { 
+        opacity: 1;
+        transform: translate(8px, -50%) scale(1.8);
+    }
+}
+
+/* ICONA 4 - MULTIMEDIA: Onde Minimali */
+.icon-multimedia {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    height: 40px;
+}
+
+.wave-bar {
+    width: 3px;
+    background: rgba(0, 255, 255, 0.8);
+    border-radius: 2px;
+    animation: waveAnimation 1.2s ease-in-out infinite;
+}
+
+.wave-bar:nth-child(1) { height: 10px; animation-delay: 0s; }
+.wave-bar:nth-child(2) { height: 18px; animation-delay: 0.15s; }
+.wave-bar:nth-child(3) { height: 26px; animation-delay: 0.3s; }
+.wave-bar:nth-child(4) { height: 18px; animation-delay: 0.45s; }
+.wave-bar:nth-child(5) { height: 10px; animation-delay: 0.6s; }
+
+@keyframes waveAnimation {
+    0%, 100% { 
+        transform: scaleY(0.5); 
+        opacity: 0.5;
+    }
+    50% { 
+        transform: scaleY(1); 
+        opacity: 1;
+        box-shadow: 0 0 6px rgba(0, 255, 255, 0.8);
+    }
+}
+
+@keyframes analysisSpin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+@keyframes pulse {
+    0%, 100% { 
+        transform: scale(1);
+        box-shadow: 0 0 12px rgba(0, 255, 255, 0.8);
+    }
+    50% { 
+        transform: scale(1.3);
+        box-shadow: 0 0 20px rgba(0, 255, 255, 1);
+    }
+}
+
+/* GLITCH EFFECT */
+@keyframes glitch {
+    0% {
+        transform: translate(0);
+        filter: hue-rotate(0deg);
+        opacity: 1;
+    }
+    5% {
+        transform: translate(-5px, 3px) skew(2deg);
+        filter: hue-rotate(90deg);
+    }
+    10% {
+        transform: translate(5px, -4px) skew(-3deg);
+        opacity: 0.8;
+    }
+    15% {
+        transform: translate(-3px, 5px);
+        filter: hue-rotate(-90deg);
+    }
+    20% {
+        transform: translate(4px, -3px) skew(1deg);
+    }
+    25% {
+        transform: translate(0);
+        opacity: 1;
+    }
+    30% {
+        transform: translate(-6px, 2px);
+        filter: hue-rotate(45deg);
+    }
+    35% {
+        transform: translate(3px, 4px) skew(-2deg);
+        opacity: 0.9;
+    }
+    40% {
+        transform: translate(-2px, -5px);
+    }
+    45% {
+        transform: translate(0);
+        filter: hue-rotate(0deg);
+    }
+    50% {
+        transform: translate(5px, 3px) skew(-1deg);
+        opacity: 0.85;
+    }
+    55% {
+        transform: translate(-4px, -2px);
+        filter: hue-rotate(-45deg);
+    }
+    60% {
+        transform: translate(0);
+    }
+    65% {
+        transform: translate(3px, -4px) skew(2deg);
+    }
+    70% {
+        transform: translate(-5px, 3px);
+        opacity: 0.9;
+    }
+    75% {
+        transform: translate(2px, 2px);
+        filter: hue-rotate(30deg);
+    }
+    80% {
+        transform: translate(0);
+    }
+    85% {
+        transform: translate(-3px, 4px) skew(-1deg);
+    }
+    90% {
+        transform: translate(4px, -2px);
+        opacity: 0.95;
+    }
+    95% {
+        transform: translate(0);
+        filter: hue-rotate(0deg);
+    }
+    100% {
+        transform: translate(0);
+        opacity: 1;
+    }
+}
+
+.service-box.glitching {
+    animation: glitch 0.2s ease-in-out;
+}
+
+/* OVERLAY MODAL */
+.service-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.95);
+    backdrop-filter: blur(10px);
+    z-index: 100;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+.service-overlay.active {
+    display: flex;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.overlay-content {
+    position: relative;
+    max-width: 900px;
+    max-height: 85vh;
+    width: 90%;
+    background: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(15px);
+    border: 2px solid rgba(0, 255, 255, 0.5);
+    border-radius: 10px;
+    padding: 3rem;
+    overflow-y: auto;
+    box-shadow: 0 0 30px rgba(0, 255, 255, 0.3), inset 0 0 20px rgba(0, 255, 255, 0.1);
+}
+
+.overlay-close {
+    position: absolute;
+    top: 1.5rem;
+    right: 1.5rem;
+    width: 40px;
+    height: 40px;
+    background: transparent;
+    border: 2px solid rgba(0, 255, 255, 0.6);
+    color: #0ff;
+    font-size: 1.5rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    font-family: 'Share Tech Mono', monospace;
+}
+
+.overlay-close:hover {
+    background: rgba(0, 255, 255, 0.2);
+    border-color: #0ff;
+    transform: rotate(90deg);
+    box-shadow: 0 0 15px rgba(0, 255, 255, 0.6);
+}
+
+.overlay-title {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: #0ff;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    text-shadow: 0 0 15px rgba(0, 255, 255, 0.8);
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid rgba(0, 255, 255, 0.3);
+}
+
+.overlay-text {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 1rem;
+    color: rgba(255, 255, 255, 0.85);
+    line-height: 1.8;
+    margin-bottom: 1.5rem;
+    letter-spacing: 0.03em;
+}
+
+.package-section {
+    margin-top: 2rem;
+    padding: 1.5rem;
+    background: rgba(0, 255, 255, 0.05);
+    border-left: 3px solid rgba(0, 255, 255, 0.6);
+    margin-bottom: 1.5rem;
+}
+
+.package-title {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: #0ff;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 1rem;
+    text-shadow: 0 0 10px rgba(0, 255, 255, 0.6);
+}
+
+.package-items {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.95rem;
+    color: rgba(255, 255, 255, 0.8);
+    line-height: 1.7;
+}
+
+.overlay-content::-webkit-scrollbar {
+    width: 10px;
+}
+
+.overlay-content::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.3);
+}
+
+.overlay-content::-webkit-scrollbar-thumb {
+    background: rgba(0, 255, 255, 0.5);
+    border-radius: 5px;
+}
+
+.overlay-content::-webkit-scrollbar-thumb:hover {
+    background: rgba(0, 255, 255, 0.7);
+}
+
+.service-box:hover::before {
+    background: rgba(0, 0, 0, 0.35);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+}
+
+.service-box:hover {
+    transform: scale(1.02);
+}
+
+.service-box:hover .border-svg path {
+    stroke: rgba(255, 255, 255, 0.95);
+    stroke-width: 5;
+    filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.6)) drop-shadow(0 0 20px rgba(0, 255, 255, 0.4));
+}
+
+.service-box:hover .icon-consulenza::before,
+.service-box:hover .icon-consulenza::after {
+    border-color: rgba(0, 255, 255, 1);
+}
+
+.service-box:hover .icon-consulenza::before {
+    border-top-color: transparent;
+    border-right-color: transparent;
+}
+
+.service-box:hover .icon-consulenza::after {
+    border-bottom-color: transparent;
+    border-left-color: transparent;
+}

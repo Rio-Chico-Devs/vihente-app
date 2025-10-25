@@ -1,35 +1,49 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useState } from 'react';
+import BootScreen from './components/BootScreen';
+import LandingPage from './components/LandingPage';
+import ServicesPage from './components/ServicesPage/ServicesPage';
+import CustomCursor from './components/CustomCursor';
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [isBooting, setIsBooting] = useState(true);
+  const [currentPage, setCurrentPage] = useState('landing');
+  const [startTime] = useState(Date.now());
+
+  const handleBootComplete = () => {
+    setIsBooting(false);
+  };
+
+  const goToServices = () => {
+    setCurrentPage('services');
+  };
+
+  const goToLanding = () => {
+    setCurrentPage('landing');
+  };
 
   return (
     <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+      {/* 🔑 key={currentPage} forza il re-mount del cursore quando cambi pagina */}
+      {/* Questo previene l'accumulo di event listeners e mantiene il cursore fluido */}
+      <CustomCursor key={currentPage} />
+      
+      {isBooting ? (
+        <BootScreen onBootComplete={handleBootComplete} />
+      ) : (
+        <>
+          {currentPage === 'landing' && (
+            <LandingPage 
+              startTime={startTime} 
+              onNavigateToServices={goToServices}
+            />
+          )}
+          {currentPage === 'services' && (
+            <ServicesPage onNavigateBack={goToLanding} />
+          )}
+        </>
+      )}
     </>
-  )
+  );
 }
 
-export default App
+export default App;
