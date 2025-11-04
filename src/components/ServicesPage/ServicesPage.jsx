@@ -1,15 +1,13 @@
 import { useEffect, useState, useRef } from 'react';
 import './ServicesPage.css';
 
-const ServicesPage = () => {
+const ServicesPage = ({ onNavigate }) => {
   const [effectsReady, setEffectsReady] = useState(false);
-  // 🚀 OTTIMIZZAZIONE: Cache del grid element
   const gridRef = useRef(null);
 
   useEffect(() => {
     document.body.classList.add('services-page-body');
     
-    // 🚀 CRITICAL: Salva riferimento al grid per evitare querySelector durante click
     gridRef.current = document.getElementById('gridOverlay');
     
     const initEffects = () => {
@@ -76,54 +74,13 @@ const ServicesPage = () => {
         }
       }, 2000);
 
-      // 🚀 OTTIMIZZAZIONE INP: Funzione ULTRA LEGGERA
       function triggerWaveEffect() {
-        // Usa ref invece di querySelector
         const grid = gridRef.current;
         if (grid && !grid.classList.contains('flash')) {
           grid.classList.add('flash');
-          // Rimozione async dopo che il click è completato
           setTimeout(() => grid.classList.remove('flash'), 800);
         }
       }
-
-      // 🚀 CRITICAL: Overlay apre SUBITO, flash in parallelo
-      window.openOverlay = function(overlayId) {
-        // 🎯 NON fare nulla di sincrono qui!
-        // Apri overlay immediatamente
-        const overlay = document.getElementById(overlayId);
-        if (overlay) {
-          overlay.classList.add('active');
-        }
-        
-        // 🎯 Flash della griglia DOPO, non blocca il click
-        setTimeout(triggerWaveEffect, 0);
-      };
-
-      window.closeOverlay = function(overlayId) {
-        const overlay = document.getElementById(overlayId);
-        if (overlay) {
-          overlay.classList.remove('active');
-        }
-      };
-
-      // 🚀 Event listeners ottimizzati
-      const handleOverlayClick = (event) => {
-        if (event.target.classList.contains('service-overlay')) {
-          window.closeOverlay(event.target.id);
-        }
-      };
-
-      const handleEscKey = (event) => {
-        if (event.key === 'Escape') {
-          const activeOverlay = document.querySelector('.service-overlay.active');
-          if (activeOverlay) window.closeOverlay(activeOverlay.id);
-        }
-      };
-
-      // 🚀 Passive per performance
-      document.addEventListener('click', handleOverlayClick, { passive: true });
-      document.addEventListener('keydown', handleEscKey);
 
       let glitchIntervalId = null;
       
@@ -153,6 +110,9 @@ const ServicesPage = () => {
         }
       }, 3000);
 
+      // Store triggerWaveEffect in window for click handlers
+      window.triggerWaveEffect = triggerWaveEffect;
+
       return () => {
         clearInterval(codeInterval);
         clearInterval(binaryInterval);
@@ -162,14 +122,10 @@ const ServicesPage = () => {
         
         activeTimeouts.forEach(timeout => clearTimeout(timeout));
         
-        document.removeEventListener('click', handleOverlayClick);
-        document.removeEventListener('keydown', handleEscKey);
-        
-        delete window.openOverlay;
-        delete window.closeOverlay;
-        
         const codeBackground = document.getElementById('codeBackground');
         if (codeBackground) codeBackground.innerHTML = '';
+        
+        delete window.triggerWaveEffect;
         
         usedPositions = [];
       };
@@ -194,7 +150,17 @@ const ServicesPage = () => {
     };
   }, []);
 
-  // 🚀 OTTIMIZZAZIONE: Handler inline semplice (no function call overhead)
+  const handleServiceClick = (servicePage) => {
+    if (effectsReady && window.triggerWaveEffect) {
+      window.triggerWaveEffect();
+    }
+    setTimeout(() => {
+      if (onNavigate) {
+        onNavigate(servicePage);
+      }
+    }, 100);
+  };
+
   return (
     <div className="services-page-wrapper">
       <div className="code-background" id="codeBackground"></div>
@@ -202,15 +168,14 @@ const ServicesPage = () => {
       
       <header>
         <div className="header-content">
-          <div className="logo">V//HENTE</div>
+          <div className="logo">.</div>
         </div>
       </header>
 
       <div className="services-container">
-        {/* 🎯 onClick inline diretto - zero overhead */}
         <div 
           className="service-box" 
-          onClick={() => effectsReady && window.openOverlay && window.openOverlay('overlay-1')}
+          onClick={() => handleServiceClick('consulenze')}
         >
           <svg className="border-svg" viewBox="0 0 380 180" preserveAspectRatio="none">
             <path d="M 0,40 L 40,0 L 120,0 L 140,15 L 300,15 L 320,0 L 360,0 L 380,20 L 380,130 L 350,160 L 280,160 L 260,180 L 80,180 L 60,165 L 20,165 L 0,145 Z" />
@@ -224,7 +189,7 @@ const ServicesPage = () => {
 
         <div 
           className="service-box" 
-          onClick={() => effectsReady && window.openOverlay && window.openOverlay('overlay-2')}
+          onClick={() => handleServiceClick('sitiweb')}
         >
           <svg className="border-svg" viewBox="0 0 380 180" preserveAspectRatio="none">
             <path d="M 0,40 L 40,0 L 120,0 L 140,15 L 300,15 L 320,0 L 360,0 L 380,20 L 380,130 L 350,160 L 280,160 L 260,180 L 80,180 L 60,165 L 20,165 L 0,145 Z" />
@@ -255,7 +220,7 @@ const ServicesPage = () => {
 
         <div 
           className="service-box" 
-          onClick={() => effectsReady && window.openOverlay && window.openOverlay('overlay-3')}
+          onClick={() => handleServiceClick('presenza')}
         >
           <svg className="border-svg" viewBox="0 0 380 180" preserveAspectRatio="none">
             <path d="M 0,40 L 40,0 L 120,0 L 140,15 L 300,15 L 320,0 L 360,0 L 380,20 L 380,130 L 350,160 L 280,160 L 260,180 L 80,180 L 60,165 L 20,165 L 0,145 Z" />
@@ -273,7 +238,7 @@ const ServicesPage = () => {
 
         <div 
           className="service-box" 
-          onClick={() => effectsReady && window.openOverlay && window.openOverlay('overlay-4')}
+          onClick={() => handleServiceClick('multimedia')}
         >
           <svg className="border-svg" viewBox="0 0 380 180" preserveAspectRatio="none">
             <path d="M 0,40 L 40,0 L 120,0 L 140,15 L 300,15 L 320,0 L 360,0 L 380,20 L 380,130 L 350,160 L 280,160 L 260,180 L 80,180 L 60,165 L 20,165 L 0,145 Z" />
@@ -287,101 +252,6 @@ const ServicesPage = () => {
           </div>
           <span className="service-box-text">CREAZIONE MULTIMEDIA</span>
           <p className="service-box-description">Produzione contenuti audio-video e grafica professionale</p>
-        </div>
-      </div>
-
-      {/* OVERLAYS */}
-      <div className="service-overlay" id="overlay-1">
-        <div className="overlay-content">
-          <button className="overlay-close" onClick={() => window.closeOverlay && window.closeOverlay('overlay-1')}>×</button>
-          <h2 className="overlay-title">Consulenze Digitali</h2>
-          <p className="overlay-text">
-            Se hai già una presenza online ma vorresti cambiare approccio o allinearti a delle ottiche più moderne, hai bisogno di qualcuno che si occupi ad aiutarti a gestire i tuoi servizi o semplicemente vuoi una consultazione per capire come muoverti per creare la tua presenza digitale, contattami o chiamami per studiare il tuo caso, identificare i tuoi problemi e valutare le misure possibili da adottare per risolvere i tuoi problemi.
-          </p>
-          <p className="overlay-text" style={{ color: '#0ff', fontWeight: 'bold', textShadow: '0 0 10px rgba(0, 255, 255, 0.8)' }}>
-            La prima consulenza online è sempre gratuita!
-          </p>
-        </div>
-      </div>
-
-      <div className="service-overlay" id="overlay-2">
-        <div className="overlay-content">
-          <button className="overlay-close" onClick={() => window.closeOverlay && window.closeOverlay('overlay-2')}>×</button>
-          <h2 className="overlay-title">Creazione Siti Web</h2>
-          <p className="overlay-text">
-            Creo il tuo sito a seconda del pacchetto che scegli e lo gestisco a seconda della disponibilità attuale che puoi verificare nella sezione gestione dei siti.
-          </p>
-          
-          <div className="package-section">
-            <h3 className="package-title">Pacchetto Base</h3>
-            <p className="package-items">
-              Sito Wordpress CMS o Build React App per uso vetrina o promozionale, ottimizzazione SEO monolingua, ottimizzazione materiale multimediale, Indicizzazione sulle Search Consolle, Grafiche Base.
-            </p>
-          </div>
-          
-          <div className="package-section">
-            <h3 className="package-title">Pacchetto Intermedio</h3>
-            <p className="package-items">
-              Sito Wordpress CMS o Build React App per uso vetrina o promozionale, ottimizzazione SEO con possibilità di Multilingua, ottimizzazione materiale multimediale, Indicizzazione sulle Search Consolle, Grafiche personalizzate e animazioni Js/CSS personalizzate.
-            </p>
-          </div>
-          
-          <div className="package-section">
-            <h3 className="package-title">Pacchetto Commerciale</h3>
-            <p className="package-items">
-              Sito Wordpress CMS con E-commerce, ottimizzazione SEO mono e multilingua, ottimizzazione materiale multimediale, indicizzazione sulle Search Consolle, Grafiche personalizzate.
-            </p>
-          </div>
-        </div>
-      </div>
-
-      <div className="service-overlay" id="overlay-3">
-        <div className="overlay-content">
-          <button className="overlay-close" onClick={() => window.closeOverlay && window.closeOverlay('overlay-3')}>×</button>
-          <h2 className="overlay-title">Presenza Online</h2>
-          <p className="overlay-text">
-            Gestisco per te i tuoi social e i tuoi siti:
-          </p>
-          
-          <div className="package-section">
-            <p className="package-items">
-              • Hosting<br />
-              • Chat<br />
-              • Pubblicazione di contenuti<br />
-              • Studio sulla strategia digitale da adottare<br />
-              • Risoluzione controversie con clienti o pubblico
-            </p>
-          </div>
-          
-          <p className="overlay-text" style={{ marginTop: '1.5rem' }}>
-            Lavoro per prestazioni in base al tuo bisogno, anche a periodi.
-          </p>
-          <p className="overlay-text" style={{ color: '#0ff', fontWeight: 'bold', textShadow: '0 0 10px rgba(0, 255, 255, 0.8)' }}>
-            Se sei contento possiamo anche stringere una collaborazione a lungo termine!
-          </p>
-        </div>
-      </div>
-
-      <div className="service-overlay" id="overlay-4">
-        <div className="overlay-content">
-          <button className="overlay-close" onClick={() => window.closeOverlay && window.closeOverlay('overlay-4')}>×</button>
-          <h2 className="overlay-title">Creazione Multimedia</h2>
-          <p className="overlay-text">
-            Creo o ricreo i tuoi contenuti multimediali:
-          </p>
-          
-          <div className="package-section">
-            <p className="package-items">
-              • Grafiche SVG<br />
-              • Contenuti per Social<br />
-              • Animazioni<br />
-              • Grafiche Digitali<br />
-              • Mockups<br />
-              • Ricostruzioni immagini<br />
-              • Miglioramento immagini<br />
-              • Pulizia Grafiche create con AI
-            </p>
-          </div>
         </div>
       </div>
 
