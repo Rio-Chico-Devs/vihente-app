@@ -2,45 +2,51 @@ import { useEffect } from 'react';
 
 const CustomCursor = () => {
   useEffect(() => {
-    console.log('🎯 CustomCursor mounted!');
+    // 📱 SKIP COMPLETO su dispositivi touch - controllo multiplo
+    const isTouchDevice = (
+      'ontouchstart' in window || 
+      navigator.maxTouchPoints > 0 || 
+      navigator.msMaxTouchPoints > 0 ||
+      window.matchMedia('(pointer: coarse)').matches
+    );
     
-    // Skip su dispositivi touch
-    if ('ontouchstart' in window) {
-      console.log('❌ Touch device - cursor disabled');
-      return;
+    if (isTouchDevice) {
+      console.log('Touch device detected - custom cursor disabled');
+      return; // ❌ NON crea il cursore
     }
 
-    // Crea cursore
-    const cursor = document.createElement('div');
-    cursor.innerHTML = '🎯'; // Emoji come fallback visibile
-    cursor.style.cssText = `
-      position: fixed;
-      font-size: 30px;
-      pointer-events: none;
-      z-index: 9999999;
-      top: 0;
-      left: 0;
-      transform: translate(-50%, -50%);
-    `;
-    
-    document.body.appendChild(cursor);
-    console.log('✅ Cursor created');
+    console.log('Desktop detected - initializing custom cursor...');
 
-    // Movimento
-    const move = (e) => {
-      cursor.style.transform = `translate(${e.clientX}px, ${e.clientY}px) translate(-50%, -50%)`;
+    // Create cursor dot
+    const cursor = document.createElement('div');
+    cursor.className = 'custom-cursor-dot';
+    document.body.appendChild(cursor);
+
+    console.log('Custom cursor created:', cursor);
+
+    // Update position on mouse move
+    const updatePosition = (e) => {
+      cursor.style.left = e.clientX + 'px';
+      cursor.style.top = e.clientY + 'px';
     };
 
-    document.addEventListener('mousemove', move);
-    console.log('✅ Listener added');
+    // Click animation
+    const handleClick = () => {
+      cursor.classList.add('click-effect');
+      setTimeout(() => cursor.classList.remove('click-effect'), 300);
+    };
 
-    // Nascondi cursore normale
+    document.addEventListener('mousemove', updatePosition);
+    document.addEventListener('mousedown', handleClick);
+
+    // Hide default cursor
     document.body.style.cursor = 'none';
 
     // Cleanup
     return () => {
-      console.log('🧹 Cursor cleanup');
-      document.removeEventListener('mousemove', move);
+      console.log('Cleaning up custom cursor...');
+      document.removeEventListener('mousemove', updatePosition);
+      document.removeEventListener('mousedown', handleClick);
       cursor.remove();
       document.body.style.cursor = 'auto';
     };

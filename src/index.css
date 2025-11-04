@@ -1,7 +1,4 @@
 @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Orbitron:wght@200;400;700;900&family=Electrolize&display=swap');
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
 
 /* Reset e configurazione base */
 * {
@@ -20,6 +17,17 @@ body {
   color: #fff;
   cursor: none;
   overflow-x: hidden;
+}
+
+/* Force hide cursor on ALL elements - including clickable ones */
+* {
+  cursor: none !important;
+}
+
+/* Extra enforcement for clickable elements */
+a, button, [role="button"], input, textarea, select, 
+.service-box, .overlay-close, [onclick] {
+  cursor: none !important;
 }
 
 /* Accessibilità - rispetta le preferenze dell'utente */
@@ -109,6 +117,16 @@ body {
   }
 }
 
+@keyframes scanLineMove {
+  0% { top: 0%; }
+  100% { top: 100%; }
+}
+
+@keyframes holoFlicker {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.9; }
+}
+
 /* Fade in animation per main content */
 @keyframes fadeInScan {
   0% { 
@@ -146,36 +164,37 @@ body {
   animation: fadeInScan 2.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards !important;
 }
 
-/* Componenti base riutilizzabili */
-@layer components {
-  .cyber-title {
-    @apply font-orbitron font-bold;
-    background: linear-gradient(135deg, #00ffff 0%, #00d4ff 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    letter-spacing: 0.1em;
-  }
-  
-  .cyber-text {
-    @apply text-cyber-blue;
-    text-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
-  }
-  
-  .glitch-effect:hover {
-    animation: glitch 0.6s ease-in-out infinite;
-  }
-  
-  .neon-border {
-    border: 2px solid rgba(0, 255, 255, 0.3);
-    box-shadow: 
-      0 0 20px rgba(0, 255, 255, 0.1),
-      inset 0 0 20px rgba(0, 255, 255, 0.05);
-  }
-  
-  .glass-effect {
-    @apply bg-black/50 backdrop-blur-md border border-cyber-blue/30;
-  }
+/* Componenti base riutilizzabili - Convertiti da Tailwind */
+.cyber-title {
+  font-family: 'Orbitron', sans-serif;
+  font-weight: 700;
+  background: linear-gradient(135deg, #00ffff 0%, #00d4ff 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  letter-spacing: 0.1em;
+}
+
+.cyber-text {
+  color: #00ffff;
+  text-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+}
+
+.glitch-effect:hover {
+  animation: glitch 0.6s ease-in-out infinite;
+}
+
+.neon-border {
+  border: 2px solid rgba(0, 255, 255, 0.3);
+  box-shadow: 
+    0 0 20px rgba(0, 255, 255, 0.1),
+    inset 0 0 20px rgba(0, 255, 255, 0.05);
+}
+
+.glass-effect {
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(0, 255, 255, 0.3);
 }
 
 /* Scrollbar personalizzata */
@@ -202,3 +221,91 @@ body {
   color: #fff;
 }
 
+/* Custom Cursor - Con contorno e glitch effect */
+.custom-cursor-dot {
+  position: fixed !important;
+  width: 10px;
+  height: 10px;
+  background: #0ff !important;
+  border-radius: 50%;
+  pointer-events: none !important;
+  z-index: 999999 !important; /* 🔥 Z-INDEX MASSIMO */
+  transform: translate(-50%, -50%);
+  transition: transform 0.1s ease-out, width 0.3s ease, height 0.3s ease;
+  box-shadow: 0 0 10px rgba(0, 255, 255, 0.8);
+  /* 🎨 Glitch animation random */
+  animation: cursorGlitch 3s infinite;
+  display: block !important; /* 🔥 FORZA DISPLAY */
+  opacity: 1 !important; /* 🔥 FORZA VISIBILITÀ */
+}
+
+/* 📱 NASCONDE COMPLETAMENTE IL CURSORE SU MOBILE/TOUCH */
+@media (hover: none) and (pointer: coarse) {
+  .custom-cursor-dot {
+    display: none !important;
+    opacity: 0 !important;
+    visibility: hidden !important;
+  }
+}
+
+/* 📱 ALTERNATIVA: nasconde anche se rileva touch */
+@media (pointer: coarse) {
+  .custom-cursor-dot {
+    display: none !important;
+    opacity: 0 !important;
+    visibility: hidden !important;
+  }
+}
+
+/* Anello contorno cursore */
+.custom-cursor-dot::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 28px;
+  height: 28px;
+  border: 2px solid rgba(0, 255, 255, 0.5);
+  border-radius: 50%;
+  box-shadow: 0 0 10px rgba(0, 255, 255, 0.3);
+}
+
+/* 🎨 Glitch effect sul cursore */
+@keyframes cursorGlitch {
+  0%, 90%, 100% {
+    transform: translate(-50%, -50%);
+    filter: hue-rotate(0deg);
+  }
+  91% {
+    transform: translate(calc(-50% - 2px), calc(-50% + 2px));
+    filter: hue-rotate(90deg);
+  }
+  92% {
+    transform: translate(calc(-50% + 3px), calc(-50% - 1px));
+    filter: hue-rotate(-90deg);
+  }
+  93% {
+    transform: translate(calc(-50% - 1px), calc(-50% + 3px));
+    filter: hue-rotate(45deg);
+  }
+  94% {
+    transform: translate(-50%, -50%);
+    filter: hue-rotate(0deg);
+  }
+}
+
+/* Click animation - espansione al click */
+.custom-cursor-dot.click-effect {
+  width: 30px;
+  height: 30px;
+  box-shadow: 
+    0 0 20px #0ff,
+    0 0 40px rgba(0, 255, 255, 0.6);
+}
+
+.custom-cursor-dot.click-effect::before {
+  width: 50px;
+  height: 50px;
+  border-color: rgba(0, 255, 255, 0.8);
+}
