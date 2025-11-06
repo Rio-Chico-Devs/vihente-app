@@ -9,20 +9,89 @@ const LandingPageOldEye = ({ startTime }) => {
   const [isEyeGlitching, setIsEyeGlitching] = useState(false);
   const [pupilPosition, setPupilPosition] = useState({ x: 500, y: 500 });
   const [isNearEye, setIsNearEye] = useState(false);
+  
+  const [showWarning, setShowWarning] = useState(false);
+  const [warningOpacity, setWarningOpacity] = useState(0);
+
+  const [clickCount, setClickCount] = useState(0);
+  const [showClickMessage, setShowClickMessage] = useState(false);
+  const [clickMessage, setClickMessage] = useState('');
 
   const canvasRef = useRef(null);
   const animationFrameRef = useRef(null);
   const intervalsRef = useRef([]);
   const eyeRef = useRef(null);
+  
+  const targetPositionRef = useRef({ x: 500, y: 500 });
+  const currentPositionRef = useRef({ x: 500, y: 500 });
+  const interpolationFrameRef = useRef(null);
+  
+  const directionChangesRef = useRef([]);
+  const lastDirectionRef = useRef(null);
+  const lastPositionRef = useRef(null);
+  const warningTimeoutRef = useRef(null);
+  const glitchIntervalRef = useRef(null);
+  const clickMessageTimeoutRef = useRef(null);
 
   const handleEyeClick = () => {
+    const newCount = clickCount + 1;
+    setClickCount(newCount);
+    
     setIsEyeGlitching(true);
-    setTimeout(() => {
-      setIsEyeGlitching(false);
-    }, 400);
+    setTimeout(() => setIsEyeGlitching(false), 400);
+    
+    let msg = '';
+    if (newCount === 10) msg = 'Molto divertente.';
+    else if (newCount === 100) msg = 'Serie di click seri.';
+    else if (newCount === 175) msg = 'Quanto ancora puoi resistere?';
+    else if (newCount === 300) msg = 'Vorrei vedere ancora una volta la luce del sole...';
+    else if (newCount === 420) msg = 'Loading 420 jokes...';
+    else if (newCount === 555) msg = 'Incredibile.';
+    else if (newCount === 1000) msg = "Non perdere altro tempo non c'è altro oltre questo punto.";
+    else if (newCount === 1050) msg = "Davvero, non c'è altro.";
+    else if (newCount > 1050 && (newCount - 1050) % 30 === 0) msg = 'Limit reached.';
+    
+    if (msg) {
+      setClickMessage(msg);
+      setShowClickMessage(true);
+      if (clickMessageTimeoutRef.current) clearTimeout(clickMessageTimeoutRef.current);
+      clickMessageTimeoutRef.current = setTimeout(() => setShowClickMessage(false), 3000);
+    }
   };
 
-  // Track mouse movement near eye
+  
+
+  useEffect(() => {
+    const smoothness = 0.15;
+    
+    function interpolate() {
+      const current = currentPositionRef.current;
+      const target = targetPositionRef.current;
+      
+      const dx = target.x - current.x;
+      const dy = target.y - current.y;
+      
+      if (Math.abs(dx) < 0.1 && Math.abs(dy) < 0.1) {
+        current.x = target.x;
+        current.y = target.y;
+      } else {
+        current.x += dx * smoothness;
+        current.y += dy * smoothness;
+      }
+      
+      setPupilPosition({ x: current.x, y: current.y });
+      interpolationFrameRef.current = requestAnimationFrame(interpolate);
+    }
+    
+    interpolate();
+    
+    return () => {
+      if (interpolationFrameRef.current) {
+        cancelAnimationFrame(interpolationFrameRef.current);
+      }
+    };
+  }, []);
+
   useEffect(() => {
     const handleMouseMove = (e) => {
       if (!eyeRef.current) return;
@@ -35,6 +104,59 @@ const LandingPageOldEye = ({ startTime }) => {
       const deltaY = e.clientY - eyeCenterY;
       const distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
       
+      const now = Date.now();
+      
+      if (distance < 300 && isNearEye) {
+        const currentPos = { x: e.clientX, y: e.clientY };
+        
+        if (lastPositionRef.current) {
+          const movementX = currentPos.x - lastPositionRef.current.x;
+          const movementY = currentPos.y - lastPositionRef.current.y;
+          const movementDistance = Math.sqrt(movementX * movementX + movementY * movementY);
+          
+          if (movementDistance > 5) {
+            const directionX = movementX / movementDistance;
+            const directionY = movementY / movementDistance;
+            
+            if (lastDirectionRef.current) {
+              const dotProduct = 
+                lastDirectionRef.current.x * directionX + 
+                lastDirectionRef.current.y * directionY;
+              
+              if (dotProduct < 0.5) {
+                directionChangesRef.current.push({
+                  time: now,
+                  angle: Math.acos(Math.max(-1, Math.min(1, dotProduct))) * (180 / Math.PI)
+                });
+                
+                directionChangesRef.current = directionChangesRef.current.filter(
+                  change => now - change.time < 3000
+                );
+                
+                if (directionChangesRef.current.length >= 10 && !showWarning) {
+                  console.log('🎮 DETECTED: ' + directionChangesRef.current.length + ' direction changes in 3s');
+                  triggerWarning();
+                  directionChangesRef.current = [];
+                  lastDirectionRef.current = null;
+                  lastPositionRef.current = null;
+                  return;
+                }
+              }
+            }
+            
+            lastDirectionRef.current = { x: directionX, y: directionY };
+          }
+        }
+        
+        lastPositionRef.current = currentPos;
+      } else {
+        if (!isNearEye || distance >= 300) {
+          directionChangesRef.current = [];
+          lastDirectionRef.current = null;
+          lastPositionRef.current = null;
+        }
+      }
+      
       let activationRadius = 300;
       
       if (deltaY > 0) {
@@ -43,8 +165,6 @@ const LandingPageOldEye = ({ startTime }) => {
       
       if (distance < activationRadius) {
         setIsNearEye(true);
-        
-        const eyeRect = eyeRef.current.getBoundingClientRect();
         
         const svgWidth = 1000;
         const svgHeight = 1000;
@@ -55,43 +175,48 @@ const LandingPageOldEye = ({ startTime }) => {
         let newX = relativeX * svgWidth;
         let newY = relativeY * svgHeight;
         
-        // Calcolo limiti: il cerchio piccolo (r=35) può toccare il contorno interno dell'occhio
-        // Il contorno ha forma ellittica centrata in (500, 500)
-        // Movimento ellittico: più ampio orizzontalmente, più stretto verticalmente
         const centerX = 500;
         const centerY = 500;
-        const maxRadiusX = 95; // raggio orizzontale più ampio
-        const maxRadiusY = 65; // raggio verticale originale
+        const maxRadiusX = 95;
+        const maxRadiusY = 65;
         
-        // Calcola la distanza dal centro in forma ellittica
         const deltaFromCenterX = newX - centerX;
         const deltaFromCenterY = newY - centerY;
         
-        // Normalizza per l'ellisse
         const normalizedDistance = Math.sqrt(
           (deltaFromCenterX * deltaFromCenterX) / (maxRadiusX * maxRadiusX) +
           (deltaFromCenterY * deltaFromCenterY) / (maxRadiusY * maxRadiusY)
         );
         
-        // Se supera il limite ellittico, proietta sul bordo dell'ellisse
         if (normalizedDistance > 1) {
           const angle = Math.atan2(deltaFromCenterY, deltaFromCenterX);
           newX = centerX + Math.cos(angle) * maxRadiusX;
           newY = centerY + Math.sin(angle) * maxRadiusY;
         }
         
-        setPupilPosition({ x: newX, y: newY });
+        targetPositionRef.current = { x: newX, y: newY };
       } else {
         if (isNearEye) {
           setIsNearEye(false);
-          setPupilPosition({ x: 500, y: 500 });
+          targetPositionRef.current = { x: 500, y: 500 };
         }
       }
     };
     
     window.addEventListener('mousemove', handleMouseMove);
-    return () => window.removeEventListener('mousemove', handleMouseMove);
-  }, [isNearEye]);
+    return () => {
+      window.removeEventListener('mousemove', handleMouseMove);
+      if (warningTimeoutRef.current) {
+        clearTimeout(warningTimeoutRef.current);
+      }
+      if (glitchIntervalRef.current) {
+        clearInterval(glitchIntervalRef.current);
+      }
+      if (clickMessageTimeoutRef.current) {
+        clearTimeout(clickMessageTimeoutRef.current);
+      }
+    };
+  }, [isNearEye, showWarning]);
 
   useEffect(() => {
     console.log('🎯 LandingPage mounted');
@@ -218,48 +343,39 @@ const LandingPageOldEye = ({ startTime }) => {
     }}>
       <style>{`
         @keyframes titleGlitch {
-          0%, 100% {
-            opacity: 1;
-          }
-          23% {
-            opacity: 1;
-          }
-          25% {
-            opacity: 0.5;
-          }
-          27% {
-            opacity: 1;
-          }
-          64% {
-            opacity: 1;
-          }
-          66% {
-            opacity: 0.5;
-          }
-          68% {
-            opacity: 1;
-          }
+          0%, 100% { opacity: 1; }
+          23% { opacity: 1; }
+          25% { opacity: 0.5; }
+          27% { opacity: 1; }
+          64% { opacity: 1; }
+          66% { opacity: 0.5; }
+          68% { opacity: 1; }
         }
 
         @keyframes rotateSquare1 {
-          from {
-            transform: rotate(0deg);
-          }
-          to {
-            transform: rotate(360deg);
-          }
+          from { transform: rotate(0deg); }
+          to { transform: rotate(360deg); }
         }
 
         @keyframes rotateSquare2 {
-          from {
-            transform: rotate(0deg);
+          from { transform: rotate(0deg); }
+          to { transform: rotate(-360deg); }
+        }
+
+        @keyframes subtleGlow {
+          0%, 100% {
+            filter: drop-shadow(0 0 8px rgba(0, 255, 255, 0.4)) 
+                    drop-shadow(0 0 15px rgba(0, 255, 255, 0.2));
           }
-          to {
-            transform: rotate(-360deg);
+          50% {
+            filter: drop-shadow(0 0 12px rgba(0, 255, 255, 0.6)) 
+                    drop-shadow(0 0 25px rgba(0, 255, 255, 0.3))
+                    drop-shadow(0 0 35px rgba(0, 255, 255, 0.1));
           }
         }
 
         .eye-svg {
+          animation: subtleGlow 4s ease-in-out infinite;
         }
 
         @keyframes glitchEffect {
@@ -306,36 +422,16 @@ const LandingPageOldEye = ({ startTime }) => {
         }
 
         @keyframes glitchScan {
-          0%, 100% {
-            clip-path: inset(0 0 0 0);
-          }
-          10% {
-            clip-path: inset(20% 0 60% 0);
-          }
-          20% {
-            clip-path: inset(60% 0 20% 0);
-          }
-          30% {
-            clip-path: inset(40% 0 40% 0);
-          }
-          40% {
-            clip-path: inset(0 0 80% 0);
-          }
-          50% {
-            clip-path: inset(80% 0 0 0);
-          }
-          60% {
-            clip-path: inset(30% 0 50% 0);
-          }
-          70% {
-            clip-path: inset(50% 0 30% 0);
-          }
-          80% {
-            clip-path: inset(10% 0 70% 0);
-          }
-          90% {
-            clip-path: inset(70% 0 10% 0);
-          }
+          0%, 100% { clip-path: inset(0 0 0 0); }
+          10% { clip-path: inset(20% 0 60% 0); }
+          20% { clip-path: inset(60% 0 20% 0); }
+          30% { clip-path: inset(40% 0 40% 0); }
+          40% { clip-path: inset(0 0 80% 0); }
+          50% { clip-path: inset(80% 0 0 0); }
+          60% { clip-path: inset(30% 0 50% 0); }
+          70% { clip-path: inset(50% 0 30% 0); }
+          80% { clip-path: inset(10% 0 70% 0); }
+          90% { clip-path: inset(70% 0 10% 0); }
         }
 
         .eye-glitch {
@@ -350,12 +446,81 @@ const LandingPageOldEye = ({ startTime }) => {
         }
 
         @keyframes fadeInScan {
-          0% {
-            opacity: 0;
+          0% { opacity: 0; }
+          100% { opacity: 1; }
+        }
+
+        .warning-overlay {
+          position: absolute;
+          top: -180px;
+          left: 50%;
+          transform: translateX(-50%);
+          z-index: 1000;
+          pointer-events: none;
+          transition: opacity 0.3s ease;
+          width: max-content;
+        }
+
+        .warning-box {
+          background: rgba(255, 0, 0, 0.15);
+          border: 3px solid rgba(255, 0, 0, 0.8);
+          border-radius: 8px;
+          padding: 1rem 1.5rem;
+          box-shadow: 
+            0 0 30px rgba(255, 0, 0, 0.4),
+            inset 0 0 20px rgba(255, 0, 0, 0.1);
+          animation: warningPulse 0.3s ease-in-out 3;
+          backdrop-filter: blur(10px);
+          white-space: nowrap;
+        }
+
+        @keyframes warningPulse {
+          0%, 100% {
+            transform: scale(1);
+            border-color: rgba(255, 0, 0, 0.8);
           }
-          100% {
-            opacity: 1;
+          50% {
+            transform: scale(1.05);
+            border-color: rgba(255, 0, 0, 1);
+            box-shadow: 
+              0 0 50px rgba(255, 0, 0, 0.6),
+              inset 0 0 30px rgba(255, 0, 0, 0.2);
           }
+        }
+
+        .warning-title {
+          font-family: 'Orbitron', sans-serif;
+          font-size: 1.1rem;
+          font-weight: 900;
+          color: #ff0000;
+          text-transform: uppercase;
+          letter-spacing: 0.15em;
+          text-shadow: 
+            0 0 10px rgba(255, 0, 0, 0.8),
+            0 0 20px rgba(255, 0, 0, 0.5);
+          margin-bottom: 0.5rem;
+          text-align: center;
+        }
+
+        .warning-text {
+          font-family: 'Share Tech Mono', monospace;
+          font-size: 0.85rem;
+          color: rgba(255, 255, 255, 0.9);
+          text-align: center;
+          line-height: 1.4;
+        }
+
+        .click-message {
+          position: fixed;
+          top: 70%;
+          left: 50%;
+          transform: translateX(-50%);
+          font-family: 'Share Tech Mono', monospace;
+          font-size: 1rem;
+          color: rgba(0, 255, 255, 0.95);
+          text-shadow: 0 0 5px rgba(0, 255, 255, 0.6);
+          z-index: 1000;
+          pointer-events: none;
         }
 
         .system-metrics {
@@ -398,6 +563,44 @@ const LandingPageOldEye = ({ startTime }) => {
             justify-content: center;
             max-width: 90%;
           }
+
+          .warning-overlay {
+            top: -140px;
+          }
+
+          .warning-box {
+            padding: 0.75rem 1.25rem;
+          }
+
+          .warning-title {
+            font-size: 0.95rem;
+            margin-bottom: 0.4rem;
+          }
+
+          .warning-text {
+            font-size: 0.75rem;
+          }
+        }
+
+        @media (max-width: 480px) {
+          .warning-overlay {
+            top: -120px;
+            width: 90vw;
+          }
+
+          .warning-box {
+            padding: 0.6rem 1rem;
+            white-space: normal;
+          }
+
+          .warning-title {
+            font-size: 0.85rem;
+          }
+
+          .warning-text {
+            font-size: 0.7rem;
+            line-height: 1.3;
+          }
         }
       `}</style>
 
@@ -412,6 +615,8 @@ const LandingPageOldEye = ({ startTime }) => {
           zIndex: 0
         }}
       />
+
+      {showClickMessage && <div className="click-message">{clickMessage}</div>}
 
       <div className="system-metrics">
         <div className="metric-item">
@@ -459,6 +664,18 @@ const LandingPageOldEye = ({ startTime }) => {
             justifyContent: 'center',
             flex: '0 0 auto'
           }}>
+            {showWarning && (
+              <div className="warning-overlay" style={{ opacity: warningOpacity }}>
+                <div className="warning-box">
+                  <div className="warning-title">⚠ WARNING</div>
+                  <div className="warning-text">
+                    Sovraccarico del sistema di intercettazione.<br />
+                    Vedo che ti piace giocare...
+                  </div>
+                </div>
+              </div>
+            )}
+
             <div style={{
               position: 'absolute',
               top: '50%',
@@ -517,7 +734,6 @@ const LandingPageOldEye = ({ startTime }) => {
               </svg>
             </div>
 
-            {/* Old Eye SVG with tracking */}
             <div 
               ref={eyeRef}
               className={`eye-glitch ${isEyeGlitching ? 'active' : ''}`}
@@ -543,14 +759,12 @@ const LandingPageOldEye = ({ startTime }) => {
                     </feMerge>
                   </filter>
                   
-                  {/* Clip path per il contorno dell'occhio */}
                   <clipPath id="eyeContourClip">
                     <path d="M 350 500 C 390 430, 440 400, 500 400 C 560 400, 610 430, 650 500 C 610 570, 560 600, 500 600 C 440 600, 390 570, 350 500 Z"/>
                   </clipPath>
                 </defs>
                 
                 <g>
-                  {/* Eye shape - outer contour */}
                   <path
                     d="M 350 500 C 390 430, 440 400, 500 400 C 560 400, 610 430, 650 500 C 610 570, 560 600, 500 600 C 440 600, 390 570, 350 500 Z"
                     fill="none"
@@ -561,9 +775,7 @@ const LandingPageOldEye = ({ startTime }) => {
                     filter="url(#eyeGlow)"
                   />
                   
-                  {/* Pupil group - clipped by eye contour */}
                   <g clipPath="url(#eyeContourClip)">
-                    {/* Outer circle - moves with cursor */}
                     <circle 
                       cx={pupilPosition.x} 
                       cy={pupilPosition.y} 
@@ -572,12 +784,8 @@ const LandingPageOldEye = ({ startTime }) => {
                       stroke="rgba(0, 255, 255, 0.95)"
                       strokeWidth="10"
                       filter="url(#eyeGlow)"
-                      style={{
-                        transition: isNearEye ? 'cx 0.15s ease-out, cy 0.15s ease-out' : 'cx 0.3s ease-in, cy 0.3s ease-in'
-                      }}
                     />
                     
-                    {/* Inner pupil - moves with cursor */}
                     <circle 
                       cx={pupilPosition.x} 
                       cy={pupilPosition.y} 
@@ -586,9 +794,6 @@ const LandingPageOldEye = ({ startTime }) => {
                       stroke="rgba(0, 255, 255, 0.95)"
                       strokeWidth="8"
                       filter="url(#eyeGlow)"
-                      style={{
-                        transition: isNearEye ? 'cx 0.15s ease-out, cy 0.15s ease-out' : 'cx 0.3s ease-in, cy 0.3s ease-in'
-                      }}
                     />
                   </g>
                 </g>
