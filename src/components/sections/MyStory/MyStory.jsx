@@ -252,10 +252,25 @@ const MyStory = () => {
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        padding: '2rem'
+        padding: '2rem',
+        paddingTop: '120px' // Spazio per l'header
       }}
     >
       <style>{`
+        
+
+        .logo {
+          font-family: 'Orbitron', sans-serif;
+          font-size: 1.875rem;
+          font-weight: 900;
+          letter-spacing: 0.3em;
+          color: #0ff;
+          text-shadow: 0 0 10px #0ff, 0 0 20px #0ff;
+          width: 100%;
+        }
+
+        
+
         /* PERFORMANCE OPTIMIZATIONS */
         * {
           -webkit-font-smoothing: antialiased;
@@ -674,111 +689,15 @@ const MyStory = () => {
         }
 
         /* RESPONSIVE */
-        @media (max-width: 1600px) {
-          .chapter-content {
-            gap: 3rem;
-            max-width: 1400px;
-          }
-          
-          .text-box {
-            width: 750px;
-            height: 380px;
-          }
-          
-          .text-inner {
-            top: 55px;
-            left: 70px;
-            right: 70px;
-            bottom: 70px;
-          }
-          
-          .chapter-image-container {
-            width: 500px;
-          }
-          
-          .vhs-image {
-            height: 380px;
-          }
-          
-          .chapter-title {
-            font-size: 2.2rem;
-          }
-          
-          .chapter-description {
-            font-size: 1.05rem;
-          }
-        }
-
-        @media (max-width: 1400px) {
-          .chapter-content {
-            gap: 2.5rem;
-          }
-          
-          .text-box {
-            width: 650px;
-            height: 340px;
-          }
-          
-          .text-inner {
-            top: 50px;
-            left: 65px;
-            right: 65px;
-            bottom: 65px;
-          }
-          
-          .chapter-image-container {
-            width: 450px;
-          }
-          
-          .vhs-image {
-            height: 340px;
-          }
-          
-          .chapter-title {
-            font-size: 2rem;
-          }
-          
-          .chapter-description {
-            font-size: 1rem;
-          }
-        }
-
-        @media (max-width: 1200px) {
-          .chapter-content {
-            gap: 2rem;
-          }
-          
-          .text-box {
-            width: 550px;
-            height: 300px;
-          }
-          
-          .text-inner {
-            top: 48px;
-            left: 60px;
-            right: 60px;
-            bottom: 60px;
-          }
-          
-          .chapter-image-container {
-            width: 400px;
-          }
-          
-          .vhs-image {
-            height: 300px;
-          }
-          
-          .chapter-title {
-            font-size: 1.8rem;
-          }
-          
-          .chapter-description {
-            font-size: 0.95rem;
-            line-height: 1.7;
-          }
-        }
-
         @media (max-width: 1024px) {
+          .header-content {
+            display: none !important;
+          }
+
+          section {
+            padding-top: 2rem !important; /* Rimuove spazio header su mobile */
+          }
+
           .chapter-content {
             flex-direction: column;
             gap: 2.5rem;
@@ -810,6 +729,15 @@ const MyStory = () => {
         }
 
         @media (max-width: 768px) {
+          .header-content {
+            display: none !important;
+          }
+
+          .logo {
+            font-size: 1.5rem;
+            letter-spacing: 0.2em;
+          }
+
           .chapter-content {
             gap: 2rem;
           }
@@ -850,6 +778,11 @@ const MyStory = () => {
         }
 
         @media (max-width: 480px) {
+          .logo {
+            font-size: 1.25rem;
+            letter-spacing: 0.15em;
+          }
+
           section {
             padding: 1rem;
           }

@@ -116,9 +116,10 @@ const Navbar = ({ currentPage = 'landing', onNavigate }) => {
   // Mobile menu navigation items
   const navItems = [
     { id: 'landing', label: 'Home', angle: 0 },
-    { id: 'services', label: 'Servizi', angle: 90 },
-    { id: 'storia', label: 'La Mia Storia', angle: 180 },
-    { id: 'contatti', label: 'Contatti', angle: 270 },
+    { id: 'services', label: 'Servizi', angle: 72 },
+    { id: 'portfolio', label: 'Portfolio', angle: 144 },
+    { id: 'storia', label: 'La Mia Storia', angle: 216 },
+    { id: 'contatti', label: 'Contatti', angle: 288 },
   ];
 
   const handleMobileItemClick = (item) => {
@@ -221,8 +222,11 @@ const Navbar = ({ currentPage = 'landing', onNavigate }) => {
               <div className="nav-link-underline" />
             </button>
             
-            {/* Placeholder for future sections */}
-            <button className="nav-link disabled" onClick={() => navigateToPage('disabled')}>
+            {/* ✅ ATTIVATO - Portfolio */}
+            <button
+              className={`nav-link ${currentPage === 'portfolio' ? 'active' : ''}`}
+              onClick={() => navigateToPage('portfolio')}
+            >
               <span className="nav-link-text">Portfolio</span>
               <div className="nav-link-underline" />
             </button>

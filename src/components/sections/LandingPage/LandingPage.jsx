@@ -10,8 +10,7 @@ const LandingPageOldEye = ({ startTime }) => {
   const [pupilPosition, setPupilPosition] = useState({ x: 500, y: 500 });
   const [isNearEye, setIsNearEye] = useState(false);
   
-  const [showWarning, setShowWarning] = useState(false);
-  const [warningOpacity, setWarningOpacity] = useState(0);
+
 
   const [clickCount, setClickCount] = useState(0);
   const [showClickMessage, setShowClickMessage] = useState(false);
@@ -29,9 +28,9 @@ const LandingPageOldEye = ({ startTime }) => {
   const directionChangesRef = useRef([]);
   const lastDirectionRef = useRef(null);
   const lastPositionRef = useRef(null);
-  const warningTimeoutRef = useRef(null);
-  const glitchIntervalRef = useRef(null);
   const clickMessageTimeoutRef = useRef(null);
+
+
 
   const handleEyeClick = () => {
     const newCount = clickCount + 1;
@@ -58,8 +57,6 @@ const LandingPageOldEye = ({ startTime }) => {
       clickMessageTimeoutRef.current = setTimeout(() => setShowClickMessage(false), 3000);
     }
   };
-
-  
 
   useEffect(() => {
     const smoothness = 0.15;
@@ -133,9 +130,8 @@ const LandingPageOldEye = ({ startTime }) => {
                   change => now - change.time < 3000
                 );
                 
-                if (directionChangesRef.current.length >= 10 && !showWarning) {
+                if (directionChangesRef.current.length >= 10) {
                   console.log('🎮 DETECTED: ' + directionChangesRef.current.length + ' direction changes in 3s');
-                  triggerWarning();
                   directionChangesRef.current = [];
                   lastDirectionRef.current = null;
                   lastPositionRef.current = null;
@@ -206,17 +202,13 @@ const LandingPageOldEye = ({ startTime }) => {
     window.addEventListener('mousemove', handleMouseMove);
     return () => {
       window.removeEventListener('mousemove', handleMouseMove);
-      if (warningTimeoutRef.current) {
-        clearTimeout(warningTimeoutRef.current);
-      }
-      if (glitchIntervalRef.current) {
-        clearInterval(glitchIntervalRef.current);
-      }
-      if (clickMessageTimeoutRef.current) {
-        clearTimeout(clickMessageTimeoutRef.current);
+      const clickMessageTimeout = clickMessageTimeoutRef.current;
+      
+      if (clickMessageTimeout) {
+        clearTimeout(clickMessageTimeout);
       }
     };
-  }, [isNearEye, showWarning]);
+  }, [isNearEye]);
 
   useEffect(() => {
     console.log('🎯 LandingPage mounted');
@@ -664,18 +656,6 @@ const LandingPageOldEye = ({ startTime }) => {
             justifyContent: 'center',
             flex: '0 0 auto'
           }}>
-            {showWarning && (
-              <div className="warning-overlay" style={{ opacity: warningOpacity }}>
-                <div className="warning-box">
-                  <div className="warning-title">⚠ WARNING</div>
-                  <div className="warning-text">
-                    Sovraccarico del sistema di intercettazione.<br />
-                    Vedo che ti piace giocare...
-                  </div>
-                </div>
-              </div>
-            )}
-
             <div style={{
               position: 'absolute',
               top: '50%',

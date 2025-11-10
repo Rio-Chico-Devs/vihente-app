@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import './ServiceDetailPage.css';
+
 
 const ConsulenzePage = ({ onNavigate }) => {
   useEffect(() => {

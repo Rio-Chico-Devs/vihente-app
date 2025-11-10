@@ -165,12 +165,6 @@ const ServicesPage = ({ onNavigate }) => {
     <div className="services-page-wrapper">
       <div className="code-background" id="codeBackground"></div>
       <div id="gridOverlay" className="grid-overlay"></div>
-      
-      <header>
-        <div className="header-content">
-          <div className="logo">.</div>
-        </div>
-      </header>
 
       <div className="services-container">
         <div 
@@ -183,8 +177,8 @@ const ServicesPage = ({ onNavigate }) => {
           <div className="service-icon icon-consulenza">
             <div className="icon-consulenza-center"></div>
           </div>
-          <span className="service-box-text">CONSULENZE DIGITALI</span>
-          <p className="service-box-description">Analisi strategica e ottimizzazione della presenza digitale aziendale</p>
+          <span className="service-box-text">CONSULENZE digitali</span>
+          <p className="service-box-description">Analisi e ottimizzazione della presenza digitale aziendale</p>
         </div>
 
         <div 
@@ -214,8 +208,8 @@ const ServicesPage = ({ onNavigate }) => {
               <div className="binary-digit">1</div>
             </div>
           </div>
-          <span className="service-box-text">CREAZIONE SITI WEB</span>
-          <p className="service-box-description">Sviluppo web professionale con tecnologie moderne e design responsive</p>
+          <span className="service-box-text">Sviluppo di Siti web su misura</span>
+          <p className="service-box-description">Sviluppo siti web con tecnologie moderne e design responsive</p>
         </div>
 
         <div 
@@ -232,8 +226,8 @@ const ServicesPage = ({ onNavigate }) => {
             <div className="radar-sweep"></div>
             <div className="radar-dot"></div>
           </div>
-          <span className="service-box-text">PRESENZA ONLINE</span>
-          <p className="service-box-description">Gestione completa dei canali digitali e strategie di engagement</p>
+          <span className="service-box-text"> Social Media e presenza</span>
+          <p className="service-box-description wave">Gestione dei canali online e strategie di engagement</p>
         </div>
 
         <div 
@@ -250,8 +244,8 @@ const ServicesPage = ({ onNavigate }) => {
             <div className="wave-bar"></div>
             <div className="wave-bar"></div>
           </div>
-          <span className="service-box-text">CREAZIONE MULTIMEDIA</span>
-          <p className="service-box-description">Produzione contenuti audio-video e grafica professionale</p>
+          <span className="service-box-text">creazione File Multimediali</span>
+          <p className="service-box-description">Produzione file multimediali e grafiche digitali</p>
         </div>
       </div>
 

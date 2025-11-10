@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import './ServiceDetailPage.css';
+
 
 const PresenzaOnlinePage = ({ onNavigate }) => {
   useEffect(() => {
