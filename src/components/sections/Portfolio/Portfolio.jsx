@@ -12,8 +12,6 @@ const Portfolio = ({ onNavigate }) => {
     { id: 'componenti', title: 'COMPONENTI' }
   ];
 
-  // Removed wheel/scroll functionality - navigation only with arrows
-
   useEffect(() => {
     const handleClick = (e) => {
       if (isExpanded && cardRef.current && !cardRef.current.contains(e.target)) {
@@ -33,11 +31,23 @@ const Portfolio = ({ onNavigate }) => {
     }
   };
 
+  // ⭐ AGGIORNATO: Gestisce la navigazione alle pagine specifiche
   const handleClick = () => {
     if (!isExpanded) {
       setIsExpanded(true);
     } else {
-      onNavigate(`portfolio-${categories[selectedCategory].id}`);
+      // Naviga alla pagina appropriata in base alla categoria selezionata
+      const category = categories[selectedCategory];
+      
+      if (category.id === 'componenti') {
+        onNavigate('portfolio-componenti');
+      } else if (category.id === 'grafiche') {
+        // TODO: Quando creerai la pagina grafiche
+        onNavigate('portfolio-grafiche');
+      } else if (category.id === 'sitiweb') {
+        // TODO: Quando creerai la pagina siti web
+        onNavigate('portfolio-sitiweb');
+      }
     }
   };
 

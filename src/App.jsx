@@ -10,6 +10,7 @@ import SitiWebPage from './components/sections/SitiWebPage/SitiWebPage';
 import PresenzaOnlinePage from './components/sections/PresenzaOnline/PresenzaOnlinePage';
 import MultimediaPage from './components/sections/MultimediaPage/MultimediaPage';
 import Portfolio from './components/sections/Portfolio/Portfolio';
+import PortfolioComponentiPage from './components/sections/Portfolio/PortfolioComponentiPage'; // ⭐ NUOVO
 import Contacts from './components/sections/Contacts/Contacts';
 import CustomCursor from './components/sections/Cursor/CustomCursor';
 import ScrollingHeader from './components/ScrollingHeader'
@@ -43,7 +44,7 @@ function App() {
           />
 
           <ScrollingHeader 
-            text= "News: +++ 22/04/2025: - ECMAScript 2025 introduce 'Temporal API'. Finalmente possiamo dire addio ai mal di testa causati dai fusi orari, dichiara John Smith, membro del comitato TC39. La nuova API promette una gestione delle date e dei tempi senza precedenti, semplificando lo sviluppo di applicazioni globali. +++ 29/06/2025: - CSS CONTAINER QUERIES RIVOLUZIONANO IL WEB DESIGN Dopo anni di attesa, le CSS Container Queries sono finalmente disponibili su tutti i principali browser. Questa attesissima funzionalità permette agli sviluppatori di applicare stili in base alle dimensioni di un singolo elemento, anziché all'intero viewport"
+            text= "News: +++ 22/04/2025: - ECMAScript 2025 introduce 'Temporal API'. Finalmente possiamo dire addio ai mal di testa causati dai fusi orari, dichiara John Smith, membro del comitato TC39. La nuova API promette una gestione delle date e dei tempi senza precedenti, semplificando lo sviluppo di applicazioni globali."
             currentPage={currentPage}
             onNavigate={handleNavigate}
           />
@@ -87,6 +88,11 @@ function App() {
           {/* Portfolio */}
           {currentPage === 'portfolio' && (
             <Portfolio onNavigate={handleNavigate} />
+          )}
+
+          {/* ⭐ NUOVO: Portfolio - Componenti */}
+          {currentPage === 'portfolio-componenti' && (
+            <PortfolioComponentiPage onNavigate={handleNavigate} />
           )}
 
           {/* Contacts */}
