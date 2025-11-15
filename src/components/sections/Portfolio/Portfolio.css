@@ -1,36 +1,7 @@
-/* Portfolio Component - 3D Rotation with Clean Title Design */
-
-/* Header con effetto scorrimento multilingue */
-header {
-  position: fixed;
-  top: 80px;
-  width: 100%;
-  z-index: 50;
-  background: rgba(0, 0, 0, 0.7);
-  backdrop-filter: blur(12px);
-  border-bottom: 2px solid rgba(0, 255, 255, 0.3);
-}
-
-.header-content {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 1rem 1.5rem;
-  display: flex;
-  justify-content: left;
-  align-items: center;
-}
-
-.logo {
-  font-family: 'Orbitron', sans-serif;
-  font-size: 1.875rem;
-  font-weight: 900;
-  letter-spacing: 0.3em;
-  color: #0ff;
-  text-shadow: 0 0 10px #0ff, 0 0 20px #0ff;
-  width: 100%;
-}
+/* Portfolio Component - Simple Double-Sided Cards */
 
 .portfolio-page {
+  position: relative;
   min-height: 100vh;
   background: #000;
   display: flex;
@@ -38,10 +9,32 @@ header {
   justify-content: center;
   padding: 2rem;
   overflow: hidden;
-  padding-top: 120px; /* Spazio per l'header */
+  padding-top: 120px;
+}
+
+/* Griglia esagonale identica a Services */
+.portfolio-page::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="86.6" height="100" viewBox="0 0 86.6 100"><path d="M43.3 0 L86.6 25 L86.6 75 L43.3 100 L0 75 L0 25 Z" fill="none" stroke="rgba(0,255,255,0.45)" stroke-width="1.2"/></svg>');
+  background-size: 86.6px 100px;
+  z-index: 0;
+  box-shadow: 
+    inset 0 0 80px rgba(0, 255, 255, 0.12),
+    inset 0 0 40px rgba(0, 255, 255, 0.08);
+  animation: breathingGrid 7s ease-in-out infinite;
+}
+
+@keyframes breathingGrid {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.3; transform: scale(1.01); }
 }
 
 .portfolio-container {
+  position: relative;
+  z-index: 1;
   display: flex;
   align-items: center;
   gap: 2rem;
@@ -50,6 +43,7 @@ header {
   margin: 0 auto;
 }
 
+/* Navigation Arrows */
 .nav-arrow {
   background: none;
   border: none;
@@ -61,7 +55,7 @@ header {
   transition: transform 0.3s ease;
 }
 
-.nav-arrow:hover:not(:disabled) {
+.nav-arrow:hover {
   transform: scale(1.1);
 }
 
@@ -80,17 +74,13 @@ header {
   filter: drop-shadow(0 0 5px rgba(0, 255, 255, 0.4));
 }
 
-.nav-arrow:hover:not(:disabled) path {
+.nav-arrow:hover path {
   stroke: #0ff;
   stroke-width: 4;
   filter: drop-shadow(0 0 10px rgba(0, 255, 255, 0.8));
 }
 
-.nav-arrow:disabled {
-  opacity: 0.2;
-  cursor: not-allowed;
-}
-
+/* Carousel Scene */
 .carousel-scene {
   position: relative;
   width: 600px;
@@ -105,179 +95,166 @@ header {
   width: 100%;
   height: 100%;
   transform-style: preserve-3d;
-  transition: transform 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+  transition: transform 0.7s ease-in-out;
 }
 
-.carousel-3d.rot-0 { transform: rotateY(0deg); }
-.carousel-3d.rot-1 { transform: rotateY(-120deg); }
-.carousel-3d.rot-2 { transform: rotateY(-240deg); }
-
-.panel {
+/* Card Deck - Come "deck" nell'esempio */
+.card-deck {
   position: absolute;
   width: 350px;
   height: 250px;
   left: 50%;
   top: 50%;
   cursor: pointer;
-  transform-style: preserve-3d;
-  backface-visibility: visible; /* Changed to show both sides */
-  transition: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8);
+  perspective: 1000px;
+  transition: all 0.8s ease-in-out;
+  will-change: transform;
 }
 
-.p-0 { transform: translate(-50%, -50%) rotateY(0deg) translateZ(300px); }
-.p-1 { transform: translate(-50%, -50%) rotateY(120deg) translateZ(300px); }
-.p-2 { transform: translate(-50%, -50%) rotateY(240deg) translateZ(300px); }
+.p-0 { 
+  transform: translate(-50%, -50%) rotateY(0deg) translateZ(350px);
+  animation: levitate 4s ease-in-out infinite;
+}
+.p-1 { 
+  transform: translate(-50%, -50%) rotateY(120deg) translateZ(350px);
+  animation: levitate 4s ease-in-out infinite 1.3s;
+}
+.p-2 { 
+  transform: translate(-50%, -50%) rotateY(240deg) translateZ(350px);
+  animation: levitate 4s ease-in-out infinite 2.6s;
+}
 
-.panel.active {
+/* Animazione levitazione smooth */
+@keyframes levitate {
+  0%, 100% {
+    transform: translate(-50%, -50%) rotateY(var(--rotation)) translateZ(350px) translateY(0px);
+  }
+  50% {
+    transform: translate(-50%, -50%) rotateY(var(--rotation)) translateZ(350px) translateY(-8px);
+  }
+}
+
+/* Variabili CSS per la rotazione */
+.p-0 { --rotation: 0deg; }
+.p-1 { --rotation: 120deg; }
+.p-2 { --rotation: 240deg; }
+
+.card-deck.active {
   z-index: 10;
 }
 
-.panel:not(.active) {
-  opacity: 0.3;
+.card-deck:not(.active) {
+  opacity: 1;
   filter: brightness(0.4);
   pointer-events: none;
 }
 
-.carousel-3d.expanded .panel.active {
-  transform: translate(-50%, -50%) rotateY(var(--rotation)) translateZ(300px) scale(1.2);
-  z-index: 100;
-}
-
-/* Panel faces */
-.panel-front,
-.panel-back {
-  position: absolute;
+/* Card 3D - Deve girare quando non è la card attiva */
+.card-3d {
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.95);
-  border: 3px solid rgba(0, 255, 255, 0.3);
+  transform-style: preserve-3d;
+  transition: transform 0.6s ease-in-out;
   border-radius: 8px;
-  overflow: hidden;
-  backface-visibility: hidden;
-}
-
-.panel-front {
   transform: rotateY(0deg);
 }
 
-.panel-back {
+/* Le card NON attive girano per mostrare il retro */
+.card-deck:not(.active) .card-3d {
   transform: rotateY(180deg);
+}
+
+/* Face - Come nell'esempio */
+.face {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  background: #000;
+  border: 3px solid rgba(0, 255, 255, 0.3);
+  border-radius: 8px;
+}
+
+/* Front Face */
+.front {
+  z-index: 1;
+  box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.5);
+}
+
+/* Back Face - ESATTAMENTE come nell'esempio */
+.back {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: rgba(0, 0, 0, 0.98);
-  border-color: rgba(0, 255, 255, 0.5);
+  transform: rotateY(180deg);
+  z-index: 0;
+  box-shadow: 0 0 0 rgba(0, 0, 0, 0.5);
 }
 
-.panel.active .panel-front,
-.panel.active .panel-back {
-  border-color: #0ff;
-  box-shadow: 0 15px 40px rgba(0, 255, 255, 0.4);
-}
-
-.vhs-screen {
-  position: relative;
+/* Front Image Area */
+.front-image {
+  position: absolute;
+  inset: 0;
   width: 100%;
   height: 100%;
   background: #000;
+  overflow: hidden;
 }
 
-.vhs-noise {
+/* Griglia nel front */
+.front-image::before {
+  content: '';
   position: absolute;
   inset: 0;
-  background: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-  opacity: 0.12;
-  animation: noise 0.2s infinite;
+  background-image: 
+    linear-gradient(rgba(0, 255, 255, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 255, 255, 0.03) 1px, transparent 1px);
+  background-size: 20px 20px;
   pointer-events: none;
-  z-index: 1;
 }
 
-@keyframes noise {
-  0%, 100% { transform: translate(0, 0); }
-  50% { transform: translate(3%, 3%); }
-}
-
-.vhs-scanlines {
+/* Front Title - PULITO, nessun effetto VHS */
+.front-title {
   position: absolute;
-  inset: 0;
-  background: repeating-linear-gradient(0deg, rgba(0,0,0,0.15) 0px, transparent 1px, transparent 2px, rgba(0,0,0,0.15) 3px);
+  top: 20px;
+  left: 20px;
+  z-index: 100;
   pointer-events: none;
-  z-index: 2;
-  animation: scan 8s linear infinite;
+  isolation: isolate;
 }
 
-@keyframes scan {
-  0% { transform: translateY(0); }
-  100% { transform: translateY(10px); }
-}
-
-/* Clean title design - above VHS effects */
-.title-overlay {
-  position: absolute;
-  inset: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 10;
-  pointer-events: none;
-  background: rgba(0, 0, 0, 0.2); /* Subtle dark overlay for better readability */
-}
-
-.category-title {
+.front-title h2 {
   font-family: 'Orbitron', 'Share Tech Mono', monospace;
-  font-size: 1.5rem;
-  font-weight: 700;
+  font-size: 1rem;
+  font-weight: 600;
   color: #0ff;
-  text-shadow: 
-    0 0 10px rgba(0, 255, 255, 0.8),
-    0 0 20px rgba(0, 255, 255, 0.4),
-    0 0 30px rgba(0, 255, 255, 0.2);
   text-transform: uppercase;
-  letter-spacing: 0.15em;
+  letter-spacing: 0.2em;
   margin: 0;
-  text-align: center;
-  animation: titleGlow 3s ease-in-out infinite alternate;
+  
+  /* Rendering ultra-pulito senza effetti */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  filter: none;
+  text-shadow: none;
+  
+  /* Isolamento completo */
+  transform: translateZ(50px);
+  will-change: transform;
 }
 
-@keyframes titleGlow {
-  0% {
-    text-shadow: 
-      0 0 10px rgba(0, 255, 255, 0.6),
-      0 0 20px rgba(0, 255, 255, 0.3),
-      0 0 30px rgba(0, 255, 255, 0.1);
-  }
-  100% {
-    text-shadow: 
-      0 0 15px rgba(0, 255, 255, 0.9),
-      0 0 25px rgba(0, 255, 255, 0.5),
-      0 0 35px rgba(0, 255, 255, 0.3);
-  }
-}
-
-/* Back side logo design */
-.back-logo {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  height: 100%;
-  opacity: 0.7;
-  transition: opacity 0.3s ease;
-}
-
-.panel:hover .back-logo {
-  opacity: 1;
-}
-
+/* Eye Logo nel Back */
 .eye-logo {
-  filter: drop-shadow(0 0 20px rgba(0, 255, 255, 0.4));
+  opacity: 0.9;
+  filter: drop-shadow(0 0 20px rgba(0, 255, 255, 0.5));
   animation: eyePulse 4s ease-in-out infinite;
 }
 
 @keyframes eyePulse {
   0%, 100% { 
-    opacity: 0.7;
+    opacity: 0.9;
     transform: scale(1);
   }
   50% { 
@@ -286,14 +263,44 @@ header {
   }
 }
 
+/* Active Card Border */
+.card-deck.active .face {
+  border-color: rgba(0, 255, 255, 0.7);
+  box-shadow: 
+    0 15px 40px rgba(0, 255, 255, 0.25),
+    0 0 10px rgba(0, 255, 255, 0.3);
+}
+
+/* Effetto CLICK: ingrandimento + bordo luminoso animato */
+.card-deck.clicked {
+  animation: none !important;
+  transform: translate(-50%, -50%) rotateY(var(--rotation)) translateZ(370px) scale(1.1) !important;
+}
+
+.card-deck.clicked .face {
+  border-color: #0ff;
+  animation: glowBorder 1.5s ease-in-out infinite;
+}
+
+@keyframes glowBorder {
+  0%, 100% {
+    box-shadow: 
+      0 0 10px rgba(0, 255, 255, 0.4),
+      0 0 20px rgba(0, 255, 255, 0.3),
+      inset 0 0 10px rgba(0, 255, 255, 0.2);
+  }
+  50% {
+    box-shadow: 
+      0 0 20px rgba(0, 255, 255, 0.8),
+      0 0 40px rgba(0, 255, 255, 0.6),
+      inset 0 0 20px rgba(0, 255, 255, 0.4);
+  }
+}
+
 /* Responsive Design */
 @media (max-width: 1024px) {
-  .header-content {
-    display: none !important;
-  }
-
   .portfolio-page {
-    padding-top: 2rem; /* Rimuove spazio header su mobile */
+    padding-top: 2rem;
   }
 
   .portfolio-container {
@@ -306,7 +313,7 @@ header {
     height: 350px;
   }
   
-  .panel {
+  .card-deck {
     width: 300px;
     height: 200px;
   }
@@ -319,21 +326,17 @@ header {
   .p-1 { --rotation: 120deg; }
   .p-2 { --rotation: 240deg; }
   
-  .category-title {
-    font-size: 1.3rem;
+  .front-title h2 {
+    font-size: 0.9rem;
   }
   
   .eye-logo {
-    width: 100px;
-    height: 100px;
+    width: 160px;
+    height: 160px;
   }
 }
 
 @media (max-width: 768px) {
-  .header-content {
-    display: none !important;
-  }
-
   .nav-arrow { 
     width: 40px;
     height: 60px;
@@ -349,7 +352,7 @@ header {
     height: 280px;
   }
   
-  .panel {
+  .card-deck {
     width: 250px;
     height: 170px;
   }
@@ -358,18 +361,13 @@ header {
     transform: translate(-50%, -50%) rotateY(var(--rotation, 0deg)) translateZ(200px);
   }
   
-  .category-title {
-    font-size: 1.1rem;
+  .front-title h2 {
+    font-size: 0.85rem;
   }
   
   .eye-logo {
-    width: 80px;
-    height: 80px;
-  }
-
-  .logo {
-    font-size: 1.5rem;
-    letter-spacing: 0.2em;
+    width: 130px;
+    height: 130px;
   }
 }
 
@@ -401,7 +399,7 @@ header {
     order: 1;
   }
   
-  .panel {
+  .card-deck {
     width: 220px;
     height: 150px;
   }
@@ -410,66 +408,12 @@ header {
     transform: translate(-50%, -50%) rotateY(0deg) translateZ(150px);
   }
   
-  .category-title {
-    font-size: 1rem;
+  .front-title h2 {
+    font-size: 0.75rem;
   }
   
   .eye-logo {
-    width: 60px;
-    height: 60px;
-  }
-
-  .logo {
-    font-size: 1.25rem;
-    letter-spacing: 0.15em;
-  }
-}
-
-/* Animation performance optimizations */
-@media (prefers-reduced-motion: reduce) {
-  .carousel-3d, 
-  .panel, 
-  .vhs-noise, 
-  .vhs-scanlines, 
-  .category-title,
-  .eye-logo,
-  .nav-arrow,
-  .scrolling-text {
-    animation: none !important;
-    transition: none !important;
-  }
-}
-
-/* High contrast mode support */
-@media (prefers-contrast: high) {
-  .panel-front,
-  .panel-back {
-    border-color: #fff;
-    border-width: 2px;
-  }
-  
-  .panel.active .panel-front,
-  .panel.active .panel-back {
-    border-color: #00ffff;
-    border-width: 3px;
-  }
-  
-  .nav-arrow path {
-    stroke: #fff;
-    stroke-width: 4;
-  }
-  
-  .nav-arrow:hover:not(:disabled) path {
-    stroke: #00ffff;
-  }
-  
-  .category-title {
-    color: #fff;
-    text-shadow: none;
-  }
-
-  .logo {
-    color: #fff;
-    text-shadow: none;
+    width: 100px;
+    height: 100px;
   }
 }
