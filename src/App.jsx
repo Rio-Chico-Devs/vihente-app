@@ -15,6 +15,10 @@ import Contacts from './components/sections/Contacts/Contacts';
 import CustomCursor from './components/sections/Cursor/CustomCursor';
 import ScrollingHeader from './components/ScrollingHeader'
 
+import PrivacyPolicy from './components/sections/PrivacyPolicy/PrivacyPolicy';
+import CookiePolicy from './components/sections/CookiePolicy/CookiePolicy';
+import CookieConsentBanner from './components/global/CookieConsent/CookieConsent';
+
 function App() {
   const [isBooting, setIsBooting] = useState(true);
   const [currentPage, setCurrentPage] = useState('landing');
@@ -32,6 +36,7 @@ function App() {
   return (
     <>
       <CustomCursor key={currentPage} />
+      <CookieConsentBanner isBooting={isBooting} />
       
       {isBooting ? (
         <BootScreen onBootComplete={handleBootComplete} />
@@ -98,6 +103,16 @@ function App() {
           {/* Contacts */}
           {currentPage === 'contatti' && (
             <Contacts />
+          )}
+
+          {/* Privacy Policy */}
+          {currentPage === 'privacy-policy' && (
+            <PrivacyPolicy />
+          )}
+
+          {/* Cookie Policy */}
+          {currentPage === 'cookie-policy' && (
+            <CookiePolicy />
           )}
 
           {/* Footer sempre visibile */}
