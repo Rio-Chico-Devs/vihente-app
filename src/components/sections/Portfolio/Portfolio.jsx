@@ -35,19 +35,17 @@ const Portfolio = () => {
 
   const handleClick = () => {
     if (!isExpanded) {
-      // Primo click: solo ingrandimento
       setIsExpanded(true);
     } else {
-      // Secondo click: naviga alla pagina
       const normalizedIndex = ((selectedCategory % categories.length) + categories.length) % categories.length;
       const category = categories[normalizedIndex];
       
       if (category.id === 'componenti') {
-        navigate('/portfolio-componenti');
+        navigate('/portfolio/componenti');  // ✅ CORRETTO
       } else if (category.id === 'grafiche') {
-        navigate('/portfolio-grafiche');
+        navigate('/portfolio/grafiche');     // ✅ CORRETTO
       } else if (category.id === 'sitiweb') {
-        navigate('/portfolio-sitiweb');
+        navigate('/portfolio/sitiweb');      // ✅ CORRETTO
       }
     }
   };
@@ -76,7 +74,6 @@ const Portfolio = () => {
                   onClick={() => isActive && handleClick()}
                 >
                   <div className="card-3d">
-                    {/* FRONT FACE */}
                     <div className="front face">
                       <div className="front-image"></div>
                       <div className="front-title">
@@ -84,7 +81,6 @@ const Portfolio = () => {
                       </div>
                     </div>
 
-                    {/* BACK FACE */}
                     <div className="back face">
                       <svg className="eye-logo" viewBox="0 0 100 100" width="200" height="200">
                         <defs>
