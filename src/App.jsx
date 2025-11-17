@@ -43,22 +43,22 @@ function App() {
       ) : (
         <>
           {/* Navbar sempre visibile */}
-          <Navbar 
+          <Navbar
             currentPage={currentPage}
             onNavigate={handleNavigate}
           />
 
-          <ScrollingHeader 
+          <ScrollingHeader
             text= "News: +++ 22/04/2025: - ECMAScript 2025 introduce 'Temporal API'. Finalmente possiamo dire addio ai mal di testa causati dai fusi orari, dichiara John Smith, membro del comitato TC39. La nuova API promette una gestione delle date e dei tempi senza precedenti, semplificando lo sviluppo di applicazioni globali."
             currentPage={currentPage}
             onNavigate={handleNavigate}
           />
-          
-          
+
+          <main role="main" aria-label="Contenuto principale">
           {/* Landing Page */}
           {currentPage === 'landing' && (
-            <LandingPage 
-              startTime={startTime} 
+            <LandingPage
+              startTime={startTime}
               onNavigateToServices={() => handleNavigate('services')}
             />
           )}
@@ -114,9 +114,10 @@ function App() {
           {currentPage === 'cookie-policy' && (
             <CookiePolicy />
           )}
+          </main>
 
           {/* Footer sempre visibile */}
-          <Footer />
+          <Footer onNavigate={handleNavigate} />
         </>
       )}
     </>

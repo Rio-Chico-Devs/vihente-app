@@ -136,12 +136,25 @@ const Navbar = ({ currentPage = 'landing', onNavigate }) => {
 
   return (
     <>
-      <nav className={`navbar ${scrolled ? 'scrolled' : ''} ${mobileMenuOpen ? 'mobile-menu-active' : ''}`}>
+      <nav
+        className={`navbar ${scrolled ? 'scrolled' : ''} ${mobileMenuOpen ? 'mobile-menu-active' : ''}`}
+        role="navigation"
+        aria-label="Navigazione principale"
+      >
         <div className="navbar-container">
           {/* Logo - Three Circles Eye with Tracking - VERY LARGE */}
-          <div 
+          <div
             className={`navbar-logo ${mobileMenuOpen ? 'menu-open' : ''}`}
             onClick={() => navigateToPage('landing')}
+            role="button"
+            tabIndex={0}
+            aria-label="Torna alla home"
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                navigateToPage('landing');
+              }
+            }}
           >
             <svg className="logo-eye" viewBox="0 0 100 100" width="150" height="150">
               <defs>
@@ -217,6 +230,8 @@ const Navbar = ({ currentPage = 'landing', onNavigate }) => {
             <button
               className={`nav-link ${currentPage === 'services' ? 'active' : ''}`}
               onClick={() => navigateToPage('services')}
+              aria-label="Vai alla pagina Servizi"
+              aria-current={currentPage === 'services' ? 'page' : undefined}
             >
               <span className="nav-link-text">Servizi</span>
               <div className="nav-link-underline" />
@@ -226,6 +241,8 @@ const Navbar = ({ currentPage = 'landing', onNavigate }) => {
             <button
               className={`nav-link ${currentPage === 'portfolio' ? 'active' : ''}`}
               onClick={() => navigateToPage('portfolio')}
+              aria-label="Vai alla pagina Portfolio"
+              aria-current={currentPage === 'portfolio' ? 'page' : undefined}
             >
               <span className="nav-link-text">Portfolio</span>
               <div className="nav-link-underline" />
@@ -235,6 +252,8 @@ const Navbar = ({ currentPage = 'landing', onNavigate }) => {
             <button
               className={`nav-link ${currentPage === 'storia' ? 'active' : ''}`}
               onClick={() => navigateToPage('storia')}
+              aria-label="Vai alla pagina La Mia Storia"
+              aria-current={currentPage === 'storia' ? 'page' : undefined}
             >
               <span className="nav-link-text">La Mia Storia</span>
               <div className="nav-link-underline" />
@@ -244,6 +263,8 @@ const Navbar = ({ currentPage = 'landing', onNavigate }) => {
             <button
               className={`nav-link ${currentPage === 'contatti' ? 'active' : ''}`}
               onClick={() => navigateToPage('contatti')}
+              aria-label="Vai alla pagina Contatti"
+              aria-current={currentPage === 'contatti' ? 'page' : undefined}
             >
               <span className="nav-link-text">Contatti</span>
               <div className="nav-link-underline" />
@@ -251,8 +272,8 @@ const Navbar = ({ currentPage = 'landing', onNavigate }) => {
           </div>
 
           {/* Availability Badge */}
-          <div className="availability-badge desktop-only">
-            <div className="status-dot" />
+          <div className="availability-badge desktop-only" aria-label="Stato disponibilità">
+            <div className="status-dot" aria-hidden="true" />
             <span className="status-text">Disponibile</span>
           </div>
 
@@ -260,7 +281,8 @@ const Navbar = ({ currentPage = 'landing', onNavigate }) => {
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             className="hamburger-button mobile-only"
-            aria-label="Toggle menu"
+            aria-label={mobileMenuOpen ? 'Chiudi menu' : 'Apri menu'}
+            aria-expanded={mobileMenuOpen}
           >
             <span className={`hamburger-line ${mobileMenuOpen ? 'open' : ''}`} />
             <span className={`hamburger-line ${mobileMenuOpen ? 'open' : ''}`} />
@@ -741,6 +763,9 @@ const Navbar = ({ currentPage = 'landing', onNavigate }) => {
             setSelectedItem(null);
           }
         }}
+        role="dialog"
+        aria-label="Menu di navigazione mobile"
+        aria-modal="true"
       >
         <div className="mobile-menu-content">
           {/* Rotating Navigation Items */}
@@ -757,6 +782,8 @@ const Navbar = ({ currentPage = 'landing', onNavigate }) => {
                 key={item.id}
                 onClick={() => handleMobileItemClick(item)}
                 className="mobile-nav-item"
+                aria-label={`Vai a ${item.label}`}
+                aria-current={currentPage === item.id ? 'page' : undefined}
                 style={{
                   transform: `translate(${x}px, ${y}px) scale(${scale})`,
                   fontSize: isSelected ? '1.2rem' : '1rem',

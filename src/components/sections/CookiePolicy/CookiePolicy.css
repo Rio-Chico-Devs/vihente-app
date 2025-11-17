@@ -1,0 +1,432 @@
+.cookie-policy-container {
+  min-height: 100vh;
+  background: #000;
+  color: rgba(255, 255, 255, 0.9);
+  padding: 4rem 2rem;
+  font-family: 'Share Tech Mono', monospace;
+}
+
+.cookie-policy-content {
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.cookie-title {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 3rem;
+  font-weight: 900;
+  color: #0ff;
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  margin-bottom: 2rem;
+  text-shadow: 0 0 20px rgba(0, 255, 255, 0.6),
+               0 0 40px rgba(0, 255, 255, 0.4);
+  animation: glowPulse 3s ease-in-out infinite;
+}
+
+@keyframes glowPulse {
+  0%, 100% { text-shadow: 0 0 20px rgba(0, 255, 255, 0.6), 0 0 40px rgba(0, 255, 255, 0.4); }
+  50% { text-shadow: 0 0 30px rgba(0, 255, 255, 0.8), 0 0 60px rgba(0, 255, 255, 0.6); }
+}
+
+.cookie-intro {
+  font-size: 1.1rem;
+  line-height: 1.8;
+  text-align: center;
+  margin-bottom: 3rem;
+  padding: 1.5rem;
+  background: rgba(0, 255, 255, 0.05);
+  border: 2px solid rgba(0, 255, 255, 0.3);
+  border-radius: 8px;
+}
+
+.cookie-section {
+  margin-bottom: 3rem;
+  padding: 2rem;
+  background: rgba(0, 255, 255, 0.02);
+  border-left: 4px solid #0ff;
+  border-radius: 4px;
+  transition: all 0.3s ease;
+}
+
+.cookie-section:hover {
+  background: rgba(0, 255, 255, 0.05);
+  box-shadow: 0 0 20px rgba(0, 255, 255, 0.2);
+}
+
+.cookie-section h2 {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 1.8rem;
+  color: #0ff;
+  margin-bottom: 1.5rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.cookie-section h3 {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 1.3rem;
+  color: #0ff;
+  margin-bottom: 1rem;
+  margin-top: 1.5rem;
+}
+
+.cookie-section h4 {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 1.1rem;
+  color: #0ff;
+  margin-bottom: 0.75rem;
+}
+
+.cookie-section p {
+  line-height: 1.8;
+  margin-bottom: 1rem;
+}
+
+.cookie-section ul {
+  list-style: none;
+  padding-left: 0;
+  margin: 1rem 0;
+}
+
+.cookie-section ul li {
+  padding: 0.75rem 0 0.75rem 2rem;
+  position: relative;
+  line-height: 1.7;
+}
+
+.cookie-section ul li::before {
+  content: '▹';
+  position: absolute;
+  left: 0;
+  color: #0ff;
+  font-size: 1.5rem;
+  line-height: 1;
+}
+
+.info-box {
+  background: rgba(0, 255, 255, 0.08);
+  border: 2px solid rgba(0, 255, 255, 0.4);
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin: 1.5rem 0;
+}
+
+.info-box p {
+  margin-bottom: 0.5rem;
+}
+
+.info-box strong {
+  color: #0ff;
+  font-size: 1.05rem;
+}
+
+.cookie-type {
+  margin: 2rem 0;
+  padding: 1.5rem;
+  background: rgba(0, 255, 255, 0.03);
+  border: 2px solid rgba(0, 255, 255, 0.2);
+  border-radius: 8px;
+}
+
+.essential-badge {
+  display: inline-block;
+  background: rgba(0, 255, 255, 0.2);
+  color: #0ff;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  font-weight: 700;
+  font-size: 0.9rem;
+  margin-bottom: 1rem;
+  border: 2px solid #0ff;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.optional-badge {
+  display: inline-block;
+  background: rgba(255, 165, 0, 0.15);
+  color: #ffa500;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  font-weight: 700;
+  font-size: 0.9rem;
+  margin-bottom: 1rem;
+  border: 2px solid #ffa500;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.status-info {
+  background: rgba(0, 255, 255, 0.05);
+  border-left: 4px solid #0ff;
+  padding: 1rem 1.5rem;
+  margin: 1rem 0;
+}
+
+.status-info strong {
+  color: #0ff;
+}
+
+.cookie-table,
+.legal-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.5rem 0;
+  font-size: 0.9rem;
+}
+
+.cookie-table thead,
+.legal-table thead {
+  background: rgba(0, 255, 255, 0.15);
+}
+
+.cookie-table th,
+.legal-table th {
+  padding: 1rem;
+  text-align: left;
+  font-family: 'Orbitron', sans-serif;
+  color: #0ff;
+  border: 2px solid rgba(0, 255, 255, 0.3);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-size: 0.85rem;
+}
+
+.cookie-table td,
+.legal-table td {
+  padding: 1rem;
+  border: 2px solid rgba(0, 255, 255, 0.2);
+  line-height: 1.6;
+}
+
+.cookie-table tbody tr:hover,
+.legal-table tbody tr:hover {
+  background: rgba(0, 255, 255, 0.05);
+}
+
+.cookie-table code {
+  background: rgba(0, 255, 255, 0.1);
+  color: #0ff;
+  padding: 0.2rem 0.5rem;
+  border-radius: 4px;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 0.9rem;
+}
+
+.third-party-service {
+  background: rgba(0, 255, 255, 0.05);
+  border: 2px solid rgba(0, 255, 255, 0.25);
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin: 1.5rem 0;
+}
+
+.third-party-service h3 {
+  margin-top: 0;
+  font-size: 1.2rem;
+}
+
+.third-party-service p {
+  margin-bottom: 0.75rem;
+}
+
+.highlight-box {
+  background: rgba(0, 255, 255, 0.1);
+  border: 2px solid #0ff;
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin: 1.5rem 0;
+}
+
+.highlight-box h4 {
+  margin-top: 0;
+  color: #0ff;
+}
+
+.highlight-box code {
+  background: rgba(0, 255, 255, 0.2);
+  color: #fff;
+  padding: 0.2rem 0.5rem;
+  border-radius: 4px;
+  font-family: 'Share Tech Mono', monospace;
+}
+
+.management-option {
+  margin: 2rem 0;
+}
+
+.browser-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5rem;
+  margin: 2rem 0;
+}
+
+.browser-card {
+  background: rgba(0, 255, 255, 0.05);
+  border: 2px solid rgba(0, 255, 255, 0.3);
+  border-radius: 8px;
+  padding: 1.5rem;
+  transition: all 0.3s ease;
+}
+
+.browser-card:hover {
+  background: rgba(0, 255, 255, 0.1);
+  border-color: #0ff;
+  box-shadow: 0 0 20px rgba(0, 255, 255, 0.3);
+  transform: translateY(-5px);
+}
+
+.browser-card h4 {
+  font-family: 'Orbitron', sans-serif;
+  color: #0ff;
+  margin-top: 0;
+  margin-bottom: 0.75rem;
+  font-size: 1.1rem;
+}
+
+.browser-card p {
+  font-size: 0.9rem;
+  line-height: 1.6;
+  margin-bottom: 1rem;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.browser-card a {
+  font-size: 0.85rem;
+  display: inline-block;
+  margin-top: 0.5rem;
+}
+
+.warning-note {
+  background: rgba(255, 165, 0, 0.1);
+  border-left: 4px solid #ffa500;
+  padding: 1rem 1.5rem;
+  margin: 1.5rem 0;
+  color: #ffa500;
+}
+
+.warning-note strong {
+  color: #ffa500;
+}
+
+.cookie-footer {
+  margin-top: 4rem;
+  padding: 2rem;
+  text-align: center;
+  background: rgba(0, 255, 255, 0.05);
+  border: 2px solid rgba(0, 255, 255, 0.3);
+  border-radius: 8px;
+  font-size: 0.95rem;
+  line-height: 1.8;
+}
+
+a {
+  color: #0ff;
+  text-decoration: none;
+  font-weight: 600;
+  transition: all 0.2s ease;
+  border-bottom: 1px solid transparent;
+}
+
+a:hover {
+  color: #fff;
+  text-shadow: 0 0 10px rgba(0, 255, 255, 0.8);
+  border-bottom-color: #0ff;
+}
+
+.internal-link {
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+code {
+  font-family: 'Share Tech Mono', monospace;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .cookie-policy-container {
+    padding: 3rem 1.5rem;
+  }
+
+  .cookie-title {
+    font-size: 2rem;
+    letter-spacing: 0.1em;
+  }
+
+  .cookie-intro {
+    font-size: 1rem;
+    padding: 1rem;
+  }
+
+  .cookie-section {
+    padding: 1.5rem;
+  }
+
+  .cookie-section h2 {
+    font-size: 1.4rem;
+  }
+
+  .cookie-section h3 {
+    font-size: 1.15rem;
+  }
+
+  .cookie-type {
+    padding: 1rem;
+  }
+
+  .browser-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .cookie-table,
+  .legal-table {
+    font-size: 0.8rem;
+  }
+
+  .cookie-table th,
+  .cookie-table td,
+  .legal-table th,
+  .legal-table td {
+    padding: 0.75rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .cookie-policy-container {
+    padding: 2rem 1rem;
+  }
+
+  .cookie-title {
+    font-size: 1.6rem;
+  }
+
+  .cookie-section {
+    padding: 1rem;
+  }
+
+  .cookie-section h2 {
+    font-size: 1.2rem;
+  }
+
+  .cookie-section h3 {
+    font-size: 1rem;
+  }
+
+  .info-box,
+  .third-party-service,
+  .highlight-box {
+    padding: 1rem;
+  }
+
+  .cookie-table,
+  .legal-table {
+    font-size: 0.75rem;
+    display: block;
+    overflow-x: auto;
+  }
+}

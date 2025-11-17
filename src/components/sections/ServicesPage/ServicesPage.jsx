@@ -121,10 +121,15 @@ const ServicesPage = ({ onNavigate }) => {
         if (glitchIntervalId) clearTimeout(glitchIntervalId);
         
         activeTimeouts.forEach(timeout => clearTimeout(timeout));
-        
+
         const codeBackground = document.getElementById('codeBackground');
-        if (codeBackground) codeBackground.innerHTML = '';
-        
+        if (codeBackground) {
+          // Safely remove all children instead of using innerHTML
+          while (codeBackground.firstChild) {
+            codeBackground.removeChild(codeBackground.firstChild);
+          }
+        }
+
         delete window.triggerWaveEffect;
         
         usedPositions = [];
@@ -167,9 +172,18 @@ const ServicesPage = ({ onNavigate }) => {
       <div id="gridOverlay" className="grid-overlay"></div>
 
       <div className="services-container">
-        <div 
-          className="service-box" 
+        <div
+          className="service-box"
           onClick={() => handleServiceClick('consulenze')}
+          role="button"
+          tabIndex={0}
+          aria-label="Vai alla pagina Consulenze digitali"
+          onKeyDown={(e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+              e.preventDefault();
+              handleServiceClick('consulenze');
+            }
+          }}
         >
           <svg className="border-svg" viewBox="0 0 380 180" preserveAspectRatio="none">
             <path d="M 0,40 L 40,0 L 120,0 L 140,15 L 300,15 L 320,0 L 360,0 L 380,20 L 380,130 L 350,160 L 280,160 L 260,180 L 80,180 L 60,165 L 20,165 L 0,145 Z" />
@@ -181,9 +195,18 @@ const ServicesPage = ({ onNavigate }) => {
           <p className="service-box-description">Analisi e ottimizzazione della presenza digitale aziendale</p>
         </div>
 
-        <div 
-          className="service-box" 
+        <div
+          className="service-box"
           onClick={() => handleServiceClick('sitiweb')}
+          role="button"
+          tabIndex={0}
+          aria-label="Vai alla pagina Sviluppo di Siti web su misura"
+          onKeyDown={(e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+              e.preventDefault();
+              handleServiceClick('sitiweb');
+            }
+          }}
         >
           <svg className="border-svg" viewBox="0 0 380 180" preserveAspectRatio="none">
             <path d="M 0,40 L 40,0 L 120,0 L 140,15 L 300,15 L 320,0 L 360,0 L 380,20 L 380,130 L 350,160 L 280,160 L 260,180 L 80,180 L 60,165 L 20,165 L 0,145 Z" />
@@ -212,9 +235,18 @@ const ServicesPage = ({ onNavigate }) => {
           <p className="service-box-description">Sviluppo siti web con tecnologie moderne e design responsive</p>
         </div>
 
-        <div 
-          className="service-box" 
+        <div
+          className="service-box"
           onClick={() => handleServiceClick('presenza')}
+          role="button"
+          tabIndex={0}
+          aria-label="Vai alla pagina Social Media e presenza"
+          onKeyDown={(e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+              e.preventDefault();
+              handleServiceClick('presenza');
+            }
+          }}
         >
           <svg className="border-svg" viewBox="0 0 380 180" preserveAspectRatio="none">
             <path d="M 0,40 L 40,0 L 120,0 L 140,15 L 300,15 L 320,0 L 360,0 L 380,20 L 380,130 L 350,160 L 280,160 L 260,180 L 80,180 L 60,165 L 20,165 L 0,145 Z" />
@@ -230,9 +262,18 @@ const ServicesPage = ({ onNavigate }) => {
           <p className="service-box-description wave">Gestione dei canali online e strategie di engagement</p>
         </div>
 
-        <div 
-          className="service-box" 
+        <div
+          className="service-box"
           onClick={() => handleServiceClick('multimedia')}
+          role="button"
+          tabIndex={0}
+          aria-label="Vai alla pagina creazione File Multimediali"
+          onKeyDown={(e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+              e.preventDefault();
+              handleServiceClick('multimedia');
+            }
+          }}
         >
           <svg className="border-svg" viewBox="0 0 380 180" preserveAspectRatio="none">
             <path d="M 0,40 L 40,0 L 120,0 L 140,15 L 300,15 L 320,0 L 360,0 L 380,20 L 380,130 L 350,160 L 280,160 L 260,180 L 80,180 L 60,165 L 20,165 L 0,145 Z" />

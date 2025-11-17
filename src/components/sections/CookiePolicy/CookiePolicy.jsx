@@ -1,260 +1,268 @@
+import React from 'react';
+import './CookiePolicy.css';
+
 const CookiePolicy = () => {
   return (
-    <div style={{
-      background: '#000',
-      color: '#fff',
-      minHeight: '100vh',
-      padding: '4rem 2rem',
-      fontFamily: "'Share Tech Mono', monospace"
-    }}>
-      <div style={{
-        maxWidth: '900px',
-        margin: '0 auto'
-      }}>
-        <h1 style={{
-          fontFamily: "'Orbitron', sans-serif",
-          fontSize: '2.5rem',
-          color: '#0ff',
-          textTransform: 'uppercase',
-          marginBottom: '2rem',
-          textShadow: '0 0 10px rgba(0, 255, 255, 0.5)'
-        }}>
-          Cookie Policy
-        </h1>
-
-        <p style={{ color: 'rgba(255,255,255,0.7)', marginBottom: '2rem' }}>
-          <strong>Ultimo aggiornamento:</strong> {new Date().toLocaleDateString('it-IT')}
+    <div className="cookie-policy-container">
+      <div className="cookie-policy-content">
+        <h1 className="cookie-title">Cookie Policy</h1>
+        <p className="cookie-intro">
+          Questa Cookie Policy spiega cosa sono i cookie, come li utilizziamo su questo sito e come puoi gestirli,
+          in conformità con il Provvedimento del Garante Privacy del 10 giugno 2021 e la Direttiva ePrivacy (2002/58/CE).
         </p>
 
-        <section style={{ marginBottom: '3rem' }}>
-          <h2 style={{
-            fontFamily: "'Orbitron', sans-serif",
-            fontSize: '1.5rem',
-            color: '#0ff',
-            marginBottom: '1rem'
-          }}>
-            1. Cosa sono i Cookie
-          </h2>
-          <p style={{ color: 'rgba(255,255,255,0.8)', lineHeight: '1.8' }}>
-            I cookie sono piccoli file di testo che vengono memorizzati sul tuo dispositivo quando visiti un sito web. Servono a migliorare l'esperienza di navigazione e a fornire informazioni ai proprietari del sito.
+        <section className="cookie-section">
+          <h2>1. Cosa sono i Cookie</h2>
+          <p>
+            I cookie sono piccoli file di testo che vengono memorizzati sul tuo dispositivo (computer, smartphone, tablet)
+            quando visiti un sito web. Permettono al sito di ricordare le tue azioni e preferenze per un certo periodo di tempo.
           </p>
+          <div className="info-box">
+            <p><strong>Dimensione massima:</strong> 4 KB per cookie</p>
+            <p><strong>Durata:</strong> variabile (da sessione a permanente)</p>
+            <p><strong>Tipo di dati:</strong> testo semplice (non eseguibile)</p>
+          </div>
         </section>
 
-        <section style={{ marginBottom: '3rem' }}>
-          <h2 style={{
-            fontFamily: "'Orbitron', sans-serif",
-            fontSize: '1.5rem',
-            color: '#0ff',
-            marginBottom: '1rem'
-          }}>
-            2. Cookie Utilizzati da Questo Sito
-          </h2>
-          
-          <div style={{ marginBottom: '2rem' }}>
-            <h3 style={{
-              fontFamily: "'Orbitron', sans-serif",
-              fontSize: '1.2rem',
-              color: '#0ff',
-              marginBottom: '0.5rem',
-              opacity: 0.8
-            }}>
-              2.1 Cookie Tecnici Necessari
-            </h3>
-            <p style={{ color: 'rgba(255,255,255,0.8)', lineHeight: '1.8' }}>
-              Questo sito utilizza <strong>cookie tecnici strettamente necessari</strong> per il funzionamento del sito stesso. Questi cookie non richiedono il tuo consenso esplicito ai sensi della normativa vigente.
+        <section className="cookie-section">
+          <h2>2. Tipologie di Cookie Utilizzati</h2>
+
+          <div className="cookie-type">
+            <h3>2.1 Cookie Tecnici Necessari</h3>
+            <p className="essential-badge">SEMPRE ATTIVI - Non richiedono consenso (Art. 122 Codice Privacy)</p>
+            <p>
+              Questi cookie sono essenziali per il funzionamento del sito e non possono essere disattivati.
+              Senza questi cookie, alcune funzionalità del sito non funzionerebbero correttamente.
             </p>
-            <ul style={{ color: 'rgba(255,255,255,0.8)', lineHeight: '1.8', marginLeft: '2rem' }}>
-              <li><strong>Cookie di sessione:</strong> Utilizzati per mantenere la sessione di navigazione</li>
-              <li><strong>Cookie di preferenze:</strong> Memorizzano le tue scelte (es. consenso cookie)</li>
+            <table className="cookie-table">
+              <thead>
+                <tr>
+                  <th>Nome Cookie</th>
+                  <th>Finalità</th>
+                  <th>Durata</th>
+                  <th>Tipo</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><code>cc_cookie</code></td>
+                  <td>Memorizza le preferenze dell'utente rispetto ai cookie</td>
+                  <td>12 mesi</td>
+                  <td>localStorage</td>
+                </tr>
+                <tr>
+                  <td><code>session_id</code></td>
+                  <td>Gestione della sessione utente</td>
+                  <td>Sessione</td>
+                  <td>Tecnico</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div className="cookie-type">
+            <h3>2.2 Cookie Analytics (Opzionali)</h3>
+            <p className="optional-badge">RICHIEDONO CONSENSO</p>
+            <p>
+              Questi cookie ci aiutano a capire come i visitatori interagiscono con il sito raccogliendo
+              informazioni in forma anonima e aggregata.
+            </p>
+            <p className="status-info">
+              <strong>Stato attuale:</strong> Non attivi. Se in futuro implementeremo servizi di analytics,
+              richiederemo il tuo consenso esplicito tramite il cookie banner.
+            </p>
+          </div>
+
+          <div className="cookie-type">
+            <h3>2.3 Cookie di Profilazione e Marketing</h3>
+            <p className="status-info">
+              <strong>Stato attuale:</strong> Non utilizzati. Questo sito NON utilizza cookie di profilazione
+              o marketing per pubblicità personalizzata.
+            </p>
+          </div>
+        </section>
+
+        <section className="cookie-section">
+          <h2>3. Cookie di Terze Parti</h2>
+          <p>
+            Alcune funzionalità del sito utilizzano servizi esterni che potrebbero installare cookie.
+            Questi servizi sono gestiti da terze parti indipendenti.
+          </p>
+
+          <div className="third-party-service">
+            <h3>GitHub Pages (Microsoft)</h3>
+            <p><strong>Finalità:</strong> Hosting del sito web</p>
+            <p><strong>Ubicazione server:</strong> USA (trasferimento extra-UE)</p>
+            <p><strong>Privacy Policy:</strong> <a href="https://docs.github.com/en/site-policy/privacy-policies/github-privacy-statement" target="_blank" rel="noopener noreferrer">GitHub Privacy Statement</a></p>
+            <p><strong>Cookie utilizzati:</strong> Log tecnici per sicurezza e funzionalità (max 90 giorni)</p>
+          </div>
+
+          <div className="third-party-service">
+            <h3>EmailJS (se implementato)</h3>
+            <p><strong>Finalità:</strong> Invio email dal form di contatto</p>
+            <p><strong>Privacy Policy:</strong> <a href="https://www.emailjs.com/legal/privacy-policy/" target="_blank" rel="noopener noreferrer">EmailJS Privacy Policy</a></p>
+            <p><strong>Tipo:</strong> Processore dati (Data Processor)</p>
+          </div>
+
+          <div className="highlight-box">
+            <h4>Font Self-Hosted - Nessun Tracking</h4>
+            <p>
+              Questo sito utilizza font self-hosted (Orbitron, Share Tech Mono, Electrolize) tramite <code>@fontsource</code>.
+              <strong> Non vengono contattati server di Google Fonts</strong>, quindi non c'è alcun tracking esterno legato ai font.
+            </p>
+          </div>
+        </section>
+
+        <section className="cookie-section">
+          <h2>4. Base Giuridica (GDPR)</h2>
+          <table className="legal-table">
+            <thead>
+              <tr>
+                <th>Tipo Cookie</th>
+                <th>Base Giuridica</th>
+                <th>Riferimento GDPR</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Cookie Tecnici Necessari</td>
+                <td>Legittimo interesse del titolare</td>
+                <td>Art. 6(1)(f) GDPR + Art. 122 Codice Privacy</td>
+              </tr>
+              <tr>
+                <td>Cookie Analytics</td>
+                <td>Consenso esplicito dell'utente</td>
+                <td>Art. 6(1)(a) GDPR + Art. 122 Codice Privacy</td>
+              </tr>
+              <tr>
+                <td>Cookie Marketing</td>
+                <td>Consenso esplicito dell'utente</td>
+                <td>Art. 6(1)(a) GDPR + Art. 122 Codice Privacy</td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+
+        <section className="cookie-section">
+          <h2>5. Come Gestire i Cookie</h2>
+
+          <div className="management-option">
+            <h3>5.1 Tramite Cookie Banner</h3>
+            <p>
+              Alla prima visita del sito, appare un banner che ti permette di:
+            </p>
+            <ul>
+              <li>Accettare tutti i cookie</li>
+              <li>Rifiutare i cookie non necessari</li>
+              <li>Gestire le preferenze in dettaglio (categorie specifiche)</li>
+            </ul>
+            <p>
+              Puoi modificare le tue preferenze in qualsiasi momento cliccando sul link
+              "Gestisci Cookie" presente nel footer del sito.
+            </p>
+          </div>
+
+          <div className="management-option">
+            <h3>5.2 Tramite Impostazioni del Browser</h3>
+            <p>
+              Puoi bloccare o cancellare i cookie direttamente dalle impostazioni del tuo browser.
+              Ecco le istruzioni per i browser più comuni:
+            </p>
+
+            <div className="browser-grid">
+              <div className="browser-card">
+                <h4>Google Chrome</h4>
+                <p>Impostazioni → Privacy e sicurezza → Cookie e altri dati dei siti</p>
+                <a href="https://support.google.com/chrome/answer/95647" target="_blank" rel="noopener noreferrer">Guida completa</a>
+              </div>
+              <div className="browser-card">
+                <h4>Mozilla Firefox</h4>
+                <p>Opzioni → Privacy e sicurezza → Cookie e dati dei siti web</p>
+                <a href="https://support.mozilla.org/it/kb/Gestione%20dei%20cookie" target="_blank" rel="noopener noreferrer">Guida completa</a>
+              </div>
+              <div className="browser-card">
+                <h4>Safari (macOS/iOS)</h4>
+                <p>Preferenze → Privacy → Gestisci dati siti web</p>
+                <a href="https://support.apple.com/it-it/guide/safari/sfri11471/mac" target="_blank" rel="noopener noreferrer">Guida completa</a>
+              </div>
+              <div className="browser-card">
+                <h4>Microsoft Edge</h4>
+                <p>Impostazioni → Cookie e autorizzazioni sito → Gestisci ed elimina cookie</p>
+                <a href="https://support.microsoft.com/it-it/microsoft-edge/eliminare-i-cookie-in-microsoft-edge-63947406-40ac-c3b8-57b9-2a946a29ae09" target="_blank" rel="noopener noreferrer">Guida completa</a>
+              </div>
+            </div>
+
+            <p className="warning-note">
+              <strong>Attenzione:</strong> Disabilitare i cookie tecnici necessari potrebbe compromettere
+              il corretto funzionamento del sito e alcune funzionalità potrebbero non essere disponibili.
+            </p>
+          </div>
+
+          <div className="management-option">
+            <h3>5.3 Strumenti di Terze Parti</h3>
+            <p>Puoi anche utilizzare strumenti esterni per gestire i cookie:</p>
+            <ul>
+              <li><a href="https://www.youronlinechoices.com/it/" target="_blank" rel="noopener noreferrer">Your Online Choices</a> - Gestione cookie pubblicitari</li>
+              <li><a href="https://tools.google.com/dlpage/gaoptout?hl=it" target="_blank" rel="noopener noreferrer">Google Analytics Opt-out</a> - Disattiva Google Analytics</li>
+              <li>Estensioni browser come Privacy Badger, uBlock Origin, Ghostery</li>
             </ul>
           </div>
-
-          <div style={{ marginBottom: '2rem' }}>
-            <h3 style={{
-              fontFamily: "'Orbitron', sans-serif",
-              fontSize: '1.2rem',
-              color: '#0ff',
-              marginBottom: '0.5rem',
-              opacity: 0.8
-            }}>
-              2.2 Cookie di Terze Parti
-            </h3>
-            <p style={{ color: 'rgba(255,255,255,0.8)', lineHeight: '1.8' }}>
-              Attualmente questo sito <strong>NON utilizza</strong> cookie di terze parti per:
-            </p>
-            <ul style={{ color: 'rgba(255,255,255,0.8)', lineHeight: '1.8', marginLeft: '2rem' }}>
-              <li>❌ Analytics (Google Analytics, ecc.)</li>
-              <li>❌ Marketing o pubblicità</li>
-              <li>❌ Profilazione utenti</li>
-              <li>❌ Social media tracking</li>
-            </ul>
-          </div>
-
-          <div style={{
-            padding: '1.5rem',
-            border: '2px solid rgba(0, 255, 0, 0.3)',
-            borderRadius: '8px',
-            background: 'rgba(0, 255, 0, 0.05)',
-            marginTop: '1.5rem'
-          }}>
-            <p style={{ color: 'rgba(255,255,255,0.9)', lineHeight: '1.8', margin: 0 }}>
-              ✅ <strong>Privacy-First:</strong> Tutti i font e le risorse sono self-hosted (ospitati localmente) per evitare tracking da parte di servizi terzi come Google Fonts.
-            </p>
-          </div>
         </section>
 
-        <section style={{ marginBottom: '3rem' }}>
-          <h2 style={{
-            fontFamily: "'Orbitron', sans-serif",
-            fontSize: '1.5rem',
-            color: '#0ff',
-            marginBottom: '1rem'
-          }}>
-            3. Servizi di Terze Parti
-          </h2>
-          <p style={{ color: 'rgba(255,255,255,0.8)', lineHeight: '1.8' }}>
-            Questo sito utilizza i seguenti servizi di terze parti che potrebbero impostare cookie:
+        <section className="cookie-section">
+          <h2>6. Cookie e localStorage</h2>
+          <p>
+            Oltre ai cookie tradizionali, questo sito utilizza <strong>localStorage</strong> per memorizzare
+            le preferenze del cookie banner. Il localStorage è simile ai cookie ma:
           </p>
-          
-          <div style={{ marginLeft: '1rem', marginTop: '1rem' }}>
-            <h4 style={{ color: '#0ff', marginBottom: '0.5rem' }}>GitHub Pages (Hosting)</h4>
-            <p style={{ color: 'rgba(255,255,255,0.8)', lineHeight: '1.8' }}>
-              Il sito è ospitato su GitHub Pages. GitHub potrebbe raccogliere dati di navigazione per scopi tecnici e di sicurezza.
-              <br />
-              Informativa: <a href="https://docs.github.com/en/site-policy/privacy-policies/github-privacy-statement" target="_blank" rel="noopener noreferrer" style={{ color: '#0ff' }}>GitHub Privacy Statement</a>
-            </p>
-          </div>
-
-          <div style={{ marginLeft: '1rem', marginTop: '1.5rem' }}>
-            <h4 style={{ color: '#0ff', marginBottom: '0.5rem' }}>EmailJS (Form di Contatto)</h4>
-            <p style={{ color: 'rgba(255,255,255,0.8)', lineHeight: '1.8' }}>
-              Il form di contatto utilizza EmailJS per l'invio delle email. I dati inseriti vengono processati da EmailJS.
-              <br />
-              Informativa: <a href="https://www.emailjs.com/legal/privacy-policy/" target="_blank" rel="noopener noreferrer" style={{ color: '#0ff' }}>EmailJS Privacy Policy</a>
-            </p>
-          </div>
-        </section>
-
-        <section style={{ marginBottom: '3rem' }}>
-          <h2 style={{
-            fontFamily: "'Orbitron', sans-serif",
-            fontSize: '1.5rem',
-            color: '#0ff',
-            marginBottom: '1rem'
-          }}>
-            4. Durata dei Cookie
-          </h2>
-          <ul style={{ color: 'rgba(255,255,255,0.8)', lineHeight: '1.8', marginLeft: '2rem' }}>
-            <li><strong>Cookie di sessione:</strong> Vengono cancellati automaticamente alla chiusura del browser</li>
-            <li><strong>Cookie persistenti:</strong> Rimangono sul dispositivo per un periodo massimo di 12 mesi</li>
+          <ul>
+            <li>Non ha scadenza automatica (rimane fino alla cancellazione manuale)</li>
+            <li>Può contenere più dati (fino a 5-10 MB)</li>
+            <li>Non viene inviato automaticamente al server con ogni richiesta</li>
+            <li>È accessibile solo via JavaScript lato client</li>
           </ul>
+          <p>
+            Puoi cancellare il localStorage manualmente tramite gli strumenti sviluppatore del browser
+            (F12 → Application/Storage → Local Storage).
+          </p>
         </section>
 
-        <section style={{ marginBottom: '3rem' }}>
-          <h2 style={{
-            fontFamily: "'Orbitron', sans-serif",
-            fontSize: '1.5rem',
-            color: '#0ff',
-            marginBottom: '1rem'
-          }}>
-            5. Come Gestire i Cookie
-          </h2>
-          <p style={{ color: 'rgba(255,255,255,0.8)', lineHeight: '1.8' }}>
-            Puoi gestire le tue preferenze sui cookie in qualsiasi momento attraverso:
+        <section className="cookie-section">
+          <h2>7. Modifiche alla Cookie Policy</h2>
+          <p>
+            Questa Cookie Policy può essere aggiornata periodicamente per riflettere cambiamenti nelle
+            pratiche di utilizzo dei cookie o nelle normative applicabili.
           </p>
-          <ul style={{ color: 'rgba(255,255,255,0.8)', lineHeight: '1.8', marginLeft: '2rem' }}>
-            <li><strong>Banner cookie:</strong> Alla prima visita del sito, puoi accettare o rifiutare i cookie tramite il banner</li>
-            <li><strong>Impostazioni browser:</strong> Puoi bloccare o eliminare i cookie attraverso le impostazioni del tuo browser</li>
-          </ul>
+          <p>
+            Ti consigliamo di consultare regolarmente questa pagina per rimanere informato sulle nostre
+            pratiche relative ai cookie.
+          </p>
+          <p><strong>Ultimo aggiornamento:</strong> {new Date().toLocaleDateString('it-IT', { year: 'numeric', month: 'long', day: 'numeric' })}</p>
+        </section>
 
-          <div style={{ marginTop: '1.5rem' }}>
-            <h4 style={{ color: '#0ff', marginBottom: '0.5rem' }}>Guide per browser:</h4>
-            <ul style={{ color: 'rgba(255,255,255,0.7)', lineHeight: '1.8', marginLeft: '2rem' }}>
-              <li><a href="https://support.google.com/chrome/answer/95647" target="_blank" rel="noopener noreferrer" style={{ color: '#0ff' }}>Google Chrome</a></li>
-              <li><a href="https://support.mozilla.org/it/kb/Gestione%20dei%20cookie" target="_blank" rel="noopener noreferrer" style={{ color: '#0ff' }}>Mozilla Firefox</a></li>
-              <li><a href="https://support.apple.com/it-it/guide/safari/sfri11471/mac" target="_blank" rel="noopener noreferrer" style={{ color: '#0ff' }}>Safari</a></li>
-              <li><a href="https://support.microsoft.com/it-it/microsoft-edge/eliminare-i-cookie-in-microsoft-edge-63947406-40ac-c3b8-57b9-2a946a29ae09" target="_blank" rel="noopener noreferrer" style={{ color: '#0ff' }}>Microsoft Edge</a></li>
-            </ul>
+        <section className="cookie-section">
+          <h2>8. Contatti</h2>
+          <p>
+            Per qualsiasi domanda relativa a questa Cookie Policy o alle nostre pratiche sui cookie,
+            puoi contattarci:
+          </p>
+          <div className="info-box">
+            <p><strong>Titolare del Trattamento:</strong> Antonio Vihente</p>
+            <p><strong>Email:</strong> <a href="mailto:[TUA-EMAIL]">[TUA-EMAIL]</a></p>
+            <p><strong>Sito web:</strong> vihente.dev</p>
           </div>
-
-          <p style={{ color: 'rgba(255,255,255,0.7)', lineHeight: '1.8', marginTop: '1rem', fontStyle: 'italic' }}>
-            ⚠️ Nota: Disabilitare i cookie tecnici potrebbe compromettere alcune funzionalità del sito.
+          <p>
+            Per informazioni più dettagliate sul trattamento dei dati personali, consulta la nostra{' '}
+            <a href="/privacy-policy" className="internal-link">Privacy Policy</a>.
           </p>
         </section>
 
-        <section style={{ marginBottom: '3rem' }}>
-          <h2 style={{
-            fontFamily: "'Orbitron', sans-serif",
-            fontSize: '1.5rem',
-            color: '#0ff',
-            marginBottom: '1rem'
-          }}>
-            6. Consenso
-          </h2>
-          <p style={{ color: 'rgba(255,255,255,0.8)', lineHeight: '1.8' }}>
-            Continuando la navigazione su questo sito, chiudendo il banner o cliccando su qualsiasi elemento della pagina, acconsenti all'uso dei cookie tecnici necessari per il funzionamento del sito.
+        <div className="cookie-footer">
+          <p>
+            Questa Cookie Policy è conforme al GDPR (Regolamento UE 2016/679), al Codice Privacy italiano
+            (D.Lgs. 196/2003 come modificato dal D.Lgs. 101/2018) e al Provvedimento del Garante Privacy
+            del 10 giugno 2021.
           </p>
-          <p style={{ color: 'rgba(255,255,255,0.8)', lineHeight: '1.8' }}>
-            Per i cookie non tecnici (quando presenti), verrà richiesto il tuo consenso esplicito tramite il banner apposito.
-          </p>
-        </section>
-
-        <section style={{ marginBottom: '3rem' }}>
-          <h2 style={{
-            fontFamily: "'Orbitron', sans-serif",
-            fontSize: '1.5rem',
-            color: '#0ff',
-            marginBottom: '1rem'
-          }}>
-            7. Aggiornamenti
-          </h2>
-          <p style={{ color: 'rgba(255,255,255,0.8)', lineHeight: '1.8' }}>
-            Questa Cookie Policy può essere aggiornata periodicamente. Ti invitiamo a consultare questa pagina regolarmente per rimanere informato.
-          </p>
-        </section>
-
-        <section style={{ marginBottom: '3rem' }}>
-          <h2 style={{
-            fontFamily: "'Orbitron', sans-serif",
-            fontSize: '1.5rem',
-            color: '#0ff',
-            marginBottom: '1rem'
-          }}>
-            8. Contatti
-          </h2>
-          <p style={{ color: 'rgba(255,255,255,0.8)', lineHeight: '1.8' }}>
-            Per qualsiasi domanda riguardante questa Cookie Policy, puoi contattarmi a:<br />
-            <strong>Email:</strong> [TUA-EMAIL]
-          </p>
-          <p style={{ color: 'rgba(255,255,255,0.8)', lineHeight: '1.8' }}>
-            Per maggiori informazioni sul trattamento dei dati personali, consulta la <a href="/privacy-policy" style={{ color: '#0ff', textDecoration: 'underline' }}>Privacy Policy</a>.
-          </p>
-        </section>
-
-        <div style={{ marginTop: '3rem', textAlign: 'center' }}>
-          <a 
-            href="/" 
-            style={{
-              color: '#0ff',
-              textDecoration: 'none',
-              fontSize: '1.1rem',
-              border: '2px solid #0ff',
-              padding: '0.75rem 2rem',
-              display: 'inline-block',
-              borderRadius: '4px',
-              transition: 'all 0.3s ease'
-            }}
-            onMouseEnter={(e) => {
-              e.target.style.background = 'rgba(0, 255, 255, 0.1)';
-              e.target.style.boxShadow = '0 0 20px rgba(0, 255, 255, 0.3)';
-            }}
-            onMouseLeave={(e) => {
-              e.target.style.background = 'transparent';
-              e.target.style.boxShadow = 'none';
-            }}
-          >
-            ← Torna alla Home
-          </a>
         </div>
       </div>
     </div>

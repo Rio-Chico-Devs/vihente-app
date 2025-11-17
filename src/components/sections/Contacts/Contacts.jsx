@@ -38,33 +38,23 @@ const Contacts = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     
-    console.log('Submit clicked!');
-    
-    // Check rate limit
     if (!canSubmit) {
-      console.log('Rate limited');
       setShowRateLimit(true);
       setTimeout(() => setShowRateLimit(false), 3000);
       return;
     }
     
-    console.log('Starting cube animation...');
-    // Trigger animation immediately for testing
     setIsAnimating(true);
     setSubmitStatus(null);
     
-    // Create defragmentation particles after cube rotation
     setTimeout(() => {
       createDefragParticles();
-    }, 2000); // Start particles when defragmentation begins
+    }, 2000);
     
-    // After cube animation completes (3 seconds total: 0.8s transform + 1.2s rotate + 1s defrag)
     setTimeout(() => {
-      console.log('Animation complete, showing success');
       setIsAnimating(false);
       setSubmitStatus('success');
       
-      // Clear form
       setTimeout(() => {
         setFormData({
           name: '',
@@ -75,24 +65,21 @@ const Contacts = () => {
         });
       }, 100);
       
-      // Set rate limit
       setCanSubmit(false);
       setTimeout(() => {
         setCanSubmit(true);
-      }, 10000); // 10 seconds
+      }, 10000);
       
-      // Hide success message
       setTimeout(() => {
         setSubmitStatus(null);
       }, 4000);
-    }, 3000); // Duration of cube animation (0.8 + 1.2 + 1 = 3s)
+    }, 3000);
   };
 
   const createDefragParticles = () => {
     const container = document.querySelector('.contacts-container');
     if (!container) return;
 
-    // Create 20 particles
     for (let i = 0; i < 20; i++) {
       const particle = document.createElement('div');
       const angle = (Math.PI * 2 * i) / 20;
@@ -118,7 +105,6 @@ const Contacts = () => {
 
       container.appendChild(particle);
 
-      // Remove particle after animation
       setTimeout(() => {
         particle.remove();
       }, 1000);
@@ -135,17 +121,14 @@ const Contacts = () => {
       fontFamily: "'Share Tech Mono', monospace",
       display: 'flex',
       alignItems: 'center',
-      justifyContent: 'center',
-      padding: '6rem 2rem'
+      justifyContent: 'center'
     }}>
       <style>{`
-        /* PERFORMANCE OPTIMIZATIONS */
         * {
           -webkit-font-smoothing: antialiased;
           -moz-osx-font-smoothing: grayscale;
         }
 
-        /* ANIMATIONS */
         @keyframes breathingGrid {
           0%, 100% {
             opacity: 1;
@@ -158,12 +141,8 @@ const Contacts = () => {
         }
 
         @keyframes vignettePulse {
-          0%, 100% { 
-            opacity: 1;
-          }
-          50% { 
-            opacity: 0.7;
-          }
+          0%, 100% { opacity: 1; }
+          50% { opacity: 0.7; }
         }
 
         @keyframes slideInFromBottom {
@@ -199,32 +178,6 @@ const Contacts = () => {
           }
         }
 
-        /* SMOOTH LEVITATION ANIMATION */
-        @keyframes smoothLevitate {
-          0%, 100% {
-            transform: translateY(0px);
-          }
-          50% {
-            transform: translateY(-15px);
-          }
-        }
-
-        @keyframes gentleFloat {
-          0%, 100% {
-            transform: translateY(0px) rotateX(0deg);
-          }
-          25% {
-            transform: translateY(-8px) rotateX(1deg);
-          }
-          50% {
-            transform: translateY(-15px) rotateX(0deg);
-          }
-          75% {
-            transform: translateY(-8px) rotateX(-1deg);
-          }
-        }
-
-        /* GRID OVERLAY */
         .grid-overlay {
           position: fixed;
           inset: 0;
@@ -246,14 +199,10 @@ const Contacts = () => {
           z-index: 3;
         }
 
-        /* VHS SCANLINES */
         .vhs-scanlines::before {
           content: '';
           position: absolute;
-          top: 0;
-          left: 0;
-          right: 0;
-          bottom: 0;
+          inset: 0;
           background: repeating-linear-gradient(
             0deg,
             transparent,
@@ -265,50 +214,71 @@ const Contacts = () => {
           z-index: 1;
         }
 
-        /* MAIN CONTAINER */
         .contacts-container {
-          position: relative;
+          position: fixed;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
           z-index: 10;
           width: 100%;
-          max-width: 1200px;
-          animation: slideInFromBottom 0.8s ease-out;
+          max-width: 700px;
+          padding: 0 1rem;
         }
 
-        /* SECTION TITLE */
         .section-title {
           font-family: 'Orbitron', sans-serif;
-          font-size: 3.5rem;
+          font-size: 2.5rem;
           font-weight: 900;
           color: #0ff;
           text-shadow: 0 0 20px rgba(0, 255, 255, 0.8);
           letter-spacing: 0.1em;
-          margin-bottom: 0.5rem;
+          margin-bottom: 0.3rem;
           text-align: center;
         }
 
         .section-subtitle {
           font-family: 'Share Tech Mono', monospace;
-          font-size: 1.1rem;
+          font-size: 0.9rem;
           color: rgba(0, 255, 255, 0.7);
           text-align: center;
           letter-spacing: 0.2em;
-          margin-bottom: 1rem;
+          margin: 0;
         }
 
-        /* MODE TOGGLE */
+        /* Mobile: subtitle sotto CONTATTI */
+        @media (max-width: 1024px) {
+          .section-subtitle {
+            margin-bottom: 0.8rem;
+          }
+        }
+
         .mode-toggle-container {
           display: flex;
-          justify-content: center;
-          margin-bottom: 3rem;
+          flex-direction: column;
+          align-items: center;
+          gap: 0.5rem;
+          margin-bottom: 1.5rem;
+        }
+
+        /* Desktop: bottone in alto a sinistra del form */
+        @media (min-width: 1025px) {
+          .mode-toggle-container {
+            position: absolute;
+            left: -260px;
+            top: 0;
+            margin-bottom: 0;
+            align-items: flex-start;
+            width: 220px;
+          }
         }
 
         .mode-toggle-button {
-          padding: 0.8rem 2rem;
+          padding: 0.7rem 1.8rem;
           background: rgba(0, 255, 255, 0.1);
           border: 2px solid rgba(0, 255, 255, 0.4);
           color: rgba(0, 255, 255, 0.8);
           font-family: 'Orbitron', sans-serif;
-          font-size: 0.9rem;
+          font-size: 0.85rem;
           font-weight: 600;
           text-transform: uppercase;
           letter-spacing: 0.1em;
@@ -345,13 +315,12 @@ const Contacts = () => {
           z-index: 1;
         }
 
-        /* CUSTOM FORM CONTAINER - INNOVATIVE DESIGN */
         .form-container {
           position: relative;
           display: flex;
           flex-direction: column;
-          gap: 2rem;
-          padding: 3rem;
+          gap: 1.5rem;
+          padding: 2rem;
           background: linear-gradient(135deg, rgba(0, 0, 0, 0.8) 0%, rgba(0, 20, 40, 0.6) 100%);
           border: 2px solid rgba(0, 255, 255, 0.3);
           border-radius: 2px;
@@ -359,12 +328,9 @@ const Contacts = () => {
             0 0 40px rgba(0, 255, 255, 0.2),
             inset 0 0 40px rgba(0, 255, 255, 0.05);
           backdrop-filter: blur(10px);
-          -webkit-backdrop-filter: blur(10px);
           transition: border-color 0.3s ease, box-shadow 0.3s ease;
-          animation: gentleFloat 6s ease-in-out infinite;
           transform-style: preserve-3d;
           perspective: 1000px;
-          will-change: transform;
         }
 
         .form-container:hover:not(.cube-animation):not(.reappearing) {
@@ -372,35 +338,32 @@ const Contacts = () => {
           box-shadow: 
             0 0 60px rgba(0, 255, 255, 0.3),
             inset 0 0 60px rgba(0, 255, 255, 0.08);
-          animation-play-state: paused;
         }
 
-        /* Form Title */
         .form-title {
           font-family: 'Orbitron', sans-serif;
-          font-size: 2rem;
+          font-size: 1.5rem;
           font-weight: 700;
           color: #0ff;
           text-shadow: 0 0 10px rgba(0, 255, 255, 0.8);
-          margin-bottom: 1rem;
+          margin-bottom: 0.8rem;
           text-align: center;
           animation: modeSwitch 0.5s ease-out;
         }
 
         .form-description {
           font-family: 'Share Tech Mono', monospace;
-          font-size: 0.95rem;
+          font-size: 0.85rem;
           color: rgba(255, 255, 255, 0.7);
           text-align: center;
-          margin-bottom: 1rem;
-          line-height: 1.6;
+          margin-bottom: 0.8rem;
+          line-height: 1.5;
         }
 
-        /* Form Layout - Desktop horizontal, Mobile vertical */
         .form-fields {
           display: grid;
           grid-template-columns: 1fr 1fr;
-          gap: 1.5rem;
+          gap: 1.2rem;
           animation: modeSwitch 0.5s ease-out;
         }
 
@@ -408,7 +371,6 @@ const Contacts = () => {
           grid-column: 1 / -1;
         }
 
-        /* Form Elements */
         .form-group {
           display: flex;
           flex-direction: column;
@@ -416,9 +378,9 @@ const Contacts = () => {
 
         .form-label {
           font-family: 'Share Tech Mono', monospace;
-          font-size: 0.85rem;
+          font-size: 0.8rem;
           color: rgba(0, 255, 255, 0.8);
-          margin-bottom: 0.5rem;
+          margin-bottom: 0.4rem;
           letter-spacing: 0.05em;
           text-transform: uppercase;
         }
@@ -427,12 +389,12 @@ const Contacts = () => {
         .form-select,
         .form-textarea {
           width: 100%;
-          padding: 0.9rem 1.2rem;
+          padding: 0.8rem 1rem;
           background: rgba(0, 255, 255, 0.03);
           border: 1px solid rgba(0, 255, 255, 0.3);
           color: rgba(255, 255, 255, 0.95);
           font-family: 'Share Tech Mono', monospace;
-          font-size: 0.95rem;
+          font-size: 0.85rem;
           transition: all 0.3s ease;
           outline: none;
         }
@@ -449,7 +411,7 @@ const Contacts = () => {
 
         .form-textarea {
           resize: vertical;
-          min-height: 140px;
+          min-height: 100px;
           font-family: 'Share Tech Mono', monospace;
         }
 
@@ -471,7 +433,6 @@ const Contacts = () => {
           padding: 0.5rem;
         }
 
-        /* 3D CUBE TRANSFORMATION AND DEFRAGMENTATION */
         @keyframes transformToCube {
           0% {
             transform: translateY(0) rotateX(0deg) rotateY(0deg) scale(1);
@@ -548,7 +509,6 @@ const Contacts = () => {
           }
         }
 
-        /* Particle effects during defragmentation */
         @keyframes particleSpread {
           0% {
             transform: translate(0, 0) scale(1);
@@ -569,7 +529,6 @@ const Contacts = () => {
           perspective: 1000px;
         }
 
-        /* Create particle effect overlay */
         .form-container.cube-animation::before {
           content: '';
           position: absolute;
@@ -614,29 +573,27 @@ const Contacts = () => {
           animation: reappear 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards !important;
         }
 
-        /* Rate limit warning */
         .rate-limit-warning {
           grid-column: 1 / -1;
           background: rgba(255, 165, 0, 0.1);
           border: 2px solid rgba(255, 165, 0, 0.6);
           color: rgba(255, 165, 0, 0.95);
-          padding: 1.2rem;
+          padding: 1rem;
           text-align: center;
           font-family: 'Share Tech Mono', monospace;
-          font-size: 1rem;
+          font-size: 0.85rem;
           animation: successPulse 1.5s ease-in-out;
           box-shadow: 0 0 20px rgba(255, 165, 0, 0.3);
         }
 
-        /* Submit Button */
         .submit-button {
           grid-column: 1 / -1;
-          padding: 1.2rem 2.5rem;
+          padding: 1rem 2rem;
           background: rgba(0, 255, 255, 0.1);
           border: 2px solid rgba(0, 255, 255, 0.5);
           color: rgba(0, 255, 255, 0.95);
           font-family: 'Orbitron', sans-serif;
-          font-size: 1.1rem;
+          font-size: 1rem;
           font-weight: 700;
           text-transform: uppercase;
           letter-spacing: 0.15em;
@@ -644,20 +601,18 @@ const Contacts = () => {
           transition: all 0.3s ease;
           position: relative;
           overflow: hidden;
-          margin-top: 1rem;
+          margin-top: 0.5rem;
         }
 
         .submit-button:hover:not(:disabled) {
           background: rgba(0, 255, 255, 0.2);
-          border-color: rgba(0, 255, 255, 1);
-          transform: translateY(-3px);
-          box-shadow: 
-            0 10px 30px rgba(0, 255, 255, 0.4),
-            0 0 30px rgba(0, 255, 255, 0.3);
+          border-color: rgba(0, 255, 255, 0.8);
+          transform: translateY(-2px);
+          box-shadow: 0 5px 20px rgba(0, 255, 255, 0.3);
         }
 
         .submit-button:active:not(:disabled) {
-          transform: translateY(-1px);
+          transform: translateY(0);
         }
 
         .submit-button:disabled {
@@ -665,110 +620,38 @@ const Contacts = () => {
           cursor: not-allowed;
         }
 
-        .submit-button::before {
-          content: '';
-          position: absolute;
-          top: 50%;
-          left: 50%;
-          width: 0;
-          height: 0;
-          background: rgba(0, 255, 255, 0.3);
-          transform: translate(-50%, -50%);
-          transition: width 0.6s ease, height 0.6s ease;
-          border-radius: 50%;
-        }
-
-        .submit-button:hover:not(:disabled)::before {
-          width: 400px;
-          height: 400px;
-        }
-
         .submit-button-text {
           position: relative;
           z-index: 1;
         }
 
-        /* Success Message */
         .success-message {
           grid-column: 1 / -1;
           background: rgba(0, 255, 100, 0.1);
           border: 2px solid rgba(0, 255, 100, 0.6);
           color: rgba(0, 255, 100, 0.95);
-          padding: 1.2rem;
+          padding: 1rem;
           text-align: center;
           font-family: 'Share Tech Mono', monospace;
-          font-size: 1rem;
+          font-size: 0.85rem;
           animation: successPulse 1.5s ease-in-out;
           box-shadow: 0 0 20px rgba(0, 255, 100, 0.3);
         }
 
-        /* RESPONSIVE - Mobile vertical layout */
-        @media (max-width: 1024px) {
-          .form-fields {
-            grid-template-columns: 1fr;
+        /* TABLET 768-1024px */
+        @media (max-width: 1024px) and (min-width: 769px) {
+          .contacts-container {
+            max-width: 650px;
+            transform: translate(-50%, -50%) scale(0.95);
           }
 
-          .section-title {
-            font-size: 2.8rem;
-          }
-
-          .form-container {
-            padding: 2.5rem;
-          }
-        }
-
-        @media (max-width: 768px) {
           .section-title {
             font-size: 2.2rem;
           }
 
-          .section-subtitle {
-            font-size: 0.95rem;
-          }
-
           .form-container {
-            padding: 2rem;
-          }
-
-          .form-title {
-            font-size: 1.6rem;
-          }
-
-          .form-description {
-            font-size: 0.9rem;
-          }
-
-          .form-input,
-          .form-select,
-          .form-textarea {
-            font-size: 0.9rem;
-            padding: 0.8rem 1rem;
-          }
-
-          .submit-button {
-            font-size: 1rem;
-            padding: 1rem 2rem;
-          }
-
-          .mode-toggle-button {
-            font-size: 0.85rem;
-            padding: 0.7rem 1.5rem;
-          }
-        }
-
-        @media (max-width: 480px) {
-          .section-title {
-            font-size: 1.8rem;
-          }
-
-          .section-subtitle {
-            font-size: 0.85rem;
-            letter-spacing: 0.1em;
-          }
-
-          .form-container {
-            padding: 1.5rem;
-            gap: 1.5rem;
+            padding: 1.8rem;
+            gap: 1.3rem;
           }
 
           .form-title {
@@ -776,68 +659,252 @@ const Contacts = () => {
           }
 
           .form-fields {
+            gap: 1.1rem;
+          }
+        }
+
+        /* MOBILE 481-768px */
+        @media (max-width: 768px) and (min-width: 481px) {
+          .contacts-container {
+            max-width: 500px;
+            transform: translate(-50%, -50%) scale(0.9);
+          }
+
+          .section-title {
+            font-size: 1.9rem;
+          }
+
+          .section-subtitle {
+            font-size: 0.8rem;
+          }
+
+          .mode-toggle-button {
+            font-size: 0.75rem;
+            padding: 0.6rem 1.5rem;
+          }
+
+          .form-container {
+            padding: 1.5rem;
             gap: 1.2rem;
+          }
+
+          .form-title {
+            font-size: 1.3rem;
+          }
+
+          .form-description {
+            font-size: 0.8rem;
+          }
+
+          .form-fields {
+            grid-template-columns: 1fr;
+            gap: 1rem;
+          }
+
+          .form-label {
+            font-size: 0.75rem;
           }
 
           .form-input,
           .form-select,
           .form-textarea {
-            font-size: 0.85rem;
+            font-size: 0.8rem;
+            padding: 0.7rem 0.9rem;
+          }
+
+          .form-textarea {
+            min-height: 90px;
           }
 
           .submit-button {
             font-size: 0.9rem;
-            padding: 0.9rem 1.5rem;
+            padding: 0.9rem 1.8rem;
+          }
+        }
+
+        /* MOBILE 381-480px */
+        @media (max-width: 480px) and (min-width: 381px) {
+          .contacts-container {
+            max-width: 360px;
+            transform: translate(-50%, -50%) scale(0.9);
+            padding: 0 0.8rem;
+          }
+
+          .section-title {
+            font-size: 1.7rem;
+          }
+
+          .section-subtitle {
+            font-size: 0.75rem;
+            margin-bottom: 0.6rem;
+          }
+
+          .mode-toggle-container {
+            margin-bottom: 1.2rem;
           }
 
           .mode-toggle-button {
+            font-size: 0.7rem;
+            padding: 0.55rem 1.3rem;
+          }
+
+          .form-container {
+            padding: 1.3rem;
+            gap: 1rem;
+          }
+
+          .form-title {
+            font-size: 1.2rem;
+            margin-bottom: 0.6rem;
+          }
+
+          .form-description {
+            font-size: 0.75rem;
+            margin-bottom: 0.6rem;
+          }
+
+          .form-fields {
+            grid-template-columns: 1fr;
+            gap: 0.9rem;
+          }
+
+          .form-label {
+            font-size: 0.7rem;
+            margin-bottom: 0.3rem;
+          }
+
+          .form-input,
+          .form-select,
+          .form-textarea {
+            font-size: 0.75rem;
+            padding: 0.65rem 0.8rem;
+          }
+
+          .form-textarea {
+            min-height: 85px;
+          }
+
+          .submit-button {
+            font-size: 0.85rem;
+            padding: 0.85rem 1.6rem;
+            margin-top: 0.3rem;
+          }
+
+          .rate-limit-warning,
+          .success-message {
             font-size: 0.8rem;
-            padding: 0.6rem 1.2rem;
+            padding: 0.9rem;
+          }
+        }
+
+        /* MOBILE TINY ≤380px */
+        @media (max-width: 380px) {
+          .contacts-container {
+            max-width: 340px;
+            transform: translate(-50%, -50%) scale(0.9);
+            padding: 0 0.6rem;
+          }
+
+          .section-title {
+            font-size: 1.5rem;
+          }
+
+          .section-subtitle {
+            font-size: 0.7rem;
+            letter-spacing: 0.15em;
+            margin-bottom: 0.5rem;
+          }
+
+          .mode-toggle-container {
+            margin-bottom: 1rem;
+          }
+
+          .mode-toggle-button {
+            font-size: 0.65rem;
+            padding: 0.5rem 1.2rem;
+          }
+
+          .form-container {
+            padding: 1.2rem;
+            gap: 0.9rem;
+          }
+
+          .form-title {
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+          }
+
+          .form-description {
+            font-size: 0.7rem;
+            line-height: 1.4;
+            margin-bottom: 0.5rem;
+          }
+
+          .form-fields {
+            grid-template-columns: 1fr;
+            gap: 0.8rem;
+          }
+
+          .form-label {
+            font-size: 0.65rem;
+            margin-bottom: 0.3rem;
+          }
+
+          .form-input,
+          .form-select,
+          .form-textarea {
+            font-size: 0.7rem;
+            padding: 0.6rem 0.75rem;
+          }
+
+          .form-textarea {
+            min-height: 80px;
+          }
+
+          .submit-button {
+            font-size: 0.8rem;
+            padding: 0.8rem 1.5rem;
+            margin-top: 0.2rem;
+          }
+
+          .rate-limit-warning,
+          .success-message {
+            font-size: 0.75rem;
+            padding: 0.85rem;
           }
         }
       `}</style>
 
-      {/* VHS Scanlines overlay */}
       <div className="vhs-scanlines" />
 
-      {/* Hexagonal Grid Background */}
       <div className="grid-overlay">
         <div className="vignette-overlay"></div>
       </div>
 
-      {/* Main Container */}
       <div className="contacts-container">
-        {/* Section Title */}
         <h1 className="section-title">CONTATTI</h1>
-        <p className="section-subtitle">
-          {isQuoteMode ? '→ RICHIEDI UN PREVENTIVO' : ''}
-        </p>
 
-        {/* Mode Toggle */}
-        <div className="mode-toggle-container">
-          <button 
-            type="button"
-            className="mode-toggle-button"
-            onClick={toggleMode}
-          >
-            <span className="mode-toggle-text">
-              {isQuoteMode ? '📧 Contatto Generale' : 'Richiedi un Preventivo'}
-            </span>
-          </button>
-        </div>
-
-        {/* Form Container */}
         <div 
           className={`form-container ${isAnimating ? 'cube-animation' : ''} ${submitStatus === 'success' && !isAnimating ? 'reappearing' : ''}`}
-          style={{
-            backgroundColor: isAnimating ? 'rgba(255, 0, 0, 0.2)' : undefined
-          }}
         >
-          
+          <div className="mode-toggle-container">
+            <button 
+              type="button"
+              className="mode-toggle-button"
+              onClick={toggleMode}
+            >
+              <span className="mode-toggle-text">
+                {isQuoteMode ? '📧 Contatto Generale' : 'Richiedi un Preventivo'}
+              </span>
+            </button>
+            <p className="section-subtitle">
+              {isQuoteMode ? '→ RICHIEDI UN PREVENTIVO' : ''}
+            </p>
+          </div>
+
           <div>
             <h2 className="form-title">
               {isQuoteMode ? 'RICHIESTA PREVENTIVO' : 'MODULO DI CONTATTO'}
-              {isAnimating && <span style={{color: 'red', fontSize: '0.8rem'}}> [ANIMATING]</span>}
             </h2>
             <p className="form-description">
               {isQuoteMode 
@@ -848,7 +915,6 @@ const Contacts = () => {
 
           <form onSubmit={handleSubmit}>
             <div className="form-fields">
-              {/* Nome/Azienda */}
               <div className="form-group">
                 <label className="form-label" htmlFor="name">
                   Nome/Azienda *
@@ -862,11 +928,9 @@ const Contacts = () => {
                   onChange={handleChange}
                   placeholder="Inserisci nome o ragione sociale"
                   required
-                  
                 />
               </div>
 
-              {/* Email */}
               <div className="form-group">
                 <label className="form-label" htmlFor="email">
                   Email *
@@ -880,11 +944,9 @@ const Contacts = () => {
                   onChange={handleChange}
                   placeholder="tua@email.it"
                   required
-                  
                 />
               </div>
 
-              {/* Motivo Contatto OR Prestazione Richiesta */}
               {!isQuoteMode ? (
                 <div className="form-group form-field-full">
                   <label className="form-label" htmlFor="reason">
@@ -899,7 +961,6 @@ const Contacts = () => {
                     onChange={handleChange}
                     placeholder="Es: Informazioni generali, collaborazione, ecc."
                     required
-                    
                   />
                 </div>
               ) : (
@@ -914,7 +975,6 @@ const Contacts = () => {
                     value={formData.service}
                     onChange={handleChange}
                     required
-                    
                   >
                     <option value="Consulenza">Consulenza</option>
                     <option value="Grafica">Grafica</option>
@@ -925,7 +985,6 @@ const Contacts = () => {
                 </div>
               )}
 
-              {/* Messaggio */}
               <div className="form-group form-field-full">
                 <label className="form-label" htmlFor="message">
                   Messaggio *
@@ -940,11 +999,9 @@ const Contacts = () => {
                     ? "Descrivi in dettaglio il progetto e i tuoi obiettivi..."
                     : "Scrivi qui il tuo messaggio..."}
                   required
-                  
                 />
               </div>
 
-              {/* Submit Button */}
               <button
                 type="submit"
                 className="submit-button"
@@ -956,14 +1013,12 @@ const Contacts = () => {
                 </span>
               </button>
 
-              {/* Rate Limit Warning */}
               {showRateLimit && (
                 <div className="rate-limit-warning">
                   ⚠ Hai appena inviato una richiesta, aspetta qualche secondo
                 </div>
               )}
 
-              {/* Success Message */}
               {submitStatus === 'success' && !isAnimating && (
                 <div className="success-message">
                   ✓ {isQuoteMode 
@@ -976,7 +1031,6 @@ const Contacts = () => {
         </div>
       </div>
 
-      {/* Schema.org JSON-LD */}
       <script type="application/ld+json">
         {JSON.stringify({
           "@context": "https://schema.org",

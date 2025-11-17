@@ -227,14 +227,24 @@ a, button, [role="button"], input, textarea, select,
   background: #0ff !important;
   border-radius: 50%;
   pointer-events: none !important;
-  z-index: 999999 !important; /* 🔥 Z-INDEX MASSIMO */
+  z-index: 2147483647 !important; /* 🔥 Z-INDEX MASSIMO ASSOLUTO */
   transform: translate(-50%, -50%);
   transition: transform 0.1s ease-out, width 0.3s ease, height 0.3s ease;
   box-shadow: 0 0 10px rgba(0, 255, 255, 0.8);
-  /* 🎨 Glitch animation random */
   animation: cursorGlitch 3s infinite;
-  display: block !important; /* 🔥 FORZA DISPLAY */
-  opacity: 1 !important; /* 🔥 FORZA VISIBILITÀ */
+  display: block !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+  will-change: transform !important; /* 🔥 Ottimizzazione rendering */
+}
+
+/* 🔥 FORZA il cursore sopra TUTTO (anche cookie banner) */
+body .custom-cursor-dot {
+  z-index: 2147483647 !important;
+}
+
+#cc-main ~ .custom-cursor-dot {
+  z-index: 2147483647 !important;
 }
 
 /* 📱 NASCONDE COMPLETAMENTE IL CURSORE SU MOBILE/TOUCH */
@@ -306,4 +316,15 @@ a, button, [role="button"], input, textarea, select,
   width: 50px;
   height: 50px;
   border-color: rgba(0, 255, 255, 0.8);
+}
+
+/* 🔥 CURSORE SEMPRE SOPRA IL COOKIE BANNER */
+.custom-cursor-dot {
+  isolation: isolate !important;
+}
+
+/* Forza il cursore sopra vanilla-cookieconsent */
+body > .custom-cursor-dot {
+  z-index: 2147483647 !important;
+  position: fixed !important;
 }
