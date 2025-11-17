@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import BootScreen from './components/sections/BootScreen/BootScreen';
 import Navbar from './components/sections/Navbar/Navbar';
 import Footer from './components/sections/Footer/Footer';
@@ -10,32 +11,25 @@ import SitiWebPage from './components/sections/SitiWebPage/SitiWebPage';
 import PresenzaOnlinePage from './components/sections/PresenzaOnline/PresenzaOnlinePage';
 import MultimediaPage from './components/sections/MultimediaPage/MultimediaPage';
 import Portfolio from './components/sections/Portfolio/Portfolio';
-import PortfolioComponentiPage from './components/sections/Portfolio/PortfolioComponentiPage'; // ⭐ NUOVO
+import PortfolioComponentiPage from './components/sections/Portfolio/PortfolioComponentiPage';
 import Contacts from './components/sections/Contacts/Contacts';
 import CustomCursor from './components/sections/Cursor/CustomCursor';
-import ScrollingHeader from './components/ScrollingHeader'
-
+import ScrollingHeader from './components/ScrollingHeader';
 import PrivacyPolicy from './components/sections/PrivacyPolicy/PrivacyPolicy';
 import CookiePolicy from './components/sections/CookiePolicy/CookiePolicy';
 import CookieConsentBanner from './components/global/CookieConsent/CookieConsent';
 
 function App() {
   const [isBooting, setIsBooting] = useState(true);
-  const [currentPage, setCurrentPage] = useState('landing');
   const [startTime] = useState(Date.now());
 
   const handleBootComplete = () => {
     setIsBooting(false);
   };
 
-  const handleNavigate = (page) => {
-    setCurrentPage(page);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  };
-
   return (
-    <>
-      <CustomCursor key={currentPage} />
+    <BrowserRouter basename={import.meta.env.DEV ? '/' : '/vihente-app'}>
+      <CustomCursor />
       <CookieConsentBanner isBooting={isBooting} />
       
       {isBooting ? (
@@ -43,84 +37,47 @@ function App() {
       ) : (
         <>
           {/* Navbar sempre visibile */}
-          <Navbar
-            currentPage={currentPage}
-            onNavigate={handleNavigate}
-          />
+          <Navbar />
 
           <ScrollingHeader
-            text= "News: +++ 22/04/2025: - ECMAScript 2025 introduce 'Temporal API'. Finalmente possiamo dire addio ai mal di testa causati dai fusi orari, dichiara John Smith, membro del comitato TC39. La nuova API promette una gestione delle date e dei tempi senza precedenti, semplificando lo sviluppo di applicazioni globali."
-            currentPage={currentPage}
-            onNavigate={handleNavigate}
+            text="News: +++ 22/04/2025: - ECMAScript 2025 introduce 'Temporal API'. Finalmente possiamo dire addio ai mal di testa causati dai fusi orari, dichiara John Smith, membro del comitato TC39. La nuova API promette una gestione delle date e dei tempi senza precedenti, semplificando lo sviluppo di applicazioni globali."
           />
 
           <main role="main" aria-label="Contenuto principale">
-          {/* Landing Page */}
-          {currentPage === 'landing' && (
-            <LandingPage
-              startTime={startTime}
-              onNavigateToServices={() => handleNavigate('services')}
-            />
-          )}
+            <Routes>
+              {/* Landing Page */}
+              <Route path="/" element={<LandingPage startTime={startTime} />} />
 
-          {/* La Mia Storia */}
-          {currentPage === 'storia' && (
-            <MyStory />
-          )}
+              {/* La Mia Storia */}
+              <Route path="/storia" element={<MyStory />} />
 
-          {/* Services Main Page */}
-          {currentPage === 'services' && (
-            <ServicesPage onNavigate={handleNavigate} />
-          )}
+              {/* Services Main Page */}
+              <Route path="/services" element={<ServicesPage />} />
 
-          {/* Service Details Pages */}
-          {currentPage === 'consulenze' && (
-            <ConsulenzePage onNavigate={handleNavigate} />
-          )}
+              {/* Service Details Pages */}
+              <Route path="/services/consulenze" element={<ConsulenzePage />} />
+              <Route path="/services/sitiweb" element={<SitiWebPage />} />
+              <Route path="/services/presenza" element={<PresenzaOnlinePage />} />
+              <Route path="/services/multimedia" element={<MultimediaPage />} />
 
-          {currentPage === 'sitiweb' && (
-            <SitiWebPage onNavigate={handleNavigate} />
-          )}
+              {/* Portfolio */}
+              <Route path="/portfolio" element={<Portfolio />} />
+              <Route path="/portfolio/componenti" element={<PortfolioComponentiPage />} />
 
-          {currentPage === 'presenza' && (
-            <PresenzaOnlinePage onNavigate={handleNavigate} />
-          )}
+              {/* Contacts */}
+              <Route path="/contatti" element={<Contacts />} />
 
-          {currentPage === 'multimedia' && (
-            <MultimediaPage onNavigate={handleNavigate} />
-          )}
-
-          {/* Portfolio */}
-          {currentPage === 'portfolio' && (
-            <Portfolio onNavigate={handleNavigate} />
-          )}
-
-          {/* ⭐ NUOVO: Portfolio - Componenti */}
-          {currentPage === 'portfolio-componenti' && (
-            <PortfolioComponentiPage onNavigate={handleNavigate} />
-          )}
-
-          {/* Contacts */}
-          {currentPage === 'contatti' && (
-            <Contacts />
-          )}
-
-          {/* Privacy Policy */}
-          {currentPage === 'privacy-policy' && (
-            <PrivacyPolicy />
-          )}
-
-          {/* Cookie Policy */}
-          {currentPage === 'cookie-policy' && (
-            <CookiePolicy />
-          )}
+              {/* Privacy & Cookie Policy */}
+              <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+              <Route path="/cookie-policy" element={<CookiePolicy />} />
+            </Routes>
           </main>
 
           {/* Footer sempre visibile */}
-          <Footer onNavigate={handleNavigate} />
+          <Footer />
         </>
       )}
-    </>
+    </BrowserRouter>
   );
 }
 

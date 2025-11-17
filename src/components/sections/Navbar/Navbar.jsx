@@ -1,11 +1,17 @@
 import { useState, useEffect } from 'react';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 
-const Navbar = ({ currentPage = 'landing', onNavigate }) => {
+const Navbar = () => {
+  const location = useLocation();
+  const navigate = useNavigate();
   const [scrolled, setScrolled] = useState(false);
   const [pupilPosition, setPupilPosition] = useState({ x: 50, y: 50 });
   const [isBlinking, setIsBlinking] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [selectedItem, setSelectedItem] = useState(null);
+
+  // Get current page from location
+  const currentPage = location.pathname.replace('/vihente-app', '').replace('/', '') || 'landing';
 
   // Detect scroll to add background to navbar
   useEffect(() => {
@@ -20,7 +26,6 @@ const Navbar = ({ currentPage = 'landing', onNavigate }) => {
   // Track mouse movement globally to make pupil follow cursor
   useEffect(() => {
     const handleMouseMove = (e) => {
-      // Get navbar logo position
       const logo = document.querySelector('.navbar-logo');
       if (!logo) return;
 
@@ -28,20 +33,16 @@ const Navbar = ({ currentPage = 'landing', onNavigate }) => {
       const logoCenterX = logoRect.left + logoRect.width / 2;
       const logoCenterY = logoRect.top + logoRect.height / 2;
 
-      // Calculate angle from logo to cursor
       const deltaX = e.clientX - logoCenterX;
       const deltaY = e.clientY - logoCenterY;
       const angle = Math.atan2(deltaY, deltaX);
 
-      // Movement constraints for elliptical boundary
-      const maxRadiusX = 8; // horizontal movement
-      const maxRadiusY = 6; // vertical movement
+      const maxRadiusX = 8;
+      const maxRadiusY = 6;
 
-      // Calculate new position
       let newX = 50 + Math.cos(angle) * maxRadiusX;
       let newY = 50 + Math.sin(angle) * maxRadiusY;
 
-      // Clamp to keep small circle visible (r=7 for small circle)
       const distanceFromCenter = Math.sqrt(
         Math.pow((newX - 50) / maxRadiusX, 2) + 
         Math.pow((newY - 50) / maxRadiusY, 2)
@@ -62,24 +63,21 @@ const Navbar = ({ currentPage = 'landing', onNavigate }) => {
   // Random looking around
   useEffect(() => {
     const lookAround = () => {
-      // Random direction
       const randomAngle = Math.random() * Math.PI * 2;
-      const randomDistance = Math.random() * 0.7; // 70% of max distance
+      const randomDistance = Math.random() * 0.7;
 
       const newX = 50 + Math.cos(randomAngle) * 8 * randomDistance;
       const newY = 50 + Math.sin(randomAngle) * 6 * randomDistance;
 
       setPupilPosition({ x: newX, y: newY });
 
-      // Return to center after a moment
       setTimeout(() => {
         setPupilPosition({ x: 50, y: 50 });
       }, 1000 + Math.random() * 1000);
     };
 
-    // Look around every 5-8 seconds
     const interval = setInterval(() => {
-      if (Math.random() > 0.5) { // 50% chance
+      if (Math.random() > 0.5) {
         lookAround();
       }
     }, 5000 + Math.random() * 3000);
@@ -87,16 +85,15 @@ const Navbar = ({ currentPage = 'landing', onNavigate }) => {
     return () => clearInterval(interval);
   }, []);
 
-  // Random blinking - realistic frequency (4-6 seconds)
+  // Random blinking
   useEffect(() => {
     const blink = () => {
       setIsBlinking(true);
       setTimeout(() => {
         setIsBlinking(false);
-      }, 100); // Quick blink like real eye
+      }, 100);
     };
 
-    // Blink every 4-6 seconds (realistic human rate)
     const interval = setInterval(() => {
       blink();
     }, 4000 + Math.random() * 2000);
@@ -104,34 +101,34 @@ const Navbar = ({ currentPage = 'landing', onNavigate }) => {
     return () => clearInterval(interval);
   }, []);
 
-  // Navigate to page
-  const navigateToPage = (page) => {
-    if (onNavigate && page !== 'disabled') {
-      onNavigate(page);
-      // Scroll to top when changing page
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
-  };
-
   // Mobile menu navigation items
   const navItems = [
-    { id: 'landing', label: 'Home', angle: 0 },
-    { id: 'services', label: 'Servizi', angle: 72 },
-    { id: 'portfolio', label: 'Portfolio', angle: 144 },
-    { id: 'storia', label: 'La Mia Storia', angle: 216 },
-    { id: 'contatti', label: 'Contatti', angle: 288 },
+    { id: 'landing', label: 'Home', angle: 0, path: '/' },
+    { id: 'services', label: 'Servizi', angle: 72, path: '/services' },
+    { id: 'portfolio', label: 'Portfolio', angle: 144, path: '/portfolio' },
+    { id: 'storia', label: 'La Mia Storia', angle: 216, path: '/storia' },
+    { id: 'contatti', label: 'Contatti', angle: 288, path: '/contatti' },
   ];
 
   const handleMobileItemClick = (item) => {
     if (selectedItem === item.id) {
       // Second click - navigate
-      navigateToPage(item.id);
+      navigate(item.path);
       setMobileMenuOpen(false);
       setSelectedItem(null);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     } else {
       // First click - select
       setSelectedItem(item.id);
     }
+  };
+
+  // Helper to check if link is active
+  const isActive = (path) => {
+    if (path === '/') {
+      return location.pathname === '/vihente-app' || location.pathname === '/vihente-app/';
+    }
+    return location.pathname.includes(path);
   };
 
   return (
@@ -142,19 +139,11 @@ const Navbar = ({ currentPage = 'landing', onNavigate }) => {
         aria-label="Navigazione principale"
       >
         <div className="navbar-container">
-          {/* Logo - Three Circles Eye with Tracking - VERY LARGE */}
-          <div
+          {/* Logo - Three Circles Eye with Tracking */}
+          <Link
+            to="/"
             className={`navbar-logo ${mobileMenuOpen ? 'menu-open' : ''}`}
-            onClick={() => navigateToPage('landing')}
-            role="button"
-            tabIndex={0}
             aria-label="Torna alla home"
-            onKeyDown={(e) => {
-              if (e.key === 'Enter' || e.key === ' ') {
-                e.preventDefault();
-                navigateToPage('landing');
-              }
-            }}
           >
             <svg className="logo-eye" viewBox="0 0 100 100" width="150" height="150">
               <defs>
@@ -223,52 +212,49 @@ const Navbar = ({ currentPage = 'landing', onNavigate }) => {
                 />
               </g>
             </svg>
-          </div>
+          </Link>
 
           {/* Desktop Navigation Links */}
           <div className="navbar-links desktop-only">
-            <button
-              className={`nav-link ${currentPage === 'services' ? 'active' : ''}`}
-              onClick={() => navigateToPage('services')}
+            <Link
+              to="/services"
+              className={`nav-link ${isActive('/services') ? 'active' : ''}`}
               aria-label="Vai alla pagina Servizi"
-              aria-current={currentPage === 'services' ? 'page' : undefined}
+              aria-current={isActive('/services') ? 'page' : undefined}
             >
               <span className="nav-link-text">Servizi</span>
               <div className="nav-link-underline" />
-            </button>
+            </Link>
             
-            {/* ✅ ATTIVATO - Portfolio */}
-            <button
-              className={`nav-link ${currentPage === 'portfolio' ? 'active' : ''}`}
-              onClick={() => navigateToPage('portfolio')}
+            <Link
+              to="/portfolio"
+              className={`nav-link ${isActive('/portfolio') ? 'active' : ''}`}
               aria-label="Vai alla pagina Portfolio"
-              aria-current={currentPage === 'portfolio' ? 'page' : undefined}
+              aria-current={isActive('/portfolio') ? 'page' : undefined}
             >
               <span className="nav-link-text">Portfolio</span>
               <div className="nav-link-underline" />
-            </button>
+            </Link>
             
-            {/* ✅ ATTIVATO - La Mia Storia */}
-            <button
-              className={`nav-link ${currentPage === 'storia' ? 'active' : ''}`}
-              onClick={() => navigateToPage('storia')}
+            <Link
+              to="/storia"
+              className={`nav-link ${isActive('/storia') ? 'active' : ''}`}
               aria-label="Vai alla pagina La Mia Storia"
-              aria-current={currentPage === 'storia' ? 'page' : undefined}
+              aria-current={isActive('/storia') ? 'page' : undefined}
             >
               <span className="nav-link-text">La Mia Storia</span>
               <div className="nav-link-underline" />
-            </button>
+            </Link>
             
-            {/* ✅ ATTIVATO - Contatti */}
-            <button
-              className={`nav-link ${currentPage === 'contatti' ? 'active' : ''}`}
-              onClick={() => navigateToPage('contatti')}
+            <Link
+              to="/contatti"
+              className={`nav-link ${isActive('/contatti') ? 'active' : ''}`}
               aria-label="Vai alla pagina Contatti"
-              aria-current={currentPage === 'contatti' ? 'page' : undefined}
+              aria-current={isActive('/contatti') ? 'page' : undefined}
             >
               <span className="nav-link-text">Contatti</span>
               <div className="nav-link-underline" />
-            </button>
+            </Link>
           </div>
 
           {/* Availability Badge */}
@@ -318,7 +304,7 @@ const Navbar = ({ currentPage = 'landing', onNavigate }) => {
             align-items: center;
             justify-content: space-between;
             gap: 3rem;
-            min-height: 70px; /* Fixed height */
+            min-height: 70px;
           }
 
           /* Logo - Eye Icon properly aligned */
@@ -329,14 +315,14 @@ const Navbar = ({ currentPage = 'landing', onNavigate }) => {
             align-items: center;
             justify-content: center;
             transition: transform 0.2s ease;
-            /* Constrain to not affect navbar height */
             height: 50px;
             overflow: visible;
             flex-shrink: 0;
-            margin-left: 2rem; /* Distance from left edge */
+            margin-left: 2rem;
+            text-decoration: none;
           }
 
-          /* 🎯 When mobile menu is open, move eye to center and hide navbar */
+          /* When mobile menu is open, move eye to center and hide navbar */
           @media (max-width: 768px) {
             .navbar.mobile-menu-active {
               background: transparent;
@@ -369,7 +355,6 @@ const Navbar = ({ currentPage = 'landing', onNavigate }) => {
 
           .logo-eye {
             display: block;
-            /* Position to overflow beyond container */
             position: absolute;
             top: 50%;
             left: 50%;
@@ -419,6 +404,8 @@ const Navbar = ({ currentPage = 'landing', onNavigate }) => {
             cursor: pointer;
             padding: 0.5rem 0;
             transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
           }
 
           .nav-link.disabled {
@@ -623,7 +610,7 @@ const Navbar = ({ currentPage = 'landing', onNavigate }) => {
             }
           }
 
-          /* 🍔 HAMBURGER BUTTON */
+          /* HAMBURGER BUTTON */
           .hamburger-button {
             display: none;
             flex-direction: column;
@@ -667,7 +654,7 @@ const Navbar = ({ currentPage = 'landing', onNavigate }) => {
             display: none;
           }
 
-          /* 📱 MOBILE RESPONSIVE */
+          /* MOBILE RESPONSIVE */
           @media (max-width: 1024px) {
             .navbar-container {
               padding: 1rem 1.5rem;
@@ -701,12 +688,10 @@ const Navbar = ({ currentPage = 'landing', onNavigate }) => {
           }
 
           @media (max-width: 768px) {
-            /* Hide desktop elements */
             .desktop-only {
               display: none !important;
             }
 
-            /* Show mobile elements */
             .mobile-only {
               display: flex;
             }
@@ -754,7 +739,7 @@ const Navbar = ({ currentPage = 'landing', onNavigate }) => {
         `}</style>
       </nav>
 
-      {/* 🍔 MOBILE CIRCULAR MENU */}
+      {/* MOBILE CIRCULAR MENU */}
       <div
         className={`mobile-menu-overlay ${mobileMenuOpen ? 'active' : ''}`}
         onClick={(e) => {
@@ -770,7 +755,7 @@ const Navbar = ({ currentPage = 'landing', onNavigate }) => {
         <div className="mobile-menu-content">
           {/* Rotating Navigation Items */}
           {navItems.map((item) => {
-            const radius = 140; // Distance from center
+            const radius = 140;
             const angleRad = (item.angle * Math.PI) / 180;
             const x = Math.cos(angleRad) * radius;
             const y = Math.sin(angleRad) * radius;

@@ -1,7 +1,9 @@
 import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
+const ConsulenzePage = () => {
+  const navigate = useNavigate();
 
-const ConsulenzePage = ({ onNavigate }) => {
   useEffect(() => {
     document.body.classList.add('service-detail-body');
     return () => {
@@ -18,7 +20,7 @@ const ConsulenzePage = ({ onNavigate }) => {
       <header className="detail-header">
         <button 
           className="back-button"
-          onClick={() => onNavigate('services')}
+          onClick={() => navigate('/services')}
         >
           <span className="back-arrow">←</span>
           <span className="back-text">Torna ai Servizi</span>
@@ -52,7 +54,7 @@ const ConsulenzePage = ({ onNavigate }) => {
         {/* CTA Button */}
         <button 
           className="detail-cta"
-          onClick={() => onNavigate('contatti')}
+          onClick={() => navigate('/contatti')}
         >
           Richiedi Consulenza
         </button>

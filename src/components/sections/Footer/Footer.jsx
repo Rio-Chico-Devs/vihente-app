@@ -1,4 +1,6 @@
-const Footer = ({ onNavigate }) => {
+import { Link } from 'react-router-dom';
+
+const Footer = () => {
   return (
     <footer
       role="contentinfo"
@@ -27,17 +29,9 @@ const Footer = ({ onNavigate }) => {
           marginBottom: '0.75rem',
           flexWrap: 'wrap'
         }}>
-          <a
-            onClick={() => onNavigate && onNavigate('privacy-policy')}
-            role="button"
-            tabIndex={0}
+          <Link
+            to="/privacy-policy"
             aria-label="Vai alla Privacy Policy"
-            onKeyDown={(e) => {
-              if (e.key === 'Enter' || e.key === ' ') {
-                e.preventDefault();
-                onNavigate && onNavigate('privacy-policy');
-              }
-            }}
             style={{
               color: 'rgba(0, 255, 255, 0.7)',
               fontSize: '0.8rem',
@@ -58,18 +52,10 @@ const Footer = ({ onNavigate }) => {
             }}
           >
             PRIVACY POLICY
-          </a>
-          <a
-            onClick={() => onNavigate && onNavigate('cookie-policy')}
-            role="button"
-            tabIndex={0}
+          </Link>
+          <Link
+            to="/cookie-policy"
             aria-label="Vai alla Cookie Policy"
-            onKeyDown={(e) => {
-              if (e.key === 'Enter' || e.key === ' ') {
-                e.preventDefault();
-                onNavigate && onNavigate('cookie-policy');
-              }
-            }}
             style={{
               color: 'rgba(0, 255, 255, 0.7)',
               fontSize: '0.8rem',
@@ -90,7 +76,7 @@ const Footer = ({ onNavigate }) => {
             }}
           >
             COOKIE POLICY
-          </a>
+          </Link>
         </div>
         <p style={{
           color: 'rgba(103, 232, 249, 0.5)',

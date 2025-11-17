@@ -1,7 +1,9 @@
 import { useState, useEffect, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
 import './Portfolio.css';
 
-const Portfolio = ({ onNavigate }) => {
+const Portfolio = () => {
+  const navigate = useNavigate();
   const [selectedCategory, setSelectedCategory] = useState(0);
   const [isExpanded, setIsExpanded] = useState(false);
   const cardRef = useRef(null);
@@ -22,7 +24,7 @@ const Portfolio = ({ onNavigate }) => {
     return () => document.removeEventListener('mousedown', handleClick);
   }, [isExpanded]);
 
-  const navigate = (dir) => {
+  const navigateCarousel = (dir) => {
     setIsExpanded(false);
     if (dir === 'prev') {
       setSelectedCategory(prev => prev - 1);
@@ -41,11 +43,11 @@ const Portfolio = ({ onNavigate }) => {
       const category = categories[normalizedIndex];
       
       if (category.id === 'componenti') {
-        onNavigate('portfolio-componenti');
+        navigate('/portfolio-componenti');
       } else if (category.id === 'grafiche') {
-        onNavigate('portfolio-grafiche');
+        navigate('/portfolio-grafiche');
       } else if (category.id === 'sitiweb') {
-        onNavigate('portfolio-sitiweb');
+        navigate('/portfolio-sitiweb');
       }
     }
   };
@@ -55,7 +57,7 @@ const Portfolio = ({ onNavigate }) => {
   return (
     <div className="portfolio-page">
       <div className="portfolio-container">
-        <button className="nav-arrow left" onClick={() => navigate('prev')}>
+        <button className="nav-arrow left" onClick={() => navigateCarousel('prev')}>
           <svg viewBox="0 0 60 100">
             <path d="M 50,10 L 10,50 L 50,90" />
           </svg>
@@ -139,7 +141,7 @@ const Portfolio = ({ onNavigate }) => {
           </div>
         </div>
 
-        <button className="nav-arrow right" onClick={() => navigate('next')}>
+        <button className="nav-arrow right" onClick={() => navigateCarousel('next')}>
           <svg viewBox="0 0 60 100">
             <path d="M 10,10 L 50,50 L 10,90" />
           </svg>

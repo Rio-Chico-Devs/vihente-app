@@ -1,7 +1,9 @@
 import { useEffect, useState, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
 import './ServicesPage.css';
 
-const ServicesPage = ({ onNavigate }) => {
+const ServicesPage = () => {
+  const navigate = useNavigate();
   const [effectsReady, setEffectsReady] = useState(false);
   const gridRef = useRef(null);
 
@@ -110,7 +112,6 @@ const ServicesPage = ({ onNavigate }) => {
         }
       }, 3000);
 
-      // Store triggerWaveEffect in window for click handlers
       window.triggerWaveEffect = triggerWaveEffect;
 
       return () => {
@@ -124,7 +125,6 @@ const ServicesPage = ({ onNavigate }) => {
 
         const codeBackground = document.getElementById('codeBackground');
         if (codeBackground) {
-          // Safely remove all children instead of using innerHTML
           while (codeBackground.firstChild) {
             codeBackground.removeChild(codeBackground.firstChild);
           }
@@ -155,14 +155,13 @@ const ServicesPage = ({ onNavigate }) => {
     };
   }, []);
 
-  const handleServiceClick = (servicePage) => {
+  const handleServiceClick = (servicePath) => {
     if (effectsReady && window.triggerWaveEffect) {
       window.triggerWaveEffect();
     }
     setTimeout(() => {
-      if (onNavigate) {
-        onNavigate(servicePage);
-      }
+      navigate(servicePath);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     }, 100);
   };
 
@@ -174,14 +173,14 @@ const ServicesPage = ({ onNavigate }) => {
       <div className="services-container">
         <div
           className="service-box"
-          onClick={() => handleServiceClick('consulenze')}
+          onClick={() => handleServiceClick('/services/consulenze')}
           role="button"
           tabIndex={0}
           aria-label="Vai alla pagina Consulenze digitali"
           onKeyDown={(e) => {
             if (e.key === 'Enter' || e.key === ' ') {
               e.preventDefault();
-              handleServiceClick('consulenze');
+              handleServiceClick('/services/consulenze');
             }
           }}
         >
@@ -197,14 +196,14 @@ const ServicesPage = ({ onNavigate }) => {
 
         <div
           className="service-box"
-          onClick={() => handleServiceClick('sitiweb')}
+          onClick={() => handleServiceClick('/services/sitiweb')}
           role="button"
           tabIndex={0}
           aria-label="Vai alla pagina Sviluppo di Siti web su misura"
           onKeyDown={(e) => {
             if (e.key === 'Enter' || e.key === ' ') {
               e.preventDefault();
-              handleServiceClick('sitiweb');
+              handleServiceClick('/services/sitiweb');
             }
           }}
         >
@@ -237,14 +236,14 @@ const ServicesPage = ({ onNavigate }) => {
 
         <div
           className="service-box"
-          onClick={() => handleServiceClick('presenza')}
+          onClick={() => handleServiceClick('/services/presenza')}
           role="button"
           tabIndex={0}
           aria-label="Vai alla pagina Social Media e presenza"
           onKeyDown={(e) => {
             if (e.key === 'Enter' || e.key === ' ') {
               e.preventDefault();
-              handleServiceClick('presenza');
+              handleServiceClick('/services/presenza');
             }
           }}
         >
@@ -264,14 +263,14 @@ const ServicesPage = ({ onNavigate }) => {
 
         <div
           className="service-box"
-          onClick={() => handleServiceClick('multimedia')}
+          onClick={() => handleServiceClick('/services/multimedia')}
           role="button"
           tabIndex={0}
           aria-label="Vai alla pagina creazione File Multimediali"
           onKeyDown={(e) => {
             if (e.key === 'Enter' || e.key === ' ') {
               e.preventDefault();
-              handleServiceClick('multimedia');
+              handleServiceClick('/services/multimedia');
             }
           }}
         >
@@ -289,12 +288,6 @@ const ServicesPage = ({ onNavigate }) => {
           <p className="service-box-description">Produzione file multimediali e grafiche digitali</p>
         </div>
       </div>
-
-      <footer>
-        <div className="footer-content">
-          <p className="footer-text">© 2025 VIHENTE - PER ASPERA AD ASTRA</p>
-        </div>
-      </footer>
     </div>
   );
 };

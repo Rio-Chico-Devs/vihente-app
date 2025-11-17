@@ -1,7 +1,9 @@
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import './SitiWebPage.css';
 
-const SitiWebPage = ({ onNavigate }) => {
+const SitiWebPage = () => {
+  const navigate = useNavigate();
   const [expandedSections, setExpandedSections] = useState({});
 
   useEffect(() => {
@@ -258,7 +260,7 @@ const SitiWebPage = ({ onNavigate }) => {
           </p>
           <button 
             className="sitiweb-cta-button"
-            onClick={() => onNavigate('contatti')}
+            onClick={() => navigate('/contatti')}
           >
             Richiedi Preventivo
           </button>

@@ -1,6 +1,8 @@
 import { useState, useEffect, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const MyStory = () => {
+  const navigate = useNavigate();
   const [currentChapter, setCurrentChapter] = useState(0);
   const [isTransitioning, setIsTransitioning] = useState(false);
   const [transitionDirection, setTransitionDirection] = useState('forward');
@@ -140,7 +142,6 @@ const MyStory = () => {
     setIsTransitioning(true);
     setTransitionDirection(direction);
     
-    // Simple but elegant transition
     createSimpleTransition();
     
     const currentContainer = containerRef.current?.querySelector('.chapter-container');
@@ -148,7 +149,6 @@ const MyStory = () => {
       currentContainer.classList.add('defragmenting');
     }
     
-    // Quick chapter change
     setTimeout(() => {
       setCurrentChapter(newChapter);
       
@@ -160,25 +160,21 @@ const MyStory = () => {
       }, 30);
     }, 300);
     
-    // Fast cleanup
     setTimeout(() => {
       setIsTransitioning(false);
       cleanupTransitionEffects();
     }, 700);
   };
 
-  // Minimal but elegant transition effect
   const createSimpleTransition = () => {
     const container = containerRef.current;
     if (!container) return;
 
-    // Grid subtle pulse
     const gridOverlay = container.querySelector('.grid-overlay');
     if (gridOverlay) {
       gridOverlay.classList.add('transition-pulse');
     }
 
-    // Single elegant scan line
     const scanLine = document.createElement('div');
     scanLine.className = 'elegant-scan';
     scanLine.style.cssText = `
@@ -201,7 +197,6 @@ const MyStory = () => {
     `;
     container.appendChild(scanLine);
 
-    // Subtle digital noise overlay
     const noise = document.createElement('div');
     noise.className = 'digital-noise';
     noise.style.cssText = `
@@ -225,11 +220,9 @@ const MyStory = () => {
     const container = containerRef.current;
     if (!container) return;
     
-    // Remove all transition elements
     const effects = container.querySelectorAll('.elegant-scan, .digital-noise');
     effects.forEach(el => el.remove());
     
-    // Remove grid classes
     const gridOverlay = container.querySelector('.grid-overlay');
     if (gridOverlay) {
       gridOverlay.classList.remove('transition-pulse');
@@ -253,12 +246,11 @@ const MyStory = () => {
         alignItems: 'center',
         justifyContent: 'center',
         padding: '2rem',
-        paddingTop: '120px' // Spazio per l'header
+        paddingTop: '120px',
+        paddingBottom: '180px' // ✅ FIX: Spazio per footer
       }}
     >
       <style>{`
-        
-
         .logo {
           font-family: 'Orbitron', sans-serif;
           font-size: 1.875rem;
@@ -269,15 +261,11 @@ const MyStory = () => {
           width: 100%;
         }
 
-        
-
-        /* PERFORMANCE OPTIMIZATIONS */
         * {
           -webkit-font-smoothing: antialiased;
           -moz-osx-font-smoothing: grayscale;
         }
 
-        /* ANIMATIONS */
         @keyframes breathingGrid {
           0%, 100% {
             opacity: 1;
@@ -298,9 +286,6 @@ const MyStory = () => {
           }
         }
 
-        /* SIMPLE BUT ELEGANT TRANSITION ANIMATIONS */
-        
-        /* Elegant scan line */
         @keyframes elegantScan {
           0% {
             top: 0%;
@@ -315,7 +300,6 @@ const MyStory = () => {
           }
         }
 
-        /* Subtle noise flash */
         @keyframes noiseFlash {
           0%, 100% { 
             opacity: 0; 
@@ -325,7 +309,6 @@ const MyStory = () => {
           }
         }
 
-        /* Grid subtle pulse */
         .grid-overlay.transition-pulse {
           animation: subtleGridPulse 0.4s ease-out;
         }
@@ -345,7 +328,6 @@ const MyStory = () => {
           }
         }
 
-        /* Container transitions - Fast and smooth */
         @keyframes digimonDefrag {
           0% {
             opacity: 1;
@@ -372,65 +354,6 @@ const MyStory = () => {
           }
         }
 
-        @keyframes gridFlashSimple {
-          0% {
-            opacity: 1;
-          }
-          50% {
-            opacity: 0.7;
-            box-shadow: 
-              inset 0 0 100px rgba(0, 255, 255, 0.2),
-              inset 0 0 50px rgba(0, 255, 255, 0.15);
-          }
-          100% {
-            opacity: 1;
-          }
-        }
-
-        @keyframes gridReformSimple {
-          0% {
-            opacity: 0.8;
-          }
-          50% {
-            opacity: 1;
-            box-shadow: 
-              inset 0 0 120px rgba(0, 255, 255, 0.18),
-              inset 0 0 60px rgba(0, 255, 255, 0.12);
-          }
-          100% {
-            opacity: 1;
-          }
-        }
-
-        @keyframes smoothScanDown {
-          0% {
-            top: 0%;
-            opacity: 0;
-          }
-          50% {
-            opacity: 1;
-          }
-          100% {
-            top: 100%;
-            opacity: 0;
-          }
-        }
-
-        @keyframes smoothScanUp {
-          0% {
-            bottom: 0%;
-            opacity: 0;
-          }
-          50% {
-            opacity: 1;
-          }
-          100% {
-            bottom: 100%;
-            opacity: 0;
-          }
-        }
-
-        /* GRID OVERLAY */
         .grid-overlay {
           position: fixed;
           inset: 0;
@@ -451,15 +374,6 @@ const MyStory = () => {
           animation: vignettePulse 10s ease-in-out infinite;
         }
 
-        .grid-overlay.flash-transition {
-          animation: gridFlashSimple 0.4s ease-out;
-        }
-
-        .grid-overlay.reform-transition {
-          animation: gridReformSimple 0.5s ease-out;
-        }
-
-        /* VHS SCANLINES */
         .vhs-scanlines::before {
           content: '';
           position: absolute;
@@ -478,7 +392,6 @@ const MyStory = () => {
           z-index: 1;
         }
 
-        /* CHAPTER CONTAINER */
         .chapter-container {
           position: relative;
           z-index: 10;
@@ -496,7 +409,6 @@ const MyStory = () => {
           animation: digimonRecompose 0.4s cubic-bezier(0.34, 1.2, 0.64, 1) forwards;
         }
 
-        /* LAYOUT */
         .chapter-content {
           display: flex;
           gap: 4rem;
@@ -506,7 +418,6 @@ const MyStory = () => {
           width: 100%;
         }
 
-        /* TEXT BOX - Much wider to match screenshot */
         .text-box {
           position: relative;
           width: 850px;
@@ -575,7 +486,6 @@ const MyStory = () => {
           gap: 1rem;
         }
 
-        /* IMAGE CONTAINER - Matching yellow rectangle */
         .chapter-image-container {
           flex-shrink: 0;
           width: 550px;
@@ -597,7 +507,6 @@ const MyStory = () => {
           box-shadow: 0 0 20px rgba(0, 255, 255, 0.3);
         }
 
-        /* TYPOGRAPHY */
         .chapter-year {
           font-family: 'Share Tech Mono', monospace;
           font-size: 1rem;
@@ -631,10 +540,10 @@ const MyStory = () => {
           margin-top: 0.5rem;
         }
 
-        /* NAVIGATION UI */
+        /* ✅ FIX: Navigation dots alzati */
         .navigation-ui {
           position: fixed;
-          bottom: 2rem;
+          bottom: 120px;
           left: 50%;
           transform: translateX(-50%);
           display: flex;
@@ -662,10 +571,9 @@ const MyStory = () => {
           box-shadow: 0 0 8px rgba(0, 255, 255, 0.5);
         }
 
-        /* INDICATORS */
         .chapter-indicator {
           position: fixed;
-          top: 2rem;
+          top: 100px;
           left: 2rem;
           font-family: 'Orbitron', monospace;
           font-size: 0.8rem;
@@ -677,9 +585,10 @@ const MyStory = () => {
           border-radius: 4px;
         }
 
+        /* ✅ FIX: Instructions alzate */
         .instructions {
           position: fixed;
-          bottom: 2rem;
+          bottom: 120px;
           right: 2rem;
           font-family: 'Share Tech Mono', monospace;
           font-size: 0.7rem;
@@ -688,14 +597,10 @@ const MyStory = () => {
           z-index: 100;
         }
 
-        /* RESPONSIVE */
         @media (max-width: 1024px) {
-          .header-content {
-            display: none !important;
-          }
-
           section {
-            padding-top: 2rem !important; /* Rimuove spazio header su mobile */
+            padding-top: 2rem !important;
+            paddingBottom: 200px !important;
           }
 
           .chapter-content {
@@ -729,13 +634,18 @@ const MyStory = () => {
         }
 
         @media (max-width: 768px) {
-          .header-content {
-            display: none !important;
+          section {
+            paddingBottom: 220px !important;
           }
 
-          .logo {
-            font-size: 1.5rem;
-            letter-spacing: 0.2em;
+          .navigation-ui {
+            bottom: 140px;
+            gap: 0.8rem;
+          }
+          
+          .nav-dot {
+            width: 10px;
+            height: 10px;
           }
 
           .chapter-content {
@@ -778,13 +688,9 @@ const MyStory = () => {
         }
 
         @media (max-width: 480px) {
-          .logo {
-            font-size: 1.25rem;
-            letter-spacing: 0.15em;
-          }
-
           section {
             padding: 1rem;
+            paddingBottom: 240px !important;
           }
           
           .text-box {
@@ -825,22 +731,11 @@ const MyStory = () => {
           .chapter-indicator {
             font-size: 0.7rem;
             padding: 0.4rem 0.8rem;
-            top: 1rem;
+            top: 90px;
             left: 1rem;
-          }
-          
-          .navigation-ui {
-            bottom: 1.5rem;
-            gap: 0.8rem;
-          }
-          
-          .nav-dot {
-            width: 10px;
-            height: 10px;
           }
         }
 
-        /* REDUCED MOTION */
         @media (prefers-reduced-motion: reduce) {
           *, *::before, *::after {
             animation-duration: 0.01ms !important;
@@ -848,7 +743,6 @@ const MyStory = () => {
           }
         }
 
-        /* HOVER EFFECTS - Service page style */
         .text-box:hover::before {
           background: rgba(0, 0, 0, 0.75);
         }
@@ -860,32 +754,26 @@ const MyStory = () => {
         }
       `}</style>
 
-      {/* VHS Scanlines overlay */}
       <div className="vhs-scanlines" />
 
-      {/* Hexagonal Grid Background */}
       <div className="grid-overlay">
         <div className="vignette-overlay"></div>
       </div>
 
-      {/* Chapter Indicator */}
       <div className="chapter-indicator">
         [{currentChapterData.year}] CAPITOLO {currentChapter + 1}/{chapters.length}
       </div>
 
-      {/* Instructions */}
       <div className="instructions">
         SCROLL TO NAVIGATE<br />
         ↑↓ or ARROW KEYS
       </div>
 
-      {/* Main Chapter Container */}
       <div 
         className="chapter-container"
         key={currentChapter}
       >
         <div className="chapter-content">
-          {/* Text Box */}
           <div className="text-box">
             <svg className="text-border-svg" viewBox="0 0 850 420" preserveAspectRatio="none">
               <path d="
@@ -928,7 +816,6 @@ const MyStory = () => {
             </div>
           </div>
 
-          {/* Image */}
           <div className="chapter-image-container">
             <div className="vhs-image">
               {currentChapterData.image}
@@ -937,7 +824,6 @@ const MyStory = () => {
         </div>
       </div>
 
-      {/* Navigation Dots */}
       <div className="navigation-ui">
         {chapters.map((_, index) => (
           <div
@@ -953,59 +839,45 @@ const MyStory = () => {
         ))}
       </div>
 
-      {/* Final CTA */}
+      {/* ✅ FIX: Bottone con navigate */}
       {currentChapter === chapters.length - 1 && !isTransitioning && (
         <div style={{
           position: 'fixed',
-          bottom: '8rem',
+          bottom: '200px',
           left: '50%',
           transform: 'translateX(-50%)',
           textAlign: 'center',
           zIndex: 100
         }}>
-          <button style={{
-            background: 'rgba(0, 255, 255, 0.1)',
-            border: '2px solid rgba(0, 255, 255, 0.6)',
-            color: 'rgba(0, 255, 255, 0.9)',
-            padding: '1rem 2.5rem',
-            fontSize: '1rem',
-            fontFamily: "'Orbitron', monospace",
-            fontWeight: 600,
-            textTransform: 'uppercase',
-            letterSpacing: '0.1em',
-            cursor: 'pointer',
-            borderRadius: '6px',
-            transition: 'all 0.3s ease'
-          }}
-          onMouseEnter={(e) => {
-            e.target.style.background = 'rgba(0, 255, 255, 0.2)';
-            e.target.style.boxShadow = '0 0 15px rgba(0, 255, 255, 0.4)';
-          }}
-          onMouseLeave={(e) => {
-            e.target.style.background = 'rgba(0, 255, 255, 0.1)';
-            e.target.style.boxShadow = 'none';
-          }}>
+          <button 
+            onClick={() => navigate('/contatti')}
+            style={{
+              background: 'rgba(0, 255, 255, 0.1)',
+              border: '2px solid rgba(0, 255, 255, 0.6)',
+              color: 'rgba(0, 255, 255, 0.9)',
+              padding: '1rem 2.5rem',
+              fontSize: '1rem',
+              fontFamily: "'Orbitron', monospace",
+              fontWeight: 600,
+              textTransform: 'uppercase',
+              letterSpacing: '0.1em',
+              cursor: 'pointer',
+              borderRadius: '6px',
+              transition: 'all 0.3s ease'
+            }}
+            onMouseEnter={(e) => {
+              e.target.style.background = 'rgba(0, 255, 255, 0.2)';
+              e.target.style.boxShadow = '0 0 15px rgba(0, 255, 255, 0.4)';
+            }}
+            onMouseLeave={(e) => {
+              e.target.style.background = 'rgba(0, 255, 255, 0.1)';
+              e.target.style.boxShadow = 'none';
+            }}
+          >
             → INIZIAMO INSIEME
           </button>
         </div>
       )}
-
-      {/* Schema.org JSON-LD */}
-      <script type="application/ld+json">
-        {JSON.stringify({
-          "@context": "https://schema.org",
-          "@type": "Person",
-          "name": "Antonio",
-          "jobTitle": "Consulente Digitale",
-          "description": "Consulente digitale con percorso dal 2001, specializzato in soluzioni personalizzate",
-          "knowsAbout": ["UI/UX Design", "React", "Web Development", "Digital Consulting"],
-          "offers": {
-            "@type": "Offer",
-            "name": "Consulenza Digitale Personalizzata",
-            "description": "Soluzioni ottimizzate per costi e qualità"
-          }
-        })}
-      </script>
     </section>
   );
 };

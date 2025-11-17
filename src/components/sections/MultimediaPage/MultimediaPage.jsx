@@ -1,7 +1,10 @@
 import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import './MultimediaPage.css';
 
-const MultimediaPage = ({ onNavigate }) => {
+const MultimediaPage = () => {
+  const navigate = useNavigate();
+
   useEffect(() => {
     document.body.classList.add('multimedia-page-body');
     return () => {
@@ -58,7 +61,7 @@ const MultimediaPage = ({ onNavigate }) => {
               </p>
               <button 
                 className="work-cta"
-                onClick={() => onNavigate('contatti')}
+                onClick={() => navigate('/contatti')}
               >
                 Raccontami il Tuo Progetto
               </button>
@@ -86,7 +89,7 @@ const MultimediaPage = ({ onNavigate }) => {
               </p>
               <button 
                 className="work-cta"
-                onClick={() => onNavigate('contatti')}
+                onClick={() => navigate('/contatti')}
               >
                 Inizia il Tuo Progetto
               </button>
@@ -126,7 +129,7 @@ const MultimediaPage = ({ onNavigate }) => {
               </p>
               <button 
                 className="work-cta"
-                onClick={() => onNavigate('contatti')}
+                onClick={() => navigate('/contatti')}
               >
                 Scopri i Miei Stili
               </button>
@@ -172,7 +175,7 @@ const MultimediaPage = ({ onNavigate }) => {
               </div>
               <button 
                 className="work-cta work-cta-primary"
-                onClick={() => onNavigate('contatti')}
+                onClick={() => navigate('/contatti')}
               >
                 Contattami Ora
               </button>
@@ -197,7 +200,7 @@ const MultimediaPage = ({ onNavigate }) => {
           </p>
           <button 
             className="multimedia-cta-button"
-            onClick={() => onNavigate('contatti')}
+            onClick={() => navigate('/contatti')}
           >
             Iniziamo Insieme
           </button>

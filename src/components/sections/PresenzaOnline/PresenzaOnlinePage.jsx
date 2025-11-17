@@ -1,7 +1,9 @@
 import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
+const PresenzaOnlinePage = () => {
+  const navigate = useNavigate();
 
-const PresenzaOnlinePage = ({ onNavigate }) => {
   useEffect(() => {
     document.body.classList.add('service-detail-body');
     return () => {
@@ -18,7 +20,7 @@ const PresenzaOnlinePage = ({ onNavigate }) => {
       <header className="detail-header">
         <button 
           className="back-button"
-          onClick={() => onNavigate('services')}
+          onClick={() => navigate('/services')}
         >
           <span className="back-arrow">←</span>
           <span className="back-text">Torna ai Servizi</span>
@@ -82,7 +84,7 @@ const PresenzaOnlinePage = ({ onNavigate }) => {
         {/* CTA Button */}
         <button 
           className="detail-cta"
-          onClick={() => onNavigate('contatti')}
+          onClick={() => navigate('/contatti')}
         >
           Scopri di Più
         </button>
