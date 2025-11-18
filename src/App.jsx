@@ -12,6 +12,9 @@ import PresenzaOnlinePage from './components/sections/PresenzaOnline/PresenzaOnl
 import MultimediaPage from './components/sections/MultimediaPage/MultimediaPage';
 import Portfolio from './components/sections/Portfolio/Portfolio';
 import PortfolioComponentiPage from './components/sections/Portfolio/PortfolioComponentiPage';
+import SliderPage from './components/sections/Portfolio/ComponentShowcase/SliderPage/SliderPage';
+import TextSamplerPage from './components/sections/Portfolio/ComponentShowcase/TextSamplerPage/TextSamplerPage';
+import Cubo3DPage from './components/sections/Portfolio/ComponentShowcase/Cubo3DPage/Cubo3DPage';
 import Contacts from './components/sections/Contacts/Contacts';
 import CustomCursor from './components/sections/Cursor/CustomCursor';
 import ScrollingHeader from './components/ScrollingHeader';
@@ -36,7 +39,6 @@ function App() {
         <BootScreen onBootComplete={handleBootComplete} />
       ) : (
         <>
-          {/* Navbar sempre visibile */}
           <Navbar />
 
           <ScrollingHeader
@@ -63,6 +65,11 @@ function App() {
               {/* Portfolio */}
               <Route path="/portfolio" element={<Portfolio />} />
               <Route path="/portfolio/componenti" element={<PortfolioComponentiPage />} />
+              
+              {/* Portfolio Component Details */}
+              <Route path="/portfolio/componenti/slider" element={<SliderPage />} />
+              <Route path="/portfolio/componenti/text-sampler" element={<TextSamplerPage />} />
+              <Route path="/portfolio/componenti/cubo-3d" element={<Cubo3DPage />} />
 
               {/* Contacts */}
               <Route path="/contatti" element={<Contacts />} />
@@ -73,7 +80,6 @@ function App() {
             </Routes>
           </main>
 
-          {/* Footer sempre visibile */}
           <Footer />
         </>
       )}

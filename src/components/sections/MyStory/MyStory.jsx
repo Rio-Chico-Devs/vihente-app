@@ -1,14 +1,25 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 const MyStory = () => {
   const navigate = useNavigate();
   const [currentChapter, setCurrentChapter] = useState(0);
   const [isTransitioning, setIsTransitioning] = useState(false);
-  const [transitionDirection, setTransitionDirection] = useState('forward');
+  const [isMobile, setIsMobile] = useState(false);
   const containerRef = useRef(null);
   const lastScrollTime = useRef(0);
   const scrollAccumulator = useRef(0);
+
+  // Detect mobile
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth <= 480);
+    };
+    
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
   const chapters = [
     {
@@ -76,71 +87,10 @@ const MyStory = () => {
     }
   ];
 
-  // Wheel navigation with debouncing
-  useEffect(() => {
-    const handleWheel = (e) => {
-      e.preventDefault();
-      
-      const now = Date.now();
-      const timeDiff = now - lastScrollTime.current;
-      
-      if (timeDiff > 200) {
-        scrollAccumulator.current = 0;
-      }
-      
-      scrollAccumulator.current += Math.abs(e.deltaY);
-      lastScrollTime.current = now;
-      
-      if (scrollAccumulator.current > 100 && !isTransitioning) {
-        const direction = e.deltaY > 0 ? 'forward' : 'backward';
-        
-        if (direction === 'forward' && currentChapter < chapters.length - 1) {
-          changeChapter(currentChapter + 1, 'forward');
-        } else if (direction === 'backward' && currentChapter > 0) {
-          changeChapter(currentChapter - 1, 'backward');
-        }
-        
-        scrollAccumulator.current = 0;
-      }
-    };
-
-    const container = containerRef.current;
-    if (container) {
-      container.addEventListener('wheel', handleWheel, { passive: false });
-    }
-
-    return () => {
-      if (container) {
-        container.removeEventListener('wheel', handleWheel);
-      }
-    };
-  }, [currentChapter, isTransitioning, chapters.length]);
-
-  // Keyboard navigation
-  useEffect(() => {
-    const handleKeyPress = (e) => {
-      if (isTransitioning) return;
-      
-      if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
-        if (currentChapter < chapters.length - 1) {
-          changeChapter(currentChapter + 1, 'forward');
-        }
-      } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
-        if (currentChapter > 0) {
-          changeChapter(currentChapter - 1, 'backward');
-        }
-      }
-    };
-
-    window.addEventListener('keydown', handleKeyPress);
-    return () => window.removeEventListener('keydown', handleKeyPress);
-  }, [currentChapter, isTransitioning, chapters.length]);
-
-  const changeChapter = (newChapter, direction) => {
+  const changeChapter = useCallback((newChapter) => {
     if (isTransitioning) return;
     
     setIsTransitioning(true);
-    setTransitionDirection(direction);
     
     createSimpleTransition();
     
@@ -164,7 +114,67 @@ const MyStory = () => {
       setIsTransitioning(false);
       cleanupTransitionEffects();
     }, 700);
-  };
+  }, [isTransitioning]);
+
+  // Wheel navigation with debouncing
+  useEffect(() => {
+    const handleWheel = (e) => {
+      e.preventDefault();
+      
+      const now = Date.now();
+      const timeDiff = now - lastScrollTime.current;
+      
+      if (timeDiff > 200) {
+        scrollAccumulator.current = 0;
+      }
+      
+      scrollAccumulator.current += Math.abs(e.deltaY);
+      lastScrollTime.current = now;
+      
+      if (scrollAccumulator.current > 100 && !isTransitioning) {
+        const direction = e.deltaY > 0 ? 'forward' : 'backward';
+        
+        if (direction === 'forward' && currentChapter < chapters.length - 1) {
+          changeChapter(currentChapter + 1);
+        } else if (direction === 'backward' && currentChapter > 0) {
+          changeChapter(currentChapter - 1);
+        }
+        
+        scrollAccumulator.current = 0;
+      }
+    };
+
+    const container = containerRef.current;
+    if (container) {
+      container.addEventListener('wheel', handleWheel, { passive: false });
+    }
+
+    return () => {
+      if (container) {
+        container.removeEventListener('wheel', handleWheel);
+      }
+    };
+  }, [currentChapter, isTransitioning, chapters.length, changeChapter]);
+
+  // Keyboard navigation
+  useEffect(() => {
+    const handleKeyPress = (e) => {
+      if (isTransitioning) return;
+      
+      if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
+        if (currentChapter < chapters.length - 1) {
+          changeChapter(currentChapter + 1);
+        }
+      } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+        if (currentChapter > 0) {
+          changeChapter(currentChapter - 1);
+        }
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyPress);
+    return () => window.removeEventListener('keydown', handleKeyPress);
+  }, [currentChapter, isTransitioning, chapters.length, changeChapter]);
 
   const createSimpleTransition = () => {
     const container = containerRef.current;
@@ -247,7 +257,7 @@ const MyStory = () => {
         justifyContent: 'center',
         padding: '2rem',
         paddingTop: '120px',
-        paddingBottom: '180px' // ✅ FIX: Spazio per footer
+        paddingBottom: '180px'
       }}
     >
       <style>{`
@@ -514,6 +524,10 @@ const MyStory = () => {
           letter-spacing: 0.1em;
         }
 
+        .mobile-year {
+          display: none;
+        }
+
         .chapter-title {
           font-family: 'Orbitron', sans-serif;
           font-size: 2.5rem;
@@ -540,7 +554,6 @@ const MyStory = () => {
           margin-top: 0.5rem;
         }
 
-        /* ✅ FIX: Navigation dots alzati */
         .navigation-ui {
           position: fixed;
           bottom: 120px;
@@ -585,7 +598,6 @@ const MyStory = () => {
           border-radius: 4px;
         }
 
-        /* ✅ FIX: Instructions alzate */
         .instructions {
           position: fixed;
           bottom: 120px;
@@ -693,39 +705,82 @@ const MyStory = () => {
             paddingBottom: 240px !important;
           }
           
+          .chapter-content {
+            gap: 1.5rem;
+          }
+
+          /* Anno sopra il box su mobile */
+          .mobile-year {
+            display: block;
+            text-align: center;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.9rem;
+            color: rgba(0, 255, 255, 0.8);
+            letter-spacing: 0.1em;
+            margin-bottom: 1rem;
+            background: rgba(0, 0, 0, 0.6);
+            padding: 0.5rem 1rem;
+            border: 1px solid rgba(0, 255, 255, 0.3);
+            border-radius: 4px;
+            display: inline-block;
+          }
+
+          .chapter-year {
+            display: none;
+          }
+          
           .text-box {
-            width: 98%;
-            min-height: 260px;
+            width: 100%;
+            min-height: 300px;
+          }
+
+          /* SVG ridimensionato per mobile - linee centrali più corte */
+          .text-box::before {
+            clip-path: polygon(
+              0 30px,
+              30px 0,
+              80px 0,
+              95px 12px,
+              calc(100% - 50px) 12px,
+              calc(100% - 35px) 0,
+              calc(100% - 15px) 0,
+              100% 15px,
+              100% calc(100% - 35px),
+              calc(100% - 20px) calc(100% - 15px),
+              calc(100% - 70px) calc(100% - 15px),
+              calc(100% - 85px) 100%,
+              60px 100%,
+              45px calc(100% - 12px),
+              15px calc(100% - 12px),
+              0 calc(100% - 25px)
+            );
           }
           
           .text-inner {
-            top: 45px;
-            left: 40px;
-            right: 40px;
-            bottom: 50px;
-            gap: 1rem;
+            top: 40px;
+            left: 35px;
+            right: 35px;
+            bottom: 45px;
+            gap: 0.75rem;
           }
           
           .chapter-title {
-            font-size: 1.4rem;
+            font-size: 1.3rem;
+            line-height: 1.3;
           }
           
           .chapter-description {
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             line-height: 1.5;
           }
           
           .glitch-text {
-            font-size: 0.75rem;
-          }
-          
-          .chapter-year {
-            font-size: 0.85rem;
+            font-size: 0.7rem;
           }
           
           .vhs-image {
-            height: 240px;
-            font-size: 0.9rem;
+            height: 220px;
+            font-size: 0.85rem;
           }
           
           .chapter-indicator {
@@ -774,33 +829,67 @@ const MyStory = () => {
         key={currentChapter}
       >
         <div className="chapter-content">
+          {isMobile && (
+            <div className="mobile-year">
+              [{currentChapterData.year}]
+            </div>
+          )}
+
           <div className="text-box">
-            <svg className="text-border-svg" viewBox="0 0 850 420" preserveAspectRatio="none">
-              <path d="
-                M 0,40 
-                L 40,0 
-                L 120,0 
-                L 140,15 
-                L 710,15 
-                L 730,0 
-                L 810,0 
-                L 850,20 
-                L 850,370 
-                L 820,400 
-                L 730,400 
-                L 710,420 
-                L 140,420 
-                L 120,405 
-                L 20,405 
-                L 0,380 
-                Z" 
-              />
-            </svg>
+            {!isMobile && (
+              <svg className="text-border-svg" viewBox="0 0 850 420" preserveAspectRatio="none">
+                <path d="
+                  M 0,40 
+                  L 40,0 
+                  L 120,0 
+                  L 140,15 
+                  L 710,15 
+                  L 730,0 
+                  L 810,0 
+                  L 850,20 
+                  L 850,370 
+                  L 820,400 
+                  L 730,400 
+                  L 710,420 
+                  L 140,420 
+                  L 120,405 
+                  L 20,405 
+                  L 0,380 
+                  Z" 
+                />
+              </svg>
+            )}
+
+            {isMobile && (
+              <svg className="text-border-svg" viewBox="0 0 350 300" preserveAspectRatio="none">
+                <path d="
+                  M 0,30 
+                  L 30,0 
+                  L 80,0 
+                  L 95,12 
+                  L 255,12 
+                  L 270,0 
+                  L 335,0 
+                  L 350,15 
+                  L 350,265 
+                  L 330,285 
+                  L 280,285 
+                  L 265,300 
+                  L 85,300 
+                  L 70,288 
+                  L 15,288 
+                  L 0,275 
+                  Z" 
+                />
+              </svg>
+            )}
             
             <div className="text-inner">
-              <div className="chapter-year">
-                [{currentChapterData.year}]
-              </div>
+              {!isMobile && (
+                <div className="chapter-year">
+                  [{currentChapterData.year}]
+                </div>
+              )}
               
               <h1 className="chapter-title">
                 {currentChapterData.title}
@@ -831,15 +920,13 @@ const MyStory = () => {
             className={`nav-dot ${currentChapter === index ? 'active' : ''}`}
             onClick={() => {
               if (!isTransitioning && index !== currentChapter) {
-                const direction = index > currentChapter ? 'forward' : 'backward';
-                changeChapter(index, direction);
+                changeChapter(index);
               }
             }}
           />
         ))}
       </div>
 
-      {/* ✅ FIX: Bottone con navigate */}
       {currentChapter === chapters.length - 1 && !isTransitioning && (
         <div style={{
           position: 'fixed',

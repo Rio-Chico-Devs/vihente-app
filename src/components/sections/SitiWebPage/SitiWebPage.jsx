@@ -1,10 +1,9 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './SitiWebPage.css';
 
 const SitiWebPage = () => {
   const navigate = useNavigate();
-  const [expandedSections, setExpandedSections] = useState({});
 
   useEffect(() => {
     document.body.classList.add('sitiweb-page-body');
@@ -12,13 +11,6 @@ const SitiWebPage = () => {
       document.body.classList.remove('sitiweb-page-body');
     };
   }, []);
-
-  const toggleSection = (sectionId) => {
-    setExpandedSections(prev => ({
-      ...prev,
-      [sectionId]: !prev[sectionId]
-    }));
-  };
 
   return (
     <div className="sitiweb-page-wrapper">

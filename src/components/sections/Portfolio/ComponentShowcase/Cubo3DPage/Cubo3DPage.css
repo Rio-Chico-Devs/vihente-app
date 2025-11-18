@@ -1,14 +1,14 @@
 .cubo3d-page {
-  min-height: 100vh;
+  height: 100vh;
+  width: 100vw;
   background: #000;
   position: relative;
-  padding-top: 120px;
-  padding-bottom: 180px;
+  overflow: hidden;
 }
 
 .back-to-showcase {
   position: fixed;
-  top: 100px;
+  top: 110px;
   left: 2rem;
   display: flex;
   align-items: center;
@@ -44,36 +44,40 @@
   align-items: center;
   justify-content: center;
   position: relative;
+  padding: 0;
+  overflow: hidden;
 }
 
 .model3d-title {
   font-family: 'Orbitron', sans-serif;
-  font-size: 3rem;
-  margin-bottom: 1rem;
+  font-size: clamp(1.5rem, 4vw, 3rem);
   color: #00ffff;
   text-shadow: 0 0 30px rgba(0, 255, 255, 0.8);
   position: absolute;
-  top: 3rem;
+  top: 15vh;
   font-weight: 700;
   letter-spacing: 0.1em;
   text-transform: uppercase;
+  margin: 0;
+  padding: 0;
 }
 
 .model3d-instruction {
   color: rgba(0, 255, 255, 0.7);
-  margin-bottom: 3rem;
-  font-size: 1rem;
+  font-size: clamp(0.75rem, 1.5vw, 1rem);
   text-align: center;
   max-width: 600px;
   position: absolute;
-  top: 7rem;
+  top: calc(15vh + 4rem);
   font-family: 'Share Tech Mono', monospace;
   letter-spacing: 0.05em;
+  padding: 0 1rem;
+  margin: 0;
 }
 
 .model3d-viewport {
-  width: 600px;
-  height: 600px;
+  width: min(600px, 90vw);
+  height: min(600px, 50vh);
   perspective: 1200px;
   display: flex;
   align-items: center;
@@ -94,8 +98,8 @@
 }
 
 .cube-3d {
-  width: 250px;
-  height: 250px;
+  width: clamp(150px, 30vw, 250px);
+  height: clamp(150px, 30vw, 250px);
   position: relative;
   transform-style: preserve-3d;
   will-change: transform;
@@ -103,15 +107,15 @@
 
 .cube-3d .cube-face {
   position: absolute;
-  width: 250px;
-  height: 250px;
+  width: 100%;
+  height: 100%;
   background: rgba(0, 255, 255, 0.05);
   border: 2px solid #00ffff;
   border-radius: 4px;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.5rem;
+  font-size: clamp(1rem, 2.5vw, 1.5rem);
   font-weight: 700;
   backdrop-filter: blur(10px);
   backface-visibility: hidden;
@@ -123,27 +127,27 @@
 }
 
 .cube-3d .cube-face.front {
-  transform: translateZ(125px);
+  transform: translateZ(calc(clamp(150px, 30vw, 250px) / 2));
 }
 
 .cube-3d .cube-face.back {
-  transform: rotateY(180deg) translateZ(125px);
+  transform: rotateY(180deg) translateZ(calc(clamp(150px, 30vw, 250px) / 2));
 }
 
 .cube-3d .cube-face.left {
-  transform: rotateY(-90deg) translateZ(125px);
+  transform: rotateY(-90deg) translateZ(calc(clamp(150px, 30vw, 250px) / 2));
 }
 
 .cube-3d .cube-face.right {
-  transform: rotateY(90deg) translateZ(125px);
+  transform: rotateY(90deg) translateZ(calc(clamp(150px, 30vw, 250px) / 2));
 }
 
 .cube-3d .cube-face.top {
-  transform: rotateX(90deg) translateZ(125px);
+  transform: rotateX(90deg) translateZ(calc(clamp(150px, 30vw, 250px) / 2));
 }
 
 .cube-3d .cube-face.bottom {
-  transform: rotateX(-90deg) translateZ(125px);
+  transform: rotateX(-90deg) translateZ(calc(clamp(150px, 30vw, 250px) / 2));
 }
 
 .face-content {
@@ -154,53 +158,39 @@
 
 .model3d-hint {
   color: rgba(0, 255, 255, 0.7);
-  margin-top: 3rem;
-  font-size: 1rem;
+  font-size: clamp(0.75rem, 1.5vw, 1rem);
   text-align: center;
   position: absolute;
-  bottom: 3rem;
+  bottom: 10vh;
   font-family: 'Share Tech Mono', monospace;
   font-weight: 500;
   letter-spacing: 0.05em;
+  padding: 0 1rem;
+  margin: 0;
 }
 
 @media (max-width: 768px) {
-  .model3d-title {
-    font-size: 2rem;
-  }
-
-  .model3d-instruction {
-    font-size: 0.9rem;
-    padding: 0 1rem;
+  .back-to-showcase {
+    top: 90px;
+    left: 1rem;
+    padding: 0.5rem 1rem;
+    font-size: 0.75rem;
   }
 
   .model3d-viewport {
-    width: 90vw;
-    height: 500px;
+    height: min(500px, 45vh);
   }
+}
 
-  .cube-3d {
-    width: 200px;
-    height: 200px;
-  }
-
-  .cube-3d .cube-face {
-    width: 200px;
-    height: 200px;
-    font-size: 1.2rem;
-  }
-
-  .cube-3d .cube-face.front { transform: translateZ(100px); }
-  .cube-3d .cube-face.back { transform: rotateY(180deg) translateZ(100px); }
-  .cube-3d .cube-face.left { transform: rotateY(-90deg) translateZ(100px); }
-  .cube-3d .cube-face.right { transform: rotateY(90deg) translateZ(100px); }
-  .cube-3d .cube-face.top { transform: rotateX(90deg) translateZ(100px); }
-  .cube-3d .cube-face.bottom { transform: rotateX(-90deg) translateZ(100px); }
-
+@media (max-width: 480px) {
   .back-to-showcase {
     top: 80px;
-    left: 1rem;
-    padding: 0.6rem 1rem;
-    font-size: 0.8rem;
+    left: 0.5rem;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.7rem;
+  }
+
+  .model3d-viewport {
+    height: min(400px, 40vh);
   }
 }

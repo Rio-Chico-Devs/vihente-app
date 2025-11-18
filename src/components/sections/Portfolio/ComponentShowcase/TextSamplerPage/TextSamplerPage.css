@@ -1,14 +1,14 @@
 .text-sampler-page {
-  min-height: 100vh;
+  height: 100vh;
+  width: 100vw;
   background: #000;
   position: relative;
-  padding-top: 120px;
-  padding-bottom: 180px;
+  overflow: hidden;
 }
 
 .back-to-showcase {
   position: fixed;
-  top: 100px;
+  top: 110px;
   left: 2rem;
   display: flex;
   align-items: center;
@@ -43,15 +43,18 @@
   align-items: center;
   justify-content: center;
   font-family: 'Share Tech Mono', monospace;
+  padding: 0;
+  overflow: hidden;
 }
 
 .sampler-layout {
   display: grid;
   grid-template-columns: 1fr 400px;
-  gap: 4rem;
+  gap: 2rem;
   width: 90%;
   max-width: 1400px;
-  height: 85vh;
+  height: 70vh;
+  max-height: 600px;
 }
 
 .text-display {
@@ -70,18 +73,20 @@
   background: rgba(0, 0, 0, 0.7);
   border: 2px solid rgba(0, 255, 255, 0.3);
   border-radius: 8px;
-  padding: 2rem;
+  padding: 1.5rem;
   display: flex;
   flex-direction: column;
   backdrop-filter: blur(10px);
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 
 .panel-title {
   font-family: 'Orbitron', sans-serif;
-  font-size: 1.8rem;
+  font-size: clamp(1.2rem, 2.5vw, 1.8rem);
   font-weight: 700;
   color: #00ffff;
-  margin-bottom: 2rem;
+  margin-bottom: 1.5rem;
   text-align: center;
   text-shadow: 0 0 15px rgba(0, 255, 255, 0.6);
   letter-spacing: 0.1em;
@@ -92,14 +97,16 @@
   flex: 1;
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: 0.75rem;
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 
 .effect-button {
   background: rgba(0, 255, 255, 0.05);
   border: 1px solid rgba(0, 255, 255, 0.3);
   border-radius: 4px;
-  padding: 1rem;
+  padding: 0.75rem;
   cursor: pointer;
   transition: all 0.3s ease;
   color: white;
@@ -119,7 +126,7 @@
 }
 
 .effect-name {
-  font-size: 1rem;
+  font-size: clamp(0.85rem, 1.5vw, 1rem);
   font-weight: 600;
   margin-bottom: 0.3rem;
   color: #00ffff;
@@ -127,22 +134,22 @@
 }
 
 .effect-description {
-  font-size: 0.85rem;
+  font-size: clamp(0.7rem, 1.2vw, 0.85rem);
   color: rgba(255, 255, 255, 0.7);
   line-height: 1.4;
 }
 
 .panel-footer {
-  margin-top: 2rem;
-  padding-top: 1.5rem;
+  margin-top: 1.5rem;
+  padding-top: 1rem;
   border-top: 1px solid rgba(0, 255, 255, 0.3);
 }
 
 .info-line {
   display: flex;
   justify-content: space-between;
-  margin-bottom: 0.8rem;
-  font-size: 0.9rem;
+  margin-bottom: 0.6rem;
+  font-size: clamp(0.75rem, 1.2vw, 0.9rem);
 }
 
 .label {
@@ -167,7 +174,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: 5rem;
+  font-size: clamp(2rem, 6vw, 5rem);
   font-weight: 800;
   font-family: 'Orbitron', sans-serif;
   text-transform: uppercase;
@@ -208,7 +215,7 @@
 
 .text-effect-folded {
   perspective: 1000px;
-  font-size: 5rem;
+  font-size: clamp(2rem, 6vw, 5rem);
   font-weight: 800;
   font-family: 'Orbitron', sans-serif;
   text-transform: uppercase;
@@ -248,7 +255,7 @@
 }
 
 .text-effect-reflection {
-  font-size: 5rem;
+  font-size: clamp(2rem, 6vw, 5rem);
   font-weight: 800;
   font-family: 'Orbitron', sans-serif;
   text-transform: uppercase;
@@ -279,7 +286,7 @@
 
 .text-effect-cube3d {
   perspective: 1200px;
-  font-size: 4rem;
+  font-size: clamp(1.5rem, 4vw, 4rem);
   font-weight: 800;
   font-family: 'Orbitron', sans-serif;
   text-transform: uppercase;
@@ -288,8 +295,8 @@
 
 .cube-container {
   position: relative;
-  width: 400px;
-  height: 100px;
+  width: clamp(250px, 50vw, 400px);
+  height: clamp(65px, 12vw, 100px);
   transform-style: preserve-3d;
   animation: cubeRotate 8s linear infinite;
   margin: 0 auto;
@@ -297,8 +304,8 @@
 
 .cube-face {
   position: absolute;
-  width: 400px;
-  height: 100px;
+  width: 100%;
+  height: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -308,6 +315,7 @@
   color: #00ffff;
   text-shadow: 0 0 15px rgba(0, 255, 255, 0.8);
   box-shadow: 0 0 20px rgba(0, 255, 255, 0.3);
+  font-size: clamp(1.5rem, 4vw, 4rem);
 }
 
 .cube-face.front { transform: translateZ(50px); }
@@ -328,7 +336,7 @@
 }
 
 .text-effect-morphing {
-  font-size: 5rem;
+  font-size: clamp(2rem, 6vw, 5rem);
   font-weight: 800;
   font-family: 'Orbitron', sans-serif;
   text-transform: uppercase;
@@ -342,12 +350,12 @@
 
 @keyframes morphGlow {
   0% {
-    text-shadow: 
+    text-shadow:
       0 0 10px rgba(0, 255, 255, 0.8),
       0 0 20px rgba(0, 255, 255, 0.5);
   }
   100% {
-    text-shadow: 
+    text-shadow:
       0 0 15px rgba(0, 255, 255, 1),
       0 0 30px rgba(0, 255, 255, 0.7),
       0 0 45px rgba(0, 255, 255, 0.4);
@@ -357,39 +365,62 @@
 @media (max-width: 1024px) {
   .sampler-layout {
     grid-template-columns: 1fr;
-    grid-template-rows: 1fr auto;
-    gap: 2rem;
-    height: 90vh;
+    grid-template-rows: 1.5fr 1fr;
+    gap: 1.5rem;
+    height: 75vh;
   }
 
   .control-panel {
-    padding: 1.5rem;
+    padding: 1.2rem;
   }
 }
 
 @media (max-width: 768px) {
-  .text-effect-conjoined,
-  .text-effect-folded,
-  .text-effect-reflection,
-  .text-effect-morphing {
-    font-size: 3rem;
+  .back-to-showcase {
+    top: 90px;
+    left: 1rem;
+    padding: 0.5rem 1rem;
+    font-size: 0.75rem;
   }
 
-  .cube-container {
-    width: 300px;
-    height: 75px;
+  .sampler-layout {
+    gap: 1rem;
+    height: 70vh;
+    width: 95%;
   }
 
-  .cube-container .cube-face {
-    width: 300px;
-    height: 75px;
-    font-size: 2.5rem;
+  .control-panel {
+    padding: 1rem;
   }
 
+  .panel-title {
+    margin-bottom: 1rem;
+  }
+
+  .effects-list {
+    gap: 0.5rem;
+  }
+
+  .effect-button {
+    padding: 0.6rem;
+  }
+}
+
+@media (max-width: 480px) {
   .back-to-showcase {
     top: 80px;
-    left: 1rem;
-    padding: 0.6rem 1rem;
-    font-size: 0.8rem;
+    left: 0.5rem;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.7rem;
+  }
+
+  .sampler-layout {
+    height: 65vh;
+    width: 98%;
+    gap: 0.75rem;
+  }
+
+  .control-panel {
+    padding: 0.75rem;
   }
 }
