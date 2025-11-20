@@ -1,0 +1,1583 @@
+/* ============================================
+
+   PURE CSS STATE
+
+   ============================================ */
+
+.trophy-state {
+
+  position: absolute;
+
+  opacity: 0;
+
+  pointer-events: none;
+
+}
+
+ 
+
+/* ============================================
+
+   MAIN ARENA
+
+   ============================================ */
+
+.trophy-arena {
+
+  min-height: 100vh;
+
+  height: 100vh;
+
+  background: var(--bg-primary);
+
+  position: relative;
+
+  overflow-y: auto;
+
+  overflow-x: hidden;
+
+  padding: calc(var(--header-height) + var(--spacing-lg)) var(--spacing-lg) var(--spacing-lg) var(--spacing-lg);
+
+  box-sizing: border-box;
+
+}
+
+ 
+
+/* Simple static grid */
+
+.trophy-arena::before {
+
+  content: '';
+
+  position: absolute;
+
+  inset: 0;
+
+  background-image:
+
+    linear-gradient(var(--color-primary-02) 1px, transparent 1px),
+
+    linear-gradient(90deg, var(--color-primary-02) 1px, transparent 1px);
+
+  background-size: 50px 50px;
+
+  pointer-events: none;
+
+  opacity: 0.5;
+
+}
+
+ 
+
+/* ============================================
+
+   GALLERY STAGE
+
+   ============================================ */
+
+.trophy-gallery {
+
+  max-width: var(--max-width-content);
+
+  margin: 0 auto;
+
+  position: relative;
+
+}
+
+ 
+
+.gallery-stage {
+
+  display: grid;
+
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+
+  gap: var(--spacing-xl) var(--spacing-lg);
+
+  padding: var(--spacing-lg);
+
+}
+
+ 
+
+/* ============================================
+
+   TROPHY CONTAINER
+
+   ============================================ */
+
+.trophy-container {
+
+  display: block;
+
+  cursor: pointer;
+
+  position: relative;
+
+  perspective: 1200px;
+
+  opacity: 0;
+
+  animation: trophyReveal 0.6s ease-out forwards;
+
+  animation-delay: calc(var(--trophy-index) * 0.08s);
+
+}
+
+ 
+
+@keyframes trophyReveal {
+
+  to { opacity: 1; }
+
+}
+
+ 
+
+/* ============================================
+
+   TROPHY SCENE
+
+   ============================================ */
+
+.trophy-scene {
+
+  position: relative;
+
+  height: 280px;
+
+  transform-style: preserve-3d;
+
+  transition: transform var(--transition-slow);
+
+}
+
+ 
+
+.trophy-container:hover .trophy-scene {
+
+  transform: translateY(-8px);
+
+}
+
+ 
+
+/* ============================================
+
+   TROPHY 3D
+
+   ============================================ */
+
+.trophy-3d {
+
+  position: absolute;
+
+  width: 100%;
+
+  height: 100%;
+
+  transform-style: preserve-3d;
+
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: center;
+
+  justify-content: center;
+
+  gap: var(--spacing-sm);
+
+}
+
+ 
+
+/* ============================================
+
+   IMAGE ROTATOR - 2D rotante (al posto del cubo)
+
+   ============================================ */
+
+.trophy-arena .image-rotator {
+
+  width: 200px;
+
+  height: 200px;
+
+  position: relative;
+
+  transform-style: preserve-3d;
+
+  animation: imageSpin 15s linear infinite;
+
+  will-change: transform;
+
+}
+
+ 
+
+.trophy-container:hover .image-rotator {
+
+  animation-play-state: paused;
+
+}
+
+ 
+
+@keyframes imageSpin {
+
+  from { transform: rotateY(0deg); }
+
+  to { transform: rotateY(360deg); }
+
+}
+
+ 
+
+/* ============================================
+
+   IMAGE CARD - Double sided
+
+   ============================================ */
+
+.trophy-arena .image-card {
+
+  position: absolute;
+
+  width: 200px;
+
+  height: 200px;
+
+  backface-visibility: hidden;
+
+  background: rgba(0, 150, 180, 0.15);
+
+  border: var(--border-width-base) solid var(--color-primary-50);
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+}
+
+ 
+
+.trophy-arena .image-card.front {
+
+  transform: rotateY(0deg);
+
+}
+
+ 
+
+.trophy-arena .image-card.back {
+
+  transform: rotateY(180deg);
+
+}
+
+ 
+
+/* Placeholder immagine */
+
+.trophy-arena .image-placeholder {
+
+  width: 100%;
+
+  height: 100%;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  background: linear-gradient(135deg,
+
+    rgba(0, 50, 80, 0.3) 0%,
+
+    rgba(0, 30, 50, 0.5) 100%
+
+  );
+
+}
+
+ 
+
+.trophy-arena .placeholder-category {
+
+  font-family: var(--font-mono);
+
+  font-size: var(--font-size-base);
+
+  color: var(--color-primary-70);
+
+  text-transform: uppercase;
+
+  letter-spacing: var(--letter-spacing-wide);
+
+  text-align: center;
+
+  padding: var(--spacing-sm);
+
+}
+
+ 
+
+/* Logo occhio retro - gallery (scoped) */
+
+.trophy-arena .grafiche-logo-eye {
+
+  width: 80px;
+
+  height: 80px;
+
+  filter: drop-shadow(0 0 10px var(--color-primary-60));
+
+}
+
+ 
+
+/* ============================================
+
+   GROUND SHADOW - sostituisce il piedistallo
+
+   ============================================ */
+
+.trophy-arena .ground-shadow {
+
+  position: absolute;
+
+  bottom: -20px;
+
+  left: 50%;
+
+  transform: translateX(-50%);
+
+  width: 180px;
+
+  height: 20px;
+
+  background: radial-gradient(
+
+    ellipse at center,
+
+    var(--color-primary-30) 0%,
+
+    var(--color-primary-15) 40%,
+
+    var(--color-primary-05) 70%,
+
+    transparent 100%
+
+  );
+
+  filter: blur(8px);
+
+  opacity: 0.8;
+
+}
+
+ 
+
+/* ============================================
+
+   TROPHY PREVIEW INFO
+
+   ============================================ */
+
+.trophy-preview {
+
+  position: absolute;
+
+  bottom: 15px;
+
+  left: 50%;
+
+  transform: translateX(-50%);
+
+  text-align: center;
+
+  width: 100%;
+
+  padding: 0 var(--spacing-sm);
+
+  opacity: 0;
+
+  transition: opacity var(--transition-base);
+
+  pointer-events: none;
+
+}
+
+ 
+
+.trophy-container:hover .trophy-preview {
+
+  opacity: 1;
+
+}
+
+ 
+
+.preview-category {
+
+  font-family: var(--font-mono);
+
+  font-size: var(--font-size-xs);
+
+  color: var(--color-primary-70);
+
+  letter-spacing: var(--letter-spacing-wide);
+
+  text-transform: uppercase;
+
+  margin-bottom: 0.3rem;
+
+}
+
+ 
+
+.preview-title {
+
+  font-family: var(--font-mono);
+
+  font-size: var(--font-size-sm);
+
+  color: var(--color-white-90);
+
+  font-weight: 600;
+
+  text-shadow: var(--shadow-glow-sm);
+
+}
+
+ 
+
+/* ============================================
+
+   MODAL - Pure CSS
+
+   ============================================ */
+
+.trophy-modal {
+
+  position: fixed;
+
+  inset: 0;
+
+  z-index: var(--z-modal);
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  opacity: 0;
+
+  pointer-events: none;
+
+  transition: opacity var(--transition-base);
+
+}
+
+ 
+
+/* Show modal */
+
+.trophy-state:nth-of-type(1):checked ~ .trophy-gallery ~ .trophy-modal:nth-of-type(1),
+
+.trophy-state:nth-of-type(2):checked ~ .trophy-gallery ~ .trophy-modal:nth-of-type(2),
+
+.trophy-state:nth-of-type(3):checked ~ .trophy-gallery ~ .trophy-modal:nth-of-type(3),
+
+.trophy-state:nth-of-type(4):checked ~ .trophy-gallery ~ .trophy-modal:nth-of-type(4),
+
+.trophy-state:nth-of-type(5):checked ~ .trophy-gallery ~ .trophy-modal:nth-of-type(5),
+
+.trophy-state:nth-of-type(6):checked ~ .trophy-gallery ~ .trophy-modal:nth-of-type(6),
+
+.trophy-state:nth-of-type(7):checked ~ .trophy-gallery ~ .trophy-modal:nth-of-type(7),
+
+.trophy-state:nth-of-type(8):checked ~ .trophy-gallery ~ .trophy-modal:nth-of-type(8),
+
+.trophy-state:nth-of-type(9):checked ~ .trophy-gallery ~ .trophy-modal:nth-of-type(9),
+
+.trophy-state:nth-of-type(10):checked ~ .trophy-gallery ~ .trophy-modal:nth-of-type(10) {
+
+  opacity: 1;
+
+  pointer-events: all;
+
+}
+
+ 
+
+/* Modal backdrop */
+
+.trophy-modal .modal-backdrop {
+
+  position: absolute;
+
+  inset: 0;
+
+  background: var(--bg-overlay);
+
+  backdrop-filter: blur(8px);
+
+}
+
+ 
+
+/* Modal content */
+
+.trophy-modal .modal-content {
+
+  position: relative;
+
+  width: 90%;
+
+  max-width: var(--max-width-modal);
+
+  height: 80vh;
+
+  max-height: 700px;
+
+  z-index: 1;
+
+  animation: modalEnter var(--transition-slow) ease backwards;
+
+}
+
+ 
+
+@keyframes modalEnter {
+
+  from {
+
+    opacity: 0;
+
+    transform: scale(0.95);
+
+  }
+
+}
+
+ 
+
+/* ============================================
+
+   MODAL CLOSE BUTTON
+
+   ============================================ */
+
+.trophy-modal .modal-close {
+
+  position: absolute;
+
+  top: -50px;
+
+  right: 0;
+
+  width: 45px;
+
+  height: 45px;
+
+  background: var(--bg-darker);
+
+  border: var(--border-width-base) solid var(--color-primary-50);
+
+  cursor: pointer;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  transition: all var(--transition-base);
+
+  clip-path: polygon(
+
+    8% 0%, 92% 0%,
+
+    100% 8%, 100% 92%,
+
+    92% 100%, 8% 100%,
+
+    0% 92%, 0% 8%
+
+  );
+
+}
+
+ 
+
+.trophy-modal .modal-close:hover {
+
+  background: var(--color-primary-20);
+
+  border-color: var(--color-primary-90);
+
+  transform: rotate(90deg);
+
+}
+
+ 
+
+.trophy-modal .modal-close svg {
+
+  width: 24px;
+
+  height: 24px;
+
+  fill: var(--color-primary-90);
+
+}
+
+ 
+
+/* ============================================
+
+   MODAL LAYOUT - 60/40 SSBM
+
+   ============================================ */
+
+.trophy-modal .modal-layout {
+
+  display: flex;
+
+  height: 100%;
+
+  background: var(--bg-dark);
+
+  border: var(--border-width-base) solid var(--color-primary-40);
+
+  box-shadow: var(--shadow-glow-xl);
+
+  overflow: hidden;
+
+}
+
+ 
+
+/* ============================================
+
+   MODAL TROPHY SECTION - 60%
+
+   ============================================ */
+
+.trophy-modal .modal-trophy-section {
+
+  flex: 0 0 60%;
+
+  background: var(--bg-secondary);
+
+  position: relative;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  border-right: var(--border-width-base) solid var(--color-primary-20);
+
+  overflow: hidden;
+
+}
+
+ 
+
+/* Grid pattern */
+
+.trophy-modal .modal-trophy-section::before {
+
+  content: '';
+
+  position: absolute;
+
+  inset: 0;
+
+  background-image:
+
+    linear-gradient(var(--color-primary-03) 1px, transparent 1px),
+
+    linear-gradient(90deg, var(--color-primary-03) 1px, transparent 1px);
+
+  background-size: 40px 40px;
+
+  opacity: 0.5;
+
+}
+
+ 
+
+/* ============================================
+
+   MODAL TROPHY 3D
+
+   ============================================ */
+
+.trophy-modal .modal-trophy-3d {
+
+  position: relative;
+
+  width: 100%;
+
+  height: 100%;
+
+  transform-style: preserve-3d;
+
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: center;
+
+  justify-content: center;
+
+  gap: var(--spacing-md);
+
+}
+
+ 
+
+/* ============================================
+
+   MODAL IMAGE ROTATOR - 2D interattivo (drag to rotate)
+
+   ============================================ */
+
+.trophy-modal .modal-image-rotator {
+
+  width: 350px;
+
+  height: 350px;
+
+  position: relative;
+
+  transform-style: preserve-3d;
+
+  transition: transform 0.05s linear;
+
+  user-select: none;
+
+}
+
+ 
+
+/* Modal image card */
+
+.trophy-modal .modal-image-card {
+
+  position: absolute;
+
+  width: 350px;
+
+  height: 350px;
+
+  backface-visibility: hidden;
+
+  background: rgba(0, 150, 180, 0.2);
+
+  border: var(--border-width-thick) solid var(--color-primary-60);
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+}
+
+ 
+
+.trophy-modal .modal-image-card.front {
+
+  transform: rotateY(0deg);
+
+}
+
+ 
+
+.trophy-modal .modal-image-card.back {
+
+  transform: rotateY(180deg);
+
+}
+
+ 
+
+/* Modal placeholder */
+
+.trophy-modal .modal-placeholder {
+
+  width: 100%;
+
+  height: 100%;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  background: linear-gradient(135deg,
+
+    rgba(0, 60, 90, 0.4) 0%,
+
+    rgba(0, 40, 60, 0.6) 100%
+
+  );
+
+}
+
+ 
+
+.trophy-modal .modal-placeholder-text {
+
+  font-family: var(--font-mono);
+
+  font-size: var(--font-size-lg);
+
+  color: var(--color-primary-80);
+
+  text-transform: uppercase;
+
+  letter-spacing: var(--letter-spacing-wider);
+
+  text-align: center;
+
+  padding: var(--spacing-lg);
+
+}
+
+ 
+
+/* Logo occhio retro - modal (scoped) */
+
+.trophy-modal .grafiche-modal-logo-eye {
+
+  width: 150px;
+
+  height: 150px;
+
+  filter: drop-shadow(var(--shadow-glow-lg));
+
+}
+
+ 
+
+/* ============================================
+
+   MODAL GROUND SHADOW - sostituisce piedistallo
+
+   ============================================ */
+
+.trophy-modal .modal-ground-shadow {
+
+  position: absolute;
+
+  bottom: 0;
+
+  left: 50%;
+
+  transform: translateX(-50%);
+
+  width: 280px;
+
+  height: 30px;
+
+  background: radial-gradient(
+
+    ellipse at center,
+
+    var(--color-primary-40) 0%,
+
+    var(--color-primary-20) 40%,
+
+    var(--color-primary-10) 70%,
+
+    transparent 100%
+
+  );
+
+  filter: blur(12px);
+
+  opacity: 0.9;
+
+}
+
+ 
+
+/* ============================================
+
+   AMBIENT PARTICLES
+
+   ============================================ */
+
+.trophy-modal .ambient-particles {
+
+  position: absolute;
+
+  inset: 0;
+
+  overflow: hidden;
+
+  pointer-events: none;
+
+}
+
+ 
+
+.trophy-modal .particle {
+
+  position: absolute;
+
+  width: 3px;
+
+  height: 3px;
+
+  background: var(--color-primary-70);
+
+  border-radius: 50%;
+
+  box-shadow: var(--shadow-glow-sm);
+
+  left: calc(var(--particle-index) * 20%);
+
+  top: calc(var(--particle-index) * 15%);
+
+  animation: particleFloat calc(4s + var(--particle-index) * 0.5s) ease-in-out infinite;
+
+  animation-delay: calc(var(--particle-index) * -0.8s);
+
+  will-change: transform;
+
+}
+
+ 
+
+@keyframes particleFloat {
+
+  0%, 100% { transform: translate(0, 0); opacity: 0.4; }
+
+  50% { transform: translate(15px, -40px); opacity: 0.9; }
+
+}
+
+ 
+
+/* ============================================
+
+   MODAL INFO SECTION - 40%
+
+   ============================================ */
+
+.trophy-modal .modal-info-section {
+
+  flex: 1;
+
+  background: var(--bg-dark);
+
+  padding: var(--spacing-xl);
+
+  position: relative;
+
+  overflow-y: auto;
+
+  display: flex;
+
+  flex-direction: column;
+
+}
+
+ 
+
+.trophy-modal .modal-info-section::-webkit-scrollbar {
+
+  width: 8px;
+
+}
+
+ 
+
+.trophy-modal .modal-info-section::-webkit-scrollbar-track {
+
+  background: rgba(0, 0, 0, 0.3);
+
+}
+
+ 
+
+.trophy-modal .modal-info-section::-webkit-scrollbar-thumb {
+
+  background: var(--color-primary-30);
+
+  border-radius: var(--border-radius-sm);
+
+}
+
+ 
+
+.trophy-modal .modal-info-section::-webkit-scrollbar-thumb:hover {
+
+  background: var(--color-primary-50);
+
+}
+
+ 
+
+/* ============================================
+
+   INFO HEADER
+
+   ============================================ */
+
+.trophy-modal .info-header {
+
+  margin-bottom: var(--spacing-lg);
+
+  padding-bottom: var(--spacing-md);
+
+  border-bottom: var(--border-width-base) solid var(--color-primary-20);
+
+}
+
+ 
+
+.trophy-modal .info-category {
+
+  display: flex;
+
+  align-items: center;
+
+  gap: var(--spacing-sm);
+
+  margin-bottom: var(--spacing-sm);
+
+}
+
+ 
+
+.trophy-modal .category-badge {
+
+  font-family: var(--font-mono);
+
+  font-size: var(--font-size-xs);
+
+  color: var(--color-primary-90);
+
+  background: var(--color-primary-10);
+
+  padding: 0.4rem 0.8rem;
+
+  border: var(--border-width-thin) solid var(--color-primary-40);
+
+  text-transform: uppercase;
+
+  letter-spacing: var(--letter-spacing-wide);
+
+  clip-path: polygon(
+
+    8% 0%, 100% 0%,
+
+    100% 70%, 92% 100%,
+
+    0% 100%, 0% 30%
+
+  );
+
+}
+
+ 
+
+.trophy-modal .info-year {
+
+  font-family: var(--font-mono);
+
+  font-size: var(--font-size-base);
+
+  color: var(--color-white-50);
+
+}
+
+ 
+
+.trophy-modal .info-title {
+
+  font-family: var(--font-mono);
+
+  font-size: var(--font-size-lg);
+
+  font-weight: 700;
+
+  color: var(--color-white-95);
+
+  margin: 0;
+
+  line-height: 1.3;
+
+  text-shadow: var(--shadow-glow-md);
+
+}
+
+ 
+
+.trophy-modal .info-body {
+
+  flex: 1;
+
+  display: flex;
+
+  flex-direction: column;
+
+  gap: var(--spacing-md);
+
+}
+
+ 
+
+.trophy-modal .info-row {
+
+  display: flex;
+
+  flex-direction: column;
+
+  gap: var(--spacing-xs);
+
+}
+
+ 
+
+.trophy-modal .info-label {
+
+  font-family: var(--font-mono);
+
+  font-size: var(--font-size-xs);
+
+  color: var(--color-primary-70);
+
+  text-transform: uppercase;
+
+  letter-spacing: var(--letter-spacing-wide);
+
+}
+
+ 
+
+.trophy-modal .info-value {
+
+  font-family: var(--font-mono);
+
+  font-size: var(--font-size-md);
+
+  color: var(--color-white-90);
+
+  line-height: 1.5;
+
+}
+
+ 
+
+.trophy-modal .info-description {
+
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 0.8rem;
+
+}
+
+ 
+
+.trophy-modal .info-description p {
+
+  font-family: var(--font-mono);
+
+  font-size: var(--font-size-base);
+
+  color: var(--color-white-80);
+
+  line-height: 1.7;
+
+  margin: 0;
+
+}
+
+ 
+
+.trophy-modal .info-tags {
+
+  display: flex;
+
+  flex-wrap: wrap;
+
+  gap: 0.6rem;
+
+  margin-top: var(--spacing-sm);
+
+}
+
+ 
+
+.trophy-modal .tag {
+
+  font-family: var(--font-mono);
+
+  font-size: var(--font-size-xs);
+
+  color: var(--color-white-70);
+
+  background: var(--color-primary-05);
+
+  padding: 0.4rem 0.8rem;
+
+  border: var(--border-width-thin) solid var(--color-primary-20);
+
+  transition: all var(--transition-base);
+
+}
+
+ 
+
+.trophy-modal .tag:hover {
+
+  background: var(--color-primary-15);
+
+  border-color: var(--color-primary-50);
+
+  color: var(--color-primary-90);
+
+}
+
+ 
+
+/* ============================================
+
+   CORNER DECORATIONS
+
+   ============================================ */
+
+.trophy-modal .corner-deco {
+
+  position: absolute;
+
+  width: 30px;
+
+  height: 30px;
+
+  border: var(--border-width-base) solid var(--color-primary-30);
+
+  pointer-events: none;
+
+}
+
+ 
+
+.trophy-modal .corner-tl {
+
+  top: var(--spacing-sm);
+
+  left: var(--spacing-sm);
+
+  border-right: none;
+
+  border-bottom: none;
+
+}
+
+ 
+
+.trophy-modal .corner-tr {
+
+  top: var(--spacing-sm);
+
+  right: var(--spacing-sm);
+
+  border-left: none;
+
+  border-bottom: none;
+
+}
+
+ 
+
+.trophy-modal .corner-bl {
+
+  bottom: var(--spacing-sm);
+
+  left: var(--spacing-sm);
+
+  border-right: none;
+
+  border-top: none;
+
+}
+
+ 
+
+.trophy-modal .corner-br {
+
+  bottom: var(--spacing-sm);
+
+  right: var(--spacing-sm);
+
+  border-left: none;
+
+  border-top: none;
+
+}
+
+ 
+
+/* ============================================
+
+   RESPONSIVE
+
+   ============================================ */
+
+@media (max-width: 1024px) {
+
+  .trophy-modal .modal-layout {
+
+    flex-direction: column;
+
+  }
+
+ 
+
+  .trophy-modal .modal-trophy-section {
+
+    flex: 0 0 45%;
+
+    border-right: none;
+
+    border-bottom: var(--border-width-base) solid var(--color-primary-20);
+
+  }
+
+ 
+
+  .trophy-modal .modal-image-rotator {
+
+    width: 280px;
+
+    height: 280px;
+
+  }
+
+ 
+
+  .trophy-modal .modal-image-card {
+
+    width: 280px;
+
+    height: 280px;
+
+  }
+
+ 
+
+  .trophy-modal .modal-ground-shadow {
+
+    width: 240px;
+
+    height: 25px;
+
+  }
+
+ 
+
+  .trophy-modal .modal-info-section {
+
+    padding: var(--spacing-lg);
+
+  }
+
+}
+
+ 
+
+@media (max-width: 768px) {
+
+  .trophy-arena {
+
+    padding: var(--spacing-lg) var(--spacing-sm);
+
+  }
+
+ 
+
+  .gallery-stage {
+
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+
+    gap: var(--spacing-lg) var(--spacing-sm);
+
+    padding: var(--spacing-sm);
+
+  }
+
+ 
+
+  .trophy-scene {
+
+    height: 240px;
+
+  }
+
+ 
+
+  .trophy-arena .image-rotator {
+
+    width: 180px;
+
+    height: 180px;
+
+  }
+
+ 
+
+  .trophy-arena .image-card {
+
+    width: 180px;
+
+    height: 180px;
+
+  }
+
+ 
+
+  .trophy-arena .grafiche-logo-eye {
+
+    width: 70px;
+
+    height: 70px;
+
+  }
+
+ 
+
+  .trophy-arena .ground-shadow {
+
+    width: 150px;
+
+    height: 18px;
+
+    bottom: -15px;
+
+  }
+
+ 
+
+  .trophy-modal .modal-content {
+
+    width: 95%;
+
+    height: 90vh;
+
+  }
+
+ 
+
+  .trophy-modal .modal-close {
+
+    top: -45px;
+
+    width: 40px;
+
+    height: 40px;
+
+  }
+
+ 
+
+  .trophy-modal .modal-image-rotator {
+
+    width: 220px;
+
+    height: 220px;
+
+  }
+
+ 
+
+  .trophy-modal .modal-image-card {
+
+    width: 220px;
+
+    height: 220px;
+
+  }
+
+ 
+
+  .trophy-modal .grafiche-modal-logo-eye {
+
+    width: 110px;
+
+    height: 110px;
+
+  }
+
+ 
+
+  .trophy-modal .modal-ground-shadow {
+
+    width: 200px;
+
+    height: 22px;
+
+  }
+
+ 
+
+  .trophy-modal .modal-info-section {
+
+    padding: var(--spacing-md);
+
+  }
+
+ 
+
+  .trophy-modal .info-title {
+
+    font-size: 1.2rem;
+
+  }
+
+}
+
+ 
+
+/* ============================================
+
+   REDUCED MOTION
+
+   ============================================ */
+
+@media (prefers-reduced-motion: reduce) {
+
+  .trophy-arena *,
+
+  .trophy-arena *::before,
+
+  .trophy-arena *::after {
+
+    animation-duration: 0.01ms !important;
+
+    animation-iteration-count: 1 !important;
+
+    transition-duration: 0.01ms !important;
+
+  }
+
+}

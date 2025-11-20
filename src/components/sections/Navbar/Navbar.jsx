@@ -9,9 +9,46 @@ const Navbar = () => {
   const [isBlinking, setIsBlinking] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [selectedItem, setSelectedItem] = useState(null);
+  const [isTransitioning, setIsTransitioning] = useState(false);
 
   // Get current page from location
   const currentPage = location.pathname.replace('/vihente-app', '').replace('/', '') || 'landing';
+
+  // 🔍 DEBUG: Component mount
+  useEffect(() => {
+    console.log('%c╔═══════════════════════════════════════════════════════════════╗', 'color: #00ffff; font-weight: bold');
+    console.log('%c║  🚀 NAVBAR DEBUG MODE ACTIVATED                              ║', 'color: #00ffff; font-weight: bold');
+    console.log('%c╚═══════════════════════════════════════════════════════════════╝', 'color: #00ffff; font-weight: bold');
+    console.log('%c[NAVBAR DEBUG] Navbar mounted', 'color: #00ffff; font-weight: bold', {
+      initialPath: location.pathname,
+      initialPage: currentPage,
+      timestamp: new Date().toISOString()
+    });
+    return () => {
+      console.log('%c[NAVBAR DEBUG] Navbar unmounted', 'color: #ff0000; font-weight: bold');
+    };
+  }, []);
+
+  // 🔍 DEBUG: Monitor location changes
+  useEffect(() => {
+    console.log('%c[NAVBAR DEBUG] 🌐 Location changed', 'color: #00ff00; font-weight: bold; font-size: 16px', {
+      pathname: location.pathname,
+      currentPage,
+      timestamp: new Date().toISOString(),
+      performanceTime: performance.now()
+    });
+    console.log('%c━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━', 'color: #00ff00');
+  }, [location.pathname, currentPage]);
+
+  // 🔍 DEBUG: Monitor state changes
+  useEffect(() => {
+    console.log('%c[NAVBAR DEBUG] State changed', 'color: #00ffff; font-weight: bold', {
+      mobileMenuOpen,
+      selectedItem,
+      isTransitioning,
+      timestamp: new Date().toISOString()
+    });
+  }, [mobileMenuOpen, selectedItem, isTransitioning]);
 
   // Detect scroll to add background to navbar
   useEffect(() => {
@@ -44,7 +81,7 @@ const Navbar = () => {
       let newY = 50 + Math.sin(angle) * maxRadiusY;
 
       const distanceFromCenter = Math.sqrt(
-        Math.pow((newX - 50) / maxRadiusX, 2) + 
+        Math.pow((newX - 50) / maxRadiusX, 2) +
         Math.pow((newY - 50) / maxRadiusY, 2)
       );
 
@@ -103,30 +140,162 @@ const Navbar = () => {
 
   // Mobile menu navigation items
   const navItems = [
-    { id: 'landing', label: 'Home', angle: 0, path: '/' },
-    { id: 'services', label: 'Servizi', angle: 72, path: '/services' },
-    { id: 'portfolio', label: 'Portfolio', angle: 144, path: '/portfolio' },
-    { id: 'storia', label: 'La Mia Storia', angle: 216, path: '/storia' },
-    { id: 'contatti', label: 'Contatti', angle: 288, path: '/contatti' },
+    {
+      id: 'landing',
+      label: 'Home',
+      path: '/',
+      number: '01'
+    },
+    {
+      id: 'services',
+      label: 'Servizi',
+      path: '/services',
+      number: '02'
+    },
+    {
+      id: 'portfolio',
+      label: 'Portfolio',
+      path: '/portfolio',
+      number: '03'
+    },
+    {
+      id: 'storia',
+      label: 'La Mia Storia',
+      path: '/storia',
+      number: '04'
+    },
+    {
+      id: 'contatti',
+      label: 'Contatti',
+      path: '/contatti',
+      number: '05'
+    },
   ];
 
+  // Improved transition with proper navigation timing
+  const performTransition = (path) => {
+    const startTime = performance.now();
+    const startTimestamp = new Date().toISOString();
+
+    console.log('%c[NAVBAR DEBUG] 🚀 performTransition START', 'color: #ff00ff; font-weight: bold; font-size: 14px', {
+      targetPath: path,
+      currentPath: location.pathname,
+      startTimestamp,
+      performanceTime: startTime
+    });
+
+    setIsTransitioning(true);
+    console.log('%c[NAVBAR DEBUG] ⏳ isTransitioning = true', 'color: #ffaa00', {
+      time: `${(performance.now() - startTime).toFixed(2)}ms`
+    });
+
+    // Navigate after a brief moment
+    setTimeout(() => {
+      const navigateTime = performance.now();
+      console.log('%c[NAVBAR DEBUG] 📍 CALLING navigate()', 'color: #ff0000; font-weight: bold; font-size: 14px', {
+        path,
+        currentPath: location.pathname,
+        time: `${(navigateTime - startTime).toFixed(2)}ms`
+      });
+
+      navigate(path);
+
+      console.log('%c[NAVBAR DEBUG] ✅ navigate() CALLED', 'color: #00ff00; font-weight: bold', {
+        path,
+        time: `${(performance.now() - startTime).toFixed(2)}ms`
+      });
+
+      window.scrollTo({ top: 0, behavior: 'instant' });
+      console.log('%c[NAVBAR DEBUG] 📜 Scrolled to top', 'color: #00aaff', {
+        time: `${(performance.now() - startTime).toFixed(2)}ms`
+      });
+    }, 50);
+
+    // Reset transition state after animation completes
+    setTimeout(() => {
+      setIsTransitioning(false);
+      console.log('%c[NAVBAR DEBUG] ✨ isTransitioning = false', 'color: #ffaa00', {
+        time: `${(performance.now() - startTime).toFixed(2)}ms`
+      });
+      console.log('%c[NAVBAR DEBUG] 🏁 performTransition END', 'color: #ff00ff; font-weight: bold; font-size: 14px', {
+        totalTime: `${(performance.now() - startTime).toFixed(2)}ms`,
+        endTimestamp: new Date().toISOString()
+      });
+    }, 800);
+  };
+
+  const handleDesktopNavClick = (e, path) => {
+    e.preventDefault();
+    console.log('%c[NAVBAR DEBUG] 🖱️ Desktop nav clicked', 'color: #00ff88; font-weight: bold', {
+      path,
+      isAlreadyActive: isActive(path),
+      currentPath: location.pathname
+    });
+    if (isActive(path)) return;
+    performTransition(path);
+  };
+
   const handleMobileItemClick = (item) => {
+    const clickTime = performance.now();
+    console.log('%c[NAVBAR DEBUG] 👆 Mobile item clicked', 'color: #00ffff; font-weight: bold; font-size: 14px', {
+      item: item.label,
+      itemId: item.id,
+      itemPath: item.path,
+      currentSelectedItem: selectedItem,
+      isSecondClick: selectedItem === item.id,
+      currentPath: location.pathname,
+      timestamp: new Date().toISOString()
+    });
+
     if (selectedItem === item.id) {
-      // Second click - navigate
-      navigate(item.path);
+      console.log('%c[NAVBAR DEBUG] 🎯 SECOND CLICK - Starting navigation', 'color: #ff00ff; font-weight: bold; font-size: 14px', {
+        from: location.pathname,
+        to: item.path,
+        time: `${clickTime.toFixed(2)}ms`
+      });
+
+      // Second click - use the same performTransition that desktop uses
+      performTransition(item.path);
+
+      // Close menu separately
       setMobileMenuOpen(false);
+      console.log('%c[NAVBAR DEBUG] 🚪 Closing mobile menu', 'color: #ffaa00', {
+        time: `${(performance.now() - clickTime).toFixed(2)}ms`
+      });
+
       setSelectedItem(null);
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+      console.log('%c[NAVBAR DEBUG] 🔄 Reset selectedItem', 'color: #ffaa00', {
+        time: `${(performance.now() - clickTime).toFixed(2)}ms`
+      });
     } else {
       // First click - select
+      console.log('%c[NAVBAR DEBUG] ⭐ FIRST CLICK - Selecting item', 'color: #ffff00; font-weight: bold', {
+        itemId: item.id,
+        itemLabel: item.label
+      });
       setSelectedItem(item.id);
+    }
+  };
+
+  const closeMobileMenu = () => {
+    setMobileMenuOpen(false);
+    setSelectedItem(null);
+  };
+
+  const handleLogoClick = (e) => {
+    if (mobileMenuOpen) {
+      e.preventDefault();
+      closeMobileMenu();
+    } else if (!isActive('/')) {
+      e.preventDefault();
+      performTransition('/');
     }
   };
 
   // Helper to check if link is active
   const isActive = (path) => {
     if (path === '/') {
-      return location.pathname === '/vihente-app' || location.pathname === '/vihente-app/';
+      return location.pathname === '/vihente-app' || location.pathname === '/vihente-app/' || location.pathname === '/';
     }
     return location.pathname.includes(path);
   };
@@ -144,8 +313,9 @@ const Navbar = () => {
             to="/"
             className={`navbar-logo ${mobileMenuOpen ? 'menu-open' : ''}`}
             aria-label="Torna alla home"
+            onClick={handleLogoClick}
           >
-            <svg className="logo-eye" viewBox="0 0 100 100" width="150" height="150">
+            <svg className="logo-eye" viewBox="0 0 100 100" width="150" height="auto">
               <defs>
                 <filter id="eyeGlowNav">
                   <feGaussianBlur stdDeviation="1.5" result="coloredBlur"/>
@@ -154,12 +324,12 @@ const Navbar = () => {
                     <feMergeNode in="SourceGraphic"/>
                   </feMerge>
                 </filter>
-                
+
                 <clipPath id="eyeContourClipNav">
                   <path d="M 35 50 C 39 43, 44 40, 50 40 C 56 40, 61 43, 65 50 C 61 57, 56 60, 50 60 C 44 60, 39 57, 35 50 Z"/>
                 </clipPath>
               </defs>
-              
+
               {/* Eye shape - outer contour */}
               <path
                 d="M 35 50 C 39 43, 44 40, 50 40 C 56 40, 61 43, 65 50 C 61 57, 56 60, 50 60 C 44 60, 39 57, 35 50 Z"
@@ -174,9 +344,9 @@ const Navbar = () => {
                   transition: 'opacity 0.1s ease-in-out'
                 }}
               />
-              
+
               {/* Pupil group - clipped by eye contour */}
-              <g 
+              <g
                 clipPath="url(#eyeContourClipNav)"
                 style={{
                   opacity: isBlinking ? 0 : 1,
@@ -184,10 +354,10 @@ const Navbar = () => {
                 }}
               >
                 {/* Outer circle */}
-                <circle 
-                  cx={pupilPosition.x} 
-                  cy={pupilPosition.y} 
-                  r="8" 
+                <circle
+                  cx={pupilPosition.x}
+                  cy={pupilPosition.y}
+                  r="8"
                   fill="none"
                   stroke="rgba(0, 255, 255, 0.95)"
                   strokeWidth="1"
@@ -196,12 +366,12 @@ const Navbar = () => {
                     transition: 'cx 0.3s ease-out, cy 0.3s ease-out'
                   }}
                 />
-                
+
                 {/* Inner pupil */}
-                <circle 
-                  cx={pupilPosition.x} 
-                  cy={pupilPosition.y} 
-                  r="3.5" 
+                <circle
+                  cx={pupilPosition.x}
+                  cy={pupilPosition.y}
+                  r="3.5"
                   fill="none"
                   stroke="rgba(0, 255, 255, 0.95)"
                   strokeWidth="0.8"
@@ -221,36 +391,40 @@ const Navbar = () => {
               className={`nav-link ${isActive('/services') ? 'active' : ''}`}
               aria-label="Vai alla pagina Servizi"
               aria-current={isActive('/services') ? 'page' : undefined}
+              onClick={(e) => handleDesktopNavClick(e, '/services')}
             >
               <span className="nav-link-text">Servizi</span>
               <div className="nav-link-underline" />
             </Link>
-            
+
             <Link
               to="/portfolio"
               className={`nav-link ${isActive('/portfolio') ? 'active' : ''}`}
               aria-label="Vai alla pagina Portfolio"
               aria-current={isActive('/portfolio') ? 'page' : undefined}
+              onClick={(e) => handleDesktopNavClick(e, '/portfolio')}
             >
               <span className="nav-link-text">Portfolio</span>
               <div className="nav-link-underline" />
             </Link>
-            
+
             <Link
               to="/storia"
               className={`nav-link ${isActive('/storia') ? 'active' : ''}`}
               aria-label="Vai alla pagina La Mia Storia"
               aria-current={isActive('/storia') ? 'page' : undefined}
+              onClick={(e) => handleDesktopNavClick(e, '/storia')}
             >
               <span className="nav-link-text">La Mia Storia</span>
               <div className="nav-link-underline" />
             </Link>
-            
+
             <Link
               to="/contatti"
               className={`nav-link ${isActive('/contatti') ? 'active' : ''}`}
               aria-label="Vai alla pagina Contatti"
               aria-current={isActive('/contatti') ? 'page' : undefined}
+              onClick={(e) => handleDesktopNavClick(e, '/contatti')}
             >
               <span className="nav-link-text">Contatti</span>
               <div className="nav-link-underline" />
@@ -307,7 +481,6 @@ const Navbar = () => {
             min-height: 70px;
           }
 
-          /* Logo - Eye Icon properly aligned */
           .navbar-logo {
             position: relative;
             cursor: pointer;
@@ -322,7 +495,7 @@ const Navbar = () => {
             text-decoration: none;
           }
 
-          /* When mobile menu is open, move eye to center and hide navbar */
+          /* Mobile menu: logo-icon ingrandita in alto a sinistra */
           @media (max-width: 768px) {
             .navbar.mobile-menu-active {
               background: transparent;
@@ -337,19 +510,16 @@ const Navbar = () => {
 
             .navbar-logo.menu-open {
               position: fixed;
-              top: 50%;
-              left: 50%;
-              transform: translate(-50%, -50%);
+              top: 2rem;
+              left: 2rem;
               margin-left: 0;
-              z-index: 1001;
+              z-index: 1101;
               height: auto;
             }
 
             .navbar-logo.menu-open .logo-eye {
-              position: relative;
-              transform: none;
-              width: 150px;
-              height: 150px;
+              width: 140px;
+              height: 140px;
             }
           }
 
@@ -388,7 +558,6 @@ const Navbar = () => {
             }
           }
 
-          /* Navigation Links */
           .navbar-links {
             flex: 1;
             display: flex;
@@ -464,8 +633,8 @@ const Navbar = () => {
             left: 0;
             width: 0;
             height: 2px;
-            background: linear-gradient(90deg, 
-              rgba(6, 182, 212, 0.8), 
+            background: linear-gradient(90deg,
+              rgba(6, 182, 212, 0.8),
               rgba(103, 232, 249, 1)
             );
             transition: width 0.3s ease;
@@ -477,7 +646,6 @@ const Navbar = () => {
             width: 100%;
           }
 
-          /* Availability Badge with Old TV Flickering */
           .availability-badge {
             display: flex;
             align-items: center;
@@ -555,11 +723,11 @@ const Navbar = () => {
           }
 
           @keyframes pulse {
-            0%, 100% { 
+            0%, 100% {
               opacity: 1;
               transform: scale(1);
             }
-            50% { 
+            50% {
               opacity: 0.7;
               transform: scale(0.9);
             }
@@ -610,7 +778,6 @@ const Navbar = () => {
             }
           }
 
-          /* HAMBURGER BUTTON */
           .hamburger-button {
             display: none;
             flex-direction: column;
@@ -645,7 +812,6 @@ const Navbar = () => {
             transform: rotate(-45deg) translate(8px, -8px);
           }
 
-          /* Desktop/Mobile visibility toggles */
           .desktop-only {
             display: flex;
           }
@@ -654,7 +820,6 @@ const Navbar = () => {
             display: none;
           }
 
-          /* MOBILE RESPONSIVE */
           @media (max-width: 1024px) {
             .navbar-container {
               padding: 1rem 1.5rem;
@@ -680,7 +845,7 @@ const Navbar = () => {
             .status-text {
               font-size: 0.8rem;
             }
-            
+
             .logo-eye {
               width: 120px;
               height: 120px;
@@ -724,6 +889,16 @@ const Navbar = () => {
               width: 80px;
               height: 80px;
             }
+
+            .navbar-logo.menu-open {
+              top: 1.5rem;
+              left: 1rem;
+            }
+
+            .navbar-logo.menu-open .logo-eye {
+              width: 100px;
+              height: 100px;
+            }
           }
 
           @media (max-width: 480px) {
@@ -735,118 +910,636 @@ const Navbar = () => {
               width: 70px;
               height: 70px;
             }
+
+            .navbar-logo.menu-open .logo-eye {
+              width: 80px;
+              height: 80px;
+            }
           }
         `}</style>
       </nav>
 
-      {/* MOBILE CIRCULAR MENU */}
+      {/* PERSONA-STYLE MENU WITH SITE COLORS */}
       <div
-        className={`mobile-menu-overlay ${mobileMenuOpen ? 'active' : ''}`}
-        onClick={(e) => {
-          if (e.target.classList.contains('mobile-menu-overlay')) {
-            setMobileMenuOpen(false);
-            setSelectedItem(null);
-          }
-        }}
+        className={`p4-menu-overlay ${mobileMenuOpen ? 'active' : ''}`}
         role="dialog"
         aria-label="Menu di navigazione mobile"
         aria-modal="true"
       >
-        <div className="mobile-menu-content">
-          {/* Rotating Navigation Items */}
-          {navItems.map((item) => {
-            const radius = 140;
-            const angleRad = (item.angle * Math.PI) / 180;
-            const x = Math.cos(angleRad) * radius;
-            const y = Math.sin(angleRad) * radius;
-            const isSelected = selectedItem === item.id;
-            const scale = isSelected ? 1.3 : 1;
-
-            return (
-              <button
-                key={item.id}
-                onClick={() => handleMobileItemClick(item)}
-                className="mobile-nav-item"
-                aria-label={`Vai a ${item.label}`}
-                aria-current={currentPage === item.id ? 'page' : undefined}
-                style={{
-                  transform: `translate(${x}px, ${y}px) scale(${scale})`,
-                  fontSize: isSelected ? '1.2rem' : '1rem',
-                  textShadow: isSelected 
-                    ? '0 0 20px rgba(0, 255, 255, 0.8), 0 0 40px rgba(0, 255, 255, 0.4)' 
-                    : '0 0 10px rgba(0, 255, 255, 0.5)',
-                  opacity: isSelected ? 1 : 0.7,
-                }}
-              >
-                {item.label}
-              </button>
-            );
-          })}
-
-          {/* Instruction text */}
-          <div className="mobile-menu-instruction">
-            <p>
-              {selectedItem ? 'Premi di nuovo per navigare' : 'Premi per selezionare'}
-            </p>
+        {/* Menu Header - SOLO SCRITTA IN ALTO A DESTRA */}
+        <div className="menu-header">
+          {/* Japanese Name Display - IN ALTO A DESTRA */}
+          <div className="japanese-name-display">
+            <div className="name-jp">ブルノ</div>
           </div>
         </div>
 
+        {/* Subtle background pattern */}
+        <div className="menu-bg-pattern" />
+
+        {/* Menu Items Container */}
+        <div className="p4-menu-content">
+          {navItems.map((item, index) => {
+            const isSelected = selectedItem === item.id;
+            const isCurrent = currentPage === item.id;
+
+            return (
+              <div
+                key={item.id}
+                onClick={(e) => {
+                  console.log('%c[NAVBAR DEBUG] 🖱️ DIV WRAPPER CLICKED', 'color: #ff00ff; font-weight: bold; font-size: 16px', {
+                    item: item.label,
+                    itemId: item.id,
+                    target: e.target,
+                    currentTarget: e.currentTarget
+                  });
+                  handleMobileItemClick(item);
+                }}
+                onPointerDown={(e) => {
+                  console.log('%c[NAVBAR DEBUG] 👉 POINTER DOWN', 'color: #ff8800; font-weight: bold', {
+                    item: item.label,
+                    pointerType: e.pointerType
+                  });
+                }}
+                onTouchStart={(e) => {
+                  console.log('%c[NAVBAR DEBUG] 👆 TOUCH START', 'color: #ffff00; font-weight: bold', {
+                    item: item.label,
+                    touches: e.touches.length
+                  });
+                }}
+                className={`p4-menu-item ${isSelected ? 'selected' : ''} ${isCurrent ? 'current' : ''}`}
+                style={{ animationDelay: `${index * 0.08}s` }}
+                role="button"
+                tabIndex={0}
+                aria-label={`Vai a ${item.label}`}
+                aria-current={isCurrent ? 'page' : undefined}
+              >
+                {/* Number - directly in wrapper */}
+                <span className="item-number">{item.number}</span>
+
+                {/* Label - directly in wrapper */}
+                <span className="item-label">{item.label}</span>
+
+                {/* Arrow - directly in wrapper */}
+                <span className="item-arrow">▶</span>
+              </div>
+            );
+          })}
+        </div>
+
+        {/* Bottom Action Text */}
+        <div className="p4-action-text">
+          <div className="action-line" />
+          <p>{selectedItem ? 'TAP AGAIN TO CONFIRM' : 'SELECT YOUR DESTINATION'}</p>
+          <div className="action-line" />
+        </div>
+
         <style>{`
-          .mobile-menu-overlay {
+          /* Main Overlay */
+          .p4-menu-overlay {
             position: fixed;
             inset: 0;
             z-index: 999;
-            background: rgba(0, 0, 0, 0.95);
-            backdrop-filter: blur(10px);
+            background: #000;
             display: none;
-            align-items: center;
-            justify-content: center;
+            opacity: 0;
             transition: opacity 0.3s ease;
+            overflow: hidden;
           }
 
-          .mobile-menu-overlay.active {
-            display: flex;
+          .p4-menu-overlay.active {
+            display: block;
+            opacity: 1;
           }
 
-          .mobile-menu-content {
-            position: relative;
-            width: 100%;
-            height: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-          }
-
-          .mobile-nav-item {
+          /* Menu Header - SOLO SCRITTA A DESTRA */
+          .menu-header {
             position: absolute;
+            top: 2rem;
+            right: 2rem;
+            z-index: 1101;
+          }
+
+          /* Japanese Name Display - IN ALTO A DESTRA */
+          .japanese-name-display {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+          }
+
+          .name-jp {
             font-family: 'Share Tech Mono', monospace;
-            color: rgba(0, 255, 255, 0.95);
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            background: none;
-            border: none;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            white-space: nowrap;
-            padding: 0.5rem 1rem;
-            z-index: 1;
+            font-size: 3.5rem;
+            font-weight: 900;
+            color: rgba(0, 255, 255, 1);
+            text-shadow:
+              0 0 20px rgba(0, 255, 255, 0.8),
+              0 0 40px rgba(0, 255, 255, 0.4);
+            line-height: 1;
+            letter-spacing: 0.1em;
+            animation: nameGlow 3s ease-in-out infinite;
           }
 
-          .mobile-menu-instruction {
+          @keyframes nameGlow {
+            0%, 100% {
+              text-shadow:
+                0 0 20px rgba(0, 255, 255, 0.8),
+                0 0 40px rgba(0, 255, 255, 0.4);
+            }
+            50% {
+              text-shadow:
+                0 0 30px rgba(0, 255, 255, 1),
+                0 0 60px rgba(0, 255, 255, 0.6);
+            }
+          }
+
+          /* Subtle Background Pattern */
+          .menu-bg-pattern {
             position: absolute;
-            bottom: 2rem;
+            inset: 0;
+            background:
+              repeating-linear-gradient(
+                0deg,
+                transparent 0px,
+                transparent 3px,
+                rgba(0, 255, 255, 0.02) 3px,
+                rgba(0, 255, 255, 0.02) 4px
+              );
+            pointer-events: none;
+          }
+
+          /* Menu Content */
+          .p4-menu-content {
+            position: absolute;
+            top: 50%;
             left: 0;
             right: 0;
-            text-align: center;
+            transform: translateY(-50%);
+            padding: 2rem 1.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            max-height: calc(100vh - 260px);
+            overflow-y: auto;
+            margin-top: 25px;
           }
 
-          .mobile-menu-instruction p {
+          .p4-menu-content::-webkit-scrollbar {
+            width: 6px;
+          }
+
+          .p4-menu-content::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.3);
+          }
+
+          .p4-menu-content::-webkit-scrollbar-thumb {
+            background: rgba(0, 255, 255, 0.5);
+            border-radius: 3px;
+          }
+
+          /* Menu Item - Persona Style with Site Colors */
+          .p4-menu-item {
+            position: relative;
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            padding: 1.5rem 2rem;
+            background: rgba(0, 10, 15, 0.8);
+            border: none;
+            clip-path: polygon(
+              12px 0,
+              100% 0,
+              100% calc(100% - 12px),
+              calc(100% - 12px) 100%,
+              0 100%,
+              0 12px
+            );
+            cursor: pointer;
+            overflow: hidden;
+            opacity: 0;
+            transform: translateX(-100%);
+            animation: slideInFromLeft 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+          }
+
+          @keyframes slideInFromLeft {
+            to {
+              opacity: 1;
+              transform: translateX(0);
+            }
+          }
+
+          .p4-menu-item:active {
+            transform: scale(0.98);
+          }
+
+          /* Background Slide Effect - Using ::before pseudo-element */
+          .p4-menu-item::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(90deg,
+              rgba(0, 255, 255, 0) 0%,
+              rgba(0, 255, 255, 0.1) 100%
+            );
+            transform: translateX(-100%);
+            transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            pointer-events: none;
+            z-index: 0;
+          }
+
+          .p4-menu-item:hover::before,
+          .p4-menu-item.current::before {
+            transform: translateX(0);
+          }
+
+          /* Skewed Background for Selected State - Using ::after pseudo-element */
+          .p4-menu-item::after {
+            content: '';
+            position: absolute;
+            inset: -2px;
+            background: rgba(0, 255, 255, 0.15);
+            transform: skewX(-2deg) scaleX(0);
+            transform-origin: left;
+            transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            pointer-events: none;
+            z-index: 0;
+          }
+
+          .p4-menu-item.selected::after {
+            transform: skewX(-2deg) scaleX(1);
+          }
+
+          /* Number - Large and Bold */
+          .item-number {
+            position: relative;
+            z-index: 1;
             font-family: 'Share Tech Mono', monospace;
+            font-size: 3rem;
+            font-weight: 900;
+            color: rgba(0, 255, 255, 0.3);
+            line-height: 1;
+            min-width: 80px;
+            text-align: center;
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.5);
+            pointer-events: none;
+          }
+
+          .p4-menu-item:hover .item-number,
+          .p4-menu-item.current .item-number {
             color: rgba(0, 255, 255, 0.6);
-            font-size: 0.9rem;
+            transform: scale(1.1);
+          }
+
+          .p4-menu-item.selected .item-number {
+            color: rgba(0, 255, 255, 1);
+            text-shadow:
+              0 0 20px rgba(0, 255, 255, 0.8),
+              2px 2px 0 rgba(0, 0, 0, 0.5);
+            transform: scale(1.15) translateX(-5px);
+          }
+
+          /* Label - Bold Typography */
+          .item-label {
+            position: relative;
+            z-index: 1;
+            flex: 1;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: rgba(255, 255, 255, 0.9);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            line-height: 1.2;
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+            pointer-events: none;
+          }
+
+          .p4-menu-item:hover .item-label,
+          .p4-menu-item.current .item-label {
+            color: rgba(0, 255, 255, 0.95);
+            transform: translateX(5px);
+          }
+
+          .p4-menu-item.selected .item-label {
+            color: #fff;
+            text-shadow:
+              0 0 10px rgba(0, 255, 255, 0.8),
+              2px 2px 4px rgba(0, 0, 0, 0.7);
+            transform: translateX(10px) scale(1.05);
+          }
+
+          /* Arrow Indicator */
+          .item-arrow {
+            position: relative;
+            z-index: 1;
+            font-size: 1.5rem;
+            color: rgba(0, 255, 255, 0.5);
+            transform: translateX(-10px);
+            opacity: 0;
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            pointer-events: none;
+          }
+
+          .p4-menu-item:hover .item-arrow,
+          .p4-menu-item.current .item-arrow {
+            opacity: 0.7;
+            transform: translateX(0);
+          }
+
+          .p4-menu-item.selected .item-arrow {
+            opacity: 1;
+            color: rgba(0, 255, 255, 1);
+            transform: translateX(5px);
+            animation: arrowPulse 0.6s ease-in-out infinite;
+          }
+
+          @keyframes arrowPulse {
+            0%, 100% {
+              transform: translateX(5px);
+            }
+            50% {
+              transform: translateX(10px);
+            }
+          }
+
+          /* Action Text */
+          .p4-action-text {
+            position: absolute;
+            bottom: 2.5rem;
+            left: 0;
+            right: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+            padding: 0 2rem;
+          }
+
+          .action-line {
+            flex: 1;
+            height: 2px;
+            background: linear-gradient(90deg,
+              transparent 0%,
+              rgba(0, 255, 255, 0.5) 50%,
+              transparent 100%
+            );
+          }
+
+          .p4-action-text p {
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: rgba(0, 255, 255, 0.8);
+            letter-spacing: 0.15em;
+            margin: 0;
+            white-space: nowrap;
+            text-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+          }
+
+          /* Responsive */
+          @media (max-width: 480px) {
+            .menu-header {
+              top: 1.5rem;
+              right: 1rem;
+            }
+
+            .name-jp {
+              font-size: 2.5rem;
+            }
+
+            .p4-menu-content {
+              padding: 1.5rem 1rem;
+              gap: 0.75rem;
+              max-height: calc(100vh - 220px);
+            }
+
+            .p4-menu-item {
+              padding: 1.25rem 1.5rem;
+              gap: 1rem;
+            }
+
+            .item-number {
+              font-size: 2.5rem;
+              min-width: 70px;
+            }
+
+            .item-label {
+              font-size: 1.1rem;
+            }
+
+            .item-arrow {
+              font-size: 1.25rem;
+            }
+
+            .p4-action-text p {
+              font-size: 0.7rem;
+            }
+          }
+
+          @media (max-width: 360px) {
+            .name-jp {
+              font-size: 2rem;
+            }
+
+            .p4-menu-item {
+              padding: 1rem 1.25rem;
+            }
+
+            .item-number {
+              font-size: 2rem;
+              min-width: 60px;
+            }
+
+            .item-label {
+              font-size: 1rem;
+            }
+          }
+
+          @media (max-width: 700px) {
+            .menu-header {
+              top: 1.25rem;
+            }
+
+            .name-jp {
+              font-size: 2.5rem;
+            }
+
+            .p4-menu-content {
+              gap: 0.5rem;
+              max-height: calc(100vh - 200px);
+            }
+
+            .p4-menu-item {
+              padding: 1rem 1.5rem;
+            }
+
+            .item-number {
+              font-size: 2.25rem;
+            }
+
+            .item-label {
+              font-size: 1.1rem;
+            }
           }
         `}</style>
       </div>
+
+      {/* TRANSIZIONE LEGGERA E SFUMATA - CYBER-TECH */}
+      {isTransitioning && (
+        <div className="page-transition-container">
+          {/* Overlay principale con fade */}
+          <div className="transition-overlay"></div>
+
+          {/* Linee orizzontali sfumate */}
+          <div className="transition-lines"></div>
+
+          {/* Glitch leggero */}
+          <div className="transition-glitch"></div>
+
+          <style>{`
+            .page-transition-container {
+              position: fixed;
+              top: 90px;
+              left: 0;
+              right: 0;
+              bottom: 0;
+              z-index: 9999;
+              pointer-events: none;
+              overflow: hidden;
+            }
+
+            @media (max-width: 768px) {
+              .page-transition-container {
+                top: 0;
+              }
+            }
+
+            /* Overlay con fade sfumato */
+            .transition-overlay {
+              position: absolute;
+              inset: 0;
+              background: radial-gradient(
+                ellipse at center,
+                rgba(0, 0, 0, 0.95) 0%,
+                rgba(0, 10, 15, 0.98) 50%,
+                #000 100%
+              );
+              opacity: 0;
+              animation: overlayFade 0.8s ease-in-out forwards;
+            }
+
+            @keyframes overlayFade {
+              0% {
+                opacity: 0;
+              }
+              40% {
+                opacity: 1;
+              }
+              60% {
+                opacity: 1;
+              }
+              100% {
+                opacity: 0;
+              }
+            }
+
+            /* Linee orizzontali sfumate */
+            .transition-lines {
+              position: absolute;
+              inset: 0;
+              background: repeating-linear-gradient(
+                0deg,
+                transparent 0px,
+                transparent 3px,
+                rgba(0, 255, 255, 0.15) 3px,
+                rgba(0, 255, 255, 0.15) 4px,
+                transparent 4px,
+                transparent 8px
+              );
+              opacity: 0;
+              animation: linesFade 0.8s ease-in-out forwards;
+            }
+
+            @keyframes linesFade {
+              0%, 100% {
+                opacity: 0;
+                transform: translateY(0);
+              }
+              30% {
+                opacity: 0.6;
+                transform: translateY(10px);
+              }
+              70% {
+                opacity: 0.6;
+                transform: translateY(-10px);
+              }
+            }
+
+            /* Glitch leggero sui bordi */
+            .transition-glitch {
+              position: absolute;
+              inset: 0;
+              opacity: 0;
+              animation: glitchFlash 0.8s ease-in-out forwards;
+            }
+
+            .transition-glitch::before,
+            .transition-glitch::after {
+              content: '';
+              position: absolute;
+              inset: 0;
+              background: linear-gradient(
+                90deg,
+                transparent 0%,
+                rgba(0, 255, 255, 0.1) 20%,
+                transparent 40%,
+                transparent 60%,
+                rgba(0, 255, 255, 0.1) 80%,
+                transparent 100%
+              );
+            }
+
+            .transition-glitch::before {
+              animation: glitchSlide1 0.8s ease-in-out forwards;
+            }
+
+            .transition-glitch::after {
+              animation: glitchSlide2 0.8s ease-in-out forwards;
+              animation-delay: 0.1s;
+            }
+
+            @keyframes glitchFlash {
+              0%, 100% {
+                opacity: 0;
+              }
+              40%, 60% {
+                opacity: 1;
+              }
+            }
+
+            @keyframes glitchSlide1 {
+              0%, 100% {
+                transform: translateX(-100%);
+              }
+              50% {
+                transform: translateX(100%);
+              }
+            }
+
+            @keyframes glitchSlide2 {
+              0%, 100% {
+                transform: translateX(100%);
+              }
+              50% {
+                transform: translateX(-100%);
+              }
+            }
+          `}</style>
+        </div>
+      )}
     </>
   );
 };

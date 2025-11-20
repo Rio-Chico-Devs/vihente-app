@@ -1,0 +1,97 @@
+.theme-toggle {
+  position: fixed;
+  bottom: var(--spacing-lg);
+  right: var(--spacing-lg);
+  z-index: var(--z-theme-toggle);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-xs);
+  background: var(--bg-dark);
+  border: var(--border-width-base) solid var(--border-glow);
+  padding: var(--spacing-sm);
+  border-radius: 50px;
+  cursor: pointer;
+  transition: all var(--transition-base);
+  box-shadow: var(--shadow-glow-md);
+  backdrop-filter: var(--blur-glass);
+}
+
+.theme-toggle:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-glow-lg);
+  border-color: var(--color-primary);
+}
+
+.toggle-track {
+  width: 50px;
+  height: 50px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.toggle-thumb {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all var(--transition-theme);
+  color: var(--color-primary);
+}
+
+.toggle-thumb.dark {
+  background: radial-gradient(circle, var(--color-primary-10) 0%, transparent 70%);
+}
+
+.toggle-thumb.light {
+  background: radial-gradient(circle, var(--color-primary-20) 0%, transparent 70%);
+}
+
+.theme-icon {
+  width: 28px;
+  height: 28px;
+  color: var(--color-primary);
+  filter: drop-shadow(var(--shadow-glow-sm));
+  transition: all var(--transition-theme);
+}
+
+.theme-toggle:hover .theme-icon {
+  transform: rotate(15deg) scale(1.1);
+  filter: drop-shadow(var(--shadow-glow-md));
+}
+
+.theme-label {
+  font-family: var(--font-mono);
+  font-size: var(--font-size-xs);
+  color: var(--color-primary);
+  text-transform: uppercase;
+  letter-spacing: var(--letter-spacing-wide);
+  font-weight: 600;
+  transition: color var(--transition-theme);
+}
+
+@media (max-width: 768px) {
+  .theme-toggle {
+    bottom: var(--spacing-sm);
+    right: var(--spacing-sm);
+    padding: var(--spacing-xs);
+  }
+
+  .toggle-track {
+    width: 40px;
+    height: 40px;
+  }
+
+  .theme-icon {
+    width: 22px;
+    height: 22px;
+  }
+
+  .theme-label {
+    font-size: 0.65rem;
+  }
+}
