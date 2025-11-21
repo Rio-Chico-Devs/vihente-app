@@ -5,7 +5,7 @@ const NavigationDebugPanel = () => {
   const location = useLocation();
   const [logs, setLogs] = useState([]);
   const [isMinimized, setIsMinimized] = useState(false);
-  const [ setRenderStart] = useState(null);
+  const [renderStart, setRenderStart] = useState(null);
   const [renderTime, setRenderTime] = useState(0);
   const [loadingComponent, setLoadingComponent] = useState(null);
 

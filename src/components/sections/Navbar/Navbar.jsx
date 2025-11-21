@@ -315,7 +315,7 @@ const Navbar = () => {
             aria-label="Torna alla home"
             onClick={handleLogoClick}
           >
-            <svg className="logo-eye" viewBox="0 0 100 100" width="150" height="auto">
+            <svg className="logo-eye" viewBox="0 0 100 100" width="150">
               <defs>
                 <filter id="eyeGlowNav">
                   <feGaussianBlur stdDeviation="1.5" result="coloredBlur"/>

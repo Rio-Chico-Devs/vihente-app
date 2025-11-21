@@ -2,7 +2,7 @@
   position: fixed;
   bottom: var(--spacing-lg);
   right: var(--spacing-lg);
-  z-index: var(--z-theme-toggle);
+  z-index: 9999;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -14,7 +14,29 @@
   cursor: pointer;
   transition: all var(--transition-base);
   box-shadow: var(--shadow-glow-md);
-  backdrop-filter: var(--blur-glass);
+}
+
+/* Only apply blur in dark mode */
+[data-theme="dark"] .theme-toggle {
+  backdrop-filter: blur(10px);
+}
+
+/* Light mode specific styling - Halo 4 Electric Blue */
+[data-theme="light"] .theme-toggle {
+  background: rgba(10, 20, 32, 0.92);
+  border-color: rgba(0, 180, 255, 0.5);
+  backdrop-filter: blur(12px);
+  box-shadow: 0 0 15px rgba(0, 180, 255, 0.3),
+              0 0 30px rgba(0, 180, 255, 0.15),
+              inset 0 0 20px rgba(0, 180, 255, 0.05);
+}
+
+[data-theme="light"] .theme-toggle:hover {
+  background: rgba(13, 26, 40, 0.95);
+  border-color: rgba(0, 180, 255, 0.8);
+  box-shadow: 0 0 20px rgba(0, 180, 255, 0.5),
+              0 0 40px rgba(0, 180, 255, 0.25),
+              inset 0 0 25px rgba(0, 180, 255, 0.08);
 }
 
 .theme-toggle:hover {
