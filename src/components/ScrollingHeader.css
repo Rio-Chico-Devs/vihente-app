@@ -1,0 +1,88 @@
+/* ============================================
+   SCROLLING HEADER STYLES
+   ============================================ */
+
+.scrolling-header {
+  position: fixed;
+  top: 80px;
+  width: 100%;
+  height: 60px;
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(12px);
+  border-bottom: 2px solid var(--color-primary-30, rgba(0, 255, 255, 0.3));
+  z-index: 50;
+  display: flex;
+  align-items: center;
+}
+
+.scrolling-header-btn {
+  width: 60px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  background: var(--color-primary-10, rgba(0, 255, 255, 0.1));
+  user-select: none;
+  transition: background 0.2s ease;
+}
+
+.scrolling-header-btn:hover {
+  background: var(--color-primary-20, rgba(0, 255, 255, 0.2));
+}
+
+.scrolling-header-btn.rewind {
+  border-right: 1px solid var(--color-primary-30, rgba(0, 255, 255, 0.3));
+}
+
+.scrolling-header-btn.forward {
+  border-left: 1px solid var(--color-primary-30, rgba(0, 255, 255, 0.3));
+}
+
+.scrolling-header-btn-text {
+  color: var(--color-primary, #0ff);
+  font-size: 1.2rem;
+  font-family: 'Orbitron', monospace;
+  font-weight: bold;
+}
+
+.scrolling-header-content {
+  flex: 1;
+  height: 100%;
+  overflow: hidden;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+
+.scrolling-header-text {
+  position: absolute;
+  white-space: nowrap;
+  font-family: 'Orbitron', sans-serif;
+  font-size: 1.2rem;
+  font-weight: 700;
+  letter-spacing: 0.3em;
+  color: var(--color-primary, #0ff);
+  text-shadow: 0 0 10px var(--color-primary, #0ff), 0 0 20px var(--color-primary, #0ff);
+  will-change: transform;
+  line-height: 60px;
+}
+
+/* ============================================
+   RESPONSIVE
+   ============================================ */
+
+@media (max-width: 768px) {
+  .scrolling-header {
+    display: none !important;
+  }
+}
+
+/* ============================================
+   LIGHT MODE (NIGHT MODE) OVERRIDES
+   ============================================ */
+
+[data-theme="light"] .scrolling-header-text {
+  text-shadow: none;
+}

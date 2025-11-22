@@ -492,3 +492,57 @@
     font-size: 0.875rem;
   }
 }
+
+/* ====================================
+   LIGHT MODE (NIGHT MODE) OVERRIDES
+   Amber ~585nm - Ottimizzato per visione notturna
+   ==================================== */
+
+[data-theme="light"] .landing-title {
+  text-shadow:
+    0 0 4px var(--color-primary-40),
+    0 0 8px var(--color-primary-20);
+}
+
+[data-theme="light"] .landing-title:hover {
+  text-shadow:
+    0 0 6px var(--color-primary-50),
+    0 0 12px var(--color-primary-30);
+}
+
+[data-theme="light"] .eye-svg {
+  animation: subtleGlowLight 4s ease-in-out infinite;
+}
+
+@keyframes subtleGlowLight {
+  0%, 100% {
+    filter: drop-shadow(0 0 4px rgba(232, 160, 48, 0.2))
+            drop-shadow(0 0 8px rgba(232, 160, 48, 0.1));
+  }
+  50% {
+    filter: drop-shadow(0 0 6px rgba(232, 160, 48, 0.3))
+            drop-shadow(0 0 12px rgba(232, 160, 48, 0.15));
+  }
+}
+
+[data-theme="light"] .rotating-square-1,
+[data-theme="light"] .rotating-square-2 {
+  filter: drop-shadow(0 0 4px rgba(232, 160, 48, 0.15));
+}
+
+[data-theme="light"] .click-message {
+  text-shadow: 0 0 3px rgba(232, 160, 48, 0.3);
+}
+
+[data-theme="light"] .warning-box {
+  background: rgba(180, 80, 40, 0.15);
+  border-color: rgba(200, 100, 50, 0.7);
+  box-shadow:
+    0 0 15px rgba(200, 100, 50, 0.2),
+    inset 0 0 10px rgba(200, 100, 50, 0.05);
+}
+
+[data-theme="light"] .warning-title {
+  color: #c86432;
+  text-shadow:
+    0 0 5px rgba(200, 100, 50, 0.5),

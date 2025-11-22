@@ -1,0 +1,85 @@
+/* ============================================
+   FOOTER STYLES
+   ============================================ */
+
+.footer {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  border-top: 2px solid var(--color-primary-30, rgba(0, 255, 255, 0.3));
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(12px);
+  padding: 1.5rem 0;
+  z-index: 50;
+}
+
+.footer-container {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+  text-align: center;
+}
+
+.footer-links {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  margin-bottom: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.footer-link {
+  color: var(--color-primary-70, rgba(0, 255, 255, 0.7));
+  font-size: 0.8rem;
+  letter-spacing: 0.1em;
+  font-family: 'Share Tech Mono', monospace;
+  cursor: pointer;
+  text-decoration: none;
+  transition: all 0.2s ease;
+  border-bottom: 1px solid transparent;
+}
+
+.footer-link:hover {
+  color: var(--color-primary, #0ff);
+  border-bottom-color: var(--color-primary, #0ff);
+  text-shadow: 0 0 10px var(--color-primary-50, rgba(0, 255, 255, 0.5));
+}
+
+.footer-copyright {
+  color: var(--color-primary-50, rgba(103, 232, 249, 0.5));
+  font-size: 0.875rem;
+  letter-spacing: 0.2em;
+  font-family: 'Share Tech Mono', monospace;
+  margin: 0;
+}
+
+/* ============================================
+   RESPONSIVE
+   ============================================ */
+
+@media (max-width: 480px) {
+  .footer {
+    padding: 1rem 0;
+  }
+
+  .footer-links {
+    gap: 1.5rem;
+  }
+
+  .footer-link {
+    font-size: 0.75rem;
+  }
+
+  .footer-copyright {
+    font-size: 0.75rem;
+    letter-spacing: 0.15em;
+  }
+}
+
+/* ============================================
+   LIGHT MODE (NIGHT MODE) OVERRIDES
+   ============================================ */
+
+[data-theme="light"] .footer-link:hover {
+  text-shadow: none;
+}

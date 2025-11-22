@@ -1,18 +1,32 @@
 import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useTheme } from '../../../contexts/theme';
 import './Portfolio.css';
 
 const Portfolio = () => {
   const navigate = useNavigate();
+  const { theme } = useTheme();
   const [selectedCategory, setSelectedCategory] = useState(0);
   const [isExpanded, setIsExpanded] = useState(false);
+  const [isDragging, setIsDragging] = useState(false);
+  const [dragRotation, setDragRotation] = useState(0);
+  
   const cardRef = useRef(null);
+  const touchStartXRef = useRef(null);
+  const startRotationRef = useRef(0);
 
   const categories = [
     { id: 'grafiche', title: 'GRAFICHE' },
     { id: 'sitiweb', title: 'SITI WEB' },
     { id: 'componenti', title: 'COMPONENTI' }
   ];
+
+  const primaryColor = theme === 'light' 
+    ? 'rgba(232, 160, 48, 0.95)' 
+    : 'rgba(0, 255, 255, 0.95)';
+
+  // Rotazione base dalla categoria selezionata
+  const baseRotation = -selectedCategory * 120;
 
   useEffect(() => {
     const handleClick = (e) => {
@@ -33,7 +47,44 @@ const Portfolio = () => {
     }
   };
 
+  // Touch Start - inizia il drag
+  const onTouchStart = (e) => {
+    touchStartXRef.current = e.targetTouches[0].clientX;
+    startRotationRef.current = baseRotation + dragRotation;
+    setIsDragging(true);
+  };
+
+  // Touch Move - controllo continuo della rotazione
+  const onTouchMove = (e) => {
+    if (!touchStartXRef.current) return;
+    
+    const currentX = e.targetTouches[0].clientX;
+    const diff = currentX - touchStartXRef.current;
+    
+    // Converti pixel in gradi (più sensibile = più controllo)
+    // 300px = 120 gradi (una card)
+    const rotationDelta = (diff / 300) * 120;
+    
+    setDragRotation(rotationDelta);
+  };
+
+  const onTouchEnd = () => {
+  if (!touchStartXRef.current) return;
+  
+  // Calcola la rotazione totale
+  const totalRotation = baseRotation + dragRotation;
+  
+  // Trova la card più vicina (ogni card è 120 gradi)
+  const nearestCard = Math.round(-totalRotation / 120);
+  
+  setSelectedCategory(nearestCard);
+  setDragRotation(0);
+  setIsDragging(false);
+  touchStartXRef.current = null;
+};
   const handleClick = () => {
+    if (isDragging) return; // Ignora click durante drag
+    
     if (!isExpanded) {
       setIsExpanded(true);
     } else {
@@ -41,16 +92,19 @@ const Portfolio = () => {
       const category = categories[normalizedIndex];
       
       if (category.id === 'componenti') {
-        navigate('/portfolio/componenti');  // ✅ CORRETTO
+        navigate('/portfolio/componenti');
       } else if (category.id === 'grafiche') {
-        navigate('/portfolio/grafiche');     // ✅ CORRETTO
+        navigate('/portfolio/grafiche');
       } else if (category.id === 'sitiweb') {
-        navigate('/portfolio/sitiweb');      // ✅ CORRETTO
+        navigate('/portfolio/sitiweb');
       }
     }
   };
 
   const normalizedIndex = ((selectedCategory % categories.length) + categories.length) % categories.length;
+  
+  // Rotazione finale: base + drag attivo
+  const currentRotation = baseRotation + dragRotation;
 
   return (
     <div className="portfolio-page">
@@ -61,8 +115,16 @@ const Portfolio = () => {
           </svg>
         </button>
 
-        <div className="carousel-scene">
-          <div className="carousel-3d" style={{ transform: `rotateY(${-selectedCategory * 120}deg)` }}>
+        <div 
+          className="carousel-scene"
+          onTouchStart={onTouchStart}
+          onTouchMove={onTouchMove}
+          onTouchEnd={onTouchEnd}
+        >
+          <div 
+            className={`carousel-3d ${isDragging ? 'dragging' : ''}`} 
+            style={{ transform: `rotateY(${currentRotation}deg)` }}
+          >
             {categories.map((cat, idx) => {
               const isActive = idx === normalizedIndex;
               
@@ -100,7 +162,7 @@ const Portfolio = () => {
                         <path
                           d="M 35 50 C 39 43, 44 40, 50 40 C 56 40, 61 43, 65 50 C 61 57, 56 60, 50 60 C 44 60, 39 57, 35 50 Z"
                           fill="none"
-                          stroke="rgba(0, 255, 255, 0.95)"
+                          stroke={primaryColor}
                           strokeWidth="1.2"
                           strokeLinecap="round"
                           strokeLinejoin="round"
@@ -113,7 +175,7 @@ const Portfolio = () => {
                             cy="50" 
                             r="8" 
                             fill="none"
-                            stroke="rgba(0, 255, 255, 0.95)"
+                            stroke={primaryColor}
                             strokeWidth="1"
                             filter={`url(#eyeGlow-${idx})`}
                           />
@@ -123,7 +185,7 @@ const Portfolio = () => {
                             cy="50" 
                             r="3.5" 
                             fill="none"
-                            stroke="rgba(0, 255, 255, 0.95)"
+                            stroke={primaryColor}
                             strokeWidth="0.8"
                             filter={`url(#eyeGlow-${idx})`}
                           />

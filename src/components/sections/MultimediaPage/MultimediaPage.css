@@ -1,9 +1,8 @@
-
 /* Body class */
 body.multimedia-page-body {
     font-family: 'Share Tech Mono', monospace;
-    background: #000;
-    color: #fff;
+    background: var(--bg-black);
+    color: var(--text-primary);
     overflow-x: hidden;
     margin: 0;
     padding: 0;
@@ -13,8 +12,9 @@ body.multimedia-page-body {
 .multimedia-page-wrapper {
     position: relative;
     min-height: 100vh;
-    background: #000;
-    color: #fff;
+    background: var(--bg-black);
+    color: var(--text-primary);
+    transition: background-color var(--transition-theme), color var(--transition-theme);
 }
 
 /* Background grid overlay */
@@ -30,20 +30,16 @@ body.multimedia-page-body {
 }
 
 @keyframes breathingGrid {
-    0%, 100% {
-        opacity: 0.5;
-    }
-    50% {
-        opacity: 0.2;
-    }
+    0%, 100% { opacity: 0.5; }
+    50% { opacity: 0.2; }
 }
 
 /* Scrollable content */
 .multimedia-content {
     position: relative;
     z-index: 1;
-    padding-top: 90px;
-    padding-bottom: 100px;
+    padding-top: 160px;
+    padding-bottom: 120px;
     max-width: 1400px;
     margin: 0 auto;
 }
@@ -67,18 +63,18 @@ body.multimedia-page-body {
     font-family: 'Orbitron', sans-serif;
     font-size: 4rem;
     font-weight: 900;
-    color: rgba(0, 255, 255, 0.95);
+    color: var(--color-primary);
     text-transform: uppercase;
     letter-spacing: 0.15em;
     margin-bottom: 1rem;
     text-shadow: 
-        0 0 20px rgba(0, 255, 255, 0.6),
-        0 0 40px rgba(0, 255, 255, 0.3);
+        0 0 20px var(--color-primary-60),
+        0 0 40px var(--color-primary-30);
 }
 
 .multimedia-subtitle {
     font-size: 1.4rem;
-    color: rgba(255, 255, 255, 0.7);
+    color: var(--text-secondary);
     letter-spacing: 0.05em;
 }
 
@@ -90,8 +86,8 @@ body.multimedia-page-body {
 }
 
 .intro-box {
-    background: rgba(0, 255, 255, 0.08);
-    border: 2px solid rgba(0, 255, 255, 0.4);
+    background: var(--color-primary-08);
+    border: 2px solid var(--color-primary-40);
     border-radius: 12px;
     padding: 2.5rem;
 }
@@ -99,13 +95,13 @@ body.multimedia-page-body {
 .intro-text {
     font-size: 1.2rem;
     line-height: 1.9;
-    color: rgba(255, 255, 255, 0.85);
+    color: var(--text-primary-85);
     text-align: center;
     margin-bottom: 1.5rem;
 }
 
 .intro-text strong {
-    color: rgba(0, 255, 255, 0.95);
+    color: var(--color-primary);
     font-weight: 700;
 }
 
@@ -113,11 +109,11 @@ body.multimedia-page-body {
     font-family: 'Orbitron', sans-serif;
     font-size: 1.4rem;
     font-weight: 700;
-    color: rgba(0, 255, 255, 0.95);
+    color: var(--color-primary);
     text-align: center;
     text-transform: uppercase;
     letter-spacing: 0.1em;
-    text-shadow: 0 0 15px rgba(0, 255, 255, 0.5);
+    text-shadow: 0 0 15px var(--color-primary-50);
     margin: 0;
 }
 
@@ -151,30 +147,30 @@ body.multimedia-page-body {
     font-family: 'Orbitron', sans-serif;
     font-size: 2.8rem;
     font-weight: 900;
-    color: rgba(0, 255, 255, 0.95);
+    color: var(--color-primary);
     text-transform: uppercase;
     letter-spacing: 0.1em;
     margin-bottom: 1.5rem;
-    text-shadow: 0 0 20px rgba(0, 255, 255, 0.5);
+    text-shadow: 0 0 20px var(--color-primary-50);
 }
 
 .work-text {
     font-size: 1.15rem;
     line-height: 1.9;
-    color: rgba(255, 255, 255, 0.85);
+    color: var(--text-primary-85);
     margin-bottom: 2rem;
 }
 
 .work-text strong {
-    color: rgba(0, 255, 255, 0.95);
+    color: var(--color-primary);
     font-weight: 700;
 }
 
 .work-cta {
     padding: 1.2rem 2.5rem;
     background: transparent;
-    border: 3px solid rgba(0, 255, 255, 0.6);
-    color: rgba(0, 255, 255, 0.95);
+    border: 3px solid var(--color-primary-60);
+    color: var(--color-primary);
     font-family: 'Orbitron', sans-serif;
     font-size: 1.05rem;
     font-weight: 700;
@@ -186,14 +182,14 @@ body.multimedia-page-body {
 }
 
 .work-cta:hover {
-    background: rgba(0, 255, 255, 0.15);
-    border-color: rgba(0, 255, 255, 0.95);
-    box-shadow: 0 0 30px rgba(0, 255, 255, 0.5);
+    background: var(--color-primary-15);
+    border-color: var(--color-primary);
+    box-shadow: 0 0 30px var(--color-primary-50);
     transform: translateY(-3px);
 }
 
 .work-cta-primary {
-    background: rgba(0, 255, 255, 0.1);
+    background: var(--color-primary-10);
     border-width: 3px;
 }
 
@@ -209,8 +205,8 @@ body.multimedia-page-body {
 .animation-frame {
     width: 100%;
     height: 450px;
-    background: rgba(0, 255, 255, 0.05);
-    border: 2px solid rgba(0, 255, 255, 0.3);
+    background: var(--color-primary-05);
+    border: 2px solid var(--color-primary-30);
     border-radius: 12px;
     display: flex;
     align-items: center;
@@ -228,14 +224,14 @@ body.multimedia-page-body {
     font-size: 4rem;
     display: block;
     margin-bottom: 1rem;
-    filter: drop-shadow(0 0 15px rgba(0, 255, 255, 0.5));
+    filter: drop-shadow(0 0 15px var(--color-primary-50));
 }
 
 .frame-text {
     font-family: 'Orbitron', sans-serif;
     font-size: 1.5rem;
     font-weight: 700;
-    color: rgba(0, 255, 255, 0.9);
+    color: var(--color-primary-90);
     margin-bottom: 0.75rem;
     text-transform: uppercase;
     letter-spacing: 0.1em;
@@ -243,7 +239,7 @@ body.multimedia-page-body {
 
 .frame-hint {
     font-size: 1rem;
-    color: rgba(255, 255, 255, 0.6);
+    color: var(--text-secondary);
     line-height: 1.6;
 }
 
@@ -256,8 +252,8 @@ body.multimedia-page-body {
 }
 
 .graphic-item {
-    background: rgba(0, 255, 255, 0.05);
-    border: 2px solid rgba(0, 255, 255, 0.3);
+    background: var(--color-primary-05);
+    border: 2px solid var(--color-primary-30);
     border-radius: 10px;
     padding: 2rem;
     text-align: center;
@@ -265,8 +261,8 @@ body.multimedia-page-body {
 }
 
 .graphic-item:hover {
-    border-color: rgba(0, 255, 255, 0.6);
-    box-shadow: 0 0 25px rgba(0, 255, 255, 0.3);
+    border-color: var(--color-primary-60);
+    box-shadow: 0 0 25px var(--color-primary-30);
     transform: translateY(-5px);
 }
 
@@ -274,14 +270,14 @@ body.multimedia-page-body {
     font-size: 3rem;
     display: block;
     margin-bottom: 1rem;
-    filter: drop-shadow(0 0 10px rgba(0, 255, 255, 0.5));
+    filter: drop-shadow(0 0 10px var(--color-primary-50));
 }
 
 .graphic-item p {
     font-family: 'Orbitron', sans-serif;
     font-size: 1.1rem;
     font-weight: 700;
-    color: rgba(0, 255, 255, 0.9);
+    color: var(--color-primary-90);
     margin: 0;
 }
 
@@ -289,8 +285,8 @@ body.multimedia-page-body {
 .illustration-showcase {
     width: 100%;
     height: 450px;
-    background: rgba(0, 255, 255, 0.05);
-    border: 2px solid rgba(0, 255, 255, 0.3);
+    background: var(--color-primary-05);
+    border: 2px solid var(--color-primary-30);
     border-radius: 12px;
     display: flex;
     align-items: center;
@@ -306,14 +302,14 @@ body.multimedia-page-body {
     font-size: 4rem;
     display: block;
     margin-bottom: 1rem;
-    filter: drop-shadow(0 0 15px rgba(0, 255, 255, 0.5));
+    filter: drop-shadow(0 0 15px var(--color-primary-50));
 }
 
 .illustration-text {
     font-family: 'Orbitron', sans-serif;
     font-size: 1.5rem;
     font-weight: 700;
-    color: rgba(0, 255, 255, 0.9);
+    color: var(--color-primary-90);
     margin-bottom: 0.75rem;
     text-transform: uppercase;
     letter-spacing: 0.1em;
@@ -321,7 +317,7 @@ body.multimedia-page-body {
 
 .illustration-hint {
     font-size: 1rem;
-    color: rgba(255, 255, 255, 0.6);
+    color: var(--text-secondary);
     line-height: 1.6;
 }
 
@@ -329,8 +325,8 @@ body.multimedia-page-body {
 .brand-showcase {
     width: 100%;
     height: 450px;
-    background: rgba(0, 255, 255, 0.05);
-    border: 2px solid rgba(0, 255, 255, 0.3);
+    background: var(--color-primary-05);
+    border: 2px solid var(--color-primary-30);
     border-radius: 12px;
     display: flex;
     align-items: center;
@@ -346,14 +342,14 @@ body.multimedia-page-body {
     font-size: 4rem;
     display: block;
     margin-bottom: 1rem;
-    filter: drop-shadow(0 0 15px rgba(0, 255, 255, 0.5));
+    filter: drop-shadow(0 0 15px var(--color-primary-50));
 }
 
 .brand-text {
     font-family: 'Orbitron', sans-serif;
     font-size: 1.5rem;
     font-weight: 700;
-    color: rgba(0, 255, 255, 0.9);
+    color: var(--color-primary-90);
     margin-bottom: 0.75rem;
     text-transform: uppercase;
     letter-spacing: 0.1em;
@@ -361,7 +357,7 @@ body.multimedia-page-body {
 
 .brand-hint {
     font-size: 1rem;
-    color: rgba(255, 255, 255, 0.6);
+    color: var(--text-secondary);
     line-height: 1.6;
 }
 
@@ -378,20 +374,20 @@ body.multimedia-page-body {
     align-items: center;
     gap: 0.5rem;
     padding: 0.75rem 1.5rem;
-    background: rgba(0, 255, 255, 0.1);
-    border: 2px solid rgba(0, 255, 255, 0.4);
+    background: var(--color-primary-10);
+    border: 2px solid var(--color-primary-40);
     border-radius: 25px;
     font-family: 'Orbitron', sans-serif;
     font-size: 0.95rem;
     font-weight: 700;
-    color: rgba(0, 255, 255, 0.95);
+    color: var(--color-primary);
     transition: all 0.3s ease;
 }
 
 .service-tag:hover {
-    background: rgba(0, 255, 255, 0.15);
-    border-color: rgba(0, 255, 255, 0.7);
-    box-shadow: 0 0 20px rgba(0, 255, 255, 0.3);
+    background: var(--color-primary-15);
+    border-color: var(--color-primary-70);
+    box-shadow: 0 0 20px var(--color-primary-30);
 }
 
 .tag-icon {
@@ -402,31 +398,31 @@ body.multimedia-page-body {
 .multimedia-cta-section {
     text-align: center;
     padding: 5rem 2rem;
-    background: radial-gradient(circle at center, rgba(0, 255, 255, 0.08) 0%, transparent 70%);
+    background: radial-gradient(circle at center, var(--color-primary-08) 0%, transparent 70%);
 }
 
 .cta-title {
     font-family: 'Orbitron', sans-serif;
     font-size: 2.8rem;
     font-weight: 900;
-    color: rgba(0, 255, 255, 0.95);
+    color: var(--color-primary);
     text-transform: uppercase;
     letter-spacing: 0.1em;
     margin-bottom: 1.5rem;
-    text-shadow: 0 0 20px rgba(0, 255, 255, 0.5);
+    text-shadow: 0 0 20px var(--color-primary-50);
 }
 
 .cta-text {
     font-size: 1.3rem;
-    color: rgba(255, 255, 255, 0.7);
+    color: var(--text-secondary);
     margin-bottom: 3rem;
 }
 
 .multimedia-cta-button {
     padding: 1.5rem 4rem;
     background: transparent;
-    border: 3px solid rgba(0, 255, 255, 0.6);
-    color: rgba(0, 255, 255, 0.95);
+    border: 3px solid var(--color-primary-60);
+    color: var(--color-primary);
     font-family: 'Orbitron', sans-serif;
     font-size: 1.3rem;
     font-weight: 700;
@@ -438,9 +434,9 @@ body.multimedia-page-body {
 }
 
 .multimedia-cta-button:hover {
-    background: rgba(0, 255, 255, 0.15);
-    border-color: rgba(0, 255, 255, 0.95);
-    box-shadow: 0 0 40px rgba(0, 255, 255, 0.5);
+    background: var(--color-primary-15);
+    border-color: var(--color-primary);
+    box-shadow: 0 0 40px var(--color-primary-50);
     transform: translateY(-3px);
 }
 
@@ -460,7 +456,7 @@ body.multimedia-page-body {
 
 .wave-bar {
     width: 4px;
-    background: rgba(0, 255, 255, 0.8);
+    background: var(--color-primary-80);
     border-radius: 2px;
     animation: waveAnimation 1.2s ease-in-out infinite;
 }
@@ -479,12 +475,17 @@ body.multimedia-page-body {
     50% { 
         transform: scaleY(1); 
         opacity: 1;
-        box-shadow: 0 0 4px rgba(0, 255, 255, 0.6);
+        box-shadow: 0 0 4px var(--color-primary-60);
     }
 }
 
 /* 📱 RESPONSIVE */
 @media (max-width: 1024px) {
+    .multimedia-content {
+        padding-top: 100px;
+        padding-bottom: 100px;
+    }
+
     .multimedia-title {
         font-size: 3rem;
     }
@@ -505,8 +506,8 @@ body.multimedia-page-body {
 
 @media (max-width: 768px) {
     .multimedia-content {
-        padding-top: 80px;
-        padding-bottom: 80px;
+        padding-top: 90px;
+        padding-bottom: 100px;
     }
 
     .multimedia-title {
@@ -675,4 +676,63 @@ body.multimedia-page-body {
         padding: 1rem 2rem;
         font-size: 1rem;
     }
+}
+
+/* ====================================
+   LIGHT MODE (NIGHT MODE) OVERRIDES
+   ==================================== */
+
+[data-theme="light"] .multimedia-grid-overlay {
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="86.6" height="100" viewBox="0 0 86.6 100"><path d="M43.3 0 L86.6 25 L86.6 75 L43.3 100 L0 75 L0 25 Z" fill="none" stroke="rgba(232,160,48,0.12)" stroke-width="1"/></svg>');
+}
+
+[data-theme="light"] .multimedia-title,
+[data-theme="light"] .work-title,
+[data-theme="light"] .cta-title {
+    text-shadow: 
+        0 0 10px var(--color-primary-40),
+        0 0 20px var(--color-primary-20);
+}
+
+[data-theme="light"] .intro-highlight {
+    text-shadow: 0 0 8px var(--color-primary-30);
+}
+
+[data-theme="light"] .work-cta:hover,
+[data-theme="light"] .multimedia-cta-button:hover {
+    box-shadow: 0 0 20px var(--color-primary-30);
+}
+
+[data-theme="light"] .graphic-item:hover {
+    box-shadow: 0 0 15px var(--color-primary-20);
+}
+
+[data-theme="light"] .service-tag:hover {
+    box-shadow: 0 0 12px var(--color-primary-20);
+}
+
+[data-theme="light"] .frame-icon,
+[data-theme="light"] .illustration-icon,
+[data-theme="light"] .brand-icon,
+[data-theme="light"] .graphic-icon {
+    filter: drop-shadow(0 0 8px var(--color-primary-30));
+}
+
+[data-theme="light"] .wave-bar {
+    box-shadow: none;
+}
+
+@keyframes waveAnimationLight {
+    0%, 100% { 
+        transform: scaleY(0.5); 
+        opacity: 0.5;
+    }
+    50% { 
+        transform: scaleY(1); 
+        opacity: 1;
+    }
+}
+
+[data-theme="light"] .wave-bar {
+    animation-name: waveAnimationLight;
 }

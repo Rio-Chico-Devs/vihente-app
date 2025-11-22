@@ -98,7 +98,12 @@
   transition: transform 0.7s ease-in-out;
 }
 
-/* Card Deck - Come "deck" nell'esempio */
+/* Durante il drag: niente transition per seguire il dito */
+.carousel-3d.dragging {
+  transition: none;
+}
+
+/* Card Deck */
 .card-deck {
   position: absolute;
   width: 350px;
@@ -124,7 +129,6 @@
   animation: levitate 4s ease-in-out infinite 2.6s;
 }
 
-/* Animazione levitazione smooth */
 @keyframes levitate {
   0%, 100% {
     transform: translate(-50%, -50%) rotateY(var(--rotation)) translateZ(350px) translateY(0px);
@@ -134,7 +138,6 @@
   }
 }
 
-/* Variabili CSS per la rotazione */
 .p-0 { --rotation: 0deg; }
 .p-1 { --rotation: 120deg; }
 .p-2 { --rotation: 240deg; }
@@ -149,7 +152,7 @@
   pointer-events: none;
 }
 
-/* Card 3D - Deve girare quando non è la card attiva */
+/* Card 3D */
 .card-3d {
   width: 100%;
   height: 100%;
@@ -159,12 +162,11 @@
   transform: rotateY(0deg);
 }
 
-/* Le card NON attive girano per mostrare il retro */
 .card-deck:not(.active) .card-3d {
   transform: rotateY(180deg);
 }
 
-/* Face - Come nell'esempio */
+/* Face */
 .face {
   position: absolute;
   width: 100%;
@@ -176,13 +178,11 @@
   border-radius: 8px;
 }
 
-/* Front Face */
 .front {
   z-index: 1;
   box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.5);
 }
 
-/* Back Face - ESATTAMENTE come nell'esempio */
 .back {
   display: flex;
   align-items: center;
@@ -202,7 +202,6 @@
   overflow: hidden;
 }
 
-/* Griglia nel front */
 .front-image::before {
   content: '';
   position: absolute;
@@ -214,7 +213,7 @@
   pointer-events: none;
 }
 
-/* Front Title - PULITO, nessun effetto VHS */
+/* Front Title */
 .front-title {
   position: absolute;
   top: 20px;
@@ -232,15 +231,11 @@
   text-transform: uppercase;
   letter-spacing: 0.2em;
   margin: 0;
-  
-  /* Rendering ultra-pulito senza effetti */
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
   filter: none;
   text-shadow: none;
-  
-  /* Isolamento completo */
   transform: translateZ(50px);
   will-change: transform;
 }
@@ -271,7 +266,7 @@
     0 0 10px rgba(0, 255, 255, 0.3);
 }
 
-/* Effetto CLICK: ingrandimento + bordo luminoso animato */
+/* Effetto CLICK */
 .card-deck.clicked {
   animation: none !important;
   transform: translate(-50%, -50%) rotateY(var(--rotation)) translateZ(370px) scale(1.1) !important;
@@ -297,123 +292,236 @@
   }
 }
 
-/* Responsive Design */
+/* ====================================
+   RESPONSIVE - Stesso effetto scalato
+   ==================================== */
+
 @media (max-width: 1024px) {
   .portfolio-page {
-    padding-top: 2rem;
+    padding-top: 100px;
+    padding-bottom: 100px;
   }
 
   .portfolio-container {
-    max-width: 900px;
-    gap: 1.5rem;
+    gap: 1rem;
   }
-  
+
+  .nav-arrow {
+    width: 40px;
+    height: 60px;
+  }
+
   .carousel-scene {
-    width: 500px;
-    height: 350px;
+    width: 450px;
+    height: 320px;
+    perspective: 600px;
   }
-  
+
   .card-deck {
-    width: 300px;
+    width: 280px;
     height: 200px;
   }
-  
-  .p-0, .p-1, .p-2 {
-    transform: translate(-50%, -50%) rotateY(var(--rotation, 0deg)) translateZ(250px);
+
+  .p-0 { transform: translate(-50%, -50%) rotateY(0deg) translateZ(250px); --rotation: 0deg; }
+  .p-1 { transform: translate(-50%, -50%) rotateY(120deg) translateZ(250px); --rotation: 120deg; }
+  .p-2 { transform: translate(-50%, -50%) rotateY(240deg) translateZ(250px); --rotation: 240deg; }
+
+  @keyframes levitate {
+    0%, 100% { transform: translate(-50%, -50%) rotateY(var(--rotation)) translateZ(250px) translateY(0px); }
+    50% { transform: translate(-50%, -50%) rotateY(var(--rotation)) translateZ(250px) translateY(-6px); }
   }
-  
-  .p-0 { --rotation: 0deg; }
-  .p-1 { --rotation: 120deg; }
-  .p-2 { --rotation: 240deg; }
-  
+
+  .card-deck.clicked {
+    transform: translate(-50%, -50%) rotateY(var(--rotation)) translateZ(270px) scale(1.08) !important;
+  }
+
   .front-title h2 {
     font-size: 0.9rem;
   }
-  
+
   .eye-logo {
-    width: 160px;
-    height: 160px;
+    width: 150px;
+    height: 150px;
   }
 }
 
 @media (max-width: 768px) {
-  .nav-arrow { 
-    width: 40px;
-    height: 60px;
+  .portfolio-page {
+    padding: 90px 0.5rem 100px 0.5rem;
   }
-  
+
   .portfolio-container {
-    padding: 0 1rem;
-    gap: 1rem;
+    gap: 0.5rem;
   }
-  
+
+  .nav-arrow {
+    width: 30px;
+    height: 50px;
+  }
+
   .carousel-scene {
-    width: 400px;
-    height: 280px;
+    width: 320px;
+    height: 240px;
+    perspective: 500px;
   }
-  
+
   .card-deck {
-    width: 250px;
-    height: 170px;
+    width: 200px;
+    height: 140px;
   }
-  
-  .p-0, .p-1, .p-2 {
-    transform: translate(-50%, -50%) rotateY(var(--rotation, 0deg)) translateZ(200px);
+
+  .p-0 { transform: translate(-50%, -50%) rotateY(0deg) translateZ(180px); --rotation: 0deg; }
+  .p-1 { transform: translate(-50%, -50%) rotateY(120deg) translateZ(180px); --rotation: 120deg; }
+  .p-2 { transform: translate(-50%, -50%) rotateY(240deg) translateZ(180px); --rotation: 240deg; }
+
+  @keyframes levitate {
+    0%, 100% { transform: translate(-50%, -50%) rotateY(var(--rotation)) translateZ(180px) translateY(0px); }
+    50% { transform: translate(-50%, -50%) rotateY(var(--rotation)) translateZ(180px) translateY(-5px); }
   }
-  
+
+  .card-deck.clicked {
+    transform: translate(-50%, -50%) rotateY(var(--rotation)) translateZ(195px) scale(1.06) !important;
+  }
+
+  .front-title {
+    top: 12px;
+    left: 12px;
+  }
+
   .front-title h2 {
-    font-size: 0.85rem;
+    font-size: 0.75rem;
+    letter-spacing: 0.15em;
   }
-  
+
   .eye-logo {
-    width: 130px;
-    height: 130px;
+    width: 100px;
+    height: 100px;
+  }
+
+  .face {
+    border-width: 2px;
   }
 }
 
 @media (max-width: 480px) {
   .portfolio-page {
-    padding: 1rem;
+    padding: 90px 0.25rem 100px 0.25rem;
   }
-  
+
   .portfolio-container {
-    flex-direction: column;
-    gap: 1.5rem;
+    gap: 0.25rem;
   }
-  
+
   .nav-arrow {
-    order: 2;
+    width: 24px;
+    height: 40px;
   }
-  
-  .nav-arrow.left {
-    transform: rotate(-90deg);
-  }
-  
-  .nav-arrow.right {
-    transform: rotate(90deg);
-  }
-  
+
   .carousel-scene {
-    width: 280px;
+    width: 260px;
     height: 200px;
-    order: 1;
+    perspective: 400px;
   }
-  
+
   .card-deck {
-    width: 220px;
-    height: 150px;
+    width: 160px;
+    height: 115px;
   }
-  
-  .p-0, .p-1, .p-2 {
-    transform: translate(-50%, -50%) rotateY(0deg) translateZ(150px);
+
+  .p-0 { transform: translate(-50%, -50%) rotateY(0deg) translateZ(140px); --rotation: 0deg; }
+  .p-1 { transform: translate(-50%, -50%) rotateY(120deg) translateZ(140px); --rotation: 120deg; }
+  .p-2 { transform: translate(-50%, -50%) rotateY(240deg) translateZ(140px); --rotation: 240deg; }
+
+  @keyframes levitate {
+    0%, 100% { transform: translate(-50%, -50%) rotateY(var(--rotation)) translateZ(140px) translateY(0px); }
+    50% { transform: translate(-50%, -50%) rotateY(var(--rotation)) translateZ(140px) translateY(-4px); }
   }
-  
+
+  .card-deck.clicked {
+    transform: translate(-50%, -50%) rotateY(var(--rotation)) translateZ(150px) scale(1.05) !important;
+  }
+
+  .front-title {
+    top: 8px;
+    left: 8px;
+  }
+
   .front-title h2 {
-    font-size: 0.75rem;
+    font-size: 0.65rem;
+    letter-spacing: 0.1em;
   }
-  
+
   .eye-logo {
-    width: 100px;
-    height: 100px;
+    width: 70px;
+    height: 70px;
+  }
+}
+
+/* ====================================
+   LIGHT MODE (NIGHT MODE) OVERRIDES
+   ==================================== */
+
+[data-theme="light"] .portfolio-page {
+  background: var(--bg-black);
+}
+
+[data-theme="light"] .portfolio-page::before {
+  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="86.6" height="100" viewBox="0 0 86.6 100"><path d="M43.3 0 L86.6 25 L86.6 75 L43.3 100 L0 75 L0 25 Z" fill="none" stroke="rgba(232,160,48,0.25)" stroke-width="1"/></svg>');
+  box-shadow: 
+    inset 0 0 40px rgba(232, 160, 48, 0.08),
+    inset 0 0 20px rgba(232, 160, 48, 0.05);
+}
+
+[data-theme="light"] .nav-arrow path {
+  stroke: var(--color-primary-60);
+  filter: drop-shadow(0 0 3px var(--color-primary-30));
+}
+
+[data-theme="light"] .nav-arrow:hover path {
+  stroke: var(--color-primary);
+  filter: drop-shadow(0 0 6px var(--color-primary-50));
+}
+
+[data-theme="light"] .face {
+  background: var(--bg-black);
+  border-color: var(--color-primary-30);
+}
+
+[data-theme="light"] .front-title h2 {
+  color: var(--color-primary);
+}
+
+[data-theme="light"] .front-image::before {
+  background-image: 
+    linear-gradient(var(--color-primary-05) 1px, transparent 1px),
+    linear-gradient(90deg, var(--color-primary-05) 1px, transparent 1px);
+}
+
+[data-theme="light"] .eye-logo {
+  filter: drop-shadow(0 0 10px var(--color-primary-40));
+}
+
+[data-theme="light"] .card-deck.active .face {
+  border-color: var(--color-primary-50);
+  box-shadow: 
+    0 10px 30px var(--color-primary-15),
+    0 0 8px var(--color-primary-20);
+}
+
+[data-theme="light"] .card-deck.clicked .face {
+  border-color: var(--color-primary);
+  animation: glowBorderLight 1.5s ease-in-out infinite;
+}
+
+@keyframes glowBorderLight {
+  0%, 100% {
+    box-shadow: 
+      0 0 5px var(--color-primary-30),
+      0 0 10px var(--color-primary-20);
+  }
+  50% {
+    box-shadow: 
+      0 0 10px var(--color-primary-50),
+      0 0 20px var(--color-primary-30);
   }
 }

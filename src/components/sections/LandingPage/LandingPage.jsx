@@ -1,27 +1,27 @@
 import { useState, useEffect, useRef } from 'react';
-import { useTheme } from '../../../context/ThemeContext';
+import { useTheme } from '../../../contexts/theme';
 
 const LandingPageOldEye = ({ startTime }) => {
   const { theme } = useTheme();
 
-  // Theme-based colors
+  // Theme-based colors - NIGHT MODE con Amber (~585nm)
   const colors = theme === 'light' ? {
-    // Halo 4 Electric Azure Blue
-    primary: 'rgba(0, 180, 255, 1)',
-    primary95: 'rgba(0, 180, 255, 0.95)',
-    primary60: 'rgba(0, 180, 255, 0.6)',
-    primary50: 'rgba(0, 180, 255, 0.5)',
-    primary40: 'rgba(0, 180, 255, 0.4)',
-    primary35: 'rgba(0, 180, 255, 0.35)',
-    primary30: 'rgba(0, 180, 255, 0.3)',
-    primary20: 'rgba(0, 180, 255, 0.2)',
-    primary15: 'rgba(0, 180, 255, 0.15)',
-    bg: '#060d14',
-    text: '#e8f4ff',
-    textMuted: 'rgba(200, 220, 240, 0.8)',
-    accent: 'rgba(0, 180, 255, 0.6)',
-    accentMuted: 'rgba(0, 160, 230, 0.5)',
-    accentLight: 'rgba(100, 200, 255, 0.8)',
+    // Night Mode - Amber caldo (scientificamente ottimizzato)
+    primary: 'rgba(232, 160, 48, 1)',
+    primary95: 'rgba(232, 160, 48, 0.95)',
+    primary60: 'rgba(232, 160, 48, 0.6)',
+    primary50: 'rgba(232, 160, 48, 0.5)',
+    primary40: 'rgba(232, 160, 48, 0.4)',
+    primary35: 'rgba(232, 160, 48, 0.35)',
+    primary30: 'rgba(232, 160, 48, 0.3)',
+    primary20: 'rgba(232, 160, 48, 0.2)',
+    primary15: 'rgba(232, 160, 48, 0.15)',
+    bg: '#080604',
+    text: '#e8dcc8',
+    textMuted: 'rgba(196, 154, 108, 0.9)',
+    accent: 'rgba(232, 160, 48, 0.6)',
+    accentMuted: 'rgba(196, 154, 108, 0.5)',
+    accentLight: 'rgba(232, 180, 100, 0.8)',
   } : {
     // Cyan Neon (dark mode)
     primary: 'rgba(0, 255, 255, 1)',
@@ -327,7 +327,7 @@ const LandingPageOldEye = ({ startTime }) => {
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
     function draw() {
-      ctx.fillStyle = theme === 'light' ? 'rgba(6, 13, 20, 0.05)' : 'rgba(0, 0, 0, 0.05)';
+      ctx.fillStyle = theme === 'light' ? 'rgba(8, 6, 4, 0.05)' : 'rgba(0, 0, 0, 0.05)';
       ctx.fillRect(0, 0, canvas.width, canvas.height);
 
       ctx.fillStyle = colors.primary15;
@@ -412,7 +412,7 @@ const LandingPageOldEye = ({ startTime }) => {
         @keyframes glitchEffect {
           0%, 100% {
             transform: translate(0);
-            filter: hue-rotate(0deg) drop-shadow(0 0 15px rgba(6, 182, 212, 0.4));
+            filter: hue-rotate(0deg) drop-shadow(0 0 15px ${colors.primary40});
           }
           10% {
             transform: translate(-2px, 0);
@@ -432,7 +432,7 @@ const LandingPageOldEye = ({ startTime }) => {
           }
           50% {
             transform: translate(-1px, 2px);
-            filter: hue-rotate(45deg) drop-shadow(0 0 35px rgba(0, 255, 255, 0.8));
+            filter: hue-rotate(45deg) drop-shadow(0 0 35px ${colors.primary60});
           }
           60% {
             transform: translate(2px, -2px);

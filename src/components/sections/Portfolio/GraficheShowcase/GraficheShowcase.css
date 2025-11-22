@@ -1581,3 +1581,27 @@
   }
 
 }
+
+/* ============================================
+
+   LIGHT MODE (NIGHT MODE) OVERRIDES
+
+   ============================================ */
+
+[data-theme="light"] .trophy-arena .grafiche-logo-eye,
+[data-theme="light"] .trophy-modal .grafiche-modal-logo-eye {
+  filter: none;
+}
+
+[data-theme="light"] .trophy-modal .modal-layout {
+  box-shadow: none;
+}
+
+[data-theme="light"] .trophy-modal .particle {
+  box-shadow: none;
+}
+
+[data-theme="light"] .preview-title,
+[data-theme="light"] .trophy-modal .info-title {
+  text-shadow: none;
+}
