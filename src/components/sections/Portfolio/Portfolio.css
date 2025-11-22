@@ -12,24 +12,43 @@
   padding-top: 120px;
 }
 
-/* Griglia esagonale identica a Services */
+/* Hexagonal grid overlay - matching Component Showcase */
 .portfolio-page::before {
   content: '';
   position: fixed;
-  inset: 0;
-  pointer-events: none;
-  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="86.6" height="100" viewBox="0 0 86.6 100"><path d="M43.3 0 L86.6 25 L86.6 75 L43.3 100 L0 75 L0 25 Z" fill="none" stroke="rgba(0,255,255,0.45)" stroke-width="1.2"/></svg>');
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="86.6" height="100" viewBox="0 0 86.6 100"><path d="M43.3 0 L86.6 25 L86.6 75 L43.3 100 L0 75 L0 25 Z" fill="none" stroke="rgba(0,255,255,0.15)" stroke-width="1"/></svg>');
   background-size: 86.6px 100px;
-  z-index: 0;
-  box-shadow: 
-    inset 0 0 80px rgba(0, 255, 255, 0.12),
-    inset 0 0 40px rgba(0, 255, 255, 0.08);
-  animation: breathingGrid 7s ease-in-out infinite;
+  pointer-events: none;
+  z-index: 1;
+  animation: breathingGrid 8s ease-in-out infinite;
 }
 
 @keyframes breathingGrid {
-  0%, 100% { opacity: 1; transform: scale(1); }
-  50% { opacity: 0.3; transform: scale(1.01); }
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.6; }
+}
+
+/* VHS scanlines */
+.portfolio-page::after {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(0, 255, 255, 0.02) 2px,
+    rgba(0, 255, 255, 0.02) 4px
+  );
+  pointer-events: none;
+  z-index: 2;
 }
 
 .portfolio-container {
@@ -466,10 +485,17 @@
 }
 
 [data-theme="light"] .portfolio-page::before {
-  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="86.6" height="100" viewBox="0 0 86.6 100"><path d="M43.3 0 L86.6 25 L86.6 75 L43.3 100 L0 75 L0 25 Z" fill="none" stroke="rgba(232,160,48,0.25)" stroke-width="1"/></svg>');
-  box-shadow: 
-    inset 0 0 40px rgba(232, 160, 48, 0.08),
-    inset 0 0 20px rgba(232, 160, 48, 0.05);
+  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="86.6" height="100" viewBox="0 0 86.6 100"><path d="M43.3 0 L86.6 25 L86.6 75 L43.3 100 L0 75 L0 25 Z" fill="none" stroke="rgba(180,120,60,0.12)" stroke-width="1"/></svg>');
+}
+
+[data-theme="light"] .portfolio-page::after {
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(180, 120, 60, 0.02) 2px,
+    rgba(180, 120, 60, 0.02) 4px
+  );
 }
 
 [data-theme="light"] .nav-arrow path {

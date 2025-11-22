@@ -52,22 +52,19 @@ body.services-page-body {
 .services-page-wrapper::after {
     content: '';
     position: fixed;
-    inset: 0;
-    pointer-events: none;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
     background: repeating-linear-gradient(
         0deg,
         transparent,
-        transparent 3px,
-        var(--color-primary-02) 3px,
-        var(--color-primary-02) 6px
+        transparent 2px,
+        var(--color-primary-02, rgba(0, 255, 255, 0.02)) 2px,
+        var(--color-primary-02, rgba(0, 255, 255, 0.02)) 4px
     );
-    z-index: 3;
-    animation: scanlineFlicker 8s linear infinite;
-}
-
-@keyframes scanlineFlicker {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.95; }
+    pointer-events: none;
+    z-index: 2;
 }
 
 /* VIGNETTE SHADOW - ANIMATA */
@@ -131,25 +128,15 @@ body.services-page-body {
     position: fixed;
     inset: 0;
     pointer-events: none;
-    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="86.6" height="100" viewBox="0 0 86.6 100"><path d="M43.3 0 L86.6 25 L86.6 75 L43.3 100 L0 75 L0 25 Z" fill="none" stroke="rgba(0,255,255,0.45)" stroke-width="1.2"/></svg>');
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="86.6" height="100" viewBox="0 0 86.6 100"><path d="M43.3 0 L86.6 25 L86.6 75 L43.3 100 L0 75 L0 25 Z" fill="none" stroke="rgba(0,255,255,0.15)" stroke-width="1"/></svg>');
     background-size: 86.6px 100px;
     z-index: 2;
-    box-shadow: 
-        inset 0 0 80px var(--color-primary-15),
-        inset 0 0 40px var(--color-primary-10);
-    animation: breathingGrid 7s ease-in-out infinite;
-    will-change: opacity, transform;
+    animation: breathingGrid 8s ease-in-out infinite;
 }
 
 @keyframes breathingGrid {
-    0%, 100% {
-        opacity: 1;
-        transform: scale(1);
-    }
-    50% {
-        opacity: 0.3;
-        transform: scale(1.01);
-    }
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.6; }
 }
 
 @keyframes gridFlash {
@@ -868,12 +855,6 @@ footer {
         height: 187px !important;
     }
 
-    .service-box::before{
-        width: 310px !important;
-        height: 152px !important;
-        left: 14px !important;
-    }
-
     .service-icon {
         top: 39px;
         left: 38px;
@@ -987,59 +968,28 @@ footer {
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    transition: transform 0.3s ease;
+    transition: all 0.3s ease;
     overflow: visible;
     pointer-events: auto;
-    will-change: transform;
+    background: rgba(0, 0, 0, 0.4);
+    border: 2px solid var(--color-primary-30, rgba(0, 255, 255, 0.3));
+    border-radius: 4px;
+    backdrop-filter: blur(10px);
+    box-shadow:
+        0 0 40px var(--color-primary-20, rgba(0, 255, 255, 0.2)),
+        inset 0 0 40px var(--color-primary-05, rgba(0, 255, 255, 0.05));
 }
 
 .service-box::before {
-    content: '';
-    position: absolute;
-    top: 20px;
-    left: 20px;
-    right: 20px;
-    bottom: 20px;
-    background: rgba(0, 0, 0, 0.25);
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
-    clip-path: polygon(
-        0 40px,
-        50px 0,
-        140px 0,
-        155px 15px,
-        calc(100% - 100px) 18px,
-        calc(100% - 70px) 0,
-        calc(100% - 20px) 0,
-        100% 20px,
-        100% calc(98% - 50px),
-        calc(98% - 30px) calc(100% - 20px),
-        calc(100% - 115px) calc(100% - 25px),
-        calc(99% - 130px) 99%,
-        95px 99%,
-        60px calc(98% - 15px),
-        20px calc(100% - 15px),
-        0 calc(100% - 35px)
-    );
-    transition: background 0.3s ease;
+    display: none;
 }
 
 .border-svg {
-    position: absolute;
-    top: 20px;
-    left: 20px;
-    width: calc(100% - 40px);
-    height: calc(100% - 40px);
-    pointer-events: none;
-    overflow: visible;
+    display: none;
 }
 
 .border-svg path {
-    fill: none;
-    stroke: rgba(255, 255, 255, 0.7);
-    stroke-width: 4;
-    filter: drop-shadow(0 0 4px rgba(255, 255, 255, 0.3));
-    transition: stroke 0.3s ease, stroke-width 0.3s ease;
+    display: none;
 }
 
 .service-box-text {
@@ -1562,26 +1512,12 @@ footer {
 }
 
 /* HOVER EFFECTS */
-.service-box:hover::before {
-    background: rgba(0, 0, 0, 0.35);
-}
-
 .service-box:hover {
-    transform: scale(1.02);
-}
-
-.service-box:hover ~ .grid-overlay {
-    opacity: 1;
-    box-shadow: 
-        inset 0 0 120px var(--color-primary-20),
-        inset 0 0 80px var(--color-primary-20);
-    transition: opacity 0.5s ease, box-shadow 0.5s ease;
-}
-
-.service-box:hover .border-svg path {
-    stroke: rgba(255, 255, 255, 0.95);
-    stroke-width: 5;
-    filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.5));
+    border-color: var(--color-primary-60, rgba(0, 255, 255, 0.6));
+    transform: translateY(-4px);
+    box-shadow:
+        0 8px 50px var(--color-primary-30, rgba(0, 255, 255, 0.3)),
+        inset 0 0 50px var(--color-primary-08, rgba(0, 255, 255, 0.08));
 }
 
 .service-box:hover .icon-consulenza::before,
@@ -1663,24 +1599,23 @@ footer {
 }
 
 /* Bordi box - sottili, caldi */
-[data-theme="light"] .border-svg path {
-    stroke: rgba(196, 154, 108, 0.5);
-    stroke-width: 3;
-    filter: none;
+[data-theme="light"] .service-box {
+    border-color: var(--color-primary-30);
+    box-shadow:
+        0 0 30px rgba(232, 160, 48, 0.15),
+        inset 0 0 30px rgba(232, 160, 48, 0.03);
 }
 
-[data-theme="light"] .service-box:hover .border-svg path {
-    stroke: rgba(196, 154, 108, 0.75);
-    stroke-width: 4;
-    filter: drop-shadow(0 0 3px rgba(196, 154, 108, 0.2));
+[data-theme="light"] .service-box:hover {
+    border-color: var(--color-primary-50);
+    box-shadow:
+        0 8px 40px rgba(232, 160, 48, 0.25),
+        inset 0 0 40px rgba(232, 160, 48, 0.05);
 }
 
 /* Griglia esagonale - amber, molto sottile */
 [data-theme="light"] .grid-overlay {
-    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="86.6" height="100" viewBox="0 0 86.6 100"><path d="M43.3 0 L86.6 25 L86.6 75 L43.3 100 L0 75 L0 25 Z" fill="none" stroke="rgba(232,160,48,0.15)" stroke-width="1"/></svg>');
-    box-shadow: 
-        inset 0 0 40px rgba(232, 160, 48, 0.03),
-        inset 0 0 20px rgba(232, 160, 48, 0.02);
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="86.6" height="100" viewBox="0 0 86.6 100"><path d="M43.3 0 L86.6 25 L86.6 75 L43.3 100 L0 75 L0 25 Z" fill="none" stroke="rgba(180,120,60,0.12)" stroke-width="1"/></svg>');
 }
 
 /* Scanlines quasi invisibili per night mode */
@@ -1688,9 +1623,9 @@ footer {
     background: repeating-linear-gradient(
         0deg,
         transparent,
-        transparent 3px,
-        rgba(232, 160, 48, 0.008) 3px,
-        rgba(232, 160, 48, 0.008) 6px
+        transparent 2px,
+        rgba(180, 120, 60, 0.02) 2px,
+        rgba(180, 120, 60, 0.02) 4px
     );
 }
 
