@@ -1,0 +1,485 @@
+/* ====================================
+   CONSULENZE PAGE - CYBERTECH DESIGN
+   ==================================== */
+
+.service-detail-wrapper {
+  min-height: 100vh;
+  background: var(--color-background, #000);
+  color: var(--color-text, #fff);
+  font-family: 'Share Tech Mono', monospace;
+  position: relative;
+  overflow-x: hidden;
+  padding-top: 80px;
+  padding-bottom: 60px;
+}
+
+/* Background Effects */
+.detail-grid-overlay {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="86.6" height="100" viewBox="0 0 86.6 100"><path d="M43.3 0 L86.6 25 L86.6 75 L43.3 100 L0 75 L0 25 Z" fill="none" stroke="rgba(0,255,255,0.15)" stroke-width="1"/></svg>');
+  background-size: 86.6px 100px;
+  z-index: 1;
+  animation: breathingGrid 8s ease-in-out infinite;
+}
+
+@keyframes breathingGrid {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.6; }
+}
+
+.service-detail-wrapper::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(0, 255, 255, 0.02) 2px,
+    rgba(0, 255, 255, 0.02) 4px
+  );
+  pointer-events: none;
+  z-index: 2;
+}
+
+/* Code Background */
+.code-background {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.code-line {
+  position: absolute;
+  font-size: 16px;
+  color: var(--color-primary-30, rgba(0, 255, 255, 0.3));
+  white-space: nowrap;
+  opacity: 0;
+  animation: typewriter 3s ease-in-out forwards;
+  text-shadow: 0 0 5px var(--color-primary-20, rgba(0, 255, 255, 0.2));
+  font-weight: 500;
+}
+
+@keyframes typewriter {
+  0% {
+    opacity: 0;
+    width: 0;
+    overflow: hidden;
+  }
+  15% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 1;
+    width: 100%;
+    overflow: visible;
+  }
+}
+
+/* Header */
+.detail-header {
+  position: relative;
+  z-index: 10;
+  padding: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.back-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.8rem 1.5rem;
+  background: rgba(0, 255, 255, 0.1);
+  border: 2px solid var(--color-primary-30, rgba(0, 255, 255, 0.3));
+  color: var(--color-primary, #0ff);
+  font-family: 'Orbitron', sans-serif;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.back-button:hover {
+  background: rgba(0, 255, 255, 0.2);
+  border-color: var(--color-primary, #0ff);
+  transform: translateX(-4px);
+  box-shadow: 0 0 20px rgba(0, 255, 255, 0.3);
+}
+
+.back-arrow {
+  font-size: 1.2rem;
+  transition: transform 0.3s ease;
+}
+
+.back-button:hover .back-arrow {
+  transform: translateX(-4px);
+}
+
+/* Content */
+.detail-content {
+  position: relative;
+  z-index: 10;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 2rem 4rem;
+}
+
+/* Hero Section */
+.detail-hero {
+  text-align: center;
+  margin-bottom: 4rem;
+}
+
+.detail-icon {
+  width: 120px;
+  height: 120px;
+  margin: 0 auto 2rem;
+}
+
+.icon-consulenza {
+  position: relative;
+  border: 3px solid var(--color-primary, #0ff);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: iconPulse 3s ease-in-out infinite;
+  box-shadow: 0 0 30px rgba(0, 255, 255, 0.4);
+}
+
+@keyframes iconPulse {
+  0%, 100% {
+    transform: scale(1);
+    box-shadow: 0 0 30px rgba(0, 255, 255, 0.4);
+  }
+  50% {
+    transform: scale(1.05);
+    box-shadow: 0 0 50px rgba(0, 255, 255, 0.6);
+  }
+}
+
+.icon-consulenza-center {
+  width: 40px;
+  height: 40px;
+  border: 2px solid var(--color-primary, #0ff);
+  border-radius: 50%;
+  position: relative;
+}
+
+.icon-consulenza-center::before,
+.icon-consulenza-center::after {
+  content: '';
+  position: absolute;
+  background: var(--color-primary, #0ff);
+}
+
+.icon-consulenza-center::before {
+  width: 2px;
+  height: 20px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.icon-consulenza-center::after {
+  width: 20px;
+  height: 2px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.detail-title {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 3.5rem;
+  font-weight: 900;
+  color: var(--color-primary, #0ff);
+  text-shadow: 0 0 20px rgba(0, 255, 255, 0.8);
+  letter-spacing: 0.1em;
+  margin: 0 0 1rem 0;
+  text-transform: uppercase;
+}
+
+.detail-subtitle {
+  font-size: 1.2rem;
+  color: rgba(255, 255, 255, 0.7);
+  letter-spacing: 0.05em;
+  margin: 0;
+}
+
+/* Intro Section */
+.detail-intro {
+  max-width: 800px;
+  margin: 0 auto 4rem;
+  text-align: center;
+}
+
+.intro-text {
+  font-size: 1.1rem;
+  line-height: 1.8;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+/* Services Grid */
+.services-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 2rem;
+  margin-bottom: 4rem;
+}
+
+.service-card {
+  background: rgba(0, 0, 0, 0.4);
+  border: 2px solid var(--color-primary-30, rgba(0, 255, 255, 0.3));
+  border-radius: 8px;
+  padding: 2rem;
+  backdrop-filter: blur(10px);
+  transition: all 0.3s ease;
+}
+
+.service-card:hover {
+  border-color: var(--color-primary, #0ff);
+  transform: translateY(-4px);
+  box-shadow: 0 8px 30px rgba(0, 255, 255, 0.3);
+}
+
+.service-card-icon {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+}
+
+.service-card-title {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 1.3rem;
+  color: var(--color-primary, #0ff);
+  margin: 0 0 0.8rem 0;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.service-card-description {
+  font-size: 0.95rem;
+  color: rgba(255, 255, 255, 0.8);
+  line-height: 1.6;
+  margin: 0;
+}
+
+/* Process Section */
+.process-section {
+  margin-bottom: 4rem;
+}
+
+.section-title {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: var(--color-primary, #0ff);
+  text-align: center;
+  margin: 0 0 3rem 0;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.process-steps {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 2rem;
+}
+
+.step {
+  text-align: center;
+  padding: 2rem;
+}
+
+.step-number {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 3rem;
+  font-weight: 900;
+  color: var(--color-primary-30, rgba(0, 255, 255, 0.3));
+  margin-bottom: 1rem;
+}
+
+.step-title {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 1.2rem;
+  color: var(--color-primary, #0ff);
+  margin: 0 0 0.8rem 0;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.step-description {
+  font-size: 0.95rem;
+  color: rgba(255, 255, 255, 0.8);
+  line-height: 1.6;
+  margin: 0;
+}
+
+/* Highlight Box */
+.highlight-box {
+  background: linear-gradient(135deg, rgba(0, 255, 255, 0.1), rgba(0, 255, 255, 0.05));
+  border: 2px solid var(--color-primary, #0ff);
+  border-radius: 12px;
+  padding: 3rem;
+  text-align: center;
+  margin-bottom: 3rem;
+  box-shadow: 0 0 40px rgba(0, 255, 255, 0.2);
+  animation: highlightGlow 3s ease-in-out infinite;
+}
+
+@keyframes highlightGlow {
+  0%, 100% {
+    box-shadow: 0 0 40px rgba(0, 255, 255, 0.2);
+  }
+  50% {
+    box-shadow: 0 0 60px rgba(0, 255, 255, 0.4);
+  }
+}
+
+.highlight-icon {
+  font-size: 4rem;
+  margin-bottom: 1rem;
+}
+
+.highlight-title {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 2rem;
+  color: var(--color-primary, #0ff);
+  margin: 0 0 1rem 0;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.highlight-text {
+  font-size: 1.1rem;
+  color: rgba(255, 255, 255, 0.9);
+  line-height: 1.8;
+  margin: 0;
+}
+
+/* CTA Button */
+.detail-cta {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  width: 100%;
+  max-width: 500px;
+  margin: 0 auto;
+  padding: 1.5rem 3rem;
+  background: rgba(0, 255, 255, 0.1);
+  border: 3px solid var(--color-primary, #0ff);
+  color: var(--color-primary, #0ff);
+  font-family: 'Orbitron', sans-serif;
+  font-size: 1.2rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.detail-cta::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, transparent, rgba(0, 255, 255, 0.3), transparent);
+  transform: translateX(-100%);
+  transition: transform 0.5s ease;
+}
+
+.detail-cta:hover::before {
+  transform: translateX(100%);
+}
+
+.detail-cta:hover {
+  background: rgba(0, 255, 255, 0.2);
+  box-shadow: 0 0 40px rgba(0, 255, 255, 0.5);
+  transform: translateY(-2px);
+}
+
+.cta-arrow {
+  font-size: 1.5rem;
+  transition: transform 0.3s ease;
+}
+
+.detail-cta:hover .cta-arrow {
+  transform: translateX(8px);
+}
+
+/* Footer */
+.detail-footer {
+  position: relative;
+  z-index: 10;
+  text-align: center;
+  padding: 2rem;
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 0.85rem;
+  letter-spacing: 0.1em;
+}
+
+/* Light Mode */
+[data-theme="light"] .detail-grid-overlay {
+  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="86.6" height="100" viewBox="0 0 86.6 100"><path d="M43.3 0 L86.6 25 L86.6 75 L43.3 100 L0 75 L0 25 Z" fill="none" stroke="rgba(180,120,60,0.12)" stroke-width="1"/></svg>');
+}
+
+[data-theme="light"] .service-detail-wrapper::after {
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(180, 120, 60, 0.02) 2px,
+    rgba(180, 120, 60, 0.02) 4px
+  );
+}
+
+[data-theme="light"] .code-line {
+  color: var(--color-secondary-30, rgba(180, 120, 60, 0.3));
+  text-shadow: none;
+}
+
+[data-theme="light"] .detail-title,
+[data-theme="light"] .section-title,
+[data-theme="light"] .service-card-title,
+[data-theme="light"] .step-title,
+[data-theme="light"] .highlight-title {
+  text-shadow: none;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .detail-title {
+    font-size: 2.5rem;
+  }
+
+  .section-title {
+    font-size: 2rem;
+  }
+
+  .detail-content {
+    padding: 0 1.5rem 3rem;
+  }
+
+  .services-grid,
+  .process-steps {
+    grid-template-columns: 1fr;
+  }
+
+  .highlight-box {
+    padding: 2rem;
+  }
+
+  .detail-cta {
+    font-size: 1rem;
+    padding: 1.2rem 2rem;
+  }
+}

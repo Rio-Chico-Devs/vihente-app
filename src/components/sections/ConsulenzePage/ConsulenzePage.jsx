@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import './ConsulenzePage.css';
 
 const ConsulenzePage = () => {
   const navigate = useNavigate();
@@ -11,12 +12,86 @@ const ConsulenzePage = () => {
     };
   }, []);
 
+  // Typewriter code background effect
+  useEffect(() => {
+    const codeSnippets = [
+      'const strategy = {',
+      'function optimize() {',
+      'return growth;',
+      'export default Digital;',
+      'class Consultant {'
+    ];
+    let activeTimeouts = [];
+
+    function generateCodeLine() {
+      const snippet = codeSnippets[Math.floor(Math.random() * codeSnippets.length)];
+      const x = Math.random() * (window.innerWidth - 250);
+      const y = Math.random() * (window.innerHeight - 30);
+      
+      const codeLine = document.createElement('div');
+      codeLine.className = 'code-line';
+      codeLine.textContent = snippet;
+      codeLine.style.cssText = `left:${x}px;top:${y}px`;
+      
+      const codeBackground = document.getElementById('codeBackground');
+      if (codeBackground) {
+        codeBackground.appendChild(codeLine);
+      }
+      
+      const removeTimeout = setTimeout(() => {
+        if (codeLine.parentNode) {
+          codeLine.parentNode.removeChild(codeLine);
+        }
+      }, 6000);
+      
+      activeTimeouts.push(removeTimeout);
+    }
+
+    const codeInterval = setInterval(generateCodeLine, 6000);
+    const codeTimeout = setTimeout(generateCodeLine, 2000);
+
+    return () => {
+      clearInterval(codeInterval);
+      clearTimeout(codeTimeout);
+      activeTimeouts.forEach(timeout => clearTimeout(timeout));
+      
+      const codeBackground = document.getElementById('codeBackground');
+      if (codeBackground) {
+        while (codeBackground.firstChild) {
+          codeBackground.removeChild(codeBackground.firstChild);
+        }
+      }
+    };
+  }, []);
+
+  const services = [
+    {
+      title: 'Analisi Digitale',
+      description: 'Audit completo della tua presenza online: siti web, social media, SEO e performance.',
+      icon: '🔍'
+    },
+    {
+      title: 'Strategia di Crescita',
+      description: 'Piano personalizzato per ottimizzare la tua visibilità digitale e raggiungere i tuoi obiettivi.',
+      icon: '📈'
+    },
+    {
+      title: 'Ottimizzazione Risorse',
+      description: 'Suggerimenti per migliorare efficienza, conversioni e ROI dei tuoi investimenti digitali.',
+      icon: '⚡'
+    },
+    {
+      title: 'Formazione Team',
+      description: 'Sessioni di training per il tuo team su strumenti e best practices digitali.',
+      icon: '🎓'
+    }
+  ];
+
   return (
     <div className="service-detail-wrapper">
-      {/* Background effects */}
+      <div className="code-background" id="codeBackground"></div>
       <div className="detail-grid-overlay"></div>
       
-      {/* Header */}
       <header className="detail-header">
         <button 
           className="back-button"
@@ -27,40 +102,77 @@ const ConsulenzePage = () => {
         </button>
       </header>
 
-      {/* Content */}
       <div className="detail-content">
-        <div className="detail-icon icon-consulenza">
-          <div className="icon-consulenza-center"></div>
+        <div className="detail-hero">
+          <div className="detail-icon icon-consulenza">
+            <div className="icon-consulenza-center"></div>
+          </div>
+          <h1 className="detail-title">Consulenze Digitali</h1>
+          <p className="detail-subtitle">Trasforma la tua presenza online in un asset strategico</p>
         </div>
 
-        <h1 className="detail-title">Consulenze Digitali</h1>
-        
-        <div className="detail-description">
-          <p>
-            Se hai già una presenza online ma vorresti cambiare approccio o allinearti a delle ottiche più moderne, 
-            hai bisogno di qualcuno che si occupi ad aiutarti a gestire i tuoi servizi o semplicemente vuoi una 
-            consultazione per capire come muoverti per creare la tua presenza digitale, contattami o chiamami per 
-            studiare il tuo caso, identificare i tuoi problemi e valutare le misure possibili da adottare per 
-            risolvere i tuoi problemi.
+        <div className="detail-intro">
+          <p className="intro-text">
+            Se hai già una presenza online ma vorresti cambiare approccio o allinearti a logiche più moderne, 
+            hai bisogno di qualcuno che ti aiuti a gestire i tuoi servizi o semplicemente vuoi una consultazione 
+            per capire come muoverti per creare la tua presenza digitale, sono qui per aiutarti.
           </p>
-          
-          <div className="highlight-box">
-            <p className="highlight-text">
-              La prima consulenza online è sempre gratuita!
-            </p>
+        </div>
+
+        <div className="services-grid">
+          {services.map((service, index) => (
+            <div key={index} className="service-card">
+              <div className="service-card-icon">{service.icon}</div>
+              <h3 className="service-card-title">{service.title}</h3>
+              <p className="service-card-description">{service.description}</p>
+            </div>
+          ))}
+        </div>
+
+        <div className="process-section">
+          <h2 className="section-title">Come Funziona</h2>
+          <div className="process-steps">
+            <div className="step">
+              <div className="step-number">01</div>
+              <h3 className="step-title">Contatto Iniziale</h3>
+              <p className="step-description">Prenota la tua prima consulenza gratuita online.</p>
+            </div>
+            <div className="step">
+              <div className="step-number">02</div>
+              <h3 className="step-title">Analisi</h3>
+              <p className="step-description">Studiamo insieme il tuo caso e identifichiamo le opportunità.</p>
+            </div>
+            <div className="step">
+              <div className="step-number">03</div>
+              <h3 className="step-title">Proposta</h3>
+              <p className="step-description">Ricevi un piano d'azione personalizzato e dettagliato.</p>
+            </div>
+            <div className="step">
+              <div className="step-number">04</div>
+              <h3 className="step-title">Implementazione</h3>
+              <p className="step-description">Ti supporto nell'applicazione delle strategie concordate.</p>
+            </div>
           </div>
         </div>
 
-        {/* CTA Button */}
+        <div className="highlight-box">
+          <div className="highlight-icon">🎁</div>
+          <h3 className="highlight-title">Prima Consulenza Gratuita</h3>
+          <p className="highlight-text">
+            La prima consulenza online è sempre gratuita! Parliamo insieme dei tuoi obiettivi 
+            e vediamo come posso aiutarti a raggiungerli.
+          </p>
+        </div>
+
         <button 
           className="detail-cta"
           onClick={() => navigate('/contatti')}
         >
-          Richiedi Consulenza
+          <span className="cta-text">Richiedi Consulenza Gratuita</span>
+          <span className="cta-arrow">→</span>
         </button>
       </div>
 
-      {/* Footer */}
       <footer className="detail-footer">
         <p>© 2025 VIHENTE - PER ASPERA AD ASTRA</p>
       </footer>

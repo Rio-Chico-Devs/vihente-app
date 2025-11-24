@@ -38,6 +38,58 @@ const Portfolio = () => {
     return () => document.removeEventListener('mousedown', handleClick);
   }, [isExpanded]);
 
+  // Typewriter code background effect
+  useEffect(() => {
+    const codeSnippets = [
+      'const portfolio = {',
+      'function render() {',
+      'return <Component />',
+      'export default App;',
+      'import React from "react"'
+    ];
+    let activeTimeouts = [];
+
+    function generateCodeLine() {
+      const snippet = codeSnippets[Math.floor(Math.random() * codeSnippets.length)];
+      const x = Math.random() * (window.innerWidth - 250);
+      const y = Math.random() * (window.innerHeight - 30);
+      
+      const codeLine = document.createElement('div');
+      codeLine.className = 'code-line';
+      codeLine.textContent = snippet;
+      codeLine.style.cssText = `left:${x}px;top:${y}px`;
+      
+      const codeBackground = document.getElementById('codeBackground');
+      if (codeBackground) {
+        codeBackground.appendChild(codeLine);
+      }
+      
+      const removeTimeout = setTimeout(() => {
+        if (codeLine.parentNode) {
+          codeLine.parentNode.removeChild(codeLine);
+        }
+      }, 6000);
+      
+      activeTimeouts.push(removeTimeout);
+    }
+
+    const codeInterval = setInterval(generateCodeLine, 6000);
+    const codeTimeout = setTimeout(generateCodeLine, 2000);
+
+    return () => {
+      clearInterval(codeInterval);
+      clearTimeout(codeTimeout);
+      activeTimeouts.forEach(timeout => clearTimeout(timeout));
+      
+      const codeBackground = document.getElementById('codeBackground');
+      if (codeBackground) {
+        while (codeBackground.firstChild) {
+          codeBackground.removeChild(codeBackground.firstChild);
+        }
+      }
+    };
+  }, []);
+
   const navigateCarousel = (dir) => {
     setIsExpanded(false);
     if (dir === 'prev') {
@@ -108,6 +160,7 @@ const Portfolio = () => {
 
   return (
     <div className="portfolio-page">
+      <div className="code-background" id="codeBackground"></div>
       <div className="portfolio-container">
         <button className="nav-arrow left" onClick={() => navigateCarousel('prev')}>
           <svg viewBox="0 0 60 100">

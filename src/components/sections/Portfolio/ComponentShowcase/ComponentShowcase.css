@@ -52,6 +52,42 @@
   z-index: 2;
 }
 
+/* LAYER CODICE DI SFONDO */
+.code-background {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.code-line {
+  position: absolute;
+  font-size: 16px;
+  color: var(--color-primary-30);
+  white-space: nowrap;
+  opacity: 0;
+  animation: typewriter 3s ease-in-out forwards;
+  text-shadow: 0 0 5px var(--color-primary-20);
+  font-weight: 500;
+}
+
+@keyframes typewriter {
+  0% {
+    opacity: 0;
+    width: 0;
+    overflow: hidden;
+  }
+  15% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 1;
+    width: 100%;
+    overflow: visible;
+  }
+}
+
 /* ====================================
    PREVIEW GRID
    ==================================== */
@@ -338,6 +374,11 @@
     rgba(180, 120, 60, 0.02) 2px,
     rgba(180, 120, 60, 0.02) 4px
   );
+}
+
+[data-theme="light"] .code-line {
+  color: var(--color-secondary-30);
+  text-shadow: none;
 }
 
 [data-theme="light"] .showcase-title,

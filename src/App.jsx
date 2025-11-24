@@ -14,6 +14,7 @@ import MultimediaPage from './components/sections/MultimediaPage/MultimediaPage'
 import Portfolio from './components/sections/Portfolio/Portfolio';
 import ComponentShowcase from './components/sections/Portfolio/ComponentShowcase/ComponentShowcase';
 import GraficheShowcase from './components/sections/Portfolio/GraficheShowcase/GraficheShowcase';
+import SitiWebShowcase from './components/sections/Portfolio/SitiWebShowcase/SitiWebShowcase';
 import SliderPage from './components/sections/Portfolio/ComponentShowcase/SliderPage/SliderPage';
 import TextSamplerPage from './components/sections/Portfolio/ComponentShowcase/TextSamplerPage/TextSamplerPage';
 import Cubo3DPage from './components/sections/Portfolio/ComponentShowcase/Cubo3DPage/Cubo3DPage';
@@ -24,7 +25,6 @@ import ScrollingHeader from './components/ScrollingHeader';
 import PrivacyPolicy from './components/sections/PrivacyPolicy/PrivacyPolicy';
 import CookiePolicy from './components/sections/CookiePolicy/CookiePolicy';
 import CookieConsentBanner from './components/global/CookieConsent/CookieConsent';
-import NavigationDebugPanel from './components/NavigationDebugPanel';
 
 function App() {
   const [isBooting, setIsBooting] = useState(true);
@@ -72,6 +72,7 @@ function App() {
                 <Route path="/portfolio" element={<Portfolio />} />
                 <Route path="/portfolio/componenti" element={<ComponentShowcase />} />
                 <Route path="/portfolio/grafiche" element={<GraficheShowcase />} />
+                <Route path="/portfolio/sitiweb" element={<SitiWebShowcase />} />
 
                 {/* Portfolio Component Details */}
                 <Route path="/portfolio/componenti/slider" element={<SliderPage />} />
@@ -88,9 +89,6 @@ function App() {
             </main>
 
             <Footer />
-
-            {/* 🔍 DEBUG PANEL - Remove in production */}
-            <NavigationDebugPanel />
           </>
         )}
       </BrowserRouter>

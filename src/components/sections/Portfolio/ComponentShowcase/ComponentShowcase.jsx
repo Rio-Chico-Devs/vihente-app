@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './ComponentShowcase.css';
 
@@ -58,8 +59,61 @@ const ComponentShowcase = () => {
     }
   ];
 
+  // Typewriter code background effect
+  useEffect(() => {
+    const codeSnippets = [
+      'const components = [',
+      'function Component() {',
+      'return <Preview />',
+      'export default UI;',
+      'import { useState }'
+    ];
+    let activeTimeouts = [];
+
+    function generateCodeLine() {
+      const snippet = codeSnippets[Math.floor(Math.random() * codeSnippets.length)];
+      const x = Math.random() * (window.innerWidth - 250);
+      const y = Math.random() * (window.innerHeight - 30);
+      
+      const codeLine = document.createElement('div');
+      codeLine.className = 'code-line';
+      codeLine.textContent = snippet;
+      codeLine.style.cssText = `left:${x}px;top:${y}px`;
+      
+      const codeBackground = document.getElementById('codeBackground');
+      if (codeBackground) {
+        codeBackground.appendChild(codeLine);
+      }
+      
+      const removeTimeout = setTimeout(() => {
+        if (codeLine.parentNode) {
+          codeLine.parentNode.removeChild(codeLine);
+        }
+      }, 6000);
+      
+      activeTimeouts.push(removeTimeout);
+    }
+
+    const codeInterval = setInterval(generateCodeLine, 6000);
+    const codeTimeout = setTimeout(generateCodeLine, 2000);
+
+    return () => {
+      clearInterval(codeInterval);
+      clearTimeout(codeTimeout);
+      activeTimeouts.forEach(timeout => clearTimeout(timeout));
+      
+      const codeBackground = document.getElementById('codeBackground');
+      if (codeBackground) {
+        while (codeBackground.firstChild) {
+          codeBackground.removeChild(codeBackground.firstChild);
+        }
+      }
+    };
+  }, []);
+
   return (
     <div className="component-showcase">
+      <div className="code-background" id="codeBackground"></div>
       <div className="preview-grid">
         <h1 className="showcase-title">Component Showcase</h1>
         <p className="showcase-subtitle">Click su una preview per esplorare il componente</p>

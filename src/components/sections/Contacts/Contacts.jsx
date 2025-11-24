@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 
 const Contacts = () => {
   const [isQuoteMode, setIsQuoteMode] = useState(false);
@@ -14,6 +14,17 @@ const Contacts = () => {
   const [isAnimating, setIsAnimating] = useState(false);
   const [canSubmit, setCanSubmit] = useState(true);
   const [showRateLimit, setShowRateLimit] = useState(false);
+
+  // 🔧 FIX MEMORY LEAK: Track all timeouts
+  const timeoutsRef = useRef([]);
+
+  // 🔧 FIX MEMORY LEAK: Cleanup all timeouts on unmount
+  useEffect(() => {
+    return () => {
+      timeoutsRef.current.forEach(timeout => clearTimeout(timeout));
+      timeoutsRef.current = [];
+    };
+  }, []);
 
   const handleChange = (e) => {
     setFormData({
@@ -40,22 +51,24 @@ const Contacts = () => {
     
     if (!canSubmit) {
       setShowRateLimit(true);
-      setTimeout(() => setShowRateLimit(false), 3000);
+      const timeout1 = setTimeout(() => setShowRateLimit(false), 3000);
+      timeoutsRef.current.push(timeout1);
       return;
     }
     
     setIsAnimating(true);
     setSubmitStatus(null);
     
-    setTimeout(() => {
+    const timeout2 = setTimeout(() => {
       createDefragParticles();
     }, 2000);
+    timeoutsRef.current.push(timeout2);
     
-    setTimeout(() => {
+    const timeout3 = setTimeout(() => {
       setIsAnimating(false);
       setSubmitStatus('success');
       
-      setTimeout(() => {
+      const timeout4 = setTimeout(() => {
         setFormData({
           name: '',
           email: '',
@@ -64,16 +77,20 @@ const Contacts = () => {
           message: ''
         });
       }, 100);
+      timeoutsRef.current.push(timeout4);
       
       setCanSubmit(false);
-      setTimeout(() => {
+      const timeout5 = setTimeout(() => {
         setCanSubmit(true);
       }, 10000);
+      timeoutsRef.current.push(timeout5);
       
-      setTimeout(() => {
+      const timeout6 = setTimeout(() => {
         setSubmitStatus(null);
       }, 4000);
+      timeoutsRef.current.push(timeout6);
     }, 3000);
+    timeoutsRef.current.push(timeout3);
   };
 
   const createDefragParticles = () => {
@@ -105,9 +122,12 @@ const Contacts = () => {
 
       container.appendChild(particle);
 
-      setTimeout(() => {
-        particle.remove();
+      const timeout = setTimeout(() => {
+        if (particle.parentNode) {
+          particle.remove();
+        }
       }, 1000);
+      timeoutsRef.current.push(timeout);
     }
   };
 
@@ -182,7 +202,7 @@ const Contacts = () => {
           position: fixed;
           inset: 0;
           pointer-events: none;
-          background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="86.6" height="100" viewBox="0 0 86.6 100"><path d="M43.3 0 L86.6 25 L86.6 75 L43.3 100 L0 75 L0 25 Z" fill="none" stroke="rgba(0,255,255,0.45)" stroke-width="1.2"/></svg>');
+          background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="86.6" height="100" viewBox="0 0 86.6 100"><path d="M43.3 0 L86.6 25 L86.6 75 L43.3 100 L 0 75 L0 25 Z" fill="none" stroke="rgba(0,255,255,0.45)" stroke-width="1.2"/></svg>');
           background-size: 86.6px 100px;
           z-index: 2;
           box-shadow: 
@@ -212,6 +232,42 @@ const Contacts = () => {
           );
           pointer-events: none;
           z-index: 1;
+        }
+
+        /* LAYER CODICE DI SFONDO */
+        .code-background {
+          position: fixed;
+          inset: 0;
+          z-index: 0;
+          overflow: hidden;
+          pointer-events: none;
+        }
+
+        .code-line {
+          position: absolute;
+          font-size: 16px;
+          color: var(--color-primary-30, rgba(0, 255, 255, 0.3));
+          white-space: nowrap;
+          opacity: 0;
+          animation: typewriter 3s ease-in-out forwards;
+          text-shadow: 0 0 5px var(--color-primary-20, rgba(0, 255, 255, 0.2));
+          font-weight: 500;
+        }
+
+        @keyframes typewriter {
+          0% {
+            opacity: 0;
+            width: 0;
+            overflow: hidden;
+          }
+          15% {
+            opacity: 1;
+          }
+          100% {
+            opacity: 1;
+            width: 100%;
+            overflow: visible;
+          }
         }
 
         .contacts-container {
@@ -872,6 +928,111 @@ const Contacts = () => {
             font-size: 0.75rem;
             padding: 0.85rem;
           }
+        }
+
+        /* ================================================
+           LIGHT MODE (NIGHT MODE) - AMBER WARM
+           Scientifically optimized for nighttime viewing
+           ================================================ */
+
+        [data-theme="light"] .section-title {
+          color: var(--color-primary);
+          text-shadow: var(--text-glow-title);
+        }
+
+        [data-theme="light"] .section-subtitle {
+          color: var(--color-secondary-70);
+        }
+
+        [data-theme="light"] .grid-overlay {
+          background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="86.6" height="100" viewBox="0 0 86.6 100"><path d="M43.3 0 L86.6 25 L86.6 75 L43.3 100 L0 75 L0 25 Z" fill="none" stroke="rgba(180,120,60,0.12)" stroke-width="1"/></svg>');
+          box-shadow:
+            inset 0 0 40px rgba(232, 160, 48, 0.05),
+            inset 0 0 20px rgba(232, 160, 48, 0.03);
+        }
+
+        [data-theme="light"] .vhs-scanlines::before {
+          background: repeating-linear-gradient(
+            0deg,
+            transparent,
+            transparent 2px,
+            rgba(180, 120, 60, 0.02) 2px,
+            rgba(180, 120, 60, 0.02) 4px
+          );
+        }
+
+        [data-theme="light"] .code-line {
+          color: var(--color-secondary-30);
+          text-shadow: none;
+        }
+
+        [data-theme="light"] .mode-toggle-button {
+          background: rgba(232, 160, 48, 0.08);
+          border-color: var(--color-primary-30);
+          color: var(--color-primary-80);
+        }
+
+        [data-theme="light"] .mode-toggle-button:hover {
+          background: rgba(232, 160, 48, 0.15);
+          border-color: var(--color-primary-50);
+          box-shadow: 0 5px 20px rgba(232, 160, 48, 0.2);
+        }
+
+        [data-theme="light"] .form-container {
+          background: rgba(8, 6, 4, 0.6);
+          border-color: var(--color-primary-30);
+          box-shadow:
+            0 0 30px rgba(232, 160, 48, 0.15),
+            inset 0 0 30px rgba(232, 160, 48, 0.03);
+        }
+
+        [data-theme="light"] .form-title {
+          color: var(--color-primary);
+          text-shadow: var(--text-glow-title);
+        }
+
+        [data-theme="light"] .form-description,
+        [data-theme="light"] .form-label {
+          color: var(--color-secondary-90);
+        }
+
+        [data-theme="light"] .form-input,
+        [data-theme="light"] .form-select,
+        [data-theme="light"] .form-textarea {
+          background: rgba(8, 6, 4, 0.5);
+          border-color: var(--color-primary-20);
+          color: var(--color-secondary-90);
+        }
+
+        [data-theme="light"] .form-input:focus,
+        [data-theme="light"] .form-select:focus,
+        [data-theme="light"] .form-textarea:focus {
+          border-color: var(--color-primary-50);
+          box-shadow: 0 0 15px rgba(232, 160, 48, 0.15);
+        }
+
+        [data-theme="light"] .submit-button {
+          background: linear-gradient(135deg, var(--color-primary-80), var(--color-secondary-70));
+          border-color: var(--color-primary-50);
+          color: var(--bg-black);
+          box-shadow: 0 6px 25px rgba(232, 160, 48, 0.2);
+        }
+
+        [data-theme="light"] .submit-button:hover {
+          background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
+          box-shadow: 0 8px 35px rgba(232, 160, 48, 0.35);
+        }
+
+        [data-theme="light"] .success-message {
+          background: rgba(76, 175, 80, 0.15);
+          border-color: rgba(76, 175, 80, 0.5);
+          color: rgb(160, 200, 130);
+        }
+
+        [data-theme="light"] .rate-limit-warning {
+          background: rgba(255, 152, 0, 0.15);
+          border-color: rgba(255, 152, 0, 0.5);
+          color: rgb(255, 200, 120);
         }
       `}</style>
 
