@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import ThemeProvider from './contexts/ThemeProvider';
+import ErrorBoundary from './components/ErrorBoundary/ErrorBoundary';
 import BootScreen from './components/sections/BootScreen/BootScreen';
 import Navbar from './components/sections/Navbar/Navbar';
 import Footer from './components/sections/Footer/Footer';
@@ -35,64 +36,66 @@ function App() {
   };
 
   return (
-    <ThemeProvider>
-      <BrowserRouter basename={import.meta.env.DEV ? '/' : '/vihente-app'}>
-        <CustomCursor />
-        <CookieConsentBanner isBooting={isBooting} />
-        <ThemeToggle />
+    <ErrorBoundary>
+      <ThemeProvider>
+        <BrowserRouter basename={import.meta.env.DEV ? '/' : '/vihente-app'}>
+          <CustomCursor />
+          <CookieConsentBanner isBooting={isBooting} />
+          <ThemeToggle />
 
-        {isBooting ? (
-          <BootScreen onBootComplete={handleBootComplete} />
-        ) : (
-          <>
-            <Navbar />
+          {isBooting ? (
+            <BootScreen onBootComplete={handleBootComplete} />
+          ) : (
+            <>
+              <Navbar />
 
-            <ScrollingHeader
-              text="News: +++ 22/04/2025: - ECMAScript 2025 introduce 'Temporal API'. Finalmente possiamo dire addio ai mal di testa causati dai fusi orari, dichiara John Smith, membro del comitato TC39. La nuova API promette una gestione delle date e dei tempi senza precedenti, semplificando lo sviluppo di applicazioni globali."
-            />
+              <ScrollingHeader
+                text="News: +++ 22/04/2025: - ECMAScript 2025 introduce 'Temporal API'. Finalmente possiamo dire addio ai mal di testa causati dai fusi orari, dichiara John Smith, membro del comitato TC39. La nuova API promette una gestione delle date e dei tempi senza precedenti, semplificando lo sviluppo di applicazioni globali."
+              />
 
-            <main role="main" aria-label="Contenuto principale">
-              <Routes>
-                {/* Landing Page */}
-                <Route path="/" element={<LandingPage startTime={startTime} />} />
+              <main role="main" aria-label="Contenuto principale">
+                <Routes>
+                  {/* Landing Page */}
+                  <Route path="/" element={<LandingPage startTime={startTime} />} />
 
-                {/* La Mia Storia */}
-                <Route path="/storia" element={<MyStory />} />
+                  {/* La Mia Storia */}
+                  <Route path="/storia" element={<MyStory />} />
 
-                {/* Services Main Page */}
-                <Route path="/services" element={<ServicesPage />} />
+                  {/* Services Main Page */}
+                  <Route path="/services" element={<ServicesPage />} />
 
-                {/* Service Details Pages */}
-                <Route path="/services/consulenze" element={<ConsulenzePage />} />
-                <Route path="/services/sitiweb" element={<SitiWebPage />} />
-                <Route path="/services/presenza" element={<PresenzaOnlinePage />} />
-                <Route path="/services/multimedia" element={<MultimediaPage />} />
+                  {/* Service Details Pages */}
+                  <Route path="/services/consulenze" element={<ConsulenzePage />} />
+                  <Route path="/services/sitiweb" element={<SitiWebPage />} />
+                  <Route path="/services/presenza" element={<PresenzaOnlinePage />} />
+                  <Route path="/services/multimedia" element={<MultimediaPage />} />
 
-                {/* Portfolio */}
-                <Route path="/portfolio" element={<Portfolio />} />
-                <Route path="/portfolio/componenti" element={<ComponentShowcase />} />
-                <Route path="/portfolio/grafiche" element={<GraficheShowcase />} />
-                <Route path="/portfolio/sitiweb" element={<SitiWebShowcase />} />
+                  {/* Portfolio */}
+                  <Route path="/portfolio" element={<Portfolio />} />
+                  <Route path="/portfolio/componenti" element={<ComponentShowcase />} />
+                  <Route path="/portfolio/grafiche" element={<GraficheShowcase />} />
+                  <Route path="/portfolio/sitiweb" element={<SitiWebShowcase />} />
 
-                {/* Portfolio Component Details */}
-                <Route path="/portfolio/componenti/slider" element={<SliderPage />} />
-                <Route path="/portfolio/componenti/text-sampler" element={<TextSamplerPage />} />
-                <Route path="/portfolio/componenti/cubo-3d" element={<Cubo3DPage />} />
+                  {/* Portfolio Component Details */}
+                  <Route path="/portfolio/componenti/slider" element={<SliderPage />} />
+                  <Route path="/portfolio/componenti/text-sampler" element={<TextSamplerPage />} />
+                  <Route path="/portfolio/componenti/cubo-3d" element={<Cubo3DPage />} />
 
-                {/* Contacts */}
-                <Route path="/contatti" element={<Contacts />} />
+                  {/* Contacts */}
+                  <Route path="/contatti" element={<Contacts />} />
 
-                {/* Privacy & Cookie Policy */}
-                <Route path="/privacy-policy" element={<PrivacyPolicy />} />
-                <Route path="/cookie-policy" element={<CookiePolicy />} />
-              </Routes>
-            </main>
+                  {/* Privacy & Cookie Policy */}
+                  <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+                  <Route path="/cookie-policy" element={<CookiePolicy />} />
+                </Routes>
+              </main>
 
-            <Footer />
-          </>
-        )}
-      </BrowserRouter>
-    </ThemeProvider>
+              <Footer />
+            </>
+          )}
+        </BrowserRouter>
+      </ThemeProvider>
+    </ErrorBoundary>
   );
 }
 
