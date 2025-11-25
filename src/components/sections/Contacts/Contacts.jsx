@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { validateContactForm, sanitizeInput } from '../../utils/validation';
+import { validateContactForm, sanitizeInput } from '../../../utils/validation';
 import './Contacts.css';
 
 const Contacts = () => {
