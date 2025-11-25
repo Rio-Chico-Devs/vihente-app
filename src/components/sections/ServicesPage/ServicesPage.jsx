@@ -6,6 +6,10 @@ const ServicesPage = () => {
   const navigate = useNavigate();
   const [effectsReady, setEffectsReady] = useState(false);
   const gridRef = useRef(null);
+  
+  // 🔧 FIX MEMORY LEAK: Track all intervals and timeouts
+  const intervalsRef = useRef([]);
+  const timeoutsRef = useRef([]);
 
   useEffect(() => {
     document.body.classList.add('services-page-body');
@@ -66,7 +70,9 @@ const ServicesPage = () => {
       }
 
       const codeInterval = setInterval(generateCodeLine, 6000);
+      intervalsRef.current.push(codeInterval); // 🔧 TRACK
       const codeTimeout = setTimeout(generateCodeLine, 2000);
+      timeoutsRef.current.push(codeTimeout); // 🔧 TRACK
 
       const binaryInterval = setInterval(() => {
         const digits = document.querySelectorAll('.binary-digit');
@@ -75,12 +81,14 @@ const ServicesPage = () => {
           randomDigit.textContent = randomDigit.textContent === '1' ? '0' : '1';
         }
       }, 2000);
+      intervalsRef.current.push(binaryInterval); // 🔧 TRACK
 
       function triggerWaveEffect() {
         const grid = gridRef.current;
         if (grid && !grid.classList.contains('flash')) {
           grid.classList.add('flash');
-          setTimeout(() => grid.classList.remove('flash'), 800);
+          const flashTimeout = setTimeout(() => grid.classList.remove('flash'), 800);
+          timeoutsRef.current.push(flashTimeout); // 🔧 TRACK
         }
       }
 
@@ -93,10 +101,12 @@ const ServicesPage = () => {
           if (boxes.length > 0) {
             const randomBox = boxes[Math.floor(Math.random() * boxes.length)];
             randomBox.classList.add('glitching');
-            setTimeout(() => randomBox.classList.remove('glitching'), 200);
+            const glitchTimeout = setTimeout(() => randomBox.classList.remove('glitching'), 200);
+            timeoutsRef.current.push(glitchTimeout); // 🔧 TRACK
           }
           scheduleNextGlitch();
         }, delay);
+        timeoutsRef.current.push(glitchIntervalId); // 🔧 TRACK
       }
 
       scheduleNextGlitch();
@@ -111,6 +121,7 @@ const ServicesPage = () => {
           }
         }
       }, 3000);
+      intervalsRef.current.push(limitCheckInterval); // 🔧 TRACK
 
       window.triggerWaveEffect = triggerWaveEffect;
 
@@ -150,6 +161,13 @@ const ServicesPage = () => {
 
     return () => {
       document.body.classList.remove('services-page-body');
+      
+      // 🔧 FIX MEMORY LEAK: Cleanup all tracked intervals and timeouts
+      intervalsRef.current.forEach(interval => clearInterval(interval));
+      timeoutsRef.current.forEach(timeout => clearTimeout(timeout));
+      intervalsRef.current = [];
+      timeoutsRef.current = [];
+      
       if (cleanup) cleanup();
       gridRef.current = null;
     };

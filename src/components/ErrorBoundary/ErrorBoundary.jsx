@@ -10,7 +10,8 @@ class ErrorBoundary extends Component {
     };
   }
 
-  static getDerivedStateFromError(error) {
+  // ✅ FIX: Aggiunto _ prefix per indicare parametro intenzionalmente non usato
+  static getDerivedStateFromError(_error) {
     return { hasError: true };
   }
 
@@ -39,30 +40,36 @@ class ErrorBoundary extends Component {
 
   render() {
     if (this.state.hasError) {
+      // Se hai passato un fallback custom come prop, usalo
+      if (this.props.fallback) {
+        return this.props.fallback;
+      }
+
+      // Altrimenti usa il fallback di default
       return (
         <div style={styles.container}>
           <div style={styles.gridOverlay}></div>
-          
+
           <div style={styles.errorBox}>
             <div style={styles.iconContainer}>
-              <svg 
+              <svg
                 style={styles.icon}
-                viewBox="0 0 100 100" 
-                width="80" 
+                viewBox="0 0 100 100"
+                width="80"
                 height="80"
               >
-                <circle 
-                  cx="50" 
-                  cy="50" 
-                  r="45" 
-                  fill="none" 
-                  stroke="rgba(255, 50, 50, 0.8)" 
+                <circle
+                  cx="50"
+                  cy="50"
+                  r="45"
+                  fill="none"
+                  stroke="rgba(255, 50, 50, 0.8)"
                   strokeWidth="3"
                 />
-                <path 
-                  d="M 30,30 L 70,70 M 70,30 L 30,70" 
-                  stroke="rgba(255, 50, 50, 0.8)" 
-                  strokeWidth="3" 
+                <path
+                  d="M 30,30 L 70,70 M 70,30 L 30,70"
+                  stroke="rgba(255, 50, 50, 0.8)"
+                  strokeWidth="3"
                   strokeLinecap="round"
                 />
               </svg>
@@ -90,7 +97,7 @@ class ErrorBoundary extends Component {
             )}
 
             <div style={styles.buttonGroup}>
-              <button 
+              <button
                 style={styles.button}
                 onClick={this.handleReset}
                 onMouseEnter={(e) => {
@@ -104,7 +111,7 @@ class ErrorBoundary extends Component {
               >
                 Riprova
               </button>
-              <button 
+              <button
                 style={styles.buttonSecondary}
                 onClick={() => window.location.href = '/'}
                 onMouseEnter={(e) => {

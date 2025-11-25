@@ -1,0 +1,459 @@
+/* ========================================
+   Cookie Consent - Cyberpunk Theme Styling
+   Con supporto Light Mode (Night Mode)
+   ======================================== */
+
+:root {
+  --cc-bg: #000;
+  --cc-text: rgba(255, 255, 255, 0.95);
+  --cc-btn-primary-bg: rgba(3, 33, 33, 1);
+  --cc-btn-primary-text: #0ff;
+  --cc-btn-primary-hover-bg: #00cccc;
+  --cc-btn-secondary-bg: transparent;
+  --cc-btn-secondary-text: #0ff;
+  --cc-btn-secondary-hover-bg: rgba(0, 255, 255, 0.1);
+  --cc-separator-border-color: rgba(0, 255, 255, 0.3);
+  --cc-toggle-bg-off: #1a1a1a;
+  --cc-toggle-bg-on: rgba(3, 70, 70, 1);
+  --cc-toggle-knob-bg: #fff;
+  --cc-toggle-knob-icon-color: #000;
+  --cc-overlay-bg: rgba(0, 0, 0, 0.93);
+  --cc-cookie-category-block-bg: rgba(1, 31, 31, 0.1);
+  --cc-toggle-on-bg: rgba(123, 183, 20, 1);
+  --cc-toggle-readonly-knob-icon-color: rgba(123, 183, 20, 1);
+  --cc-cookie-category-block-hover-bg: rgba(0, 255, 255, 0.1);
+}
+
+/* ========================================
+   ✅ LIGHT MODE (Night Mode) Variables
+   ======================================== */
+
+body.light-mode {
+  --cc-bg: #fef8f0;
+  --cc-text: rgba(20, 20, 20, 0.95);
+  --cc-btn-primary-bg: rgba(204, 85, 0, 1);
+  --cc-btn-primary-text: #fef8f0;
+  --cc-btn-primary-hover-bg: #e65c00;
+  --cc-btn-secondary-bg: transparent;
+  --cc-btn-secondary-text: #cc5500;
+  --cc-btn-secondary-hover-bg: rgba(204, 85, 0, 0.1);
+  --cc-separator-border-color: rgba(204, 85, 0, 0.3);
+  --cc-toggle-bg-off: #e6d5c3;
+  --cc-toggle-bg-on: rgba(204, 85, 0, 0.3);
+  --cc-toggle-knob-bg: #cc5500;
+  --cc-toggle-knob-icon-color: #fef8f0;
+  --cc-overlay-bg: rgba(254, 248, 240, 0.95);
+  --cc-cookie-category-block-bg: rgba(204, 85, 0, 0.05);
+  --cc-toggle-on-bg: rgba(204, 85, 0, 1);
+  --cc-toggle-readonly-knob-icon-color: rgba(204, 85, 0, 1);
+  --cc-cookie-category-block-hover-bg: rgba(204, 85, 0, 0.1);
+}
+
+/* LIMITA Z-INDEX del cookie banner per permettere al cursore di stare sopra */
+#cc-main {
+  z-index: 1000000 !important;
+}
+
+/* Overlay styling (NO z-index override) */
+#cc-main .cm__overlay,
+#cc-main .pm__overlay {
+  background: var(--cc-overlay-bg) !important;
+  backdrop-filter: blur(5px) !important;
+}
+
+/* Font globale */
+#cc-main * {
+  font-family: 'Share Tech Mono', monospace !important;
+}
+
+/* ========== CONSENT MODAL (Banner iniziale) - CENTRATO ========== */
+#cc-main .cm {
+  background: var(--cc-bg) !important;
+  border: 3px solid var(--cc-btn-secondary-text) !important;
+  box-shadow: 0 0 50px var(--cc-btn-secondary-hover-bg), 
+              0 0 100px var(--cc-btn-secondary-hover-bg) !important;
+  border-radius: 12px !important;
+  padding: 2rem 2.5rem !important;
+  max-width: 650px !important;
+  width: 90vw !important;
+}
+
+/* Titolo banner */
+#cc-main .cm__title {
+  font-family: 'Orbitron', sans-serif !important;
+  color: var(--cc-btn-secondary-text) !important;
+  text-shadow: 0 0 15px var(--cc-btn-secondary-hover-bg) !important;
+  font-size: 1.6rem !important;
+  font-weight: 900 !important;
+  margin-bottom: 1.25rem !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.1em !important;
+}
+
+/* Descrizione banner */
+#cc-main .cm__desc {
+  color: var(--cc-text) !important;
+  line-height: 1.7 !important;
+  font-size: 1rem !important;
+  margin-bottom: 1.5rem !important;
+}
+
+/* Footer con link */
+#cc-main .cm__footer {
+  border-top: 2px solid var(--cc-separator-border-color) !important;
+  padding-top: 1.25rem !important;
+  margin-top: 1.5rem !important;
+}
+
+/* Link */
+#cc-main a,
+#cc-main .cc__link {
+  color: var(--cc-btn-secondary-text) !important;
+  text-decoration: underline !important;
+  font-weight: 600 !important;
+  transition: all 0.2s ease !important;
+}
+
+#cc-main a:hover,
+#cc-main .cc__link:hover {
+  color: var(--cc-btn-primary-hover-bg) !important;
+  text-shadow: 0 0 10px var(--cc-btn-secondary-hover-bg) !important;
+}
+
+/* Bottoni */
+#cc-main .cm__btn,
+#cc-main .pm__btn {
+  font-family: 'Orbitron', sans-serif !important;
+  font-weight: 700 !important;
+  border-radius: 6px !important;
+  padding: 0.9rem 1.75rem !important;
+  transition: all 0.3s ease !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.08em !important;
+  font-size: 0.95rem !important;
+  border: 2px solid var(--cc-btn-secondary-text) !important;
+  cursor: pointer !important;
+  min-width: 140px !important;
+}
+
+/* Bottone primario */
+#cc-main .cm__btn--primary,
+#cc-main .pm__btn--primary {
+  background: var(--cc-btn-primary-bg) !important;
+  color: var(--cc-btn-primary-text) !important;
+  border-color: var(--cc-btn-secondary-text) !important;
+  font-weight: 900 !important;
+}
+
+#cc-main .cm__btn--primary:hover,
+#cc-main .pm__btn--primary:hover {
+  background: var(--cc-btn-primary-hover-bg) !important;
+  box-shadow: 0 0 20px var(--cc-btn-secondary-hover-bg), 
+              0 0 40px var(--cc-btn-secondary-hover-bg) !important;
+  transform: translateY(-3px) !important;
+}
+
+/* Bottone secondario */
+#cc-main .cm__btn--secondary,
+#cc-main .pm__btn--secondary {
+  background: var(--cc-btn-secondary-bg) !important;
+  color: var(--cc-btn-secondary-text) !important;
+  border-color: var(--cc-btn-secondary-text) !important;
+}
+
+#cc-main .cm__btn--secondary:hover,
+#cc-main .pm__btn--secondary:hover {
+  background: var(--cc-btn-secondary-hover-bg) !important;
+  box-shadow: 0 0 15px var(--cc-btn-secondary-hover-bg) !important;
+  transform: translateY(-2px) !important;
+}
+
+/* Container bottoni */
+#cc-main .cm__btns,
+#cc-main .pm__btns {
+  gap: 0.85rem !important;
+  margin-top: 1.25rem !important;
+}
+
+/* ========== PREFERENCES MODAL (Impostazioni) ========== */
+#cc-main .pm {
+  background: var(--cc-bg) !important;
+  border: 3px solid var(--cc-btn-secondary-text) !important;
+  box-shadow: 0 0 50px var(--cc-btn-secondary-hover-bg) !important;
+  border-radius: 12px !important;
+  padding: 2.5rem !important;
+  max-width: 800px !important;
+  max-height: 85vh !important;
+  overflow-y: auto !important;
+}
+
+/* Titolo modale preferenze */
+#cc-main .pm__title {
+  font-family: 'Orbitron', sans-serif !important;
+  color: var(--cc-btn-secondary-text) !important;
+  text-shadow: 0 0 15px var(--cc-btn-secondary-hover-bg) !important;
+  font-size: 2rem !important;
+  font-weight: 900 !important;
+  margin-bottom: 2rem !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.1em !important;
+}
+
+/* Body modale */
+#cc-main .pm__body {
+  color: var(--cc-text) !important;
+  line-height: 1.8 !important;
+}
+
+/* Sezioni */
+#cc-main .pm__section {
+  background: var(--cc-cookie-category-block-bg) !important;
+  border: 2px solid var(--cc-separator-border-color) !important;
+  border-radius: 8px !important;
+  padding: 1.5rem !important;
+  margin-bottom: 1.5rem !important;
+  transition: all 0.3s ease !important;
+}
+
+#cc-main .pm__section:hover {
+  background: var(--cc-cookie-category-block-hover-bg) !important;
+  border-color: var(--cc-btn-secondary-text) !important;
+  box-shadow: 0 0 15px var(--cc-btn-secondary-hover-bg) !important;
+}
+
+/* Titolo sezione */
+#cc-main .pm__section-title {
+  font-family: 'Orbitron', sans-serif !important;
+  color: var(--cc-btn-secondary-text) !important;
+  font-size: 1.15rem !important;
+  font-weight: 700 !important;
+  margin-bottom: 0.75rem !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 0.75rem !important;
+}
+
+/* Descrizione sezione */
+#cc-main .pm__section-desc {
+  color: var(--cc-text) !important;
+  line-height: 1.7 !important;
+  font-size: 0.95rem !important;
+}
+
+/* Badge "Sempre Abilitati" */
+#cc-main .pm__badge {
+  background: var(--cc-btn-secondary-hover-bg) !important;
+  color: var(--cc-btn-secondary-text) !important;
+  border: 2px solid var(--cc-btn-secondary-text) !important;
+  font-size: 0.7rem !important;
+  padding: 0.3rem 0.7rem !important;
+  border-radius: 4px !important;
+  font-weight: 700 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.05em !important;
+  box-shadow: 0 0 10px var(--cc-btn-secondary-hover-bg) !important;
+}
+
+/* Toggle switch */
+#cc-main .section__toggle {
+  background: var(--cc-toggle-bg-off) !important;
+  border: 2px solid var(--cc-separator-border-color) !important;
+  border-radius: 20px !important;
+  width: 68px !important;
+  height: 32px !important;
+  position: relative !important;
+  transition: all 0.3s ease !important;
+}
+
+#cc-main .section__toggle.toggle--on {
+  background: var(--cc-toggle-bg-on) !important;
+  border-color: var(--cc-btn-secondary-text) !important;
+}
+
+#cc-main .toggle__icon {
+  background: var(--cc-toggle-knob-bg) !important;
+  box-shadow: 0 0 15px var(--cc-btn-secondary-hover-bg) !important;
+  width: 26px !important;
+  height: 24px !important;
+  border-radius: 50% !important;
+  position: absolute !important;
+  top: 65% !important;
+  transform: translateY(-46%) !important;
+}
+
+#cc-main .section__toggle-wrapper {
+  cursor: pointer;
+  position: absolute;
+  right: 28px;
+  top: 12px;
+  z-index: 1;
+}
+
+#cc-main .section__toggle:checked ~ .toggle__icon .toggle__icon-circle {
+  background-color: var(--cc-toggle-on-bg);
+  transform: translateX(42px);
+}
+
+#cc-main .section__toggle.toggle--readonly {
+  opacity: 0.5 !important;
+  cursor: not-allowed !important;
+}
+
+/* Header sezione con toggle */
+#cc-main .pm__section-header {
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: center !important;
+  gap: 1rem !important;
+}
+
+/* Scrollbar personalizzata */
+#cc-main .pm__body::-webkit-scrollbar {
+  width: 10px !important;
+}
+
+#cc-main .pm__body::-webkit-scrollbar-track {
+  background: var(--cc-cookie-category-block-bg) !important;
+  border-radius: 5px !important;
+}
+
+#cc-main .pm__body::-webkit-scrollbar-thumb {
+  background: var(--cc-separator-border-color) !important;
+  border-radius: 5px !important;
+}
+
+#cc-main .pm__body::-webkit-scrollbar-thumb:hover {
+  background: var(--cc-btn-secondary-text) !important;
+}
+
+/* Animazione di entrata */
+@keyframes ccSlideInScale {
+  from {
+    opacity: 0;
+    transform: scale(0.85);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+#cc-main .cm {
+  animation: ccSlideInScale 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
+}
+
+@keyframes ccFadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+#cc-main .pm {
+  animation: ccFadeIn 0.3s ease-out !important;
+}
+
+/* ========== RESPONSIVE - MOBILE ========== */
+@media (max-width: 768px) {
+  /* Banner iniziale mobile */
+  #cc-main .cm {
+    width: 92vw !important;
+    padding: 1.5rem !important;
+    max-width: none !important;
+  }
+
+  #cc-main .cm__title {
+    font-size: 1.3rem !important;
+    margin-bottom: 1rem !important;
+  }
+
+  #cc-main .cm__desc {
+    font-size: 0.92rem !important;
+    line-height: 1.6 !important;
+    margin-bottom: 1.25rem !important;
+  }
+
+  #cc-main .cm__footer {
+    padding-top: 1rem !important;
+    margin-top: 1.25rem !important;
+  }
+
+  /* Bottoni mobile - stack verticale */
+  #cc-main .cm__btns {
+    flex-direction: column !important;
+    gap: 0.75rem !important;
+  }
+
+  #cc-main .cm__btn,
+  #cc-main .pm__btn {
+    font-size: 0.88rem !important;
+    padding: 0.8rem 1.4rem !important;
+    width: 100% !important;
+  }
+
+  /* Modale preferenze mobile */
+  #cc-main .pm {
+    width: 92vw !important;
+    max-width: none !important;
+    padding: 1.5rem !important;
+    max-height: 88vh !important;
+  }
+
+  #cc-main .pm__title {
+    font-size: 1.5rem !important;
+    margin-bottom: 1.5rem !important;
+  }
+
+  #cc-main .pm__section {
+    padding: 1.25rem !important;
+    margin-bottom: 1rem !important;
+  }
+
+  #cc-main .pm__section-title {
+    font-size: 1rem !important;
+    flex-wrap: wrap !important;
+  }
+
+  #cc-main .pm__section-desc {
+    font-size: 0.88rem !important;
+  }
+
+  #cc-main .pm__badge {
+    font-size: 0.65rem !important;
+    padding: 0.25rem 0.6rem !important;
+  }
+}
+
+/* Mobile piccolo (< 480px) */
+@media (max-width: 480px) {
+  #cc-main .cm {
+    padding: 1.25rem !important;
+  }
+
+  #cc-main .cm__title {
+    font-size: 1.15rem !important;
+    letter-spacing: 0.05em !important;
+  }
+
+  #cc-main .cm__desc {
+    font-size: 0.85rem !important;
+  }
+
+  #cc-main .cm__btn,
+  #cc-main .pm__btn {
+    font-size: 0.82rem !important;
+    padding: 0.75rem 1.25rem !important;
+  }
+
+  #cc-main .pm__title {
+    font-size: 1.25rem !important;
+  }
+
+  #cc-main .pm__section-title {
+    font-size: 0.92rem !important;
+  }
+}
