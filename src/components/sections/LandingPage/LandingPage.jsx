@@ -383,16 +383,6 @@ const LandingPageOldEye = ({ startTime }) => {
           68% { opacity: 1; }
         }
 
-        @keyframes rotateSquare1 {
-          from { transform: rotate(0deg); }
-          to { transform: rotate(360deg); }
-        }
-
-        @keyframes rotateSquare2 {
-          from { transform: rotate(0deg); }
-          to { transform: rotate(-360deg); }
-        }
-
         @keyframes subtleGlow {
           0%, 100% {
             filter: drop-shadow(0 0 8px ${colors.primary40})
@@ -695,62 +685,69 @@ const LandingPageOldEye = ({ startTime }) => {
             justifyContent: 'center',
             flex: '0 0 auto'
           }}>
-            <div style={{
-              position: 'absolute',
-              top: '50%',
-              left: '50%',
-              transform: 'translate(-50%, -50%)',
-              pointerEvents: 'none'
-            }}>
-              <svg
-                width="500"
-                height="500"
-                viewBox="0 0 500 500"
-                style={{
-                  animation: 'rotateSquare1 60s linear infinite',
-                  filter: `drop-shadow(0 0 8px ${colors.primary30})`
-                }}
-              >
-                <rect
-                  x="50"
-                  y="50"
-                  width="400"
-                  height="400"
-                  fill="none"
-                  stroke={colors.primary50}
-                  strokeWidth="2"
-                  strokeLinejoin="round"
-                />
+            {/* Orbital Rings System */}
+            <div className="orbital-system">
+              {/* Anelli orbitali concentrici */}
+              <svg className="orbital-ring orbital-ring-1" width="500" height="500" viewBox="0 0 500 500">
+                <circle cx="250" cy="250" r="140" />
+                {/* Nodi sui punti cardinali */}
+                <circle className="ring-node" cx="250" cy="110" r="3" />
+                <circle className="ring-node" cx="390" cy="250" r="3" />
+                <circle className="ring-node" cx="250" cy="390" r="3" />
+                <circle className="ring-node" cx="110" cy="250" r="3" />
               </svg>
-            </div>
 
-            <div style={{
-              position: 'absolute',
-              top: '50%',
-              left: '50%',
-              transform: 'translate(-50%, -50%)',
-              pointerEvents: 'none'
-            }}>
-              <svg
-                width="500"
-                height="500"
-                viewBox="0 0 500 500"
-                style={{
-                  animation: 'rotateSquare2 45s linear infinite',
-                  filter: `drop-shadow(0 0 8px ${colors.primary30})`
-                }}
-              >
-                <rect
-                  x="50"
-                  y="50"
-                  width="400"
-                  height="400"
-                  fill="none"
-                  stroke={colors.primary50}
-                  strokeWidth="2"
-                  strokeLinejoin="round"
-                />
+              <svg className="orbital-ring orbital-ring-2" width="500" height="500" viewBox="0 0 500 500">
+                <circle cx="250" cy="250" r="180" />
+                {/* Nodi sfalsati */}
+                <circle className="ring-node" cx="295" cy="88" r="2.5" />
+                <circle className="ring-node" cx="412" cy="205" r="2.5" />
+                <circle className="ring-node" cx="295" cy="412" r="2.5" />
+                <circle className="ring-node" cx="88" cy="295" r="2.5" />
               </svg>
+
+              <svg className="orbital-ring orbital-ring-3" width="500" height="500" viewBox="0 0 500 500">
+                <circle cx="250" cy="250" r="220" />
+                {/* Più nodi per complessità */}
+                <circle className="ring-node" cx="250" cy="30" r="2" />
+                <circle className="ring-node" cx="405" cy="155" r="2" />
+                <circle className="ring-node" cx="470" cy="250" r="2" />
+                <circle className="ring-node" cx="405" cy="345" r="2" />
+                <circle className="ring-node" cx="250" cy="470" r="2" />
+                <circle className="ring-node" cx="95" cy="345" r="2" />
+                <circle className="ring-node" cx="30" cy="250" r="2" />
+                <circle className="ring-node" cx="95" cy="155" r="2" />
+              </svg>
+
+              {/* Griglia HUD */}
+              <svg className="hud-grid" width="500" height="500" viewBox="0 0 500 500">
+                {/* Linee verticali */}
+                <line x1="150" y1="50" x2="150" y2="450" />
+                <line x1="250" y1="50" x2="250" y2="450" />
+                <line x1="350" y1="50" x2="350" y2="450" />
+                {/* Linee orizzontali */}
+                <line x1="50" y1="150" x2="450" y2="150" />
+                <line x1="50" y1="250" x2="450" y2="250" />
+                <line x1="50" y1="350" x2="450" y2="350" />
+                {/* Diagonali per effetto tech */}
+                <line x1="80" y1="80" x2="150" y2="150" className="tech-detail" />
+                <line x1="420" y1="80" x2="350" y2="150" className="tech-detail" />
+                <line x1="420" y1="420" x2="350" y2="350" className="tech-detail" />
+                <line x1="80" y1="420" x2="150" y2="350" className="tech-detail" />
+              </svg>
+
+              {/* Linee di scansione radiale */}
+              <svg className="radial-scan" width="500" height="500" viewBox="0 0 500 500">
+                <line x1="250" y1="250" x2="250" y2="50" />
+                <line x1="250" y1="250" x2="430" y2="130" />
+              </svg>
+
+              {/* Particelle orbitanti */}
+              <div className="orbital-particles">
+                <div className="particle particle-1"></div>
+                <div className="particle particle-2"></div>
+                <div className="particle particle-3"></div>
+              </div>
             </div>
 
             <div

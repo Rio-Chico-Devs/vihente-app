@@ -26,14 +26,97 @@
   68% { opacity: 1; }
 }
 
-@keyframes rotateSquare1 {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+/* ====================================
+   ORBITAL RINGS ANIMATIONS
+   ==================================== */
+
+/* Anelli principali - rotazione a velocità diverse */
+@keyframes orbitRing1 {
+  from { transform: translate(-50%, -50%) rotate(0deg); }
+  to { transform: translate(-50%, -50%) rotate(360deg); }
 }
 
-@keyframes rotateSquare2 {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(-360deg); }
+@keyframes orbitRing2 {
+  from { transform: translate(-50%, -50%) rotate(0deg); }
+  to { transform: translate(-50%, -50%) rotate(-360deg); }
+}
+
+@keyframes orbitRing3 {
+  from { transform: translate(-50%, -50%) rotate(0deg); }
+  to { transform: translate(-50%, -50%) rotate(360deg); }
+}
+
+/* Particelle che orbitano sugli anelli */
+@keyframes particleOrbit1 {
+  from { transform: rotate(0deg) translateX(140px) rotate(0deg); }
+  to { transform: rotate(360deg) translateX(140px) rotate(-360deg); }
+}
+
+@keyframes particleOrbit2 {
+  from { transform: rotate(0deg) translateX(180px) rotate(0deg); }
+  to { transform: rotate(-360deg) translateX(180px) rotate(360deg); }
+}
+
+@keyframes particleOrbit3 {
+  from { transform: rotate(0deg) translateX(220px) rotate(0deg); }
+  to { transform: rotate(360deg) translateX(220px) rotate(-360deg); }
+}
+
+/* Scansione radiale */
+@keyframes radialScan {
+  from {
+    transform: translate(-50%, -50%) rotate(0deg);
+    opacity: 0.6;
+  }
+  to {
+    transform: translate(-50%, -50%) rotate(360deg);
+    opacity: 0.6;
+  }
+}
+
+/* Pulse degli anelli */
+@keyframes ringPulse {
+  0%, 100% {
+    opacity: 0.3;
+    stroke-width: 1.5;
+  }
+  50% {
+    opacity: 0.6;
+    stroke-width: 2;
+  }
+}
+
+/* Pulse delle particelle */
+@keyframes particleGlow {
+  0%, 100% {
+    opacity: 0.8;
+    filter: drop-shadow(0 0 4px currentColor) drop-shadow(0 0 8px currentColor);
+  }
+  50% {
+    opacity: 1;
+    filter: drop-shadow(0 0 8px currentColor) drop-shadow(0 0 16px currentColor);
+  }
+}
+
+/* Griglia HUD con effetto pulse */
+@keyframes gridPulse {
+  0%, 100% { opacity: 0.15; }
+  50% { opacity: 0.25; }
+}
+
+/* Effetto data stream sulle linee */
+@keyframes dataStream {
+  0% {
+    stroke-dashoffset: 1000;
+    opacity: 0.2;
+  }
+  50% {
+    opacity: 0.5;
+  }
+  100% {
+    stroke-dashoffset: 0;
+    opacity: 0.2;
+  }
 }
 
 @keyframes subtleGlow {
@@ -269,7 +352,82 @@
   flex: 0 0 auto;
 }
 
-.rotating-square {
+/* ====================================
+   ORBITAL RINGS SYSTEM
+   ==================================== */
+
+.orbital-system {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  width: 500px;
+  height: 500px;
+}
+
+/* Anelli orbitali */
+.orbital-ring {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  pointer-events: none;
+}
+
+.orbital-ring-1 {
+  animation: orbitRing1 80s linear infinite;
+}
+
+.orbital-ring-2 {
+  animation: orbitRing2 60s linear infinite;
+}
+
+.orbital-ring-3 {
+  animation: orbitRing3 100s linear infinite;
+}
+
+.orbital-ring circle {
+  fill: none;
+  stroke: var(--color-primary-40);
+  stroke-width: 1.5;
+  animation: ringPulse 4s ease-in-out infinite;
+}
+
+/* Griglia HUD */
+.hud-grid {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  opacity: 0.2;
+  animation: gridPulse 6s ease-in-out infinite;
+}
+
+.hud-grid line {
+  stroke: var(--color-primary-30);
+  stroke-width: 0.5;
+}
+
+/* Linee di scansione radiale */
+.radial-scan {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  pointer-events: none;
+  animation: radialScan 30s linear infinite;
+  opacity: 0.3;
+}
+
+.radial-scan line {
+  stroke: var(--color-primary-50);
+  stroke-width: 1;
+  stroke-dasharray: 4, 8;
+  animation: dataStream 8s linear infinite;
+}
+
+/* Particelle orbitanti */
+.orbital-particles {
   position: absolute;
   top: 50%;
   left: 50%;
@@ -277,21 +435,45 @@
   pointer-events: none;
 }
 
-.rotating-square-1 {
-  animation: rotateSquare1 60s linear infinite;
-  filter: drop-shadow(0 0 8px var(--color-primary-30));
+.particle {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--color-primary-95);
+  box-shadow: 0 0 8px var(--color-primary-60), 0 0 16px var(--color-primary-40);
+  animation: particleGlow 2s ease-in-out infinite;
 }
 
-.rotating-square-2 {
-  animation: rotateSquare2 45s linear infinite;
-  filter: drop-shadow(0 0 8px var(--color-primary-30));
+.particle-1 {
+  animation: particleOrbit1 25s linear infinite, particleGlow 2s ease-in-out infinite;
 }
 
-.rotating-square rect {
+.particle-2 {
+  animation: particleOrbit2 35s linear infinite, particleGlow 2.5s ease-in-out infinite;
+  animation-delay: 0s, 0.5s;
+}
+
+.particle-3 {
+  animation: particleOrbit3 45s linear infinite, particleGlow 3s ease-in-out infinite;
+  animation-delay: 0s, 1s;
+}
+
+/* Nodi di connessione sugli anelli */
+.ring-node {
+  fill: var(--color-primary-80);
+  filter: drop-shadow(0 0 4px var(--color-primary-60));
+  animation: particleGlow 2s ease-in-out infinite;
+}
+
+/* Dettagli tecnologici aggiuntivi */
+.tech-detail {
+  stroke: var(--color-primary-35);
+  stroke-width: 0.5;
   fill: none;
-  stroke: var(--color-primary-50);
-  stroke-width: 2;
-  stroke-linejoin: round;
+  opacity: 0.4;
 }
 
 /* Eye SVG colors */
@@ -525,9 +707,34 @@
   }
 }
 
-[data-theme="light"] .rotating-square-1,
-[data-theme="light"] .rotating-square-2 {
-  filter: drop-shadow(0 0 4px rgba(232, 160, 48, 0.15));
+[data-theme="light"] .orbital-ring circle {
+  stroke: rgba(232, 160, 48, 0.35);
+}
+
+[data-theme="light"] .hud-grid {
+  opacity: 0.15;
+}
+
+[data-theme="light"] .hud-grid line {
+  stroke: rgba(232, 160, 48, 0.25);
+}
+
+[data-theme="light"] .radial-scan {
+  opacity: 0.2;
+}
+
+[data-theme="light"] .radial-scan line {
+  stroke: rgba(232, 160, 48, 0.4);
+}
+
+[data-theme="light"] .particle {
+  background: rgba(232, 160, 48, 0.9);
+  box-shadow: 0 0 6px rgba(232, 160, 48, 0.4), 0 0 12px rgba(232, 160, 48, 0.2);
+}
+
+[data-theme="light"] .ring-node {
+  fill: rgba(232, 160, 48, 0.7);
+  filter: drop-shadow(0 0 3px rgba(232, 160, 48, 0.4));
 }
 
 [data-theme="light"] .click-message {
