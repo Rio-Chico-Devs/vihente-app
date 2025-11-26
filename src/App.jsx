@@ -21,6 +21,7 @@ const MultimediaPage = lazy(() => import('./components/sections/MultimediaPage/M
 const Portfolio = lazy(() => import('./components/sections/Portfolio/Portfolio'));
 const ComponentShowcase = lazy(() => import('./components/sections/Portfolio/ComponentShowcase/ComponentShowcase'));
 const GraficheShowcase = lazy(() => import('./components/sections/Portfolio/GraficheShowcase/GraficheShowcase'));
+const SitiWebShowcase = lazy(() => import('./components/sections/Portfolio/SitiWebShowcase/SitiWebShowcase')); // ✅ AGGIUNTO
 const SliderPage = lazy(() => import('./components/sections/Portfolio/ComponentShowcase/SliderPage/SliderPage'));
 const TextSamplerPage = lazy(() => import('./components/sections/Portfolio/ComponentShowcase/TextSamplerPage/TextSamplerPage'));
 const Cubo3DPage = lazy(() => import('./components/sections/Portfolio/ComponentShowcase/Cubo3DPage/Cubo3DPage'));
@@ -112,6 +113,7 @@ function App() {
                     <Route path="/portfolio" element={<Portfolio />} />
                     <Route path="/portfolio/componenti" element={<ComponentShowcase />} />
                     <Route path="/portfolio/grafiche" element={<GraficheShowcase />} />
+                    <Route path="/portfolio/sitiweb" element={<SitiWebShowcase />} /> {/* ✅ AGGIUNTO */}
 
                     {/* Portfolio Component Details */}
                     <Route path="/portfolio/componenti/slider" element={<SliderPage />} />
