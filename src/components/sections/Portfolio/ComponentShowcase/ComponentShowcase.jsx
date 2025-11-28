@@ -99,6 +99,26 @@ const ComponentShowcase = () => {
           </div>
         </div>
       )
+    },
+    {
+      id: 'black-market',
+      title: 'Black Market',
+      description: 'E-commerce cyberpunk con carrello e checkout completo',
+      path: '/portfolio/componenti/black-market',
+      preview: (
+        <div className="mini-black-market">
+          <div className="mini-market-header">
+            <div className="mini-market-title">MARKET</div>
+            <div className="mini-cart-icon">🛒</div>
+          </div>
+          <div className="mini-products">
+            <div className="mini-product-card"></div>
+            <div className="mini-product-card"></div>
+            <div className="mini-product-card"></div>
+            <div className="mini-product-card"></div>
+          </div>
+        </div>
+      )
     }
   ];
 
