@@ -114,12 +114,12 @@ const MusicPlayerPage = () => {
           sourceRef.current = audioContextRef.current.createMediaElementSource(audioRef.current);
           sourceRef.current.connect(analyserRef.current);
           analyserRef.current.connect(audioContextRef.current.destination);
-        } catch (_err) {
+        } catch {
           // Audio source già connesso
         }
       }
 
-      audioRef.current.play().catch(_err => {
+      audioRef.current.play().catch(() => {
         // Gestione errore play
       });
     }
@@ -138,7 +138,7 @@ const MusicPlayerPage = () => {
     if (sourceRef.current) {
       try {
         sourceRef.current.disconnect();
-      } catch (_err) {
+      } catch {
         // Source già disconnesso
       }
       sourceRef.current = null;
@@ -148,7 +148,7 @@ const MusicPlayerPage = () => {
       if (audioRef.current) {
         audioRef.current.load();
         setIsPlaying(true);
-        audioRef.current.play().catch(_err => {
+        audioRef.current.play().catch(() => {
           // Gestione errore play
         });
       }
