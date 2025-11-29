@@ -357,6 +357,334 @@
 .cube-face-mini.top    { transform: rotateX(90deg) translateZ(30px); }
 .cube-face-mini.bottom { transform: rotateX(-90deg) translateZ(30px); }
 
+.mini-music-player {
+  height: 120px;
+  background: rgba(0, 0, 0, 0.5);
+  border: 1px solid var(--color-primary-20, rgba(0, 255, 255, 0.2));
+  border-radius: 4px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  padding: 1rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.mini-visualizer {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 4px;
+  height: 60px;
+  width: 100%;
+}
+
+.mini-frequency-bar {
+  width: 8px;
+  background: linear-gradient(to top,
+    var(--color-primary-80, rgba(0, 255, 255, 0.8)),
+    var(--color-primary-40, rgba(0, 255, 255, 0.4))
+  );
+  border-radius: 2px;
+  animation: miniFrequencyPulse 1.5s ease-in-out infinite;
+  box-shadow: 0 0 5px var(--color-primary-50, rgba(0, 255, 255, 0.5));
+}
+
+.mini-frequency-bar:nth-child(1) { animation-delay: 0s; }
+.mini-frequency-bar:nth-child(2) { animation-delay: 0.2s; }
+.mini-frequency-bar:nth-child(3) { animation-delay: 0.4s; }
+.mini-frequency-bar:nth-child(4) { animation-delay: 0.1s; }
+.mini-frequency-bar:nth-child(5) { animation-delay: 0.3s; }
+.mini-frequency-bar:nth-child(6) { animation-delay: 0.5s; }
+.mini-frequency-bar:nth-child(7) { animation-delay: 0.15s; }
+
+@keyframes miniFrequencyPulse {
+  0%, 100% { transform: scaleY(0.7); opacity: 0.7; }
+  50% { transform: scaleY(1); opacity: 1; }
+}
+
+.mini-player-controls {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.mini-play-btn {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.5);
+  border: 2px solid var(--color-primary-60, rgba(0, 255, 255, 0.6));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-primary, #0ff);
+  font-size: 0.7rem;
+  animation: miniPlayPulse 2s ease-in-out infinite;
+}
+
+@keyframes miniPlayPulse {
+  0%, 100% {
+    box-shadow: 0 0 5px var(--color-primary-40, rgba(0, 255, 255, 0.4));
+  }
+  50% {
+    box-shadow: 0 0 15px var(--color-primary-70, rgba(0, 255, 255, 0.7));
+  }
+}
+
+.mini-crud {
+  height: 120px;
+  background: rgba(0, 0, 0, 0.5);
+  border: 1px solid var(--color-primary-20, rgba(0, 255, 255, 0.2));
+  border-radius: 4px;
+  display: flex;
+  flex-direction: column;
+  padding: 0.75rem;
+  gap: 0.5rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.mini-crud-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--color-primary-20, rgba(0, 255, 255, 0.2));
+}
+
+.mini-crud-title {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 0.9rem;
+  color: var(--color-primary, #0ff);
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-shadow: 0 0 8px var(--color-primary-60, rgba(0, 255, 255, 0.6));
+}
+
+.mini-crud-table {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.mini-crud-row {
+  height: 12px;
+  background: linear-gradient(90deg,
+    var(--color-primary-30, rgba(0, 255, 255, 0.3)),
+    var(--color-primary-10, rgba(0, 255, 255, 0.1))
+  );
+  border-radius: 2px;
+  border: 1px solid var(--color-primary-20, rgba(0, 255, 255, 0.2));
+  animation: miniCrudRowFade 2s ease-in-out infinite;
+}
+
+.mini-crud-row:nth-child(1) { animation-delay: 0s; }
+.mini-crud-row:nth-child(2) { animation-delay: 0.3s; }
+.mini-crud-row:nth-child(3) { animation-delay: 0.6s; }
+
+@keyframes miniCrudRowFade {
+  0%, 100% { opacity: 0.6; }
+  50% { opacity: 1; }
+}
+
+.mini-crud-buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.5rem;
+}
+
+.mini-crud-btn {
+  width: 24px;
+  height: 24px;
+  border-radius: 4px;
+  background: rgba(0, 255, 136, 0.2);
+  border: 1px solid rgba(0, 255, 136, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #00ff88;
+  font-size: 0.9rem;
+  font-weight: 700;
+  animation: miniCrudBtnPulse 1.5s ease-in-out infinite;
+}
+
+@keyframes miniCrudBtnPulse {
+  0%, 100% {
+    box-shadow: 0 0 5px rgba(0, 255, 136, 0.3);
+  }
+  50% {
+    box-shadow: 0 0 12px rgba(0, 255, 136, 0.6);
+  }
+}
+
+.mini-black-market {
+
+  height: 120px;
+
+  background: rgba(0, 0, 0, 0.5);
+
+  border: 1px solid var(--color-primary-20, rgba(0, 255, 255, 0.2));
+
+  border-radius: 4px;
+
+  display: flex;
+
+  flex-direction: column;
+
+  padding: 0.75rem;
+
+  gap: 0.5rem;
+
+  position: relative;
+
+  overflow: hidden;
+
+}
+
+ 
+
+.mini-market-header {
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  padding-bottom: 0.5rem;
+
+  border-bottom: 1px solid var(--color-primary-20, rgba(0, 255, 255, 0.2));
+
+}
+
+ 
+
+.mini-market-title {
+
+  font-family: 'Orbitron', sans-serif;
+
+  font-size: 0.9rem;
+
+  color: var(--color-primary, #0ff);
+
+  font-weight: 700;
+
+  letter-spacing: 0.15em;
+
+  text-shadow: 0 0 8px var(--color-primary-60, rgba(0, 255, 255, 0.6));
+
+  animation: miniMarketGlitch 3s ease-in-out infinite;
+
+}
+
+ 
+
+@keyframes miniMarketGlitch {
+
+  0%, 100% { transform: translateX(0); }
+
+  20% { transform: translateX(-1px); }
+
+  40% { transform: translateX(1px); }
+
+  60% { transform: translateX(-1px); }
+
+  80% { transform: translateX(0); }
+
+}
+
+ 
+
+.mini-cart-icon {
+
+  font-size: 1rem;
+
+  animation: miniCartBounce 2s ease-in-out infinite;
+
+}
+
+ 
+
+@keyframes miniCartBounce {
+
+  0%, 100% { transform: translateY(0); }
+
+  50% { transform: translateY(-3px); }
+
+}
+
+ 
+
+.mini-products {
+
+  display: grid;
+
+  grid-template-columns: repeat(2, 1fr);
+
+  gap: 0.4rem;
+
+  flex: 1;
+
+}
+
+ 
+
+.mini-product-card {
+
+  background: linear-gradient(135deg,
+
+    var(--color-primary-20, rgba(0, 255, 255, 0.2)),
+
+    var(--color-primary-05, rgba(0, 255, 255, 0.05))
+
+  );
+
+  border: 1px solid var(--color-primary-30, rgba(0, 255, 255, 0.3));
+
+  border-radius: 3px;
+
+  animation: miniProductPulse 2s ease-in-out infinite;
+
+  position: relative;
+
+}
+
+ 
+
+.mini-product-card:nth-child(1) { animation-delay: 0s; }
+
+.mini-product-card:nth-child(2) { animation-delay: 0.2s; }
+
+.mini-product-card:nth-child(3) { animation-delay: 0.4s; }
+
+.mini-product-card:nth-child(4) { animation-delay: 0.6s; }
+
+ 
+
+@keyframes miniProductPulse {
+
+  0%, 100% {
+
+    opacity: 0.6;
+
+    border-color: var(--color-primary-30, rgba(0, 255, 255, 0.3));
+
+  }
+
+  50% {
+
+    opacity: 1;
+
+    border-color: var(--color-primary-60, rgba(0, 255, 255, 0.6));
+
+  }
+
+}
+
 /* ====================================
    LIGHT MODE (NIGHT MODE) OVERRIDES
    Sfondo scuro + accenti amber per comfort visivo notturno

@@ -383,14 +383,200 @@ const LandingPageOldEye = ({ startTime }) => {
           68% { opacity: 1; }
         }
 
-        @keyframes rotateSquare1 {
-          from { transform: rotate(0deg); }
-          to { transform: rotate(360deg); }
+        /* ORBITAL RINGS ANIMATIONS */
+        @keyframes orbitRing1 {
+          from { transform: translate(-50%, -50%) rotate(0deg); }
+          to { transform: translate(-50%, -50%) rotate(360deg); }
         }
 
-        @keyframes rotateSquare2 {
-          from { transform: rotate(0deg); }
-          to { transform: rotate(-360deg); }
+        @keyframes orbitRing2 {
+          from { transform: translate(-50%, -50%) rotate(0deg); }
+          to { transform: translate(-50%, -50%) rotate(-360deg); }
+        }
+
+        @keyframes orbitRing3 {
+          from { transform: translate(-50%, -50%) rotate(0deg); }
+          to { transform: translate(-50%, -50%) rotate(360deg); }
+        }
+
+        @keyframes particleOrbit1 {
+          from { transform: rotate(0deg) translateX(140px) rotate(0deg); }
+          to { transform: rotate(360deg) translateX(140px) rotate(-360deg); }
+        }
+
+        @keyframes particleOrbit2 {
+          from { transform: rotate(0deg) translateX(180px) rotate(0deg); }
+          to { transform: rotate(-360deg) translateX(180px) rotate(360deg); }
+        }
+
+        @keyframes particleOrbit3 {
+          from { transform: rotate(0deg) translateX(220px) rotate(0deg); }
+          to { transform: rotate(360deg) translateX(220px) rotate(-360deg); }
+        }
+
+        @keyframes radialScan {
+          from {
+            transform: translate(-50%, -50%) rotate(0deg);
+            opacity: 0.6;
+          }
+          to {
+            transform: translate(-50%, -50%) rotate(360deg);
+            opacity: 0.6;
+          }
+        }
+
+        @keyframes ringPulse {
+          0%, 100% {
+            opacity: 0.3;
+            stroke-width: 1.5;
+          }
+          50% {
+            opacity: 0.6;
+            stroke-width: 2;
+          }
+        }
+
+        @keyframes particleGlow {
+          0%, 100% {
+            opacity: 0.8;
+            filter: drop-shadow(0 0 4px currentColor) drop-shadow(0 0 8px currentColor);
+          }
+          50% {
+            opacity: 1;
+            filter: drop-shadow(0 0 8px currentColor) drop-shadow(0 0 16px currentColor);
+          }
+        }
+
+        @keyframes gridPulse {
+          0%, 100% { opacity: 0.15; }
+          50% { opacity: 0.25; }
+        }
+
+        @keyframes dataStream {
+          0% {
+            stroke-dashoffset: 1000;
+            opacity: 0.2;
+          }
+          50% {
+            opacity: 0.5;
+          }
+          100% {
+            stroke-dashoffset: 0;
+            opacity: 0.2;
+          }
+        }
+
+        .orbital-system {
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+          pointer-events: none;
+          width: 500px;
+          height: 500px;
+        }
+
+        .orbital-ring {
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          pointer-events: none;
+        }
+
+        .orbital-ring-1 {
+          animation: orbitRing1 80s linear infinite;
+        }
+
+        .orbital-ring-2 {
+          animation: orbitRing2 60s linear infinite;
+        }
+
+        .orbital-ring-3 {
+          animation: orbitRing3 100s linear infinite;
+        }
+
+        .orbital-ring circle {
+          fill: none;
+          stroke: ${colors.primary40};
+          stroke-width: 1.5;
+          animation: ringPulse 4s ease-in-out infinite;
+        }
+
+        .hud-grid {
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+          pointer-events: none;
+          opacity: 0.2;
+          animation: gridPulse 6s ease-in-out infinite;
+        }
+
+        .hud-grid line {
+          stroke: ${colors.primary30};
+          stroke-width: 0.5;
+        }
+
+        .radial-scan {
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          pointer-events: none;
+          animation: radialScan 30s linear infinite;
+          opacity: 0.3;
+        }
+
+        .radial-scan line {
+          stroke: ${colors.primary50};
+          stroke-width: 1;
+          stroke-dasharray: 4, 8;
+          animation: dataStream 8s linear infinite;
+        }
+
+        .orbital-particles {
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+          pointer-events: none;
+        }
+
+        .particle {
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          width: 8px;
+          height: 8px;
+          border-radius: 50%;
+          background: ${colors.primary95};
+          box-shadow: 0 0 8px ${colors.primary60}, 0 0 16px ${colors.primary40};
+        }
+
+        .particle-1 {
+          animation: particleOrbit1 25s linear infinite, particleGlow 2s ease-in-out infinite;
+        }
+
+        .particle-2 {
+          animation: particleOrbit2 35s linear infinite, particleGlow 2.5s ease-in-out infinite;
+          animation-delay: 0s, 0.5s;
+        }
+
+        .particle-3 {
+          animation: particleOrbit3 45s linear infinite, particleGlow 3s ease-in-out infinite;
+          animation-delay: 0s, 1s;
+        }
+
+        .ring-node {
+          fill: ${colors.primary95};
+          filter: drop-shadow(0 0 4px ${colors.primary60});
+          animation: particleGlow 2s ease-in-out infinite;
+        }
+
+        .tech-detail {
+          stroke: ${colors.primary35};
+          stroke-width: 0.5;
+          fill: none;
+          opacity: 0.4;
         }
 
         @keyframes subtleGlow {
@@ -633,6 +819,94 @@ const LandingPageOldEye = ({ startTime }) => {
             line-height: 1.3;
           }
         }
+
+        @media (min-width: 1025px) {
+          .eye-svg {
+            width: 650px;
+            height: 650px;
+          }
+        }
+
+        @media (max-width: 1024px) {
+          main {
+            padding: 1rem !important;
+            min-height: 100vh !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+          }
+
+          main > div {
+            flex-direction: column !important;
+            gap: 2.5rem !important;
+            justify-content: center !important;
+            align-items: center !important;
+            height: auto !important;
+          }
+
+          .eye-container {
+            flex: 0 0 auto !important;
+          }
+
+          .eye-container svg[width="500"] {
+            width: 280px !important;
+            height: 280px !important;
+          }
+
+          .eye-svg {
+            width: 350px !important;
+            height: 350px !important;
+          }
+
+          .text-container {
+            flex: 0 0 auto !important;
+            text-align: center !important;
+          }
+
+          .text-container h1 {
+            font-size: 2rem !important;
+            margin-bottom: 1rem !important;
+            line-height: 1.2 !important;
+            text-align: center !important;
+          }
+
+          .text-container p {
+            font-size: 0.95rem !important;
+            line-height: 1.5 !important;
+            text-align: center !important;
+            margin: 0 auto !important;
+          }
+        }
+
+        @media (max-width: 480px) {
+          main {
+            padding: 0.75rem !important;
+          }
+
+          main > div {
+            gap: 2rem !important;
+          }
+
+          .eye-container svg[width="500"] {
+            width: 220px !important;
+            height: 220px !important;
+          }
+
+          .eye-svg {
+            width: 280px !important;
+            height: 280px !important;
+          }
+
+          .text-container h1 {
+            font-size: 1.6rem !important;
+            margin-bottom: 0.75rem !important;
+            letter-spacing: 0.1em !important;
+          }
+
+          .text-container p {
+            font-size: 0.875rem !important;
+          }
+        }
       `}</style>
 
       <canvas
@@ -695,62 +969,69 @@ const LandingPageOldEye = ({ startTime }) => {
             justifyContent: 'center',
             flex: '0 0 auto'
           }}>
-            <div style={{
-              position: 'absolute',
-              top: '50%',
-              left: '50%',
-              transform: 'translate(-50%, -50%)',
-              pointerEvents: 'none'
-            }}>
-              <svg
-                width="500"
-                height="500"
-                viewBox="0 0 500 500"
-                style={{
-                  animation: 'rotateSquare1 60s linear infinite',
-                  filter: `drop-shadow(0 0 8px ${colors.primary30})`
-                }}
-              >
-                <rect
-                  x="50"
-                  y="50"
-                  width="400"
-                  height="400"
-                  fill="none"
-                  stroke={colors.primary50}
-                  strokeWidth="2"
-                  strokeLinejoin="round"
-                />
+            {/* Orbital Rings System */}
+            <div className="orbital-system">
+              {/* Anelli orbitali concentrici */}
+              <svg className="orbital-ring orbital-ring-1" width="500" height="500" viewBox="0 0 500 500">
+                <circle cx="250" cy="250" r="140" />
+                {/* Nodi sui punti cardinali */}
+                <circle className="ring-node" cx="250" cy="110" r="3" />
+                <circle className="ring-node" cx="390" cy="250" r="3" />
+                <circle className="ring-node" cx="250" cy="390" r="3" />
+                <circle className="ring-node" cx="110" cy="250" r="3" />
               </svg>
-            </div>
 
-            <div style={{
-              position: 'absolute',
-              top: '50%',
-              left: '50%',
-              transform: 'translate(-50%, -50%)',
-              pointerEvents: 'none'
-            }}>
-              <svg
-                width="500"
-                height="500"
-                viewBox="0 0 500 500"
-                style={{
-                  animation: 'rotateSquare2 45s linear infinite',
-                  filter: `drop-shadow(0 0 8px ${colors.primary30})`
-                }}
-              >
-                <rect
-                  x="50"
-                  y="50"
-                  width="400"
-                  height="400"
-                  fill="none"
-                  stroke={colors.primary50}
-                  strokeWidth="2"
-                  strokeLinejoin="round"
-                />
+              <svg className="orbital-ring orbital-ring-2" width="500" height="500" viewBox="0 0 500 500">
+                <circle cx="250" cy="250" r="180" />
+                {/* Nodi sfalsati */}
+                <circle className="ring-node" cx="295" cy="88" r="2.5" />
+                <circle className="ring-node" cx="412" cy="205" r="2.5" />
+                <circle className="ring-node" cx="295" cy="412" r="2.5" />
+                <circle className="ring-node" cx="88" cy="295" r="2.5" />
               </svg>
+
+              <svg className="orbital-ring orbital-ring-3" width="500" height="500" viewBox="0 0 500 500">
+                <circle cx="250" cy="250" r="220" />
+                {/* Più nodi per complessità */}
+                <circle className="ring-node" cx="250" cy="30" r="2" />
+                <circle className="ring-node" cx="405" cy="155" r="2" />
+                <circle className="ring-node" cx="470" cy="250" r="2" />
+                <circle className="ring-node" cx="405" cy="345" r="2" />
+                <circle className="ring-node" cx="250" cy="470" r="2" />
+                <circle className="ring-node" cx="95" cy="345" r="2" />
+                <circle className="ring-node" cx="30" cy="250" r="2" />
+                <circle className="ring-node" cx="95" cy="155" r="2" />
+              </svg>
+
+              {/* Griglia HUD */}
+              <svg className="hud-grid" width="500" height="500" viewBox="0 0 500 500">
+                {/* Linee verticali */}
+                <line x1="150" y1="50" x2="150" y2="450" />
+                <line x1="250" y1="50" x2="250" y2="450" />
+                <line x1="350" y1="50" x2="350" y2="450" />
+                {/* Linee orizzontali */}
+                <line x1="50" y1="150" x2="450" y2="150" />
+                <line x1="50" y1="250" x2="450" y2="250" />
+                <line x1="50" y1="350" x2="450" y2="350" />
+                {/* Diagonali per effetto tech */}
+                <line x1="80" y1="80" x2="150" y2="150" className="tech-detail" />
+                <line x1="420" y1="80" x2="350" y2="150" className="tech-detail" />
+                <line x1="420" y1="420" x2="350" y2="350" className="tech-detail" />
+                <line x1="80" y1="420" x2="150" y2="350" className="tech-detail" />
+              </svg>
+
+              {/* Linee di scansione radiale */}
+              <svg className="radial-scan" width="500" height="500" viewBox="0 0 500 500">
+                <line x1="250" y1="250" x2="250" y2="50" />
+                <line x1="250" y1="250" x2="430" y2="130" />
+              </svg>
+
+              {/* Particelle orbitanti */}
+              <div className="orbital-particles">
+                <div className="particle particle-1"></div>
+                <div className="particle particle-2"></div>
+                <div className="particle particle-3"></div>
+              </div>
             </div>
 
             <div
@@ -861,96 +1142,6 @@ const LandingPageOldEye = ({ startTime }) => {
             </p>
           </div>
         </div>
-
-        <style>{`
-          @media (min-width: 1025px) {
-            .eye-svg {
-              width: 650px;
-              height: 650px;
-            }
-          }
-
-          @media (max-width: 1024px) {
-            main {
-              padding: 1rem !important;
-              min-height: 100vh !important;
-              display: flex !important;
-              align-items: center !important;
-              justify-content: center !important;
-            }
-
-            main > div {
-              flex-direction: column !important;
-              gap: 2.5rem !important;
-              justify-content: center !important;
-              align-items: center !important;
-              height: auto !important;
-            }
-
-            .eye-container {
-              flex: 0 0 auto !important;
-            }
-
-            .eye-container svg[width="500"] {
-              width: 280px !important;
-              height: 280px !important;
-            }
-
-            .eye-svg {
-              width: 350px !important;
-              height: 350px !important;
-            }
-
-            .text-container {
-              flex: 0 0 auto !important;
-              text-align: center !important;
-            }
-
-            .text-container h1 {
-              font-size: 2rem !important;
-              margin-bottom: 1rem !important;
-              line-height: 1.2 !important;
-              text-align: center !important;
-            }
-
-            .text-container p {
-              font-size: 0.95rem !important;
-              line-height: 1.5 !important;
-              text-align: center !important;
-              margin: 0 auto !important;
-            }
-          }
-
-          @media (max-width: 480px) {
-            main {
-              padding: 0.75rem !important;
-            }
-
-            main > div {
-              gap: 2rem !important;
-            }
-
-            .eye-container svg[width="500"] {
-              width: 220px !important;
-              height: 220px !important;
-            }
-
-            .eye-svg {
-              width: 280px !important;
-              height: 280px !important;
-            }
-
-            .text-container h1 {
-              font-size: 1.6rem !important;
-              margin-bottom: 0.75rem !important;
-              letter-spacing: 0.1em !important;
-            }
-
-            .text-container p {
-              font-size: 0.875rem !important;
-            }
-          }
-        `}</style>
       </main>
     </div>
   );

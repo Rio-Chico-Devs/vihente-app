@@ -56,6 +56,88 @@ const ComponentShowcase = () => {
           </div>
         </div>
       )
+    },
+    {
+      id: 'music-player',
+      title: 'Music Player',
+      description: 'Player audio interattivo con visualizzatore di frequenze',
+      path: '/portfolio/componenti/music-player',
+      preview: (
+        <div className="mini-music-player">
+          <div className="mini-visualizer">
+            <div className="mini-frequency-bar" style={{ height: '40%' }}></div>
+            <div className="mini-frequency-bar" style={{ height: '70%' }}></div>
+            <div className="mini-frequency-bar" style={{ height: '50%' }}></div>
+            <div className="mini-frequency-bar" style={{ height: '80%' }}></div>
+            <div className="mini-frequency-bar" style={{ height: '60%' }}></div>
+            <div className="mini-frequency-bar" style={{ height: '90%' }}></div>
+            <div className="mini-frequency-bar" style={{ height: '55%' }}></div>
+          </div>
+          <div className="mini-player-controls">
+            <div className="mini-play-btn">▶</div>
+          </div>
+        </div>
+      )
+    },
+    {
+      id: 'crud-simulator',
+      title: 'CRUD Simulator',
+      description: 'Interfaccia CRUD completa con operazioni Create, Read, Update, Delete',
+      path: '/portfolio/componenti/crud-simulator',
+      preview: (
+        <div className="mini-crud">
+          <div className="mini-crud-header">
+            <div className="mini-crud-title">CRUD</div>
+          </div>
+          <div className="mini-crud-table">
+            <div className="mini-crud-row"></div>
+            <div className="mini-crud-row"></div>
+            <div className="mini-crud-row"></div>
+          </div>
+          <div className="mini-crud-buttons">
+            <div className="mini-crud-btn">+</div>
+          </div>
+        </div>
+      )
+    },
+    {
+
+      id: 'black-market',
+
+      title: 'Black Market',
+
+      description: 'E-commerce cyberpunk con carrello e checkout completo',
+
+      path: '/portfolio/componenti/black-market',
+
+      preview: (
+
+        <div className="mini-black-market">
+
+          <div className="mini-market-header">
+
+            <div className="mini-market-title">MARKET</div>
+
+            <div className="mini-cart-icon">🛒</div>
+
+          </div>
+
+          <div className="mini-products">
+
+            <div className="mini-product-card"></div>
+
+            <div className="mini-product-card"></div>
+
+            <div className="mini-product-card"></div>
+
+            <div className="mini-product-card"></div>
+
+          </div>
+
+        </div>
+
+      )
+
     }
   ];
 

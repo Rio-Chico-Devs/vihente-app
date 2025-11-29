@@ -1,13 +1,14 @@
 /* ========================================
-   SITI WEB SHOWCASE - VERSIONE SEMPLICE
+   SITI WEB SHOWCASE - CON NIGHT VIEW
    ======================================== */
 
 .sitiweb-showcase {
   min-height: 100vh;
-  background: #000;
-  color: #fff;
-  padding: 2rem 1rem;
+  background: var(--bg-black);
+  color: var(--text-primary);
+  padding: 8rem 1rem 4rem;
   font-family: 'Share Tech Mono', monospace;
+  transition: background 0.3s ease, color 0.3s ease;
 }
 
 /* ========================================
@@ -26,8 +27,8 @@
   top: 0;
   left: 0;
   background: transparent;
-  border: 2px solid rgba(0, 255, 255, 0.5);
-  color: #0ff;
+  border: 2px solid var(--color-primary-50);
+  color: var(--color-primary);
   padding: 0.7rem 1.5rem;
   font-family: 'Share Tech Mono', monospace;
   font-size: 0.9rem;
@@ -37,8 +38,8 @@
 }
 
 .back-button:hover {
-  background: rgba(0, 255, 255, 0.1);
-  border-color: #0ff;
+  background: var(--color-primary-10);
+  border-color: var(--color-primary);
   transform: translateX(-5px);
 }
 
@@ -46,18 +47,20 @@
   font-family: 'Orbitron', sans-serif;
   font-size: clamp(2rem, 5vw, 3.5rem);
   font-weight: 700;
-  color: #0ff;
+  color: var(--color-primary);
   margin: 2rem 0 1rem;
-  text-shadow: 0 0 20px rgba(0, 255, 255, 0.5);
+  text-shadow: var(--text-glow-title);
   letter-spacing: 2px;
+  transition: color 0.3s ease, text-shadow 0.3s ease;
 }
 
 .showcase-subtitle {
   font-size: 1.1rem;
-  color: rgba(255, 255, 255, 0.7);
+  color: var(--text-secondary);
   max-width: 600px;
   margin: 0 auto;
   line-height: 1.6;
+  transition: color 0.3s ease;
 }
 
 /* ========================================
@@ -78,8 +81,8 @@
    ======================================== */
 
 .website-card {
-  background: rgba(0, 255, 255, 0.03);
-  border: 2px solid rgba(0, 255, 255, 0.2);
+  background: var(--color-primary-03);
+  border: 2px solid var(--color-primary-20);
   border-radius: 8px;
   overflow: hidden;
   transition: all 0.3s ease;
@@ -88,18 +91,19 @@
 }
 
 .website-card:hover {
-  border-color: #0ff;
+  border-color: var(--color-primary);
   transform: translateY(-5px);
-  box-shadow: 0 10px 30px rgba(0, 255, 255, 0.3);
+  box-shadow: 0 10px 30px var(--color-primary-30);
 }
 
 /* Immagine */
 .website-image {
   width: 100%;
   height: 250px;
-  background: rgba(0, 255, 255, 0.05);
+  background: var(--color-primary-05);
   position: relative;
   overflow: hidden;
+  transition: background 0.3s ease;
 }
 
 .image-placeholder {
@@ -110,12 +114,13 @@
   justify-content: center;
   background: linear-gradient(
     135deg,
-    rgba(0, 255, 255, 0.1),
-    rgba(0, 255, 255, 0.05)
+    var(--color-primary-10),
+    var(--color-primary-05)
   );
-  color: rgba(0, 255, 255, 0.4);
+  color: var(--color-primary-40);
   font-size: 1.2rem;
-  border-bottom: 1px solid rgba(0, 255, 255, 0.2);
+  border-bottom: 1px solid var(--color-primary-20);
+  transition: all 0.3s ease;
 }
 
 /* Logo Azienda */
@@ -132,7 +137,7 @@
 }
 
 .website-card:hover .company-logo {
-  box-shadow: 0 6px 20px rgba(0, 255, 255, 0.4);
+  box-shadow: 0 6px 20px var(--color-primary-40);
   transform: scale(1.05);
 }
 
@@ -156,17 +161,19 @@
 .website-title {
   font-family: 'Orbitron', sans-serif;
   font-size: 1.4rem;
-  color: #0ff;
+  color: var(--color-primary);
   margin: 0;
   font-weight: 600;
+  transition: color 0.3s ease;
 }
 
 .website-description {
-  color: rgba(255, 255, 255, 0.8);
+  color: var(--text-secondary);
   line-height: 1.6;
   font-size: 0.95rem;
   margin: 0;
   flex: 1;
+  transition: color 0.3s ease;
 }
 
 /* Tech Stack */
@@ -178,19 +185,20 @@
 }
 
 .tech-badge {
-  background: rgba(0, 255, 255, 0.1);
-  border: 1px solid rgba(0, 255, 255, 0.3);
-  color: #0ff;
+  background: var(--color-primary-10);
+  border: 1px solid var(--color-primary-30);
+  color: var(--color-primary);
   padding: 0.3rem 0.7rem;
   border-radius: 4px;
   font-size: 0.8rem;
   font-family: 'Share Tech Mono', monospace;
+  transition: all 0.3s ease;
 }
 
 /* Link Visita */
 .visit-link {
   display: inline-block;
-  color: #0ff;
+  color: var(--color-primary);
   text-decoration: none;
   font-weight: 600;
   font-size: 0.95rem;
@@ -200,7 +208,7 @@
 
 .visit-link:hover {
   transform: translateX(5px);
-  text-shadow: 0 0 10px rgba(0, 255, 255, 0.8);
+  text-shadow: var(--text-glow-subtle);
 }
 
 /* ========================================
@@ -212,28 +220,31 @@
   margin: 5rem auto 3rem;
   text-align: center;
   padding: 3rem 2rem;
-  background: rgba(0, 255, 255, 0.05);
-  border: 2px solid rgba(0, 255, 255, 0.3);
+  background: var(--color-primary-05);
+  border: 2px solid var(--color-primary-30);
   border-radius: 8px;
+  transition: all 0.3s ease;
 }
 
 .showcase-cta h2 {
   font-family: 'Orbitron', sans-serif;
   font-size: 2rem;
-  color: #0ff;
+  color: var(--color-primary);
   margin: 0 0 1rem;
+  transition: color 0.3s ease;
 }
 
 .showcase-cta p {
-  color: rgba(255, 255, 255, 0.8);
+  color: var(--text-secondary);
   font-size: 1.1rem;
   margin: 0 0 2rem;
+  transition: color 0.3s ease;
 }
 
 .cta-button {
-  background: rgba(0, 255, 255, 0.1);
-  border: 2px solid #0ff;
-  color: #0ff;
+  background: var(--color-primary-10);
+  border: 2px solid var(--color-primary);
+  color: var(--color-primary);
   padding: 1rem 2.5rem;
   font-family: 'Share Tech Mono', monospace;
   font-size: 1.1rem;
@@ -246,9 +257,22 @@
 }
 
 .cta-button:hover {
-  background: rgba(0, 255, 255, 0.2);
-  box-shadow: 0 0 20px rgba(0, 255, 255, 0.5);
+  background: var(--color-primary-20);
+  box-shadow: var(--shadow-glow-md);
   transform: scale(1.05);
+}
+
+/* ========================================
+   NIGHT MODE OVERRIDES (se necessario)
+   ======================================== */
+
+[data-theme="light"] .company-logo {
+  background: rgba(255, 255, 255, 0.98);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+}
+
+[data-theme="light"] .website-card:hover .company-logo {
+  box-shadow: 0 6px 20px rgba(232, 160, 48, 0.3);
 }
 
 /* ========================================
@@ -257,7 +281,7 @@
 
 @media (max-width: 768px) {
   .sitiweb-showcase {
-    padding: 1rem;
+    padding: 7rem 1rem 6rem; /* ✅ Aumentato padding bottom */
   }
 
   .back-button {
@@ -291,5 +315,33 @@
 
   .showcase-cta h2 {
     font-size: 1.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .sitiweb-showcase {
+    padding: 6rem 0.5rem 8rem; /* ✅ Padding bottom aumentato ancora */
+  }
+
+  .showcase-header {
+    margin-bottom: 2rem;
+  }
+
+  .websites-grid {
+    padding: 1rem 0;
+  }
+
+  .showcase-cta {
+    margin: 2rem auto 1rem;
+  }
+}
+
+/* ========================================
+   FIX MOBILE EXTRA SMALL (Footer overlap)
+   ======================================== */
+
+@media (max-width: 375px) {
+  .sitiweb-showcase {
+    padding: 5rem 0.5rem 10rem; /* ✅ Padding bottom massimo */
   }
 }

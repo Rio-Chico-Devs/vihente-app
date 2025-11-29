@@ -15,7 +15,15 @@
   transition: background-color var(--transition-theme), color var(--transition-theme);
 }
 
-/* Keyframes */
+/* ====================================
+   KEYFRAMES - GENERAL
+   ==================================== */
+
+@keyframes fadeInScan {
+  0% { opacity: 0; }
+  100% { opacity: 1; }
+}
+
 @keyframes titleGlitch {
   0%, 100% { opacity: 1; }
   23% { opacity: 1; }
@@ -24,16 +32,6 @@
   64% { opacity: 1; }
   66% { opacity: 0.5; }
   68% { opacity: 1; }
-}
-
-@keyframes rotateSquare1 {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
-}
-
-@keyframes rotateSquare2 {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(-360deg); }
 }
 
 @keyframes subtleGlow {
@@ -46,10 +44,6 @@
             drop-shadow(0 0 25px var(--color-primary-30))
             drop-shadow(0 0 35px var(--color-primary-10));
   }
-}
-
-.eye-svg {
-  animation: subtleGlow 4s ease-in-out infinite;
 }
 
 @keyframes glitchEffect {
@@ -108,6 +102,186 @@
   90% { clip-path: inset(70% 0 10% 0); }
 }
 
+@keyframes warningPulse {
+  0%, 100% {
+    transform: scale(1);
+    border-color: rgba(255, 0, 0, 0.8);
+  }
+  50% {
+    transform: scale(1.05);
+    border-color: rgba(255, 0, 0, 1);
+    box-shadow:
+      0 0 50px rgba(255, 0, 0, 0.6),
+      inset 0 0 30px rgba(255, 0, 0, 0.2);
+  }
+}
+
+/* ====================================
+   KEYFRAMES - SISTEMA SOLARE
+   ==================================== */
+
+@keyframes orbitPlanet1 {
+  from { transform: rotate(0deg) translateX(180px) rotate(0deg); }
+  to { transform: rotate(360deg) translateX(180px) rotate(-360deg); }
+}
+
+@keyframes orbitPlanet2 {
+  from { transform: rotate(0deg) translateX(240px) rotate(0deg); }
+  to { transform: rotate(-360deg) translateX(240px) rotate(360deg); }
+}
+
+@keyframes orbitPlanet3 {
+  from { transform: rotate(0deg) translateX(150px) rotate(0deg); }
+  to { transform: rotate(360deg) translateX(150px) rotate(-360deg); }
+}
+
+@keyframes orbitPlanet4 {
+  from { transform: rotate(0deg) translateX(210px) rotate(0deg); }
+  to { transform: rotate(-360deg) translateX(210px) rotate(360deg); }
+}
+
+@keyframes orbitPlanet5 {
+  from { transform: rotate(0deg) translateX(130px) rotate(0deg); }
+  to { transform: rotate(360deg) translateX(130px) rotate(-360deg); }
+}
+
+@keyframes orbitPlanet6 {
+  from { transform: rotate(0deg) translateX(195px) rotate(0deg); }
+  to { transform: rotate(-360deg) translateX(195px) rotate(360deg); }
+}
+
+@keyframes orbitPlanet7 {
+  from { transform: rotate(0deg) translateX(165px) rotate(0deg); }
+  to { transform: rotate(360deg) translateX(165px) rotate(-360deg); }
+}
+
+@keyframes pulseGlow {
+  0%, 100% { opacity: 0.4; }
+  50% { opacity: 0.8; }
+}
+
+/* ====================================
+   CANVAS
+   ==================================== */
+
+.landing-canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+}
+
+/* ====================================
+   MAIN CONTENT
+   ==================================== */
+
+.landing-main {
+  position: relative;
+  z-index: 1;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+}
+
+.landing-content {
+  display: flex;
+  align-items: center;
+  gap: 4rem;
+  max-width: 1400px;
+  width: 100%;
+}
+
+/* ====================================
+   EYE CONTAINER & SISTEMA SOLARE
+   ==================================== */
+
+.eye-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+}
+
+.solar-system {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  width: 500px;
+  height: 500px;
+}
+
+.planet {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+}
+
+.planet svg {
+  margin-left: -50%;
+  margin-top: -50%;
+}
+
+.planet-1 {
+  animation: orbitPlanet1 47s steps(36) infinite;
+}
+
+.planet-2 {
+  animation: orbitPlanet2 23s steps(24) infinite;
+}
+
+.planet-3 {
+  animation: orbitPlanet3 31s steps(28) infinite;
+}
+
+.planet-4 {
+  animation: orbitPlanet4 53s steps(42) infinite;
+}
+
+.planet-5 {
+  animation: orbitPlanet5 17s steps(18) infinite;
+}
+
+.planet-6 {
+  animation: orbitPlanet6 39s steps(32) infinite;
+}
+
+.planet-7 {
+  animation: orbitPlanet7 29s steps(26) infinite;
+}
+
+.planet-glow-pulse {
+  animation: pulseGlow 3s ease-in-out infinite;
+}
+
+.planet-glow-pulse-reverse {
+  animation: pulseGlow 2.5s ease-in-out infinite reverse;
+}
+
+.planet-glow-pulse-slow {
+  animation: pulseGlow 4s ease-in-out infinite;
+}
+
+.orbit-rings {
+  position: absolute;
+  top: 0;
+  left: 0;
+  opacity: 0.15;
+  pointer-events: none;
+}
+
+/* ====================================
+   EYE SVG
+   ==================================== */
+
 .eye-glitch {
   position: relative;
   display: inline-block;
@@ -119,12 +293,94 @@
     glitchScan 0.05s steps(5) 4;
 }
 
-@keyframes fadeInScan {
-  0% { opacity: 0; }
-  100% { opacity: 1; }
+.eye-svg {
+  animation: subtleGlow 4s ease-in-out infinite;
+  cursor: pointer;
+  position: relative;
+  z-index: 1;
 }
 
-/* Warning overlay */
+/* ====================================
+   TEXT CONTAINER
+   ==================================== */
+
+.text-container {
+  flex: 1;
+  text-align: left;
+  max-width: 700px;
+}
+
+.landing-title {
+  font-family: 'Orbitron', sans-serif;
+  font-size: clamp(2.5rem, 5vw, 3.5rem);
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  margin-bottom: 2rem;
+  position: relative;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.landing-title:hover {
+  animation: titleGlitch 2s ease-in-out infinite;
+}
+
+.landing-description {
+  font-size: clamp(1rem, 2vw, 1.3rem);
+  margin: 0;
+  line-height: 1.6;
+  font-family: 'Share Tech Mono', monospace;
+}
+
+/* ====================================
+   SYSTEM METRICS
+   ==================================== */
+
+.system-metrics {
+  position: fixed;
+  bottom: 1.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: row;
+  gap: 2rem;
+  font-size: 0.75rem;
+  z-index: 10;
+  user-select: none;
+  font-family: 'Share Tech Mono', monospace;
+}
+
+.metric-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  opacity: 0.8;
+}
+
+.metric-label {
+  font-weight: 600;
+}
+
+/* ====================================
+   CLICK MESSAGE
+   ==================================== */
+
+.click-message {
+  position: fixed;
+  top: 70%;
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 1rem;
+  z-index: 1000;
+  pointer-events: none;
+}
+
+/* ====================================
+   WARNING OVERLAY
+   ==================================== */
+
 .warning-overlay {
   position: absolute;
   top: -180px;
@@ -149,20 +405,6 @@
   white-space: nowrap;
 }
 
-@keyframes warningPulse {
-  0%, 100% {
-    transform: scale(1);
-    border-color: rgba(255, 0, 0, 0.8);
-  }
-  50% {
-    transform: scale(1.05);
-    border-color: rgba(255, 0, 0, 1);
-    box-shadow:
-      0 0 50px rgba(255, 0, 0, 0.6),
-      inset 0 0 30px rgba(255, 0, 0, 0.2);
-  }
-}
-
 .warning-title {
   font-family: 'Orbitron', sans-serif;
   font-size: 1.1rem;
@@ -185,177 +427,98 @@
   line-height: 1.4;
 }
 
-/* Click message */
-.click-message {
-  position: fixed;
-  top: 70%;
-  left: 50%;
-  transform: translateX(-50%);
-  font-family: 'Share Tech Mono', monospace;
-  font-size: 1rem;
-  color: var(--color-primary-95);
-  text-shadow: 0 0 5px var(--color-primary-60);
-  z-index: 1000;
-  pointer-events: none;
+/* ====================================
+   RESPONSIVE - TABLET
+   ==================================== */
+
+@media (max-width: 1024px) {
+  .landing-main {
+    padding: 1rem;
+  }
+
+  .landing-content {
+    flex-direction: column;
+    gap: 2.5rem;
+  }
+
+  .solar-system {
+    width: 280px;
+    height: 280px;
+  }
+
+  .orbit-rings {
+    width: 280px;
+    height: 280px;
+  }
+
+  .planet-1 { animation: orbitPlanet1 47s steps(36) infinite; transform: rotate(0deg) translateX(100px) rotate(0deg); }
+  .planet-2 { animation: orbitPlanet2 23s steps(24) infinite; transform: rotate(0deg) translateX(134px) rotate(0deg); }
+  .planet-3 { animation: orbitPlanet3 31s steps(28) infinite; transform: rotate(0deg) translateX(84px) rotate(0deg); }
+  .planet-4 { animation: orbitPlanet4 53s steps(42) infinite; transform: rotate(0deg) translateX(117px) rotate(0deg); }
+  .planet-5 { animation: orbitPlanet5 17s steps(18) infinite; transform: rotate(0deg) translateX(73px) rotate(0deg); }
+  .planet-6 { animation: orbitPlanet6 39s steps(32) infinite; transform: rotate(0deg) translateX(109px) rotate(0deg); }
+  .planet-7 { animation: orbitPlanet7 29s steps(26) infinite; transform: rotate(0deg) translateX(92px) rotate(0deg); }
+
+  @keyframes orbitPlanet1 {
+    from { transform: rotate(0deg) translateX(100px) rotate(0deg); }
+    to { transform: rotate(360deg) translateX(100px) rotate(-360deg); }
+  }
+  
+  @keyframes orbitPlanet2 {
+    from { transform: rotate(0deg) translateX(134px) rotate(0deg); }
+    to { transform: rotate(-360deg) translateX(134px) rotate(360deg); }
+  }
+  
+  @keyframes orbitPlanet3 {
+    from { transform: rotate(0deg) translateX(84px) rotate(0deg); }
+    to { transform: rotate(360deg) translateX(84px) rotate(-360deg); }
+  }
+  
+  @keyframes orbitPlanet4 {
+    from { transform: rotate(0deg) translateX(117px) rotate(0deg); }
+    to { transform: rotate(-360deg) translateX(117px) rotate(360deg); }
+  }
+  
+  @keyframes orbitPlanet5 {
+    from { transform: rotate(0deg) translateX(73px) rotate(0deg); }
+    to { transform: rotate(360deg) translateX(73px) rotate(-360deg); }
+  }
+  
+  @keyframes orbitPlanet6 {
+    from { transform: rotate(0deg) translateX(109px) rotate(0deg); }
+    to { transform: rotate(-360deg) translateX(109px) rotate(360deg); }
+  }
+  
+  @keyframes orbitPlanet7 {
+    from { transform: rotate(0deg) translateX(92px) rotate(0deg); }
+    to { transform: rotate(360deg) translateX(92px) rotate(-360deg); }
+  }
+
+  .eye-svg {
+    width: 350px;
+    height: 350px;
+  }
+
+  .text-container {
+    text-align: center;
+  }
+
+  .landing-title {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+    line-height: 1.2;
+  }
+
+  .landing-description {
+    font-size: 0.95rem;
+    line-height: 1.5;
+  }
 }
 
-/* System metrics */
-.system-metrics {
-  position: fixed;
-  bottom: 1.5rem;
-  left: 50%;
-  transform: translateX(-50%);
-  display: flex;
-  flex-direction: row;
-  gap: 2rem;
-  font-size: 0.75rem;
-  color: var(--color-primary-60);
-  z-index: 10;
-  user-select: none;
-  font-family: 'Share Tech Mono', monospace;
-}
+/* ====================================
+   RESPONSIVE - MOBILE TABLET
+   ==================================== */
 
-.metric-item {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  opacity: 0.8;
-}
-
-.metric-label {
-  color: var(--color-primary-50);
-  font-weight: 600;
-}
-
-.metric-value {
-  color: var(--color-primary-80);
-}
-
-/* Canvas */
-.landing-canvas {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 0;
-}
-
-/* Main content */
-.landing-main {
-  position: relative;
-  z-index: 1;
-  min-height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 2rem;
-}
-
-.landing-content {
-  display: flex;
-  align-items: center;
-  gap: 4rem;
-  max-width: 1400px;
-  width: 100%;
-}
-
-/* Eye container */
-.eye-container {
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex: 0 0 auto;
-}
-
-.rotating-square {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  pointer-events: none;
-}
-
-.rotating-square-1 {
-  animation: rotateSquare1 60s linear infinite;
-  filter: drop-shadow(0 0 8px var(--color-primary-30));
-}
-
-.rotating-square-2 {
-  animation: rotateSquare2 45s linear infinite;
-  filter: drop-shadow(0 0 8px var(--color-primary-30));
-}
-
-.rotating-square rect {
-  fill: none;
-  stroke: var(--color-primary-50);
-  stroke-width: 2;
-  stroke-linejoin: round;
-}
-
-/* Eye SVG colors */
-.eye-contour {
-  fill: none;
-  stroke: var(--color-primary-95);
-  stroke-width: 12;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-}
-
-.eye-iris {
-  fill: none;
-  stroke: var(--color-primary-95);
-  stroke-width: 10;
-}
-
-.eye-pupil {
-  fill: none;
-  stroke: var(--color-primary-95);
-  stroke-width: 8;
-}
-
-/* Text container */
-.text-container {
-  flex: 1;
-  text-align: left;
-  max-width: 700px;
-}
-
-.landing-title {
-  font-family: 'Orbitron', sans-serif;
-  font-size: clamp(2.5rem, 5vw, 3.5rem);
-  font-weight: 900;
-  color: var(--color-primary);
-  text-transform: uppercase;
-  letter-spacing: 0.2em;
-  text-shadow:
-    0 0 8px var(--color-primary-60),
-    0 0 15px var(--color-primary-40),
-    0 0 25px var(--color-primary-20);
-  margin-bottom: 2rem;
-  position: relative;
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-
-.landing-title:hover {
-  animation: titleGlitch 2s ease-in-out infinite;
-  text-shadow:
-    0 0 12px var(--color-primary-80),
-    0 0 20px var(--color-primary-50),
-    0 0 35px var(--color-primary-30);
-}
-
-.landing-description {
-  font-size: clamp(1rem, 2vw, 1.3rem);
-  color: var(--text-secondary);
-  margin: 0;
-  line-height: 1.6;
-  font-family: 'Share Tech Mono', monospace;
-}
-
-/* Responsive */
 @media (max-width: 768px) {
   .system-metrics {
     font-size: 0.65rem;
@@ -384,7 +547,79 @@
   }
 }
 
+/* ====================================
+   RESPONSIVE - MOBILE
+   ==================================== */
+
 @media (max-width: 480px) {
+  .landing-main {
+    padding: 0.75rem;
+  }
+
+  .landing-content {
+    gap: 2rem;
+  }
+
+  .solar-system {
+    width: 220px;
+    height: 220px;
+  }
+
+  .orbit-rings {
+    width: 220px;
+    height: 220px;
+  }
+
+  @keyframes orbitPlanet1 {
+    from { transform: rotate(0deg) translateX(79px) rotate(0deg); }
+    to { transform: rotate(360deg) translateX(79px) rotate(-360deg); }
+  }
+  
+  @keyframes orbitPlanet2 {
+    from { transform: rotate(0deg) translateX(106px) rotate(0deg); }
+    to { transform: rotate(-360deg) translateX(106px) rotate(360deg); }
+  }
+  
+  @keyframes orbitPlanet3 {
+    from { transform: rotate(0deg) translateX(66px) rotate(0deg); }
+    to { transform: rotate(360deg) translateX(66px) rotate(-360deg); }
+  }
+  
+  @keyframes orbitPlanet4 {
+    from { transform: rotate(0deg) translateX(92px) rotate(0deg); }
+    to { transform: rotate(-360deg) translateX(92px) rotate(360deg); }
+  }
+  
+  @keyframes orbitPlanet5 {
+    from { transform: rotate(0deg) translateX(57px) rotate(0deg); }
+    to { transform: rotate(360deg) translateX(57px) rotate(-360deg); }
+  }
+  
+  @keyframes orbitPlanet6 {
+    from { transform: rotate(0deg) translateX(86px) rotate(0deg); }
+    to { transform: rotate(-360deg) translateX(86px) rotate(360deg); }
+  }
+  
+  @keyframes orbitPlanet7 {
+    from { transform: rotate(0deg) translateX(73px) rotate(0deg); }
+    to { transform: rotate(360deg) translateX(73px) rotate(-360deg); }
+  }
+
+  .eye-svg {
+    width: 280px;
+    height: 280px;
+  }
+
+  .landing-title {
+    font-size: 1.6rem;
+    margin-bottom: 0.75rem;
+    letter-spacing: 0.1em;
+  }
+
+  .landing-description {
+    font-size: 0.875rem;
+  }
+
   .warning-overlay {
     top: -120px;
     width: 90vw;
@@ -405,91 +640,14 @@
   }
 }
 
+/* ====================================
+   RESPONSIVE - DESKTOP LARGE
+   ==================================== */
+
 @media (min-width: 1025px) {
   .eye-svg {
     width: 650px;
     height: 650px;
-  }
-}
-
-@media (max-width: 1024px) {
-  .landing-main {
-    padding: 1rem;
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-  .landing-content {
-    flex-direction: column;
-    gap: 2.5rem;
-    justify-content: center;
-    align-items: center;
-    height: auto;
-  }
-
-  .eye-container {
-    flex: 0 0 auto;
-  }
-
-  .eye-container svg[width="500"] {
-    width: 280px;
-    height: 280px;
-  }
-
-  .eye-svg {
-    width: 350px;
-    height: 350px;
-  }
-
-  .text-container {
-    flex: 0 0 auto;
-    text-align: center;
-  }
-
-  .landing-title {
-    font-size: 2rem;
-    margin-bottom: 1rem;
-    line-height: 1.2;
-    text-align: center;
-  }
-
-  .landing-description {
-    font-size: 0.95rem;
-    line-height: 1.5;
-    text-align: center;
-    margin: 0 auto;
-  }
-}
-
-@media (max-width: 480px) {
-  .landing-main {
-    padding: 0.75rem;
-  }
-
-  .landing-content {
-    gap: 2rem;
-  }
-
-  .eye-container svg[width="500"] {
-    width: 220px;
-    height: 220px;
-  }
-
-  .eye-svg {
-    width: 280px;
-    height: 280px;
-  }
-
-  .landing-title {
-    font-size: 1.6rem;
-    margin-bottom: 0.75rem;
-    letter-spacing: 0.1em;
-  }
-
-  .landing-description {
-    font-size: 0.875rem;
   }
 }
 
@@ -525,11 +683,6 @@
   }
 }
 
-[data-theme="light"] .rotating-square-1,
-[data-theme="light"] .rotating-square-2 {
-  filter: drop-shadow(0 0 4px rgba(232, 160, 48, 0.15));
-}
-
 [data-theme="light"] .click-message {
   text-shadow: 0 0 3px rgba(232, 160, 48, 0.3);
 }
@@ -546,4 +699,5 @@
   color: #c86432;
   text-shadow:
     0 0 5px rgba(200, 100, 50, 0.5),
+    0 0 10px rgba(200, 100, 50, 0.3);
 }
