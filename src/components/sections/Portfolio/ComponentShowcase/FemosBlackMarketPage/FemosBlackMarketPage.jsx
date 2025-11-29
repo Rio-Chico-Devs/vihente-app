@@ -1,11 +1,10 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, useCallback } from 'react';
 import './FemosBlackMarketPage.css';
 
 const FemosBlackMarketPage = () => {
   const [simulationActive, setSimulationActive] = useState(false);
   const [currentPage, setCurrentPage] = useState('shop');
   const [cart, setCart] = useState([]);
-  const [hoveredItem, setHoveredItem] = useState(null);
   const [mascotMessage, setMascotMessage] = useState("Il mercato nero ti dà il benvenuto...");
   const [pupilPosition, setPupilPosition] = useState({ x: 500, y: 500 });
   const [checkoutData, setCheckoutData] = useState({
@@ -63,7 +62,7 @@ const FemosBlackMarketPage = () => {
     randomize: ["Nuovo shipment. Controlla l'inventario.", "Ho rifornito. Potrebbero esserci sorprese.", "Merce fresca dal mercato nero."]
   };
 
-  const generateShopInventory = () => {
+  const generateShopInventory = useCallback(() => {
     const rarityWeights = { special: 0.5, legendary: 5, epic: 15, rare: 30, common: 49.5 };
     const availableProducts = productsDatabase.filter(p => productStock[p.id] > 0);
     const selectedProducts = [];
@@ -99,13 +98,13 @@ const FemosBlackMarketPage = () => {
     }
 
     setCurrentProducts(selectedProducts);
-  };
+  }, [productStock]);
 
   useEffect(() => {
     if (simulationActive && currentProducts.length === 0) {
       generateShopInventory();
     }
-  }, [simulationActive]);
+  }, [simulationActive, currentProducts.length, generateShopInventory]);
 
   useEffect(() => {
     if (!simulationActive) return;
@@ -181,7 +180,6 @@ const FemosBlackMarketPage = () => {
     setSimulationActive(false);
     setCart([]);
     setCurrentPage('shop');
-    setHoveredItem(null);
     setMascotMessage("Il mercato nero ti dà il benvenuto...");
     setCheckoutData({ name: '', email: '', address: '', city: '', zip: '', wallet: '' });
     setCurrentProducts([]);
@@ -298,7 +296,7 @@ const FemosBlackMarketPage = () => {
 
     const randomPhrase = mascotPhrases.purchase[Math.floor(Math.random() * mascotPhrases.purchase.length)];
     setMascotMessage(randomPhrase);
-    
+
     setTimeout(() => exitSimulation(), 2000);
   };
 
@@ -369,11 +367,9 @@ const FemosBlackMarketPage = () => {
                   className="product-card"
                   style={{ color: getRarityColor(product.rarity) }}
                   onMouseEnter={() => {
-                    setHoveredItem(product.id);
                     const phrases = mascotPhrases[product.rarity];
                     setMascotMessage(phrases[Math.floor(Math.random() * phrases.length)]);
                   }}
-                  onMouseLeave={() => setHoveredItem(null)}
                 >
                   <span className="rarity-badge" style={{ backgroundColor: getRarityColor(product.rarity), color: '#000', borderColor: getRarityColor(product.rarity) }}>
                     {getRarityLabel(product.rarity)}
@@ -404,7 +400,7 @@ const FemosBlackMarketPage = () => {
                 {getTotalItems()}/{CART_MAX_ITEMS} ITEMS
               </div>
             </div>
-            
+
             {cart.length === 0 ? (
               <div className="empty-cart">
                 <div className="empty-cart-icon">📭</div>
@@ -461,7 +457,7 @@ const FemosBlackMarketPage = () => {
         {currentPage === 'checkout' && (
           <div className="cart-section">
             <h2 className="section-title" style={{ marginBottom: '2rem' }}>// PROTOCOLLO TRASFERIMENTO //</h2>
-            
+
             <form className="checkout-form" onSubmit={handleCheckout}>
               <div style={{
                 background: 'rgba(255, 0, 85, 0.1)', border: '1px solid rgba(255, 0, 85, 0.3)', borderRadius: '4px',

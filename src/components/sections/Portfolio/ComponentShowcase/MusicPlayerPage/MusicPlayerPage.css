@@ -588,6 +588,56 @@
   box-shadow: 0 0 10px var(--color-primary-30, rgba(0, 255, 255, 0.3));
 }
 
+/* Audio Levels Indicators */
+.audio-levels {
+  position: absolute;
+  bottom: 1rem;
+  left: 1rem;
+  right: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  animation: levelsSlideIn 0.5s ease;
+}
+
+@keyframes levelsSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.level-indicator {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  background: rgba(0, 0, 0, 0.7);
+  padding: 0.4rem 0.75rem;
+  border-radius: 4px;
+  border: 1px solid var(--color-primary-20, rgba(0, 255, 255, 0.2));
+}
+
+.level-bar {
+  height: 6px;
+  border-radius: 3px;
+  transition: width 0.1s ease;
+  box-shadow: 0 0 8px currentColor;
+  flex: 1;
+}
+
+.level-label {
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  color: var(--text-80, rgba(255, 255, 255, 0.8));
+  min-width: 45px;
+  text-align: right;
+}
+
 /* ====================================
    LIGHT MODE (NIGHT MODE) OVERRIDES
    ==================================== */

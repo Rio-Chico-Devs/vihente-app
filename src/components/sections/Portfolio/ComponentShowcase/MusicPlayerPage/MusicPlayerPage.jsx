@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './MusicPlayerPage.css';
 
@@ -26,6 +26,9 @@ const MusicPlayerPage = () => {
   const [frequencyData, setFrequencyData] = useState(new Uint8Array(128));
   const [showDropdown, setShowDropdown] = useState(false);
   const [buttonPressed, setButtonPressed] = useState('');
+  const [bassLevel, setBassLevel] = useState(0);
+  const [midLevel, setMidLevel] = useState(0);
+  const [trebleLevel, setTrebleLevel] = useState(0);
 
   const audioRef = useRef(null);
   const audioContextRef = useRef(null);
@@ -62,16 +65,25 @@ const MusicPlayerPage = () => {
     };
   }, []);
 
-  // Analizza l'audio in tempo reale
-  const analyzeAudio = () => {
+  // Analizza l'audio in tempo reale con effetti migliorati
+  const analyzeAudio = useCallback(() => {
     if (!analyserRef.current || !isPlaying) return;
 
     const dataArray = new Uint8Array(analyserRef.current.frequencyBinCount);
     analyserRef.current.getByteFrequencyData(dataArray);
     setFrequencyData(dataArray);
 
+    // Calcola livelli separati per bass, mid, treble
+    const bass = dataArray.slice(0, 10).reduce((a, b) => a + b, 0) / 10 / 255;
+    const mid = dataArray.slice(10, 50).reduce((a, b) => a + b, 0) / 40 / 255;
+    const treble = dataArray.slice(50, 128).reduce((a, b) => a + b, 0) / 78 / 255;
+
+    setBassLevel(bass);
+    setMidLevel(mid);
+    setTrebleLevel(treble);
+
     animationRef.current = requestAnimationFrame(analyzeAudio);
-  };
+  }, [isPlaying]);
 
   useEffect(() => {
     if (isPlaying) {
@@ -81,7 +93,7 @@ const MusicPlayerPage = () => {
         cancelAnimationFrame(animationRef.current);
       }
     }
-  }, [isPlaying]);
+  }, [isPlaying, analyzeAudio]);
 
   const handleButtonPress = (buttonName) => {
     setButtonPressed(buttonName);
@@ -102,12 +114,14 @@ const MusicPlayerPage = () => {
           sourceRef.current = audioContextRef.current.createMediaElementSource(audioRef.current);
           sourceRef.current.connect(analyserRef.current);
           analyserRef.current.connect(audioContextRef.current.destination);
-        } catch (e) {
-          console.log('Audio source already connected');
+        } catch (_err) {
+          // Audio source già connesso
         }
       }
 
-      audioRef.current.play().catch(e => console.log('Play error:', e));
+      audioRef.current.play().catch(_err => {
+        // Gestione errore play
+      });
     }
     setIsPlaying(!isPlaying);
   };
@@ -124,7 +138,9 @@ const MusicPlayerPage = () => {
     if (sourceRef.current) {
       try {
         sourceRef.current.disconnect();
-      } catch (e) {}
+      } catch (_err) {
+        // Source già disconnesso
+      }
       sourceRef.current = null;
     }
 
@@ -132,7 +148,9 @@ const MusicPlayerPage = () => {
       if (audioRef.current) {
         audioRef.current.load();
         setIsPlaying(true);
-        audioRef.current.play().catch(e => console.log('Play error:', e));
+        audioRef.current.play().catch(_err => {
+          // Gestione errore play
+        });
       }
     }, 100);
   };
@@ -192,7 +210,14 @@ const MusicPlayerPage = () => {
 
       <div className="music-player-container">
         <div className="player-wrapper">
-          <div className="player-card">
+          <div
+            className="player-card"
+            style={{
+              boxShadow: isPlaying
+                ? `0 4px 20px rgba(0, 255, 255, ${0.1 + bassLevel * 0.3}), inset 0 1px 0 rgba(0, 255, 255, ${0.1 + midLevel * 0.2})`
+                : undefined
+            }}
+          >
             <div className="player-content">
               {/* Hidden Audio Element */}
               <audio
@@ -232,14 +257,25 @@ const MusicPlayerPage = () => {
                 )}
               </div>
 
-              {/* Circular Visualizer */}
-              <div className={`visualizer ${isPlaying ? 'playing' : ''}`}>
+              {/* Circular Visualizer con effetti migliorati */}
+              <div
+                className={`visualizer ${isPlaying ? 'playing' : ''}`}
+                style={{
+                  background: isPlaying
+                    ? `radial-gradient(circle at center, rgba(0, 255, 255, ${0.08 + bassLevel * 0.15}), rgba(0, 0, 0, 0.5))`
+                    : undefined,
+                  boxShadow: isPlaying
+                    ? `inset 0 0 ${60 + bassLevel * 40}px rgba(0, 255, 255, ${0.1 + bassLevel * 0.2}), 0 0 ${30 + midLevel * 30}px rgba(0, 255, 255, ${0.15 + midLevel * 0.2})`
+                    : undefined
+                }}
+              >
                 <div className={`circular-visualizer ${isPlaying ? 'playing' : ''}`}>
                   <div className="visualizer-circle">
                     {Array.from({ length: 64 }).map((_, i) => {
                       const angle = (i * 360) / 64;
                       const dataIndex = Math.floor((i / 64) * frequencyData.length);
                       const height = 40 + (frequencyData[dataIndex] / 255) * 80;
+                      const intensity = frequencyData[dataIndex] / 255;
 
                       return (
                         <div
@@ -248,26 +284,73 @@ const MusicPlayerPage = () => {
                           style={{
                             transform: `rotate(${angle}deg) translateX(-50%)`,
                             height: `${isPlaying ? height : 40}px`,
-                            opacity: isPlaying ? 0.7 + (frequencyData[dataIndex] / 255) * 0.3 : 0.3,
+                            opacity: isPlaying ? 0.7 + intensity * 0.3 : 0.3,
                             boxShadow: isPlaying && frequencyData[dataIndex] > 200
-                              ? `0 0 15px rgba(0, 255, 255, 0.8)`
-                              : '0 0 8px rgba(0, 255, 255, 0.5)'
+                              ? `0 0 ${15 + intensity * 10}px rgba(0, 255, 255, ${0.8 + intensity * 0.2})`
+                              : `0 0 8px rgba(0, 255, 255, 0.5)`,
+                            background: isPlaying
+                              ? `linear-gradient(to top, rgba(0, 255, 255, ${0.8 + intensity * 0.2}), rgba(0, 255, 255, ${0.2 + intensity * 0.3}))`
+                              : undefined
                           }}
                         />
                       );
                     })}
                   </div>
-                  <div className={`visualizer-center ${isPlaying ? 'playing' : ''}`}>
-                    <div className={`visualizer-center-icon ${isPlaying ? 'playing' : ''}`}>
+                  <div
+                    className={`visualizer-center ${isPlaying ? 'playing' : ''}`}
+                    style={{
+                      boxShadow: isPlaying
+                        ? `0 0 ${30 + bassLevel * 50}px rgba(0, 255, 255, ${0.5 + bassLevel * 0.3})`
+                        : undefined,
+                      transform: isPlaying
+                        ? `translate(-50%, -50%) scale(${1 + bassLevel * 0.15})`
+                        : undefined
+                    }}
+                  >
+                    <div
+                      className={`visualizer-center-icon ${isPlaying ? 'playing' : ''}`}
+                      style={{
+                        textShadow: isPlaying
+                          ? `0 0 ${10 + trebleLevel * 20}px rgba(0, 255, 255, ${0.8 + trebleLevel * 0.2})`
+                          : undefined
+                      }}
+                    >
                       {isPlaying ? '♪' : '⏸'}
                     </div>
                   </div>
                 </div>
+
+                {/* Indicatori di livello audio */}
+                {isPlaying && (
+                  <div className="audio-levels">
+                    <div className="level-indicator">
+                      <div className="level-bar" style={{ width: `${bassLevel * 100}%`, background: '#ff0055' }} />
+                      <span className="level-label">BASS</span>
+                    </div>
+                    <div className="level-indicator">
+                      <div className="level-bar" style={{ width: `${midLevel * 100}%`, background: '#00ff88' }} />
+                      <span className="level-label">MID</span>
+                    </div>
+                    <div className="level-indicator">
+                      <div className="level-bar" style={{ width: `${trebleLevel * 100}%`, background: '#0ff' }} />
+                      <span className="level-label">TREBLE</span>
+                    </div>
+                  </div>
+                )}
               </div>
 
               {/* Track Info */}
               <div className="track-info">
-                <h2 className="track-title">{playlist[currentTrack].title}</h2>
+                <h2
+                  className="track-title"
+                  style={{
+                    textShadow: isPlaying
+                      ? `0 0 ${20 + bassLevel * 30}px rgba(0, 255, 255, ${0.8 + bassLevel * 0.2}), 0 0 40px rgba(0, 255, 255, ${0.4 + midLevel * 0.3})`
+                      : undefined
+                  }}
+                >
+                  {playlist[currentTrack].title}
+                </h2>
                 <p className="track-artist">{playlist[currentTrack].artist}</p>
               </div>
 
@@ -279,7 +362,12 @@ const MusicPlayerPage = () => {
                 >
                   <div
                     className={`progress-fill ${isPlaying ? 'playing' : ''}`}
-                    style={{ width: `${duration ? (currentTime / duration) * 100 : 0}%` }}
+                    style={{
+                      width: `${duration ? (currentTime / duration) * 100 : 0}%`,
+                      boxShadow: isPlaying
+                        ? `0 0 ${10 + bassLevel * 15}px rgba(0, 255, 255, ${0.5 + bassLevel * 0.3})`
+                        : undefined
+                    }}
                   />
                 </div>
                 <div className="time-display">
@@ -307,6 +395,11 @@ const MusicPlayerPage = () => {
                 <button
                   className={`control-btn play-btn ${isPlaying ? 'playing' : ''} ${buttonPressed === 'play' ? 'pressed' : ''}`}
                   onClick={togglePlay}
+                  style={{
+                    boxShadow: isPlaying
+                      ? `0 0 ${20 + bassLevel * 30}px rgba(0, 255, 255, ${0.4 + bassLevel * 0.4})`
+                      : undefined
+                  }}
                 >
                   {isPlaying ? (
                     <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">

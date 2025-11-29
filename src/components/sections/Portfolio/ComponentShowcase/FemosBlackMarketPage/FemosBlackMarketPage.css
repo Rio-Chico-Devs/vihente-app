@@ -147,14 +147,14 @@
   z-index: 2;
 }
 
-.market-content
- {
-    position: relative;
-    z-index: 3;
-    padding-top: 8rem;
-    padding-bottom: 8rem;
-    padding-left: 2rem;
-    padding-right: 2rem;
+.market-content {
+  position: relative;
+  z-index: 3;
+  padding-top: 8rem;
+  padding-bottom: 8rem;
+  padding-left: 2rem;
+  padding-right: 2rem;
+  min-height: calc(100vh - 80px);
 }
 
 /* ===================================
