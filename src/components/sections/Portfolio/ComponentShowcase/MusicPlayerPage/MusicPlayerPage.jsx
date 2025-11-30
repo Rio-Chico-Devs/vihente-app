@@ -7,24 +7,110 @@ const MusicPlayerPage = () => {
   const [duration, setDuration] = useState(0);
   const [volume, setVolume] = useState(0.7);
   const [showMixer, setShowMixer] = useState(false);
+  const [showInfo, setShowInfo] = useState(false);
+  const [playMode, setPlayMode] = useState('order');
 
   const [playlist] = useState([
-    { id: 1, title: "Neon Pulse", artist: "Cyber Sound", duration: 0, file: "/audio/CRYSTAL CAVE ELETTRO .mp3" },
-    { id: 2, title: "Electric Dreams", artist: "Digital Waves", duration: 0, file: "/audio/track2.mp3" },
-    { id: 3, title: "Synth Storm", artist: "Tech Master", duration: 0, file: "/audio/track3.mp3" },
-    { id: 4, title: "Bass Revolution", artist: "Underground Beat", duration: 0, file: "/audio/track4.mp3" },
-    { id: 5, title: "Frequency Flow", artist: "Wave Rider", duration: 0, file: "/audio/track5.mp3" },
-    { id: 6, title: "Digital Horizon", artist: "Neon Knight", duration: 0, file: "/audio/track6.mp3" },
-    { id: 7, title: "Cyber Matrix", artist: "Code Runner", duration: 0, file: "/audio/track7.mp3" },
-    { id: 8, title: "Techno Pulse", artist: "Binary Beat", duration: 0, file: "/audio/track8.mp3" },
-    { id: 9, title: "Future Sound", artist: "Quantum Echo", duration: 0, file: "/audio/track9.mp3" }
+    { 
+      id: 1, 
+      title: "Neon Pulse", 
+      artist: "Cyber Sound", 
+      album: "Digital Dreams",
+      year: "2024",
+      genre: "Electronic",
+      duration: 0, 
+      file: "/audio/CRYSTAL CAVE ELETTRO .mp3" 
+    },
+    { 
+      id: 2, 
+      title: "Electric Dreams", 
+      artist: "Digital Waves", 
+      album: "Synthetic Reality",
+      year: "2024",
+      genre: "Synthwave",
+      duration: 0, 
+      file: "/audio/track2.mp3" 
+    },
+    { 
+      id: 3, 
+      title: "Synth Storm", 
+      artist: "Tech Master", 
+      album: "Binary Code",
+      year: "2023",
+      genre: "Techno",
+      duration: 0, 
+      file: "/audio/track3.mp3" 
+    },
+    { 
+      id: 4, 
+      title: "Bass Revolution", 
+      artist: "Underground Beat", 
+      album: "Deep Frequencies",
+      year: "2024",
+      genre: "Bass",
+      duration: 0, 
+      file: "/audio/track4.mp3" 
+    },
+    { 
+      id: 5, 
+      title: "Frequency Flow", 
+      artist: "Wave Rider", 
+      album: "Sound Waves",
+      year: "2023",
+      genre: "Ambient",
+      duration: 0, 
+      file: "/audio/track5.mp3" 
+    },
+    { 
+      id: 6, 
+      title: "Digital Horizon", 
+      artist: "Neon Knight", 
+      album: "Cyber City",
+      year: "2024",
+      genre: "Electronic",
+      duration: 0, 
+      file: "/audio/track6.mp3" 
+    },
+    { 
+      id: 7, 
+      title: "Cyber Matrix", 
+      artist: "Code Runner", 
+      album: "Virtual World",
+      year: "2023",
+      genre: "Techno",
+      duration: 0, 
+      file: "/audio/track7.mp3" 
+    },
+    { 
+      id: 8, 
+      title: "Techno Pulse", 
+      artist: "Binary Beat", 
+      album: "Machine Language",
+      year: "2024",
+      genre: "Techno",
+      duration: 0, 
+      file: "/audio/track8.mp3" 
+    },
+    { 
+      id: 9, 
+      title: "Future Sound", 
+      artist: "Quantum Echo", 
+      album: "Tomorrow's Beat",
+      year: "2024",
+      genre: "Future Bass",
+      duration: 0, 
+      file: "/audio/track9.mp3" 
+    }
   ]);
 
   const [currentTrack, setCurrentTrack] = useState(0);
   const [showDropdown, setShowDropdown] = useState(false);
   const [buttonPressed, setButtonPressed] = useState('');
   const [bassLevel, setBassLevel] = useState(0);
+  const [midLevel, setMidLevel] = useState(0);
+  const [trebleLevel, setTrebleLevel] = useState(0);
   const [beatWaves, setBeatWaves] = useState([]);
+  const [playHistory, setPlayHistory] = useState([]);
 
   const [bass, setBass] = useState(0);
   const [mid, setMid] = useState(0);
@@ -57,8 +143,8 @@ const MusicPlayerPage = () => {
     if (!audioContextRef.current) {
       audioContextRef.current = new (window.AudioContext || window.webkitAudioContext)();
       analyserRef.current = audioContextRef.current.createAnalyser();
-      analyserRef.current.fftSize = 256;
-      analyserRef.current.smoothingTimeConstant = 0.8;
+      analyserRef.current.fftSize = 512;
+      analyserRef.current.smoothingTimeConstant = 0.7;
 
       bassFilterRef.current = audioContextRef.current.createBiquadFilter();
       bassFilterRef.current.type = 'lowshelf';
@@ -89,26 +175,38 @@ const MusicPlayerPage = () => {
     if (trebleFilterRef.current) trebleFilterRef.current.gain.value = treble;
   }, [bass, mid, treble]);
 
+  useEffect(() => {
+    if (audioRef.current) {
+      audioRef.current.volume = volume;
+    }
+  }, [volume]);
+
   const analyzeAudio = useCallback(() => {
     if (!analyserRef.current || !isPlaying) return;
 
     const dataArray = new Uint8Array(analyserRef.current.frequencyBinCount);
     analyserRef.current.getByteFrequencyData(dataArray);
 
-    const bassCalc = dataArray.slice(0, 10).reduce((a, b) => a + b, 0) / 10 / 255;
+    const bassCalc = dataArray.slice(0, 15).reduce((a, b) => a + b, 0) / 15 / 255;
+    const midCalc = dataArray.slice(15, 80).reduce((a, b) => a + b, 0) / 65 / 255;
+    const trebleCalc = dataArray.slice(80, 150).reduce((a, b) => a + b, 0) / 70 / 255;
     
     setBassLevel(bassCalc);
+    setMidLevel(midCalc);
+    setTrebleLevel(trebleCalc);
 
-    // Detect beat (bass spike)
     const now = Date.now();
-    if (bassCalc > 0.7 && now - lastBeatTimeRef.current > 300) {
+    const threshold = 0.65;
+    const minInterval = 250;
+    
+    if (bassCalc > threshold && now - lastBeatTimeRef.current > minInterval) {
       lastBeatTimeRef.current = now;
-      const newWave = { id: now, size: 0 };
+      const newWave = { id: now, size: 0, intensity: bassCalc };
       setBeatWaves(prev => [...prev, newWave]);
       
       setTimeout(() => {
         setBeatWaves(prev => prev.filter(w => w.id !== now));
-      }, 1500);
+      }, 1200);
     }
 
     animationRef.current = requestAnimationFrame(analyzeAudio);
@@ -146,31 +244,67 @@ const MusicPlayerPage = () => {
           trebleFilterRef.current.connect(gainNodeRef.current);
           gainNodeRef.current.connect(analyserRef.current);
           analyserRef.current.connect(audioContextRef.current.destination);
-        } catch {
-          // Audio source già connesso
+        } catch (error) {
+          console.error('Audio context error:', error);
         }
       }
 
-      audioRef.current.play().catch(() => {
-        // Gestione errore play
+      audioRef.current.play().catch((error) => {
+        console.error('Play error:', error);
       });
     }
     setIsPlaying(!isPlaying);
   };
 
+  const getNextTrack = () => {
+    if (playMode === 'repeat-one') {
+      return currentTrack;
+    } else if (playMode === 'shuffle') {
+      let nextTrack;
+      do {
+        nextTrack = Math.floor(Math.random() * playlist.length);
+      } while (nextTrack === currentTrack && playlist.length > 1);
+      return nextTrack;
+    } else {
+      return (currentTrack + 1) % playlist.length;
+    }
+  };
+
+  const getPrevTrack = () => {
+    if (playMode === 'repeat-one') {
+      return currentTrack;
+    } else if (playMode === 'shuffle') {
+      if (playHistory.length > 0) {
+        const prev = playHistory[playHistory.length - 1];
+        setPlayHistory(playHistory.slice(0, -1));
+        return prev;
+      }
+      let prevTrack;
+      do {
+        prevTrack = Math.floor(Math.random() * playlist.length);
+      } while (prevTrack === currentTrack && playlist.length > 1);
+      return prevTrack;
+    } else {
+      return (currentTrack - 1 + playlist.length) % playlist.length;
+    }
+  };
+
   const changeTrack = (index) => {
     handleButtonPress('track');
+
+    if (playMode === 'shuffle' && index !== currentTrack) {
+      setPlayHistory([...playHistory, currentTrack]);
+    }
 
     setCurrentTrack(index);
     setCurrentTime(0);
     setIsPlaying(false);
-    setShowDropdown(false);
 
     if (sourceRef.current) {
       try {
         sourceRef.current.disconnect();
-      } catch {
-        // Source già disconnesso
+      } catch (error) {
+        console.error('Disconnect error:', error);
       }
       sourceRef.current = null;
     }
@@ -179,8 +313,8 @@ const MusicPlayerPage = () => {
       if (audioRef.current) {
         audioRef.current.load();
         setIsPlaying(true);
-        audioRef.current.play().catch(() => {
-          // Gestione errore play
+        audioRef.current.play().catch((error) => {
+          console.error('Play error:', error);
         });
       }
     }, 100);
@@ -200,7 +334,7 @@ const MusicPlayerPage = () => {
 
   const handleEnded = () => {
     setIsPlaying(false);
-    const nextIndex = (currentTrack + 1) % playlist.length;
+    const nextIndex = getNextTrack();
     changeTrack(nextIndex);
   };
 
@@ -212,13 +346,21 @@ const MusicPlayerPage = () => {
     setCurrentTime(pos * duration);
   };
 
-  const handleVolumeChange = (e) => {
+  const handleVolumeClick = (e) => {
     const rect = e.currentTarget.getBoundingClientRect();
     const pos = (e.clientX - rect.left) / rect.width;
     const newVolume = Math.max(0, Math.min(1, pos));
     setVolume(newVolume);
-    if (audioRef.current) {
-      audioRef.current.volume = newVolume;
+  };
+
+  const cyclePlayMode = () => {
+    handleButtonPress('mode');
+    if (playMode === 'order') {
+      setPlayMode('shuffle');
+    } else if (playMode === 'shuffle') {
+      setPlayMode('repeat-one');
+    } else {
+      setPlayMode('order');
     }
   };
 
@@ -229,35 +371,66 @@ const MusicPlayerPage = () => {
     return `${mins}:${secs.toString().padStart(2, '0')}`;
   };
 
+  const getPlayModeIcon = () => {
+    if (playMode === 'shuffle') {
+      return (
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+          <polyline points="16 3 21 3 21 8" />
+          <line x1="4" y1="20" x2="21" y2="3" />
+          <polyline points="21 16 21 21 16 21" />
+          <line x1="15" y1="15" x2="21" y2="21" />
+          <line x1="4" y1="4" x2="9" y2="9" />
+        </svg>
+      );
+    } else if (playMode === 'repeat-one') {
+      return (
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+          <polyline points="17 1 21 5 17 9" />
+          <path d="M3 11V9a4 4 0 0 1 4-4h14" />
+          <polyline points="7 23 3 19 7 15" />
+          <path d="M21 13v2a4 4 0 0 1-4 4H3" />
+          <text x="12" y="15" fontSize="8" fill="currentColor" textAnchor="middle">1</text>
+        </svg>
+      );
+    } else {
+      return (
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+          <polyline points="17 1 21 5 17 9" />
+          <path d="M3 11V9a4 4 0 0 1 4-4h14" />
+          <polyline points="7 23 3 19 7 15" />
+          <path d="M21 13v2a4 4 0 0 1-4 4H3" />
+        </svg>
+      );
+    }
+  };
+
   return (
     <div className="music-player-page">
       <div className="music-player-container">
         <div className="player-layout">
-          {/* Left: Visualizer */}
           <div className="visualizer-container">
-            <div className="japanese-corner top-left">音楽</div>
-            <div className="japanese-corner top-right">波</div>
-            <div className="japanese-corner bottom-left">鼓動</div>
-            <div className="japanese-corner bottom-right">心</div>
             
             <button className="gear-toggle" onClick={() => setShowMixer(!showMixer)}>
-              <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2">
-                <circle cx="12" cy="12" r="3" />
-                <path d="M12 1v6m0 6v6M4.22 4.22l4.24 4.24m7.08 7.08l4.24 4.24M1 12h6m6 0h6M4.22 19.78l4.24-4.24m7.08-7.08l4.24-4.24" />
+              <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" strokeWidth="2">
+                <path d="M12 3v3m0 12v3m9-9h-3M6 12H3m15.364 6.364l-2.121-2.121M7.757 7.757L5.636 5.636m12.728 0l-2.121 2.121M7.757 16.243l-2.121 2.121" strokeLinecap="round"/>
+                <circle cx="12" cy="12" r="3"/>
               </svg>
             </button>
 
-            {!showMixer ? (
+            {!showMixer && !showInfo && (
               <div className="eye-visualizer">
-                {/* Beat waves */}
                 {beatWaves.map(wave => (
-                  <div key={wave.id} className="beat-wave" />
+                  <div 
+                    key={wave.id} 
+                    className="beat-wave"
+                    style={{ '--intensity': wave.intensity }}
+                  />
                 ))}
                 
                 <svg viewBox="0 0 1000 1000" className="eye-svg">
                   <defs>
                     <filter id="eyeGlow">
-                      <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
+                      <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
                       <feMerge>
                         <feMergeNode in="coloredBlur"/>
                         <feMergeNode in="SourceGraphic"/>
@@ -267,82 +440,125 @@ const MusicPlayerPage = () => {
                       <path d="M 350 500 C 390 430, 440 400, 500 400 C 560 400, 610 430, 650 500 C 610 570, 560 600, 500 600 C 440 600, 390 570, 350 500 Z"/>
                     </clipPath>
                     <radialGradient id="eyeGradient">
-                      <stop offset="0%" stopColor="rgba(255, 215, 0, 0.8)" />
-                      <stop offset="50%" stopColor="rgba(220, 20, 60, 0.6)" />
-                      <stop offset="100%" stopColor="rgba(0, 255, 255, 0.4)" />
+                      <stop offset="0%" stopColor="rgba(0, 255, 255, 0.9)" />
+                      <stop offset="50%" stopColor="rgba(0, 200, 255, 0.7)" />
+                      <stop offset="100%" stopColor="rgba(0, 150, 255, 0.5)" />
                     </radialGradient>
                   </defs>
                   
-                  {/* Outer glow pulse */}
                   <circle 
                     cx="500" 
                     cy="500" 
-                    r={isPlaying ? 180 + bassLevel * 60 : 180}
+                    r={isPlaying ? 180 + (bassLevel * 50 + midLevel * 30) : 180}
                     fill="none" 
                     stroke="url(#eyeGradient)" 
-                    strokeWidth={isPlaying ? 2 + bassLevel * 3 : 2}
-                    opacity={isPlaying ? bassLevel * 0.6 : 0}
+                    strokeWidth={isPlaying ? 2 + (bassLevel + midLevel) * 2 : 2}
+                    opacity={isPlaying ? (bassLevel + midLevel) * 0.5 : 0}
                     filter="url(#eyeGlow)"
-                    style={{ transition: 'all 0.15s ease-out' }}
+                    style={{ 
+                      transition: bassLevel > 0.7 ? 'none' : 'all 0.1s ease-out'
+                    }}
                   />
                   
-                  {/* Eye outline */}
                   <path 
                     d="M 350 500 C 390 430, 440 400, 500 400 C 560 400, 610 430, 650 500 C 610 570, 560 600, 500 600 C 440 600, 390 570, 350 500 Z" 
                     fill="none" 
-                    stroke="rgba(220, 20, 60, 0.95)" 
+                    stroke="rgba(0, 255, 255, 0.95)" 
                     strokeWidth="12" 
                     strokeLinecap="round" 
                     strokeLinejoin="round" 
                     filter="url(#eyeGlow)"
                     style={{
-                      transform: isPlaying ? `scale(${1 + bassLevel * 0.08})` : 'scale(1)',
+                      transform: isPlaying ? `scale(${1 + bassLevel * 0.1 + midLevel * 0.05})` : 'scale(1)',
                       transformOrigin: 'center',
-                      transition: 'transform 0.15s ease-out'
+                      transition: bassLevel > 0.7 ? 'none' : 'transform 0.1s ease-out'
                     }}
                   />
                   
-                  {/* Pupil rings - pulsating */}
                   <g clipPath="url(#eyeClip)">
                     <circle 
                       cx="500" 
                       cy="500" 
-                      r={isPlaying ? 80 + bassLevel * 40 : 80}
+                      r={isPlaying ? 80 + bassLevel * 35 + trebleLevel * 15 : 80}
                       fill="none" 
-                      stroke="rgba(255, 215, 0, 0.95)" 
+                      stroke="rgba(0, 200, 255, 0.95)" 
                       strokeWidth="10" 
                       filter="url(#eyeGlow)"
-                      style={{ transition: 'r 0.15s ease-out' }}
+                      style={{ 
+                        transition: bassLevel > 0.7 ? 'none' : 'r 0.1s ease-out' 
+                      }}
                     />
                     <circle 
                       cx="500" 
                       cy="500" 
-                      r={isPlaying ? 35 + bassLevel * 20 : 35}
-                      fill="rgba(0, 255, 255, 0.3)" 
-                      stroke="rgba(0, 255, 255, 0.95)" 
+                      r={isPlaying ? 35 + bassLevel * 18 + midLevel * 12 : 35}
+                      fill="rgba(0, 150, 255, 0.3)" 
+                      stroke="rgba(0, 180, 255, 0.95)" 
                       strokeWidth="8" 
                       filter="url(#eyeGlow)"
-                      style={{ transition: 'r 0.15s ease-out' }}
+                      style={{ 
+                        transition: bassLevel > 0.7 ? 'none' : 'r 0.1s ease-out' 
+                      }}
                     />
                     
-                    {/* Center dot pulse */}
                     <circle 
                       cx="500" 
                       cy="500" 
-                      r={isPlaying ? 8 + bassLevel * 12 : 8}
-                      fill="rgba(255, 215, 0, 1)" 
+                      r={isPlaying ? 8 + bassLevel * 10 + trebleLevel * 8 : 8}
+                      fill="rgba(0, 255, 255, 1)" 
                       filter="url(#eyeGlow)"
-                      style={{ transition: 'r 0.1s ease-out' }}
+                      style={{ 
+                        transition: bassLevel > 0.7 ? 'none' : 'r 0.08s ease-out' 
+                      }}
                     />
                   </g>
                 </svg>
               </div>
-            ) : (
+            )}
+
+            {!showMixer && showInfo && (
+              <div className="track-info-display">
+                <div className="info-display-header">
+                  <div className="info-display-icon">
+                    <svg width="60" height="60" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                      <circle cx="12" cy="12" r="10" />
+                      <line x1="12" y1="16" x2="12" y2="12" />
+                      <line x1="12" y1="8" x2="12.01" y2="8" />
+                    </svg>
+                  </div>
+                  <h2 className="info-display-title">{playlist[currentTrack].title}</h2>
+                </div>
+                <div className="info-display-content">
+                  <div className="info-display-row">
+                    <span className="info-display-label">ARTIST</span>
+                    <span className="info-display-value">{playlist[currentTrack].artist}</span>
+                  </div>
+                  <div className="info-display-row">
+                    <span className="info-display-label">ALBUM</span>
+                    <span className="info-display-value">{playlist[currentTrack].album}</span>
+                  </div>
+                  <div className="info-display-row">
+                    <span className="info-display-label">YEAR</span>
+                    <span className="info-display-value">{playlist[currentTrack].year}</span>
+                  </div>
+                  <div className="info-display-row">
+                    <span className="info-display-label">GENRE</span>
+                    <span className="info-display-value">{playlist[currentTrack].genre}</span>
+                  </div>
+                  <div className="info-display-row">
+                    <span className="info-display-label">DURATION</span>
+                    <span className="info-display-value">{formatTime(duration)}</span>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {showMixer && (
               <div className="mixer-panel">
-                <h3 className="mixer-title">音響調整</h3>
+                <h3 className="mixer-title">EQUALIZER</h3>
                 
                 <div className="mixer-control">
-                  <label className="mixer-label">低音 BASS</label>
+                  <label className="mixer-label">BASS</label>
                   <input 
                     type="range" 
                     min="-15" 
@@ -355,7 +571,7 @@ const MusicPlayerPage = () => {
                 </div>
 
                 <div className="mixer-control">
-                  <label className="mixer-label">中音 MID</label>
+                  <label className="mixer-label">MID</label>
                   <input 
                     type="range" 
                     min="-15" 
@@ -368,7 +584,7 @@ const MusicPlayerPage = () => {
                 </div>
 
                 <div className="mixer-control">
-                  <label className="mixer-label">高音 TREBLE</label>
+                  <label className="mixer-label">TREBLE</label>
                   <input 
                     type="range" 
                     min="-15" 
@@ -388,16 +604,13 @@ const MusicPlayerPage = () => {
                     setTreble(0);
                   }}
                 >
-                  リセット
+                  RESET
                 </button>
               </div>
             )}
           </div>
 
-          {/* Right: Controls */}
           <div className="controls-container">
-            <div className="japanese-corner top-left">再生</div>
-            <div className="japanese-corner top-right">曲</div>
             
             <audio
               ref={audioRef}
@@ -455,10 +668,18 @@ const MusicPlayerPage = () => {
 
             <div className="controls">
               <button
+                className={`control-btn extra-control-btn ${buttonPressed === 'mode' ? 'pressed' : ''} ${playMode !== 'order' ? 'active' : ''}`}
+                onClick={cyclePlayMode}
+                title={playMode === 'order' ? 'Order' : playMode === 'shuffle' ? 'Shuffle' : 'Repeat One'}
+              >
+                {getPlayModeIcon()}
+              </button>
+
+              <button
                 className={`control-btn ${buttonPressed === 'prev' ? 'pressed' : ''}`}
                 onClick={() => {
                   handleButtonPress('prev');
-                  const prevIndex = (currentTrack - 1 + playlist.length) % playlist.length;
+                  const prevIndex = getPrevTrack();
                   changeTrack(prevIndex);
                 }}
               >
@@ -488,7 +709,7 @@ const MusicPlayerPage = () => {
                 className={`control-btn ${buttonPressed === 'next' ? 'pressed' : ''}`}
                 onClick={() => {
                   handleButtonPress('next');
-                  const nextIndex = (currentTrack + 1) % playlist.length;
+                  const nextIndex = getNextTrack();
                   changeTrack(nextIndex);
                 }}
               >
@@ -497,11 +718,23 @@ const MusicPlayerPage = () => {
                   <line x1="19" y1="5" x2="19" y2="19" />
                 </svg>
               </button>
+
+              <button
+                className={`control-btn extra-control-btn ${showInfo ? 'active' : ''}`}
+                onClick={() => setShowInfo(!showInfo)}
+                title="Track Info"
+              >
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <circle cx="12" cy="12" r="10" />
+                  <line x1="12" y1="16" x2="12" y2="12" />
+                  <line x1="12" y1="8" x2="12.01" y2="8" />
+                </svg>
+              </button>
             </div>
 
             <div className="volume-container">
               <span className="volume-icon">{volume === 0 ? '🔇' : volume < 0.5 ? '🔉' : '🔊'}</span>
-              <div className="volume-slider-bar" onClick={handleVolumeChange}>
+              <div className="volume-slider-bar" onClick={handleVolumeClick}>
                 <div className="volume-fill" style={{ width: `${volume * 100}%` }} />
               </div>
             </div>
