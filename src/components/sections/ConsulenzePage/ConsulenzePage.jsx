@@ -64,26 +64,64 @@ const ConsulenzePage = () => {
     };
   }, []);
 
+  // Icone SVG minimaliste
+  const SearchIcon = () => (
+    <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="20" cy="20" r="12" stroke="var(--color-primary, #0ff)" strokeWidth="2.5" strokeLinecap="round"/>
+      <line x1="29" y1="29" x2="40" y2="40" stroke="var(--color-primary, #0ff)" strokeWidth="2.5" strokeLinecap="round"/>
+    </svg>
+  );
+
+  const GrowthIcon = () => (
+    <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <polyline points="8,36 18,26 26,32 40,12" stroke="var(--color-primary, #0ff)" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
+      <polyline points="32,12 40,12 40,20" stroke="var(--color-primary, #0ff)" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
+    </svg>
+  );
+
+  const LightningIcon = () => (
+    <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M26 6 L12 26 L24 26 L22 42 L36 22 L24 22 Z" stroke="var(--color-primary, #0ff)" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
+    </svg>
+  );
+
+  const EducationIcon = () => (
+    <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M8 18 L24 10 L40 18 L24 26 Z" stroke="var(--color-primary, #0ff)" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
+      <path d="M12 20 L12 30 L24 36 L36 30 L36 20" stroke="var(--color-primary, #0ff)" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
+    </svg>
+  );
+
+  const GiftIcon = () => (
+    <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect x="10" y="20" width="28" height="20" stroke="var(--color-primary, #0ff)" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
+      <rect x="8" y="14" width="32" height="6" stroke="var(--color-primary, #0ff)" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
+      <line x1="24" y1="14" x2="24" y2="40" stroke="var(--color-primary, #0ff)" strokeWidth="2.5" strokeLinecap="round"/>
+      <path d="M24 14 C24 14, 20 8, 16 10 C12 12, 14 14, 24 14" stroke="var(--color-primary, #0ff)" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
+      <path d="M24 14 C24 14, 28 8, 32 10 C36 12, 34 14, 24 14" stroke="var(--color-primary, #0ff)" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
+    </svg>
+  );
+
   const services = [
     {
       title: 'Analisi Digitale',
       description: 'Audit completo della tua presenza online: siti web, social media, SEO e performance.',
-      icon: '🔍'
+      icon: <SearchIcon />
     },
     {
       title: 'Strategia di Crescita',
       description: 'Piano personalizzato per ottimizzare la tua visibilità digitale e raggiungere i tuoi obiettivi.',
-      icon: '📈'
+      icon: <GrowthIcon />
     },
     {
       title: 'Ottimizzazione Risorse',
       description: 'Suggerimenti per migliorare efficienza, conversioni e ROI dei tuoi investimenti digitali.',
-      icon: '⚡'
+      icon: <LightningIcon />
     },
     {
       title: 'Formazione Team',
       description: 'Sessioni di training per il tuo team su strumenti e best practices digitali.',
-      icon: '🎓'
+      icon: <EducationIcon />
     }
   ];
 
@@ -91,22 +129,9 @@ const ConsulenzePage = () => {
     <div className="service-detail-wrapper">
       <div className="code-background" id="codeBackground"></div>
       <div className="detail-grid-overlay"></div>
-      
-      <header className="detail-header">
-        <button 
-          className="back-button"
-          onClick={() => navigate('/services')}
-        >
-          <span className="back-arrow">←</span>
-          <span className="back-text">Torna ai Servizi</span>
-        </button>
-      </header>
 
       <div className="detail-content">
         <div className="detail-hero">
-          <div className="detail-icon icon-consulenza">
-            <div className="icon-consulenza-center"></div>
-          </div>
           <h1 className="detail-title">Consulenze Digitali</h1>
           <p className="detail-subtitle">Trasforma la tua presenza online in un asset strategico</p>
         </div>
@@ -156,7 +181,9 @@ const ConsulenzePage = () => {
         </div>
 
         <div className="highlight-box">
-          <div className="highlight-icon">🎁</div>
+          <div className="highlight-icon">
+            <GiftIcon />
+          </div>
           <h3 className="highlight-title">Prima Consulenza Gratuita</h3>
           <p className="highlight-text">
             La prima consulenza online è sempre gratuita! Parliamo insieme dei tuoi obiettivi 

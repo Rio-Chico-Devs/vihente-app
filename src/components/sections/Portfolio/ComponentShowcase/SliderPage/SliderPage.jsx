@@ -1,9 +1,44 @@
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import './SliderPage.css';
 
 const SliderPage = () => {
   const [hoveredIndex, setHoveredIndex] = useState(null);
   const [selectedIndex, setSelectedIndex] = useState(0);
+  const [isMobile, setIsMobile] = useState(false);
+  const [lightboxOpen, setLightboxOpen] = useState(false);
+  const [lightboxImage, setLightboxImage] = useState(null);
+  
+  const panelRefs = useRef([]);
+  const containerRef = useRef(null);
+  const touchStartX = useRef(0);
+  const touchStartY = useRef(0);
+  const scrollLeft = useRef(0);
+  const isDragging = useRef(false);
+  const lastTapTime = useRef(0);
+  const lastTapIndex = useRef(null);
+
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth <= 768 || 'ontouchstart' in window);
+    };
+    
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
+  useEffect(() => {
+    if (isMobile && panelRefs.current[selectedIndex] && !isDragging.current) {
+      setTimeout(() => {
+        panelRefs.current[selectedIndex]?.scrollIntoView({
+          behavior: 'smooth',
+          block: 'nearest',
+          inline: 'center'
+        });
+      }, 100);
+    }
+  }, [selectedIndex, isMobile]);
 
   const images = [
     { id: 1, url: 'https://picsum.photos/800/1200?random=1', caption: 'Paesaggio montano al tramonto', description: 'Una vista mozzafiato delle montagne illuminate dai raggi dorati del tramonto, creando un contrasto perfetto tra luci e ombre.' },
@@ -16,27 +51,99 @@ const SliderPage = () => {
     { id: 8, url: 'https://picsum.photos/800/1200?random=8', caption: 'Geometrie e simmetrie', description: 'Pattern geometrici perfetti che si ripetono creando un effetto ipnotico di simmetria e equilibrio.' }
   ];
 
+  const handleTouchStart = (e) => {
+    if (!isMobile) return;
+    
+    const touch = e.touches[0];
+    touchStartX.current = touch.clientX;
+    touchStartY.current = touch.clientY;
+    scrollLeft.current = containerRef.current.scrollLeft;
+    isDragging.current = false;
+  };
+
+  const handleTouchMove = (e) => {
+    if (!isMobile) return;
+    
+    const touch = e.touches[0];
+    const deltaX = touchStartX.current - touch.clientX;
+    const deltaY = Math.abs(touchStartY.current - touch.clientY);
+    
+    // Se il movimento orizzontale è significativo e maggiore del verticale
+    if (Math.abs(deltaX) > 10 && Math.abs(deltaX) > deltaY) {
+      isDragging.current = true;
+      containerRef.current.scrollLeft = scrollLeft.current + deltaX;
+      e.preventDefault();
+    }
+  };
+
+  const handleTouchEnd = (index) => {
+    if (!isMobile) return;
+    
+    if (!isDragging.current) {
+      // È un tap, non un drag
+      const currentTime = new Date().getTime();
+      const tapLength = currentTime - lastTapTime.current;
+      
+      // Double tap detection (entro 300ms sullo stesso elemento)
+      if (tapLength < 300 && tapLength > 0 && lastTapIndex.current === index) {
+        // Double tap - apri lightbox
+        openLightbox(images[index]);
+        lastTapTime.current = 0;
+        lastTapIndex.current = null;
+      } else {
+        // Single tap - seleziona immagine
+        setSelectedIndex(index);
+        lastTapTime.current = currentTime;
+        lastTapIndex.current = index;
+      }
+    }
+    
+    isDragging.current = false;
+  };
+
   const handleImageClick = (index) => {
-    setSelectedIndex(index);
+    if (!isMobile) {
+      setSelectedIndex(index);
+    }
+  };
+
+  const openLightbox = (image) => {
+    setLightboxImage(image);
+    setLightboxOpen(true);
+    document.body.style.overflow = 'hidden';
+  };
+
+  const closeLightbox = () => {
+    setLightboxOpen(false);
+    setLightboxImage(null);
+    document.body.style.overflow = '';
   };
 
   return (
     <div className="expanding-gallery">
       <h2 className="expanding-title">Expanding Gallery</h2>
       
-      <div className="expanding-container">
+      <div 
+        className="expanding-container"
+        ref={containerRef}
+        onTouchMove={handleTouchMove}
+      >
         {images.map((image, index) => (
           <div
             key={image.id}
+            ref={el => panelRefs.current[index] = el}
             className={`expanding-panel ${selectedIndex === index ? 'active' : ''}`}
-            onMouseEnter={() => setHoveredIndex(index)}
-            onMouseLeave={() => setHoveredIndex(null)}
+            onMouseEnter={!isMobile ? () => setHoveredIndex(index) : undefined}
+            onMouseLeave={!isMobile ? () => setHoveredIndex(null) : undefined}
             onClick={() => handleImageClick(index)}
+            onTouchStart={handleTouchStart}
+            onTouchEnd={() => handleTouchEnd(index)}
           >
             <img 
               src={image.url} 
               alt={image.caption}
               className={hoveredIndex === index && selectedIndex !== index ? 'colored' : ''}
+              draggable={false}
             />
           </div>
         ))}
@@ -46,6 +153,20 @@ const SliderPage = () => {
         <h3 className="description-title">{images[selectedIndex].caption}</h3>
         <p className="description-text">{images[selectedIndex].description}</p>
       </div>
+
+      {/* Lightbox */}
+      {lightboxOpen && lightboxImage && (
+        <div className="lightbox-overlay" onClick={closeLightbox}>
+          <button className="lightbox-close" onClick={closeLightbox}>×</button>
+          <div className="lightbox-content" onClick={(e) => e.stopPropagation()}>
+            <img 
+              src={lightboxImage.url} 
+              alt={lightboxImage.caption}
+              className="lightbox-image"
+            />
+          </div>
+        </div>
+      )}
     </div>
   );
 };
