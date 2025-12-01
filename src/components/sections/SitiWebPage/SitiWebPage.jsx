@@ -22,24 +22,24 @@ const SitiWebPage = () => {
         {/* Hero section */}
         <section className="sitiweb-hero">
           <div className="hero-icon">
-            <div className="icon-siti">
-              <div className="binary-row">
-                <div className="binary-digit">1</div>
-                <div className="binary-digit">0</div>
-                <div className="binary-digit">1</div>
-                <div className="binary-digit">1</div>
+            <div className="sitiweb-hero-icon">
+              <div className="sitiweb-binary-row">
+                <div className="sitiweb-binary-digit">1</div>
+                <div className="sitiweb-binary-digit">0</div>
+                <div className="sitiweb-binary-digit">1</div>
+                <div className="sitiweb-binary-digit">1</div>
               </div>
-              <div className="binary-row">
-                <div className="binary-digit">0</div>
-                <div className="binary-digit">1</div>
-                <div className="binary-digit">0</div>
-                <div className="binary-digit">0</div>
+              <div className="sitiweb-binary-row">
+                <div className="sitiweb-binary-digit">0</div>
+                <div className="sitiweb-binary-digit">1</div>
+                <div className="sitiweb-binary-digit">0</div>
+                <div className="sitiweb-binary-digit">0</div>
               </div>
-              <div className="binary-row">
-                <div className="binary-digit">1</div>
-                <div className="binary-digit">1</div>
-                <div className="binary-digit">0</div>
-                <div className="binary-digit">1</div>
+              <div className="sitiweb-binary-row">
+                <div className="sitiweb-binary-digit">1</div>
+                <div className="sitiweb-binary-digit">1</div>
+                <div className="sitiweb-binary-digit">0</div>
+                <div className="sitiweb-binary-digit">1</div>
               </div>
             </div>
           </div>

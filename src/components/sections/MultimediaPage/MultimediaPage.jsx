@@ -22,12 +22,12 @@ const MultimediaPage = () => {
         {/* Hero section */}
         <section className="multimedia-hero">
           <div className="hero-icon">
-            <div className="icon-multimedia">
-              <div className="wave-bar"></div>
-              <div className="wave-bar"></div>
-              <div className="wave-bar"></div>
-              <div className="wave-bar"></div>
-              <div className="wave-bar"></div>
+            <div className="multimedia-hero-icon">
+              <div className="multimedia-wave-bar"></div>
+              <div className="multimedia-wave-bar"></div>
+              <div className="multimedia-wave-bar"></div>
+              <div className="multimedia-wave-bar"></div>
+              <div className="multimedia-wave-bar"></div>
             </div>
           </div>
           

@@ -1138,7 +1138,7 @@ const LandingPageOldEye = ({ startTime }) => {
               lineHeight: 1.6,
               fontFamily: "'Share Tech Mono', monospace"
             }}>
-              Creo la tua presenza digitale da zero, o ti aiuto a migliorare quella che già hai.
+              Creo la tua presenza digitale da zero, o ti aiuto a migliorare quella che già hai. Insieme, oltre le stelle.
             </p>
           </div>
         </div>

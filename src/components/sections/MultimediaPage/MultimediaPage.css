@@ -446,7 +446,7 @@ body.multimedia-page-body {
 }
 
 /* Icon animations */
-.icon-multimedia {
+.multimedia-hero-icon {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -454,18 +454,18 @@ body.multimedia-page-body {
     height: 60px;
 }
 
-.wave-bar {
+.multimedia-wave-bar {
     width: 4px;
     background: var(--color-primary-80);
     border-radius: 2px;
     animation: waveAnimation 1.2s ease-in-out infinite;
 }
 
-.wave-bar:nth-child(1) { height: 15px; animation-delay: 0s; }
-.wave-bar:nth-child(2) { height: 27px; animation-delay: 0.15s; }
-.wave-bar:nth-child(3) { height: 39px; animation-delay: 0.3s; }
-.wave-bar:nth-child(4) { height: 27px; animation-delay: 0.45s; }
-.wave-bar:nth-child(5) { height: 15px; animation-delay: 0.6s; }
+.multimedia-wave-bar:nth-child(1) { height: 15px; animation-delay: 0s; }
+.multimedia-wave-bar:nth-child(2) { height: 27px; animation-delay: 0.15s; }
+.multimedia-wave-bar:nth-child(3) { height: 39px; animation-delay: 0.3s; }
+.multimedia-wave-bar:nth-child(4) { height: 27px; animation-delay: 0.45s; }
+.multimedia-wave-bar:nth-child(5) { height: 15px; animation-delay: 0.6s; }
 
 @keyframes waveAnimation {
     0%, 100% { 
@@ -718,7 +718,7 @@ body.multimedia-page-body {
     filter: drop-shadow(0 0 8px var(--color-primary-30));
 }
 
-[data-theme="light"] .wave-bar {
+[data-theme="light"] .multimedia-wave-bar {
     box-shadow: none;
 }
 
@@ -733,6 +733,6 @@ body.multimedia-page-body {
     }
 }
 
-[data-theme="light"] .wave-bar {
+[data-theme="light"] .multimedia-wave-bar {
     animation-name: waveAnimationLight;
 }

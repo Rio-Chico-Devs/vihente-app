@@ -199,10 +199,6 @@ const ConsulenzePage = () => {
           <span className="cta-arrow">→</span>
         </button>
       </div>
-
-      <footer className="detail-footer">
-        <p>© 2025 VIHENTE - PER ASPERA AD ASTRA</p>
-      </footer>
     </div>
   );
 };

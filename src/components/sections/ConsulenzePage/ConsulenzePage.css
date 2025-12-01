@@ -143,7 +143,7 @@
   margin: 0 auto 2rem;
 }
 
-.icon-consulenza {
+.detail-icon-consulenza {
   position: relative;
   border: 3px solid var(--color-primary, #0ff);
   border-radius: 50%;
@@ -165,7 +165,7 @@
   }
 }
 
-.icon-consulenza-center {
+.detail-icon-consulenza-center {
   width: 40px;
   height: 40px;
   border: 2px solid var(--color-primary, #0ff);
@@ -173,14 +173,14 @@
   position: relative;
 }
 
-.icon-consulenza-center::before,
-.icon-consulenza-center::after {
+.detail-icon-consulenza-center::before,
+.detail-icon-consulenza-center::after {
   content: '';
   position: absolute;
   background: var(--color-primary, #0ff);
 }
 
-.icon-consulenza-center::before {
+.detail-icon-consulenza-center::before {
   width: 2px;
   height: 20px;
   top: 50%;
@@ -188,7 +188,7 @@
   transform: translate(-50%, -50%);
 }
 
-.icon-consulenza-center::after {
+.detail-icon-consulenza-center::after {
   width: 20px;
   height: 2px;
   top: 50%;

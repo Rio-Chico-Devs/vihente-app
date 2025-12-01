@@ -55,19 +55,19 @@
   justify-content: center;
 }
 
-.icon-siti {
+.sitiweb-hero-icon {
   display: flex;
   flex-direction: column;
   gap: 2px;
 }
 
-.binary-row {
+.sitiweb-binary-row {
   display: flex;
   gap: 3px;
   justify-content: center;
 }
 
-.binary-digit {
+.sitiweb-binary-digit {
   width: 14px;
   height: 16px;
   display: flex;
@@ -81,9 +81,9 @@
   animation: digitPulse 2s ease-in-out infinite;
 }
 
-.binary-row:nth-child(1) .binary-digit { animation-delay: 0s; }
-.binary-row:nth-child(2) .binary-digit { animation-delay: 0.3s; }
-.binary-row:nth-child(3) .binary-digit { animation-delay: 0.6s; }
+.sitiweb-binary-row:nth-child(1) .sitiweb-binary-digit { animation-delay: 0s; }
+.sitiweb-binary-row:nth-child(2) .sitiweb-binary-digit { animation-delay: 0.3s; }
+.sitiweb-binary-row:nth-child(3) .sitiweb-binary-digit { animation-delay: 0.6s; }
 
 @keyframes digitPulse {
   0%, 100% { opacity: 0.5; }
@@ -525,7 +525,7 @@
   text-shadow: none;
 }
 
-[data-theme="light"] .binary-digit {
+[data-theme="light"] .sitiweb-binary-digit {
   text-shadow: none;
 }
 
@@ -638,7 +638,7 @@
     margin-bottom: 3rem;
   }
 
-  .binary-digit {
+  .sitiweb-binary-digit {
     width: 12px;
     height: 14px;
     font-size: 0.55rem;
