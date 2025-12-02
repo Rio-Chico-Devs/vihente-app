@@ -5,7 +5,6 @@ const ImageCheckerPage = () => {
   const [image, setImage] = useState(null);
   const [lensActive, setLensActive] = useState(false);
   const [lensPosition, setLensPosition] = useState({ x: 0, y: 0 });
-  const [imageLoaded, setImageLoaded] = useState(false);
   const imageRef = useRef(null);
   const containerRef = useRef(null);
 
@@ -18,7 +17,6 @@ const ImageCheckerPage = () => {
       const reader = new FileReader();
       reader.onload = (event) => {
         setImage(event.target.result);
-        setImageLoaded(true);
         setLensActive(false);
       };
       reader.readAsDataURL(file);
@@ -28,7 +26,6 @@ const ImageCheckerPage = () => {
   const handleMouseMove = (e) => {
     if (!lensActive || !imageRef.current || !containerRef.current) return;
 
-    const container = containerRef.current.getBoundingClientRect();
     const image = imageRef.current.getBoundingClientRect();
 
     // Calcola la posizione del mouse relativa all'immagine
@@ -53,7 +50,6 @@ const ImageCheckerPage = () => {
 
   const resetImage = () => {
     setImage(null);
-    setImageLoaded(false);
     setLensActive(false);
   };
 

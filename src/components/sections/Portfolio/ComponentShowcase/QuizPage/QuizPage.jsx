@@ -199,6 +199,7 @@ const QuizPage = () => {
   useEffect(() => {
     const shuffled = [...questionPool].sort(() => Math.random() - 0.5);
     setSelectedQuestions(shuffled.slice(0, 7));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleAnswerClick = (answerIndex) => {

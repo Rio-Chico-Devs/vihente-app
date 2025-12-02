@@ -238,6 +238,7 @@ const PatternMatcherPage = () => {
 
   useEffect(() => {
     setCurrentPuzzle(generatePuzzle());
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleAnswerClick = (answer, index) => {
