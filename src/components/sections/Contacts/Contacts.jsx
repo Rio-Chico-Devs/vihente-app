@@ -198,69 +198,7 @@ const Contacts = () => {
   };
 
   return (
-    <section style={{
-      background: '#000',
-      color: '#fff',
-      minHeight: '100vh',
-      position: 'relative',
-      overflow: 'hidden',
-      fontFamily: "'Share Tech Mono', monospace",
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center'
-    }}>
-      {/* ... TUTTI GLI STYLE TAGS COME NELL'ORIGINALE ... */}
-      <style>{`
-        /* Copia tutti gli stili dall'originale - sono identici */
-        * {
-          -webkit-font-smoothing: antialiased;
-          -moz-osx-font-smoothing: grayscale;
-        }
-
-        @keyframes breathingGrid {
-          0%, 100% {
-            opacity: 1;
-            transform: scale(1);
-          }
-          50% {
-            opacity: 0.3;
-            transform: scale(1.01);
-          }
-        }
-
-        /* ... tutti gli altri keyframes e stili ... */
-        
-        /* ✅ AGGIUNGI STILI PER ERRORI VALIDAZIONE */
-        .form-input-error,
-        .form-textarea-error {
-          border-color: rgba(255, 50, 50, 0.6) !important;
-          background: rgba(255, 50, 50, 0.05) !important;
-        }
-
-        .form-error {
-          display: block;
-          color: rgba(255, 50, 50, 0.9);
-          font-size: 0.75rem;
-          margin-top: 0.3rem;
-          font-family: 'Share Tech Mono', monospace;
-        }
-
-        @keyframes errorSlideIn {
-          from {
-            opacity: 0;
-            transform: translateY(-5px);
-          }
-          to {
-            opacity: 1;
-            transform: translateY(0);
-          }
-        }
-
-        .form-error {
-          animation: errorSlideIn 0.3s ease-out;
-        }
-      `}</style>
-
+    <section className="contacts-section">
       <div className="vhs-scanlines" />
 
       <div className="grid-overlay">
