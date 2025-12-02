@@ -8,15 +8,18 @@ const ComponentShowcase = () => {
   const components = [
     {
       id: 'slider',
-      title: 'Image Slider',
-      description: 'Slider infinito con controlli play/pause',
+      title: 'Expandable Gallery',
+      description: 'Galleria immagini espandibile con anteprime cliccabili',
       path: '/portfolio/componenti/slider',
       preview: (
-        <div className="mini-scroll">
-          <div className="scroll-track">
-            <div className="scroll-item">IMG</div>
-            <div className="scroll-item">IMG</div>
-            <div className="scroll-item">IMG</div>
+        <div className="mini-gallery">
+          <div className="gallery-thumbnails">
+            <div className="gallery-thumb active">IMG</div>
+            <div className="gallery-thumb">IMG</div>
+            <div className="gallery-thumb">IMG</div>
+          </div>
+          <div className="gallery-main-preview">
+            <div className="gallery-expand-icon">⤢</div>
           </div>
         </div>
       )
@@ -101,43 +104,24 @@ const ComponentShowcase = () => {
       )
     },
     {
-
       id: 'black-market',
-
       title: 'Black Market',
-
       description: 'E-commerce cyberpunk con carrello e checkout completo',
-
       path: '/portfolio/componenti/black-market',
-
       preview: (
-
         <div className="mini-black-market">
-
           <div className="mini-market-header">
-
             <div className="mini-market-title">MARKET</div>
-
             <div className="mini-cart-icon">🛒</div>
-
           </div>
-
           <div className="mini-products">
-
             <div className="mini-product-card"></div>
-
             <div className="mini-product-card"></div>
-
             <div className="mini-product-card"></div>
-
             <div className="mini-product-card"></div>
-
           </div>
-
         </div>
-
       )
-
     },
     {
       id: 'quiz',
