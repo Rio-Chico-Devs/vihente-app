@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import './GraficheShowcase.css';
 
 const GraficheShowcase = () => {
@@ -9,7 +9,11 @@ const GraficheShowcase = () => {
   const [modalRotations, setModalRotations] = useState({});
   const dragRef = useRef({});
 
-  // Handler per mouse drag
+  // State per gestire hover su gallery items
+  const [hoveredItem, setHoveredItem] = useState(null);
+  const rotationStateRef = useRef({});
+
+  // Handler per mouse drag nel modal
   const handleMouseDown = (e, trophyId) => {
     e.preventDefault();
     dragRef.current[trophyId] = {
@@ -24,7 +28,7 @@ const GraficheShowcase = () => {
     if (!drag?.isDragging) return;
 
     const deltaX = e.clientX - drag.startX;
-    const rotationDelta = deltaX * 0.5; // Sensibilità
+    const rotationDelta = deltaX * 0.5;
     const newRotation = drag.currentRotation + rotationDelta;
 
     setModalRotations(prev => ({
@@ -68,6 +72,15 @@ const GraficheShowcase = () => {
     if (dragRef.current[trophyId]) {
       dragRef.current[trophyId].isDragging = false;
     }
+  };
+
+  // Handler per hover sulla gallery
+  const handleGalleryItemMouseEnter = (trophyId) => {
+    setHoveredItem(trophyId);
+  };
+
+  const handleGalleryItemMouseLeave = () => {
+    setHoveredItem(null);
   };
 
   const trophies = [
@@ -196,12 +209,16 @@ const GraficheShowcase = () => {
               htmlFor={`trophy-${trophy.id}`}
               className="trophy-container"
               style={{ '--trophy-index': index }}
+              onMouseEnter={() => handleGalleryItemMouseEnter(trophy.id)}
+              onMouseLeave={handleGalleryItemMouseLeave}
             >
               <div className="trophy-scene">
                 {/* Trophy 3D vero con preserve-3d */}
                 <div className="trophy-3d">
                   {/* Immagine 2D rotante al posto del cubo */}
-                  <div className="image-rotator">
+                  <div
+                    className={`image-rotator ${hoveredItem === trophy.id ? 'hovered' : ''}`}
+                  >
                     {/* Front: Immagine placeholder */}
                     <div className="image-card front">
                       <div className="image-placeholder">
