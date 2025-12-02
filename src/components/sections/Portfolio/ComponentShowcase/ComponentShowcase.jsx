@@ -138,6 +138,62 @@ const ComponentShowcase = () => {
 
       )
 
+    },
+    {
+      id: 'quiz',
+      title: 'Tech Quiz',
+      description: 'Quiz interattivo su informatica e grafica con domande randomiche',
+      path: '/portfolio/componenti/quiz',
+      preview: (
+        <div className="mini-quiz">
+          <div className="mini-quiz-header">
+            <div className="mini-quiz-title">QUIZ</div>
+            <div className="mini-quiz-score">0/7</div>
+          </div>
+          <div className="mini-quiz-question"></div>
+          <div className="mini-quiz-options">
+            <div className="mini-quiz-option">A</div>
+            <div className="mini-quiz-option">B</div>
+            <div className="mini-quiz-option">C</div>
+            <div className="mini-quiz-option">D</div>
+          </div>
+        </div>
+      )
+    },
+    {
+      id: 'image-checker',
+      title: 'Image Checker',
+      description: 'Lente di ingrandimento interattiva per esplorare i dettagli delle immagini',
+      path: '/portfolio/componenti/image-checker',
+      preview: (
+        <div className="mini-image-checker">
+          <div className="mini-checker-icon">🔍</div>
+          <div className="mini-checker-image">
+            <div className="mini-checker-lens"></div>
+          </div>
+        </div>
+      )
+    },
+    {
+      id: 'pattern-matcher',
+      title: 'Pattern Matcher',
+      description: 'Gioco di logica: trova il pattern mancante nella sequenza',
+      path: '/portfolio/componenti/pattern-matcher',
+      preview: (
+        <div className="mini-pattern-matcher">
+          <div className="mini-pattern-grid">
+            <div className="mini-pattern-cell"><div className="mini-pattern-shape circle-red"></div></div>
+            <div className="mini-pattern-cell"><div className="mini-pattern-shape square-blue"></div></div>
+            <div className="mini-pattern-cell"><div className="mini-pattern-shape triangle-green"></div></div>
+            <div className="mini-pattern-cell"><div className="mini-pattern-shape circle-red"></div></div>
+            <div className="mini-pattern-cell"><div className="mini-pattern-shape square-blue"></div></div>
+            <div className="mini-pattern-cell"><div className="mini-pattern-shape triangle-green"></div></div>
+            <div className="mini-pattern-cell"><div className="mini-pattern-shape circle-red"></div></div>
+            <div className="mini-pattern-cell"><div className="mini-pattern-shape square-blue"></div></div>
+            <div className="mini-pattern-cell missing">?</div>
+          </div>
+        </div>
+      )
     }
   ];
 
