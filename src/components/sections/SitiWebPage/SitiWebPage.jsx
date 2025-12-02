@@ -12,6 +12,24 @@ const SitiWebPage = () => {
     };
   }, []);
 
+  // Icone SVG minimaliste
+  const WordPressIcon = () => (
+    <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="24" cy="24" r="16" stroke="var(--color-primary, #0ff)" strokeWidth="2.5"/>
+      <path d="M10 24 L14 36 L18 14 L22 28 L26 20 L30 34 L34 16 L38 24" stroke="var(--color-primary, #0ff)" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
+      <circle cx="24" cy="24" r="2" fill="var(--color-primary, #0ff)"/>
+    </svg>
+  );
+
+  const ReactIcon = () => (
+    <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <ellipse cx="24" cy="24" rx="18" ry="7" stroke="var(--color-primary, #0ff)" strokeWidth="2.5"/>
+      <ellipse cx="24" cy="24" rx="18" ry="7" transform="rotate(60 24 24)" stroke="var(--color-primary, #0ff)" strokeWidth="2.5"/>
+      <ellipse cx="24" cy="24" rx="18" ry="7" transform="rotate(120 24 24)" stroke="var(--color-primary, #0ff)" strokeWidth="2.5"/>
+      <circle cx="24" cy="24" r="3" fill="var(--color-primary, #0ff)"/>
+    </svg>
+  );
+
   return (
     <div className="sitiweb-page-wrapper">
       {/* Background grid overlay */}
@@ -21,29 +39,6 @@ const SitiWebPage = () => {
       <div className="sitiweb-content">
         {/* Hero section */}
         <section className="sitiweb-hero">
-          <div className="hero-icon">
-            <div className="sitiweb-hero-icon">
-              <div className="sitiweb-binary-row">
-                <div className="sitiweb-binary-digit">1</div>
-                <div className="sitiweb-binary-digit">0</div>
-                <div className="sitiweb-binary-digit">1</div>
-                <div className="sitiweb-binary-digit">1</div>
-              </div>
-              <div className="sitiweb-binary-row">
-                <div className="sitiweb-binary-digit">0</div>
-                <div className="sitiweb-binary-digit">1</div>
-                <div className="sitiweb-binary-digit">0</div>
-                <div className="sitiweb-binary-digit">0</div>
-              </div>
-              <div className="sitiweb-binary-row">
-                <div className="sitiweb-binary-digit">1</div>
-                <div className="sitiweb-binary-digit">1</div>
-                <div className="sitiweb-binary-digit">0</div>
-                <div className="sitiweb-binary-digit">1</div>
-              </div>
-            </div>
-          </div>
-          
           <h1 className="sitiweb-title">Web Development</h1>
           <p className="sitiweb-subtitle">Sviluppo su misura per la tua presenza digitale</p>
         </section>
@@ -77,7 +72,9 @@ const SitiWebPage = () => {
 
             <div className="products-grid">
               <div className="product-card">
-                <div className="product-icon">🔧</div>
+                <div className="product-icon">
+                  <WordPressIcon />
+                </div>
                 <h4 className="product-name">Siti CMS WordPress</h4>
                 <p className="product-desc">
                   Piattaforma versatile e intuitiva, perfetta per chi vuole gestire i contenuti in autonomia
@@ -85,7 +82,9 @@ const SitiWebPage = () => {
               </div>
 
               <div className="product-card">
-                <div className="product-icon">⚛️</div>
+                <div className="product-icon">
+                  <ReactIcon />
+                </div>
                 <h4 className="product-name">Siti Web React</h4>
                 <p className="product-desc">
                   Applicazioni web moderne e performanti, costruite con tecnologie all'avanguardia

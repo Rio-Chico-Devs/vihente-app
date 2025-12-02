@@ -128,13 +128,27 @@ const Navbar = () => {
 
   const handleDesktopNavClick = (e, path) => {
     e.preventDefault();
-    if (isActive(path)) return;
-    performTransition(path);
+    // Normalizza i path per il confronto
+    const currentPath = location.pathname.replace('/vihente-app', '') || '/';
+    const targetPath = path;
+
+    // Permetti la navigazione se non sei esattamente sul path richiesto
+    // Questo permette di tornare alla home della sezione anche se sei in una sottosezione
+    if (currentPath !== targetPath) {
+      performTransition(path);
+    }
   };
 
   const handleMobileItemClick = (item) => {
     if (selectedItem === item.id) {
-      performTransition(item.path);
+      // Normalizza i path per il confronto
+      const currentPath = location.pathname.replace('/vihente-app', '') || '/';
+      const targetPath = item.path;
+
+      // Permetti la navigazione se non sei esattamente sul path richiesto
+      if (currentPath !== targetPath) {
+        performTransition(item.path);
+      }
       setMobileMenuOpen(false);
       setSelectedItem(null);
     } else {
@@ -151,18 +165,27 @@ const Navbar = () => {
     if (mobileMenuOpen) {
       e.preventDefault();
       closeMobileMenu();
-    } else if (!isActive('/')) {
-      e.preventDefault();
-      performTransition('/');
+    } else {
+      // Normalizza i path per il confronto
+      const currentPath = location.pathname.replace('/vihente-app', '') || '/';
+      if (currentPath !== '/') {
+        e.preventDefault();
+        performTransition('/');
+      }
     }
   };
 
-  // Helper to check if link is active
+  // Helper to check if link is active (usato solo per lo styling)
   const isActive = (path) => {
+    const currentPath = location.pathname.replace('/vihente-app', '') || '/';
+
     if (path === '/') {
-      return location.pathname === '/vihente-app' || location.pathname === '/vihente-app/' || location.pathname === '/';
+      return currentPath === '/';
     }
-    return location.pathname.includes(path);
+
+    // Un link è "attivo" se il path corrente inizia con il path del link
+    // Questo permette di evidenziare "Portfolio" anche quando sei in "/portfolio/grafiche"
+    return currentPath === path || currentPath.startsWith(path + '/');
   };
 
   return (
