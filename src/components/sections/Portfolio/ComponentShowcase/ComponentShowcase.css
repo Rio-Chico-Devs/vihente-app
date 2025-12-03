@@ -368,7 +368,7 @@
 .cube-face-mini.top    { transform: rotateX(90deg) translateZ(30px); }
 .cube-face-mini.bottom { transform: rotateX(-90deg) translateZ(30px); }
 
-/* Music Player - NO ANIMATION */
+/* Music Player - IMPROVED */
 .mini-music-player {
   height: 120px;
   background: rgba(0, 0, 0, 0.5);
@@ -384,12 +384,23 @@
   overflow: hidden;
 }
 
+.mini-player-display {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+
+.mini-music-icon {
+  filter: drop-shadow(0 0 8px var(--color-primary-60, rgba(0, 255, 255, 0.6)));
+}
+
 .mini-visualizer {
   display: flex;
   align-items: flex-end;
   justify-content: center;
   gap: 4px;
-  height: 60px;
+  height: 40px;
   width: 100%;
 }
 
@@ -403,27 +414,7 @@
   box-shadow: 0 0 5px var(--color-primary-50, rgba(0, 255, 255, 0.5));
 }
 
-.mini-player-controls {
-  display: flex;
-  gap: 0.5rem;
-  align-items: center;
-}
-
-.mini-play-btn {
-  width: 30px;
-  height: 30px;
-  border-radius: 50%;
-  background: rgba(0, 0, 0, 0.5);
-  border: 2px solid var(--color-primary-60, rgba(0, 255, 255, 0.6));
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: var(--color-primary, #0ff);
-  font-size: 0.7rem;
-  box-shadow: 0 0 5px var(--color-primary-40, rgba(0, 255, 255, 0.4));
-}
-
-/* CRUD Simulator */
+/* CRUD Simulator - NO ANIMATION */
 .mini-crud {
   height: 120px;
   background: rgba(0, 0, 0, 0.5);
@@ -469,16 +460,6 @@
   );
   border-radius: 2px;
   border: 1px solid var(--color-primary-20, rgba(0, 255, 255, 0.2));
-  animation: miniCrudRowFade 2s ease-in-out infinite;
-}
-
-.mini-crud-row:nth-child(1) { animation-delay: 0s; }
-.mini-crud-row:nth-child(2) { animation-delay: 0.3s; }
-.mini-crud-row:nth-child(3) { animation-delay: 0.6s; }
-
-@keyframes miniCrudRowFade {
-  0%, 100% { opacity: 0.6; }
-  50% { opacity: 1; }
 }
 
 .mini-crud-buttons {
@@ -499,16 +480,7 @@
   color: #00ff88;
   font-size: 0.9rem;
   font-weight: 700;
-  animation: miniCrudBtnPulse 1.5s ease-in-out infinite;
-}
-
-@keyframes miniCrudBtnPulse {
-  0%, 100% {
-    box-shadow: 0 0 5px rgba(0, 255, 136, 0.3);
-  }
-  50% {
-    box-shadow: 0 0 12px rgba(0, 255, 136, 0.6);
-  }
+  box-shadow: 0 0 8px rgba(0, 255, 136, 0.4);
 }
 
 /* Black Market - NO ANIMATION */
@@ -619,7 +591,7 @@
   color: var(--color-primary);
 }
 
-/* Image Checker */
+/* Image Checker - IMPROVED */
 .mini-image-checker {
   display: flex;
   flex-direction: column;
@@ -632,13 +604,9 @@
 }
 
 .mini-checker-icon {
-  font-size: 2rem;
-  animation: float 3s ease-in-out infinite;
-}
-
-@keyframes float {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-10px); }
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .mini-checker-image {
@@ -662,18 +630,6 @@
   left: 50%;
   transform: translate(-50%, -50%);
   box-shadow: 0 0 10px var(--color-primary-40);
-  animation: moveLens 4s ease-in-out infinite;
-}
-
-@keyframes moveLens {
-  0%, 100% {
-    top: 30%;
-    left: 30%;
-  }
-  50% {
-    top: 70%;
-    left: 70%;
-  }
 }
 
 /* Pattern Matcher - NO ANIMATION */

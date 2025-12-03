@@ -5,6 +5,15 @@ import './ComponentShowcase.css';
 const ComponentShowcase = () => {
   const navigate = useNavigate();
 
+  // Icona lente di ingrandimento SVG (stile consulenze)
+  const MagnifyIcon = () => (
+    <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="20" cy="20" r="12" stroke="var(--color-primary, #0ff)" strokeWidth="2.5" strokeLinecap="round"/>
+      <line x1="29" y1="29" x2="40" y2="40" stroke="var(--color-primary, #0ff)" strokeWidth="2.5" strokeLinecap="round"/>
+      <circle cx="20" cy="20" r="6" stroke="var(--color-primary, #0ff)" strokeWidth="1.5" opacity="0.5"/>
+    </svg>
+  );
+
   const components = [
     {
       id: 'slider',
@@ -67,6 +76,13 @@ const ComponentShowcase = () => {
       path: '/portfolio/componenti/music-player',
       preview: (
         <div className="mini-music-player">
+          <div className="mini-player-display">
+            <svg className="mini-music-icon" width="32" height="32" viewBox="0 0 32 32" fill="none">
+              <path d="M10 24 V12 L22 8 V20" stroke="var(--color-primary, #0ff)" strokeWidth="2" strokeLinecap="round"/>
+              <circle cx="10" cy="24" r="3" stroke="var(--color-primary, #0ff)" strokeWidth="2"/>
+              <circle cx="22" cy="20" r="3" stroke="var(--color-primary, #0ff)" strokeWidth="2"/>
+            </svg>
+          </div>
           <div className="mini-visualizer">
             <div className="mini-frequency-bar" style={{ height: '40%' }}></div>
             <div className="mini-frequency-bar" style={{ height: '70%' }}></div>
@@ -76,21 +92,18 @@ const ComponentShowcase = () => {
             <div className="mini-frequency-bar" style={{ height: '90%' }}></div>
             <div className="mini-frequency-bar" style={{ height: '55%' }}></div>
           </div>
-          <div className="mini-player-controls">
-            <div className="mini-play-btn">▶</div>
-          </div>
         </div>
       )
     },
     {
       id: 'crud-simulator',
-      title: 'CRUD Simulator',
+      title: 'Operazioni di magazino',
       description: 'Interfaccia CRUD completa con operazioni Create, Read, Update, Delete',
       path: '/portfolio/componenti/crud-simulator',
       preview: (
         <div className="mini-crud">
           <div className="mini-crud-header">
-            <div className="mini-crud-title">CRUD</div>
+            <div className="mini-crud-title">WAREHOUSE</div>
           </div>
           <div className="mini-crud-table">
             <div className="mini-crud-row"></div>
@@ -151,7 +164,9 @@ const ComponentShowcase = () => {
       path: '/portfolio/componenti/image-checker',
       preview: (
         <div className="mini-image-checker">
-          <div className="mini-checker-icon">🔍</div>
+          <div className="mini-checker-icon">
+            <MagnifyIcon />
+          </div>
           <div className="mini-checker-image">
             <div className="mini-checker-lens"></div>
           </div>

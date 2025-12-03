@@ -214,13 +214,17 @@
 
   will-change: transform;
 
+  transition: transform 0.8s cubic-bezier(0.4, 0.0, 0.2, 1);
+
 }
 
  
 
 .trophy-container:hover .image-rotator {
 
-  animation-play-state: paused;
+  animation: none;
+
+  transform: rotateY(0deg) !important;
 
 }
 
@@ -460,7 +464,7 @@
 
 /* ============================================
 
-   MODAL - Pure CSS
+   MODAL - Pure CSS (STILE CONTACT FORM)
 
    ============================================ */
 
@@ -518,7 +522,7 @@
 
  
 
-/* Modal backdrop */
+/* Modal backdrop - stile cyber-tech */
 
 .trophy-modal .modal-backdrop {
 
@@ -526,9 +530,61 @@
 
   inset: 0;
 
-  background: var(--bg-overlay);
+  background: rgba(0, 0, 0, 0.85);
 
-  backdrop-filter: blur(8px);
+  backdrop-filter: blur(10px);
+
+}
+
+ 
+
+/* VHS scanlines per modal backdrop */
+
+.trophy-modal .modal-backdrop::before {
+
+  content: '';
+
+  position: absolute;
+
+  inset: 0;
+
+  background: repeating-linear-gradient(
+
+    0deg,
+
+    transparent,
+
+    transparent 3px,
+
+    rgba(0, 255, 255, 0.02) 3px,
+
+    rgba(0, 255, 255, 0.02) 6px
+
+  );
+
+  pointer-events: none;
+
+}
+
+ 
+
+/* Hexagonal grid overlay sul backdrop */
+
+.trophy-modal .modal-backdrop::after {
+
+  content: '';
+
+  position: absolute;
+
+  inset: 0;
+
+  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="86.6" height="100" viewBox="0 0 86.6 100"><path d="M43.3 0 L86.6 25 L86.6 75 L43.3 100 L0 75 L0 25 Z" fill="none" stroke="rgba(0,255,255,0.08)" stroke-width="1"/></svg>');
+
+  background-size: 86.6px 100px;
+
+  pointer-events: none;
+
+  opacity: 0.6;
 
 }
 
@@ -562,7 +618,7 @@
 
     opacity: 0;
 
-    transform: scale(0.95);
+    transform: scale(0.95) translateY(20px);
 
   }
 
@@ -572,7 +628,7 @@
 
 /* ============================================
 
-   MODAL CLOSE BUTTON
+   MODAL CLOSE BUTTON - Stile cyber-tech
 
    ============================================ */
 
@@ -588,9 +644,9 @@
 
   height: 45px;
 
-  background: var(--bg-darker);
+  background: rgba(0, 0, 0, 0.6);
 
-  border: var(--border-width-base) solid var(--color-primary-50);
+  border: 2px solid var(--color-primary-40);
 
   cursor: pointer;
 
@@ -602,17 +658,9 @@
 
   transition: all var(--transition-base);
 
-  clip-path: polygon(
+  border-radius: 0;
 
-    8% 0%, 92% 0%,
-
-    100% 8%, 100% 92%,
-
-    92% 100%, 8% 100%,
-
-    0% 92%, 0% 8%
-
-  );
+  backdrop-filter: blur(10px);
 
 }
 
@@ -620,11 +668,13 @@
 
 .trophy-modal .modal-close:hover {
 
-  background: var(--color-primary-20);
+  background: var(--color-primary-15);
 
-  border-color: var(--color-primary-90);
+  border-color: var(--color-primary-80);
 
   transform: rotate(90deg);
+
+  box-shadow: 0 0 20px var(--color-primary-30);
 
 }
 
@@ -644,7 +694,7 @@
 
 /* ============================================
 
-   MODAL LAYOUT - 60/40 SSBM
+   MODAL LAYOUT - 60/40 SSBM (Stile cyber-tech)
 
    ============================================ */
 
@@ -654,13 +704,35 @@
 
   height: 100%;
 
-  background: var(--bg-dark);
+  background: rgba(0, 0, 0, 0.4);
 
-  border: var(--border-width-base) solid var(--color-primary-40);
+  border: 2px solid var(--color-primary-30);
 
-  box-shadow: var(--shadow-glow-xl);
+  border-radius: 4px;
+
+  box-shadow: 
+
+    0 0 40px var(--color-primary-20),
+
+    inset 0 0 40px var(--color-primary-05);
+
+  backdrop-filter: blur(10px);
 
   overflow: hidden;
+
+}
+
+ 
+
+.trophy-modal .modal-layout:hover {
+
+  border-color: var(--color-primary-50);
+
+  box-shadow: 
+
+    0 0 60px var(--color-primary-30),
+
+    inset 0 0 60px var(--color-primary-10);
 
 }
 
@@ -676,7 +748,7 @@
 
   flex: 0 0 60%;
 
-  background: var(--bg-secondary);
+  background: rgba(0, 10, 15, 0.5);
 
   position: relative;
 
@@ -686,7 +758,7 @@
 
   justify-content: center;
 
-  border-right: var(--border-width-base) solid var(--color-primary-20);
+  border-right: 2px solid var(--color-primary-20);
 
   overflow: hidden;
 
@@ -694,7 +766,7 @@
 
  
 
-/* Grid pattern */
+/* Grid pattern - stile cyber */
 
 .trophy-modal .modal-trophy-section::before {
 
@@ -794,6 +866,8 @@
 
   justify-content: center;
 
+  box-shadow: 0 0 20px var(--color-primary-15);
+
 }
 
  
@@ -856,6 +930,8 @@
 
   padding: var(--spacing-lg);
 
+  text-shadow: 0 0 10px var(--color-primary-40);
+
 }
 
  
@@ -868,7 +944,7 @@
 
   height: 150px;
 
-  filter: drop-shadow(var(--shadow-glow-lg));
+  filter: drop-shadow(0 0 15px var(--color-primary-60));
 
 }
 
@@ -918,7 +994,7 @@
 
 /* ============================================
 
-   AMBIENT PARTICLES
+   AMBIENT PARTICLES - Stile cyber
 
    ============================================ */
 
@@ -948,7 +1024,7 @@
 
   border-radius: 50%;
 
-  box-shadow: var(--shadow-glow-sm);
+  box-shadow: 0 0 10px var(--color-primary-60);
 
   left: calc(var(--particle-index) * 20%);
 
@@ -976,7 +1052,7 @@
 
 /* ============================================
 
-   MODAL INFO SECTION - 40%
+   MODAL INFO SECTION - 40% (Stile cyber-tech)
 
    ============================================ */
 
@@ -984,7 +1060,7 @@
 
   flex: 1;
 
-  background: var(--bg-dark);
+  background: rgba(0, 0, 0, 0.6);
 
   padding: var(--spacing-xl);
 
@@ -995,6 +1071,8 @@
   display: flex;
 
   flex-direction: column;
+
+  backdrop-filter: blur(5px);
 
 }
 
@@ -1046,7 +1124,7 @@
 
   padding-bottom: var(--spacing-md);
 
-  border-bottom: var(--border-width-base) solid var(--color-primary-20);
+  border-bottom: 2px solid var(--color-primary-20);
 
 }
 
@@ -1072,27 +1150,31 @@
 
   font-size: var(--font-size-xs);
 
-  color: var(--color-primary-90);
+  color: var(--color-primary-95);
 
   background: var(--color-primary-10);
 
   padding: 0.4rem 0.8rem;
 
-  border: var(--border-width-thin) solid var(--color-primary-40);
+  border: 2px solid var(--color-primary-40);
 
   text-transform: uppercase;
 
   letter-spacing: var(--letter-spacing-wide);
 
-  clip-path: polygon(
+  transition: all var(--transition-base);
 
-    8% 0%, 100% 0%,
+}
 
-    100% 70%, 92% 100%,
+ 
 
-    0% 100%, 0% 30%
+.trophy-modal .category-badge:hover {
 
-  );
+  background: var(--color-primary-20);
+
+  border-color: var(--color-primary-60);
+
+  box-shadow: 0 0 15px var(--color-primary-30);
 
 }
 
@@ -1118,13 +1200,15 @@
 
   font-weight: 700;
 
-  color: var(--color-white-95);
+  color: var(--color-primary);
 
   margin: 0;
 
   line-height: 1.3;
 
-  text-shadow: var(--shadow-glow-md);
+  text-shadow: 0 0 20px var(--color-primary-40);
+
+  letter-spacing: 0.05em;
 
 }
 
@@ -1240,7 +1324,7 @@
 
   padding: 0.4rem 0.8rem;
 
-  border: var(--border-width-thin) solid var(--color-primary-20);
+  border: 1px solid var(--color-primary-20);
 
   transition: all var(--transition-base);
 
@@ -1256,13 +1340,15 @@
 
   color: var(--color-primary-90);
 
+  box-shadow: 0 0 10px var(--color-primary-20);
+
 }
 
  
 
 /* ============================================
 
-   CORNER DECORATIONS
+   CORNER DECORATIONS - Stile cyber
 
    ============================================ */
 
@@ -1274,9 +1360,19 @@
 
   height: 30px;
 
-  border: var(--border-width-base) solid var(--color-primary-30);
+  border: 2px solid var(--color-primary-30);
 
   pointer-events: none;
+
+  transition: border-color var(--transition-base);
+
+}
+
+ 
+
+.trophy-modal .modal-info-section:hover .corner-deco {
+
+  border-color: var(--color-primary-50);
 
 }
 
@@ -1360,7 +1456,7 @@
 
     border-right: none;
 
-    border-bottom: var(--border-width-base) solid var(--color-primary-20);
+    border-bottom: 2px solid var(--color-primary-20);
 
   }
 
@@ -1582,6 +1678,8 @@
 
 }
 
+ 
+
 /* ============================================
 
    LIGHT MODE (NIGHT MODE) OVERRIDES
@@ -1589,19 +1687,169 @@
    ============================================ */
 
 [data-theme="light"] .trophy-arena .grafiche-logo-eye,
+
 [data-theme="light"] .trophy-modal .grafiche-modal-logo-eye {
+
   filter: none;
+
 }
+
+ 
+
+[data-theme="light"] .trophy-modal .modal-backdrop {
+
+  background: rgba(248, 245, 235, 0.95);
+
+}
+
+ 
+
+[data-theme="light"] .trophy-modal .modal-backdrop::before {
+
+  background: repeating-linear-gradient(
+
+    0deg,
+
+    transparent,
+
+    transparent 2px,
+
+    rgba(180, 120, 60, 0.02) 2px,
+
+    rgba(180, 120, 60, 0.02) 4px
+
+  );
+
+}
+
+ 
+
+[data-theme="light"] .trophy-modal .modal-backdrop::after {
+
+  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="86.6" height="100" viewBox="0 0 86.6 100"><path d="M43.3 0 L86.6 25 L86.6 75 L43.3 100 L0 75 L0 25 Z" fill="none" stroke="rgba(180,120,60,0.08)" stroke-width="1"/></svg>');
+
+}
+
+ 
 
 [data-theme="light"] .trophy-modal .modal-layout {
-  box-shadow: none;
+
+  background: rgba(8, 6, 4, 0.4);
+
+  border-color: var(--color-primary-30);
+
+  box-shadow: 
+
+    0 0 40px var(--color-primary-20),
+
+    inset 0 0 40px var(--color-primary-05);
+
 }
+
+ 
+
+[data-theme="light"] .trophy-modal .modal-trophy-section {
+
+  background: rgba(248, 242, 230, 0.3);
+
+  border-right-color: var(--color-primary-20);
+
+}
+
+ 
+
+[data-theme="light"] .trophy-modal .modal-info-section {
+
+  background: rgba(8, 6, 4, 0.5);
+
+}
+
+ 
+
+[data-theme="light"] .trophy-modal .modal-close {
+
+  background: rgba(248, 245, 235, 0.8);
+
+  border-color: var(--color-primary-30);
+
+}
+
+ 
+
+[data-theme="light"] .trophy-modal .modal-close:hover {
+
+  background: rgba(232, 160, 48, 0.2);
+
+  border-color: var(--color-primary-60);
+
+  box-shadow: 0 0 20px rgba(232, 160, 48, 0.3);
+
+}
+
+ 
 
 [data-theme="light"] .trophy-modal .particle {
+
   box-shadow: none;
+
 }
 
+ 
+
 [data-theme="light"] .preview-title,
+
 [data-theme="light"] .trophy-modal .info-title {
-  text-shadow: none;
+
+  text-shadow: 0 0 15px var(--color-primary-30);
+
+}
+
+ 
+
+[data-theme="light"] .trophy-modal .category-badge {
+
+  background: rgba(232, 160, 48, 0.1);
+
+  border-color: var(--color-primary-30);
+
+  color: var(--color-primary-80);
+
+}
+
+ 
+
+[data-theme="light"] .trophy-modal .category-badge:hover {
+
+  background: rgba(232, 160, 48, 0.2);
+
+  border-color: var(--color-primary-60);
+
+  box-shadow: 0 0 15px rgba(232, 160, 48, 0.2);
+
+}
+
+ 
+
+[data-theme="light"] .trophy-modal .tag {
+
+  background: rgba(232, 160, 48, 0.05);
+
+  border-color: var(--color-primary-15);
+
+  color: var(--color-secondary-80);
+
+}
+
+ 
+
+[data-theme="light"] .trophy-modal .tag:hover {
+
+  background: rgba(232, 160, 48, 0.15);
+
+  border-color: var(--color-primary-40);
+
+  color: var(--color-primary-80);
+
+  box-shadow: 0 0 10px rgba(232, 160, 48, 0.15);
+
 }
