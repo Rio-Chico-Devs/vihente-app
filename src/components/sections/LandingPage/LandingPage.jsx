@@ -383,200 +383,194 @@ const LandingPageOldEye = ({ startTime }) => {
           68% { opacity: 1; }
         }
 
-        /* ORBITAL RINGS ANIMATIONS */
-        @keyframes orbitRing1 {
+        /* GEOMETRIC STELLAR ANIMATIONS - Destiny Style */
+        @keyframes geometricRotate1 {
           from { transform: translate(-50%, -50%) rotate(0deg); }
           to { transform: translate(-50%, -50%) rotate(360deg); }
         }
 
-        @keyframes orbitRing2 {
+        @keyframes geometricRotate2 {
           from { transform: translate(-50%, -50%) rotate(0deg); }
           to { transform: translate(-50%, -50%) rotate(-360deg); }
         }
 
-        @keyframes orbitRing3 {
-          from { transform: translate(-50%, -50%) rotate(0deg); }
-          to { transform: translate(-50%, -50%) rotate(360deg); }
+        @keyframes geometricRotate3 {
+          from { transform: translate(-50%, -50%) rotate(120deg); }
+          to { transform: translate(-50%, -50%) rotate(480deg); }
         }
 
-        @keyframes particleOrbit1 {
-          from { transform: rotate(0deg) translateX(140px) rotate(0deg); }
-          to { transform: rotate(360deg) translateX(140px) rotate(-360deg); }
-        }
-
-        @keyframes particleOrbit2 {
-          from { transform: rotate(0deg) translateX(180px) rotate(0deg); }
-          to { transform: rotate(-360deg) translateX(180px) rotate(360deg); }
-        }
-
-        @keyframes particleOrbit3 {
-          from { transform: rotate(0deg) translateX(220px) rotate(0deg); }
-          to { transform: rotate(360deg) translateX(220px) rotate(-360deg); }
-        }
-
-        @keyframes radialScan {
-          from {
-            transform: translate(-50%, -50%) rotate(0deg);
-            opacity: 0.6;
-          }
-          to {
-            transform: translate(-50%, -50%) rotate(360deg);
-            opacity: 0.6;
-          }
-        }
-
-        @keyframes ringPulse {
+        @keyframes trianglePulse {
           0%, 100% {
-            opacity: 0.3;
-            stroke-width: 1.5;
-          }
-          50% {
-            opacity: 0.6;
+            opacity: 0.4;
             stroke-width: 2;
           }
+          50% {
+            opacity: 0.8;
+            stroke-width: 3;
+          }
         }
 
-        @keyframes particleGlow {
+        @keyframes hexagonExpand {
           0%, 100% {
+            transform: translate(-50%, -50%) scale(1);
+            opacity: 0.5;
+          }
+          50% {
+            transform: translate(-50%, -50%) scale(1.1);
             opacity: 0.8;
-            filter: drop-shadow(0 0 4px currentColor) drop-shadow(0 0 8px currentColor);
+          }
+        }
+
+        @keyframes stellarGlow {
+          0%, 100% {
+            opacity: 0.6;
+            filter: drop-shadow(0 0 6px currentColor) drop-shadow(0 0 12px currentColor);
           }
           50% {
             opacity: 1;
-            filter: drop-shadow(0 0 8px currentColor) drop-shadow(0 0 16px currentColor);
+            filter: drop-shadow(0 0 12px currentColor) drop-shadow(0 0 24px currentColor);
           }
         }
 
-        @keyframes gridPulse {
-          0%, 100% { opacity: 0.15; }
-          50% { opacity: 0.25; }
-        }
-
-        @keyframes dataStream {
+        @keyframes geometricBeam {
           0% {
             stroke-dashoffset: 1000;
-            opacity: 0.2;
+            opacity: 0.3;
           }
           50% {
-            opacity: 0.5;
+            opacity: 0.7;
           }
           100% {
             stroke-dashoffset: 0;
-            opacity: 0.2;
+            opacity: 0.3;
           }
         }
 
-        .orbital-system {
+        @keyframes radialBurst {
+          from {
+            transform: translate(-50%, -50%) rotate(0deg);
+            opacity: 0.5;
+          }
+          to {
+            transform: translate(-50%, -50%) rotate(360deg);
+            opacity: 0.5;
+          }
+        }
+
+        @keyframes vertexPulse {
+          0%, 100% {
+            r: 3;
+            opacity: 0.6;
+          }
+          50% {
+            r: 5;
+            opacity: 1;
+          }
+        }
+
+        .geometric-system {
           position: absolute;
           top: 50%;
           left: 50%;
           transform: translate(-50%, -50%);
           pointer-events: none;
-          width: 500px;
-          height: 500px;
+          /* Mobile first: dimensioni base per mobile */
+          width: 300px;
+          height: 300px;
         }
 
-        .orbital-ring {
+        @media (min-width: 768px) {
+          .geometric-system {
+            width: 450px;
+            height: 450px;
+          }
+        }
+
+        @media (min-width: 1024px) {
+          .geometric-system {
+            width: 550px;
+            height: 550px;
+          }
+        }
+
+        .geometric-shape {
           position: absolute;
           top: 50%;
           left: 50%;
           pointer-events: none;
         }
 
-        .orbital-ring-1 {
-          animation: orbitRing1 80s linear infinite;
+        .shape-layer-1 {
+          animation: geometricRotate1 60s linear infinite;
         }
 
-        .orbital-ring-2 {
-          animation: orbitRing2 60s linear infinite;
+        .shape-layer-2 {
+          animation: geometricRotate2 80s linear infinite;
         }
 
-        .orbital-ring-3 {
-          animation: orbitRing3 100s linear infinite;
+        .shape-layer-3 {
+          animation: geometricRotate3 100s linear infinite;
         }
 
-        .orbital-ring circle {
+        .hexagon-container {
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          animation: hexagonExpand 8s ease-in-out infinite;
+        }
+
+        .triangle-shape {
+          fill: none;
+          stroke: ${colors.primary50};
+          stroke-width: 2;
+          animation: trianglePulse 6s ease-in-out infinite;
+        }
+
+        .hexagon-shape {
           fill: none;
           stroke: ${colors.primary40};
           stroke-width: 1.5;
-          animation: ringPulse 4s ease-in-out infinite;
+          opacity: 0.6;
         }
 
-        .hud-grid {
+        .star-vertex {
+          fill: ${colors.primary95};
+          filter: drop-shadow(0 0 6px ${colors.primary60}) drop-shadow(0 0 12px ${colors.primary40});
+          animation: stellarGlow 3s ease-in-out infinite;
+        }
+
+        .geometric-beam {
+          stroke: ${colors.primary60};
+          stroke-width: 1;
+          stroke-dasharray: 8, 12;
+          stroke-linecap: round;
+          animation: geometricBeam 12s linear infinite;
+          opacity: 0.5;
+        }
+
+        .radial-burst {
           position: absolute;
           top: 50%;
           left: 50%;
-          transform: translate(-50%, -50%);
           pointer-events: none;
-          opacity: 0.2;
-          animation: gridPulse 6s ease-in-out infinite;
+          animation: radialBurst 40s linear infinite;
         }
 
-        .hud-grid line {
+        .burst-line {
+          stroke: ${colors.primary40};
+          stroke-width: 1.5;
+          stroke-dasharray: 6, 10;
+          opacity: 0.4;
+        }
+
+        .constellation-line {
           stroke: ${colors.primary30};
-          stroke-width: 0.5;
-        }
-
-        .radial-scan {
-          position: absolute;
-          top: 50%;
-          left: 50%;
-          pointer-events: none;
-          animation: radialScan 30s linear infinite;
+          stroke-width: 0.8;
           opacity: 0.3;
         }
 
-        .radial-scan line {
-          stroke: ${colors.primary50};
-          stroke-width: 1;
-          stroke-dasharray: 4, 8;
-          animation: dataStream 8s linear infinite;
-        }
-
-        .orbital-particles {
-          position: absolute;
-          top: 50%;
-          left: 50%;
-          transform: translate(-50%, -50%);
-          pointer-events: none;
-        }
-
-        .particle {
-          position: absolute;
-          top: 50%;
-          left: 50%;
-          width: 8px;
-          height: 8px;
-          border-radius: 50%;
-          background: ${colors.primary95};
-          box-shadow: 0 0 8px ${colors.primary60}, 0 0 16px ${colors.primary40};
-        }
-
-        .particle-1 {
-          animation: particleOrbit1 25s linear infinite, particleGlow 2s ease-in-out infinite;
-        }
-
-        .particle-2 {
-          animation: particleOrbit2 35s linear infinite, particleGlow 2.5s ease-in-out infinite;
-          animation-delay: 0s, 0.5s;
-        }
-
-        .particle-3 {
-          animation: particleOrbit3 45s linear infinite, particleGlow 3s ease-in-out infinite;
-          animation-delay: 0s, 1s;
-        }
-
-        .ring-node {
-          fill: ${colors.primary95};
-          filter: drop-shadow(0 0 4px ${colors.primary60});
-          animation: particleGlow 2s ease-in-out infinite;
-        }
-
-        .tech-detail {
-          stroke: ${colors.primary35};
-          stroke-width: 0.5;
-          fill: none;
-          opacity: 0.4;
+        .stellar-node {
+          animation: vertexPulse 4s ease-in-out infinite;
         }
 
         @keyframes subtleGlow {
@@ -820,91 +814,118 @@ const LandingPageOldEye = ({ startTime }) => {
           }
         }
 
-        @media (min-width: 1025px) {
-          .eye-svg {
-            width: 650px;
-            height: 650px;
-          }
+        /* Mobile First: Dimensioni base per mobile */
+        .eye-svg {
+          width: 280px;
+          height: 280px;
         }
 
-        @media (max-width: 1024px) {
+        main {
+          padding: 0.75rem !important;
+          min-height: 100vh !important;
+          display: flex !important;
+          align-items: center !important;
+          justify-content: center !important;
+        }
+
+        main > div {
+          flex-direction: column !important;
+          gap: 2rem !important;
+          justify-content: center !important;
+          align-items: center !important;
+          height: auto !important;
+        }
+
+        .eye-container {
+          flex: 0 0 auto !important;
+        }
+
+        .text-container {
+          flex: 0 0 auto !important;
+          text-align: center !important;
+        }
+
+        .text-container h1 {
+          font-size: 1.6rem !important;
+          margin-bottom: 0.75rem !important;
+          line-height: 1.2 !important;
+          text-align: center !important;
+          letter-spacing: 0.1em !important;
+        }
+
+        .text-container p {
+          font-size: 0.875rem !important;
+          line-height: 1.5 !important;
+          text-align: center !important;
+          margin: 0 auto !important;
+        }
+
+        /* Tablet e schermi medi */
+        @media (min-width: 768px) {
+          .eye-svg {
+            width: 400px;
+            height: 400px;
+          }
+
           main {
             padding: 1rem !important;
-            min-height: 100vh !important;
-            display: flex !important;
-            align-items: center !important;
-            justify-content: center !important;
           }
 
           main > div {
-            flex-direction: column !important;
             gap: 2.5rem !important;
-            justify-content: center !important;
-            align-items: center !important;
-            height: auto !important;
-          }
-
-          .eye-container {
-            flex: 0 0 auto !important;
-          }
-
-          .eye-container svg[width="500"] {
-            width: 280px !important;
-            height: 280px !important;
-          }
-
-          .eye-svg {
-            width: 350px !important;
-            height: 350px !important;
-          }
-
-          .text-container {
-            flex: 0 0 auto !important;
-            text-align: center !important;
           }
 
           .text-container h1 {
             font-size: 2rem !important;
             margin-bottom: 1rem !important;
-            line-height: 1.2 !important;
-            text-align: center !important;
+            letter-spacing: 0.15em !important;
           }
 
           .text-container p {
             font-size: 0.95rem !important;
-            line-height: 1.5 !important;
-            text-align: center !important;
-            margin: 0 auto !important;
           }
         }
 
-        @media (max-width: 480px) {
+        /* Desktop */
+        @media (min-width: 1024px) {
+          .eye-svg {
+            width: 500px;
+            height: 500px;
+          }
+
           main {
-            padding: 0.75rem !important;
+            padding: 2rem !important;
           }
 
           main > div {
-            gap: 2rem !important;
+            flex-direction: row !important;
+            gap: 4rem !important;
           }
 
-          .eye-container svg[width="500"] {
-            width: 220px !important;
-            height: 220px !important;
-          }
-
-          .eye-svg {
-            width: 280px !important;
-            height: 280px !important;
+          .text-container {
+            text-align: left !important;
           }
 
           .text-container h1 {
-            font-size: 1.6rem !important;
-            margin-bottom: 0.75rem !important;
-            letter-spacing: 0.1em !important;
+            text-align: left !important;
+            letter-spacing: 0.2em !important;
           }
 
           .text-container p {
-            font-size: 0.875rem !important;
+            text-align: left !important;
+            font-size: 1.1rem !important;
+          }
+        }
+
+        /* Desktop large */
+        @media (min-width: 1440px) {
+          .eye-svg {
+            width: 650px;
+            height: 650px;
+          }
+
+          .text-container p {
+            font-size: 1.3rem !important;
           }
         }
       `}</style>
@@ -969,69 +990,95 @@ const LandingPageOldEye = ({ startTime }) => {
             justifyContent: 'center',
             flex: '0 0 auto'
           }}>
-            {/* Orbital Rings System */}
-            <div className="orbital-system">
-              {/* Anelli orbitali concentrici */}
-              <svg className="orbital-ring orbital-ring-1" width="500" height="500" viewBox="0 0 500 500">
-                <circle cx="250" cy="250" r="140" />
-                {/* Nodi sui punti cardinali */}
-                <circle className="ring-node" cx="250" cy="110" r="3" />
-                <circle className="ring-node" cx="390" cy="250" r="3" />
-                <circle className="ring-node" cx="250" cy="390" r="3" />
-                <circle className="ring-node" cx="110" cy="250" r="3" />
+            {/* Geometric Stellar System - Destiny Style */}
+            <div className="geometric-system">
+              {/* Layer 1: Triangoli rotanti esterni */}
+              <svg className="geometric-shape shape-layer-1" width="100%" height="100%" viewBox="0 0 500 500">
+                {/* Triangolo esterno grande */}
+                <polygon
+                  className="triangle-shape"
+                  points="250,50 450,400 50,400"
+                  style={{animationDelay: '0s'}}
+                />
+                {/* Vertici stellari sui punti del triangolo */}
+                <circle className="star-vertex stellar-node" cx="250" cy="50" r="4" style={{animationDelay: '0s'}} />
+                <circle className="star-vertex stellar-node" cx="450" cy="400" r="4" style={{animationDelay: '0.5s'}} />
+                <circle className="star-vertex stellar-node" cx="50" cy="400" r="4" style={{animationDelay: '1s'}} />
               </svg>
 
-              <svg className="orbital-ring orbital-ring-2" width="500" height="500" viewBox="0 0 500 500">
-                <circle cx="250" cy="250" r="180" />
-                {/* Nodi sfalsati */}
-                <circle className="ring-node" cx="295" cy="88" r="2.5" />
-                <circle className="ring-node" cx="412" cy="205" r="2.5" />
-                <circle className="ring-node" cx="295" cy="412" r="2.5" />
-                <circle className="ring-node" cx="88" cy="295" r="2.5" />
+              {/* Layer 2: Esagono centrale */}
+              <svg className="geometric-shape hexagon-container" width="100%" height="100%" viewBox="0 0 500 500">
+                {/* Esagono centrale */}
+                <polygon
+                  className="hexagon-shape"
+                  points="250,120 350,180 350,300 250,360 150,300 150,180"
+                />
+                {/* Connessioni geometriche dall'esagono */}
+                <line className="geometric-beam" x1="250" y1="120" x2="250" y2="60" style={{animationDelay: '0s'}} />
+                <line className="geometric-beam" x1="350" y1="180" x2="410" y2="140" style={{animationDelay: '1s'}} />
+                <line className="geometric-beam" x1="350" y1="300" x2="410" y2="340" style={{animationDelay: '2s'}} />
+                <line className="geometric-beam" x1="250" y1="360" x2="250" y2="420" style={{animationDelay: '3s'}} />
+                <line className="geometric-beam" x1="150" y1="300" x2="90" y2="340" style={{animationDelay: '4s'}} />
+                <line className="geometric-beam" x1="150" y1="180" x2="90" y2="140" style={{animationDelay: '5s'}} />
+                {/* Vertici dell'esagono */}
+                <circle className="star-vertex stellar-node" cx="250" cy="120" r="3" style={{animationDelay: '0.2s'}} />
+                <circle className="star-vertex stellar-node" cx="350" cy="180" r="3" style={{animationDelay: '0.4s'}} />
+                <circle className="star-vertex stellar-node" cx="350" cy="300" r="3" style={{animationDelay: '0.6s'}} />
+                <circle className="star-vertex stellar-node" cx="250" cy="360" r="3" style={{animationDelay: '0.8s'}} />
+                <circle className="star-vertex stellar-node" cx="150" cy="300" r="3" style={{animationDelay: '1.0s'}} />
+                <circle className="star-vertex stellar-node" cx="150" cy="180" r="3" style={{animationDelay: '1.2s'}} />
               </svg>
 
-              <svg className="orbital-ring orbital-ring-3" width="500" height="500" viewBox="0 0 500 500">
-                <circle cx="250" cy="250" r="220" />
-                {/* Più nodi per complessità */}
-                <circle className="ring-node" cx="250" cy="30" r="2" />
-                <circle className="ring-node" cx="405" cy="155" r="2" />
-                <circle className="ring-node" cx="470" cy="250" r="2" />
-                <circle className="ring-node" cx="405" cy="345" r="2" />
-                <circle className="ring-node" cx="250" cy="470" r="2" />
-                <circle className="ring-node" cx="95" cy="345" r="2" />
-                <circle className="ring-node" cx="30" cy="250" r="2" />
-                <circle className="ring-node" cx="95" cy="155" r="2" />
+              {/* Layer 3: Triangolo interno invertito */}
+              <svg className="geometric-shape shape-layer-2" width="100%" height="100%" viewBox="0 0 500 500">
+                <polygon
+                  className="triangle-shape"
+                  points="250,340 180,200 320,200"
+                  style={{animationDelay: '1s', opacity: '0.6'}}
+                />
+                {/* Linee di costellazione che connettono i vertici */}
+                <line className="constellation-line" x1="250" y1="340" x2="250" y2="120" />
+                <line className="constellation-line" x1="180" y1="200" x2="350" y2="180" />
+                <line className="constellation-line" x1="320" y1="200" x2="150" y2="180" />
               </svg>
 
-              {/* Griglia HUD */}
-              <svg className="hud-grid" width="500" height="500" viewBox="0 0 500 500">
-                {/* Linee verticali */}
-                <line x1="150" y1="50" x2="150" y2="450" />
-                <line x1="250" y1="50" x2="250" y2="450" />
-                <line x1="350" y1="50" x2="350" y2="450" />
-                {/* Linee orizzontali */}
-                <line x1="50" y1="150" x2="450" y2="150" />
-                <line x1="50" y1="250" x2="450" y2="250" />
-                <line x1="50" y1="350" x2="450" y2="350" />
-                {/* Diagonali per effetto tech */}
-                <line x1="80" y1="80" x2="150" y2="150" className="tech-detail" />
-                <line x1="420" y1="80" x2="350" y2="150" className="tech-detail" />
-                <line x1="420" y1="420" x2="350" y2="350" className="tech-detail" />
-                <line x1="80" y1="420" x2="150" y2="350" className="tech-detail" />
+              {/* Layer 4: Burst radiali rotanti */}
+              <svg className="radial-burst" width="100%" height="100%" viewBox="0 0 500 500">
+                <line className="burst-line" x1="250" y1="250" x2="250" y2="80" style={{animationDelay: '0s'}} />
+                <line className="burst-line" x1="250" y1="250" x2="420" y2="250" style={{animationDelay: '0.5s'}} />
+                <line className="burst-line" x1="250" y1="250" x2="250" y2="420" style={{animationDelay: '1s'}} />
+                <line className="burst-line" x1="250" y1="250" x2="80" y2="250" style={{animationDelay: '1.5s'}} />
+                {/* Linee diagonali */}
+                <line className="burst-line" x1="250" y1="250" x2="380" y2="120" style={{animationDelay: '2s'}} />
+                <line className="burst-line" x1="250" y1="250" x2="380" y2="380" style={{animationDelay: '2.5s'}} />
+                <line className="burst-line" x1="250" y1="250" x2="120" y2="380" style={{animationDelay: '3s'}} />
+                <line className="burst-line" x1="250" y1="250" x2="120" y2="120" style={{animationDelay: '3.5s'}} />
               </svg>
 
-              {/* Linee di scansione radiale */}
-              <svg className="radial-scan" width="500" height="500" viewBox="0 0 500 500">
-                <line x1="250" y1="250" x2="250" y2="50" />
-                <line x1="250" y1="250" x2="430" y2="130" />
+              {/* Layer 5: Piccoli triangoli satelliti */}
+              <svg className="geometric-shape shape-layer-3" width="100%" height="100%" viewBox="0 0 500 500">
+                {/* Triangolini satelliti che orbitano */}
+                <polygon
+                  className="triangle-shape"
+                  points="250,90 260,110 240,110"
+                  style={{animationDelay: '2s', opacity: '0.5', strokeWidth: '1.5'}}
+                />
+                <polygon
+                  className="triangle-shape"
+                  points="390,250 410,260 390,270"
+                  style={{animationDelay: '2.5s', opacity: '0.5', strokeWidth: '1.5'}}
+                />
+                <polygon
+                  className="triangle-shape"
+                  points="250,410 240,390 260,390"
+                  style={{animationDelay: '3s', opacity: '0.5', strokeWidth: '1.5'}}
+                />
+                <polygon
+                  className="triangle-shape"
+                  points="110,250 90,260 110,270"
+                  style={{animationDelay: '3.5s', opacity: '0.5', strokeWidth: '1.5'}}
+                />
               </svg>
-
-              {/* Particelle orbitanti */}
-              <div className="orbital-particles">
-                <div className="particle particle-1"></div>
-                <div className="particle particle-2"></div>
-                <div className="particle particle-3"></div>
-              </div>
             </div>
 
             <div
