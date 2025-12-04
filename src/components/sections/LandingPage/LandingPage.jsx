@@ -4,9 +4,7 @@ import { useTheme } from '../../../contexts/theme';
 const LandingPageOldEye = ({ startTime }) => {
   const { theme } = useTheme();
 
-  // Theme-based colors - NIGHT MODE con Amber (~585nm)
   const colors = theme === 'light' ? {
-    // Night Mode - Amber caldo (scientificamente ottimizzato)
     primary: 'rgba(232, 160, 48, 1)',
     primary95: 'rgba(232, 160, 48, 0.95)',
     primary60: 'rgba(232, 160, 48, 0.6)',
@@ -23,7 +21,6 @@ const LandingPageOldEye = ({ startTime }) => {
     accentMuted: 'rgba(196, 154, 108, 0.5)',
     accentLight: 'rgba(232, 180, 100, 0.8)',
   } : {
-    // Cyan Neon (dark mode)
     primary: 'rgba(0, 255, 255, 1)',
     primary95: 'rgba(0, 255, 255, 0.95)',
     primary60: 'rgba(0, 255, 255, 0.6)',
@@ -40,6 +37,7 @@ const LandingPageOldEye = ({ startTime }) => {
     accentMuted: 'rgba(6, 182, 212, 0.5)',
     accentLight: 'rgba(103, 232, 249, 0.8)',
   };
+
   const [uptime, setUptime] = useState('0m 0s');
   const [currentTime, setCurrentTime] = useState('00:00:00');
   const [fps, setFps] = useState(60);
@@ -48,9 +46,6 @@ const LandingPageOldEye = ({ startTime }) => {
   const [isEyeGlitching, setIsEyeGlitching] = useState(false);
   const [pupilPosition, setPupilPosition] = useState({ x: 500, y: 500 });
   const [isNearEye, setIsNearEye] = useState(false);
-
-
-
   const [clickCount, setClickCount] = useState(0);
   const [showClickMessage, setShowClickMessage] = useState(false);
   const [clickMessage, setClickMessage] = useState('');
@@ -59,17 +54,13 @@ const LandingPageOldEye = ({ startTime }) => {
   const animationFrameRef = useRef(null);
   const intervalsRef = useRef([]);
   const eyeRef = useRef(null);
-
   const targetPositionRef = useRef({ x: 500, y: 500 });
   const currentPositionRef = useRef({ x: 500, y: 500 });
   const interpolationFrameRef = useRef(null);
-
   const directionChangesRef = useRef([]);
   const lastDirectionRef = useRef(null);
   const lastPositionRef = useRef(null);
   const clickMessageTimeoutRef = useRef(null);
-
-
 
   const handleEyeClick = () => {
     const newCount = clickCount + 1;
@@ -383,211 +374,78 @@ const LandingPageOldEye = ({ startTime }) => {
           68% { opacity: 1; }
         }
 
-        /* ORBITAL RINGS ANIMATIONS */
-        @keyframes orbitRing1 {
-          from { transform: translate(-50%, -50%) rotate(0deg); }
-          to { transform: translate(-50%, -50%) rotate(360deg); }
-        }
-
-        @keyframes orbitRing2 {
-          from { transform: translate(-50%, -50%) rotate(0deg); }
-          to { transform: translate(-50%, -50%) rotate(-360deg); }
-        }
-
-        @keyframes orbitRing3 {
-          from { transform: translate(-50%, -50%) rotate(0deg); }
-          to { transform: translate(-50%, -50%) rotate(360deg); }
-        }
-
-        @keyframes particleOrbit1 {
-          from { transform: rotate(0deg) translateX(140px) rotate(0deg); }
-          to { transform: rotate(360deg) translateX(140px) rotate(-360deg); }
-        }
-
-        @keyframes particleOrbit2 {
-          from { transform: rotate(0deg) translateX(180px) rotate(0deg); }
-          to { transform: rotate(-360deg) translateX(180px) rotate(360deg); }
-        }
-
-        @keyframes particleOrbit3 {
-          from { transform: rotate(0deg) translateX(220px) rotate(0deg); }
-          to { transform: rotate(360deg) translateX(220px) rotate(-360deg); }
-        }
-
-        @keyframes radialScan {
-          from {
-            transform: translate(-50%, -50%) rotate(0deg);
-            opacity: 0.6;
-          }
-          to {
-            transform: translate(-50%, -50%) rotate(360deg);
-            opacity: 0.6;
-          }
-        }
-
-        @keyframes ringPulse {
-          0%, 100% {
-            opacity: 0.3;
-            stroke-width: 1.5;
-          }
-          50% {
-            opacity: 0.6;
-            stroke-width: 2;
-          }
-        }
-
-        @keyframes particleGlow {
-          0%, 100% {
-            opacity: 0.8;
-            filter: drop-shadow(0 0 4px currentColor) drop-shadow(0 0 8px currentColor);
-          }
-          50% {
-            opacity: 1;
-            filter: drop-shadow(0 0 8px currentColor) drop-shadow(0 0 16px currentColor);
-          }
-        }
-
-        @keyframes gridPulse {
-          0%, 100% { opacity: 0.15; }
-          50% { opacity: 0.25; }
-        }
-
-        @keyframes dataStream {
-          0% {
-            stroke-dashoffset: 1000;
-            opacity: 0.2;
-          }
-          50% {
-            opacity: 0.5;
-          }
-          100% {
-            stroke-dashoffset: 0;
-            opacity: 0.2;
-          }
-        }
-
-        .orbital-system {
+        .holographic-circle {
           position: absolute;
           top: 50%;
           left: 50%;
           transform: translate(-50%, -50%);
-          pointer-events: none;
-          width: 500px;
-          height: 500px;
-        }
-
-        .orbital-ring {
-          position: absolute;
-          top: 50%;
-          left: 50%;
-          pointer-events: none;
-        }
-
-        .orbital-ring-1 {
-          animation: orbitRing1 80s linear infinite;
-        }
-
-        .orbital-ring-2 {
-          animation: orbitRing2 60s linear infinite;
-        }
-
-        .orbital-ring-3 {
-          animation: orbitRing3 100s linear infinite;
-        }
-
-        .orbital-ring circle {
-          fill: none;
-          stroke: ${colors.primary40};
-          stroke-width: 1.5;
-          animation: ringPulse 4s ease-in-out infinite;
-        }
-
-        .hud-grid {
-          position: absolute;
-          top: 50%;
-          left: 50%;
-          transform: translate(-50%, -50%);
-          pointer-events: none;
-          opacity: 0.2;
-          animation: gridPulse 6s ease-in-out infinite;
-        }
-
-        .hud-grid line {
-          stroke: ${colors.primary30};
-          stroke-width: 0.5;
-        }
-
-        .radial-scan {
-          position: absolute;
-          top: 50%;
-          left: 50%;
-          pointer-events: none;
-          animation: radialScan 30s linear infinite;
-          opacity: 0.3;
-        }
-
-        .radial-scan line {
-          stroke: ${colors.primary50};
-          stroke-width: 1;
-          stroke-dasharray: 4, 8;
-          animation: dataStream 8s linear infinite;
-        }
-
-        .orbital-particles {
-          position: absolute;
-          top: 50%;
-          left: 50%;
-          transform: translate(-50%, -50%);
-          pointer-events: none;
-        }
-
-        .particle {
-          position: absolute;
-          top: 50%;
-          left: 50%;
-          width: 8px;
-          height: 8px;
+          width: 200px;
+          height: 200px;
+          background: ${colors.bg};
+          display: flex;
+          justify-content: center;
+          align-items: center;
           border-radius: 50%;
-          background: ${colors.primary95};
-          box-shadow: 0 0 8px ${colors.primary60}, 0 0 16px ${colors.primary40};
+          overflow: hidden;
+          transition: all 0.5s ease;
+          pointer-events: none;
         }
 
-        .particle-1 {
-          animation: particleOrbit1 25s linear infinite, particleGlow 2s ease-in-out infinite;
+        @media (min-width: 768px) {
+          .holographic-circle {
+            width: 300px;
+            height: 300px;
+          }
         }
 
-        .particle-2 {
-          animation: particleOrbit2 35s linear infinite, particleGlow 2.5s ease-in-out infinite;
-          animation-delay: 0s, 0.5s;
+        @media (min-width: 1024px) {
+          .holographic-circle {
+            width: 400px;
+            height: 400px;
+          }
         }
 
-        .particle-3 {
-          animation: particleOrbit3 45s linear infinite, particleGlow 3s ease-in-out infinite;
-          animation-delay: 0s, 1s;
+        @media (min-width: 1440px) {
+          .holographic-circle {
+            width: 500px;
+            height: 500px;
+          }
         }
 
-        .ring-node {
-          fill: ${colors.primary95};
-          filter: drop-shadow(0 0 4px ${colors.primary60});
-          animation: particleGlow 2s ease-in-out infinite;
+        .holographic-circle::before {
+          content: '';
+          position: absolute;
+          top: -50%;
+          left: -50%;
+          width: 200%;
+          height: 200%;
+          background: linear-gradient(
+            0deg,
+            transparent,
+            transparent 30%,
+            ${colors.primary30}
+          );
+          transform: rotate(-45deg);
+          transition: all 0.5s ease;
+          opacity: 0;
         }
 
-        .tech-detail {
-          stroke: ${colors.primary35};
-          stroke-width: 0.5;
-          fill: none;
-          opacity: 0.4;
+        .eye-container:hover .holographic-circle {
+          transform: translate(-50%, -50%) scale(1.05);
+          box-shadow: 0 0 20px ${colors.primary50};
+        }
+
+        .eye-container:hover .holographic-circle::before {
+          opacity: 1;
+          transform: rotate(-45deg) translateY(100%);
         }
 
         @keyframes subtleGlow {
           0%, 100% {
-            filter: drop-shadow(0 0 8px ${colors.primary40})
-                    drop-shadow(0 0 15px ${colors.primary20});
+            filter: drop-shadow(0 0 8px ${colors.primary40});
           }
           50% {
-            filter: drop-shadow(0 0 12px ${colors.primary60})
-                    drop-shadow(0 0 25px ${colors.primary30})
-                    drop-shadow(0 0 35px ${colors.primary15});
+            filter: drop-shadow(0 0 15px ${colors.primary60});
           }
         }
 
@@ -598,57 +456,36 @@ const LandingPageOldEye = ({ startTime }) => {
         @keyframes glitchEffect {
           0%, 100% {
             transform: translate(0);
-            filter: hue-rotate(0deg) drop-shadow(0 0 15px ${colors.primary40});
+            filter: hue-rotate(0deg);
           }
           10% {
             transform: translate(-2px, 0);
-            filter: hue-rotate(90deg) drop-shadow(0 0 20px rgba(255, 0, 100, 0.6));
+            filter: hue-rotate(90deg);
           }
           20% {
             transform: translate(2px, 0);
-            filter: hue-rotate(-90deg) drop-shadow(0 0 25px rgba(0, 255, 100, 0.6));
+            filter: hue-rotate(-90deg);
           }
           30% {
             transform: translate(-3px, 1px);
-            filter: hue-rotate(180deg) drop-shadow(0 0 30px rgba(255, 0, 255, 0.7));
+            filter: hue-rotate(180deg);
           }
           40% {
             transform: translate(3px, -1px);
-            filter: hue-rotate(-180deg) drop-shadow(0 0 20px rgba(255, 255, 0, 0.5));
+            filter: hue-rotate(-180deg);
           }
           50% {
             transform: translate(-1px, 2px);
-            filter: hue-rotate(45deg) drop-shadow(0 0 35px ${colors.primary60});
-          }
-          60% {
-            transform: translate(2px, -2px);
-            filter: hue-rotate(-45deg) drop-shadow(0 0 25px rgba(255, 0, 0, 0.6));
-          }
-          70% {
-            transform: translate(-3px, 0);
-            filter: hue-rotate(120deg) drop-shadow(0 0 30px rgba(100, 255, 0, 0.7));
-          }
-          80% {
-            transform: translate(1px, 1px);
-            filter: hue-rotate(-120deg) drop-shadow(0 0 20px rgba(255, 100, 255, 0.5));
-          }
-          90% {
-            transform: translate(-2px, -1px);
-            filter: hue-rotate(270deg) drop-shadow(0 0 40px rgba(0, 100, 255, 0.8));
+            filter: hue-rotate(45deg);
           }
         }
 
         @keyframes glitchScan {
           0%, 100% { clip-path: inset(0 0 0 0); }
-          10% { clip-path: inset(20% 0 60% 0); }
-          20% { clip-path: inset(60% 0 20% 0); }
-          30% { clip-path: inset(40% 0 40% 0); }
+          20% { clip-path: inset(40% 0 40% 0); }
           40% { clip-path: inset(0 0 80% 0); }
-          50% { clip-path: inset(80% 0 0 0); }
-          60% { clip-path: inset(30% 0 50% 0); }
-          70% { clip-path: inset(50% 0 30% 0); }
-          80% { clip-path: inset(10% 0 70% 0); }
-          90% { clip-path: inset(70% 0 10% 0); }
+          60% { clip-path: inset(80% 0 0 0); }
+          80% { clip-path: inset(30% 0 50% 0); }
         }
 
         .eye-glitch {
@@ -665,66 +502,6 @@ const LandingPageOldEye = ({ startTime }) => {
         @keyframes fadeInScan {
           0% { opacity: 0; }
           100% { opacity: 1; }
-        }
-
-        .warning-overlay {
-          position: absolute;
-          top: -180px;
-          left: 50%;
-          transform: translateX(-50%);
-          z-index: 1000;
-          pointer-events: none;
-          transition: opacity 0.3s ease;
-          width: max-content;
-        }
-
-        .warning-box {
-          background: rgba(255, 0, 0, 0.15);
-          border: 3px solid rgba(255, 0, 0, 0.8);
-          border-radius: 8px;
-          padding: 1rem 1.5rem;
-          box-shadow:
-            0 0 30px rgba(255, 0, 0, 0.4),
-            inset 0 0 20px rgba(255, 0, 0, 0.1);
-          animation: warningPulse 0.3s ease-in-out 3;
-          backdrop-filter: blur(10px);
-          white-space: nowrap;
-        }
-
-        @keyframes warningPulse {
-          0%, 100% {
-            transform: scale(1);
-            border-color: rgba(255, 0, 0, 0.8);
-          }
-          50% {
-            transform: scale(1.05);
-            border-color: rgba(255, 0, 0, 1);
-            box-shadow:
-              0 0 50px rgba(255, 0, 0, 0.6),
-              inset 0 0 30px rgba(255, 0, 0, 0.2);
-          }
-        }
-
-        .warning-title {
-          font-family: 'Orbitron', sans-serif;
-          font-size: 1.1rem;
-          font-weight: 900;
-          color: #ff0000;
-          text-transform: uppercase;
-          letter-spacing: 0.15em;
-          text-shadow:
-            0 0 10px rgba(255, 0, 0, 0.8),
-            0 0 20px rgba(255, 0, 0, 0.5);
-          margin-bottom: 0.5rem;
-          text-align: center;
-        }
-
-        .warning-text {
-          font-family: 'Share Tech Mono', monospace;
-          font-size: 0.85rem;
-          color: rgba(255, 255, 255, 0.9);
-          text-align: center;
-          line-height: 1.4;
         }
 
         .click-message {
@@ -771,6 +548,122 @@ const LandingPageOldEye = ({ startTime }) => {
           color: ${colors.accentLight};
         }
 
+        .eye-svg {
+          width: 280px;
+          height: 280px;
+        }
+
+        main {
+          padding: 0.75rem !important;
+          min-height: 100vh !important;
+          display: flex !important;
+          align-items: center !important;
+          justify-content: center !important;
+        }
+
+        main > div {
+          flex-direction: column-reverse !important;
+          gap: 2rem !important;
+          justify-content: center !important;
+          align-items: center !important;
+          height: auto !important;
+        }
+
+        .eye-container {
+          flex: 0 0 auto !important;
+        }
+
+        .text-container {
+          flex: 0 0 auto !important;
+          text-align: center !important;
+        }
+
+        .text-container h1 {
+          font-size: 1.6rem !important;
+          margin-bottom: 0.75rem !important;
+          line-height: 1.2 !important;
+          text-align: center !important;
+          letter-spacing: 0.1em !important;
+        }
+
+        .text-container p {
+          font-size: 0.875rem !important;
+          line-height: 1.5 !important;
+          text-align: center !important;
+          margin: 0 auto !important;
+        }
+
+        @media (min-width: 768px) {
+          .eye-svg {
+            width: 400px;
+            height: 400px;
+          }
+
+          main {
+            padding: 1rem !important;
+          }
+
+          main > div {
+            gap: 2.5rem !important;
+          }
+
+          .text-container h1 {
+            font-size: 2rem !important;
+            margin-bottom: 1rem !important;
+            letter-spacing: 0.15em !important;
+          }
+
+          .text-container p {
+            font-size: 0.95rem !important;
+          }
+        }
+
+        @media (min-width: 1024px) {
+          .eye-svg {
+            width: 500px;
+            height: 500px;
+          }
+
+          main {
+            padding: 2rem !important;
+          }
+
+          main > div {
+            flex-direction: row !important;
+            gap: 4rem !important;
+          }
+
+          .text-container {
+            text-align: left !important;
+            order: 1;
+          }
+
+          .eye-container {
+            order: 2;
+          }
+
+          .text-container h1 {
+            text-align: left !important;
+            letter-spacing: 0.2em !important;
+          }
+
+          .text-container p {
+            text-align: left !important;
+            font-size: 1.1rem !important;
+          }
+        }
+
+        @media (min-width: 1440px) {
+          .eye-svg {
+            width: 650px;
+            height: 650px;
+          }
+
+          .text-container p {
+            font-size: 1.3rem !important;
+          }
+        }
+
         @media (max-width: 768px) {
           .system-metrics {
             font-size: 0.65rem;
@@ -779,132 +672,6 @@ const LandingPageOldEye = ({ startTime }) => {
             flex-wrap: wrap;
             justify-content: center;
             max-width: 90%;
-          }
-
-          .warning-overlay {
-            top: -140px;
-          }
-
-          .warning-box {
-            padding: 0.75rem 1.25rem;
-          }
-
-          .warning-title {
-            font-size: 0.95rem;
-            margin-bottom: 0.4rem;
-          }
-
-          .warning-text {
-            font-size: 0.75rem;
-          }
-        }
-
-        @media (max-width: 480px) {
-          .warning-overlay {
-            top: -120px;
-            width: 90vw;
-          }
-
-          .warning-box {
-            padding: 0.6rem 1rem;
-            white-space: normal;
-          }
-
-          .warning-title {
-            font-size: 0.85rem;
-          }
-
-          .warning-text {
-            font-size: 0.7rem;
-            line-height: 1.3;
-          }
-        }
-
-        @media (min-width: 1025px) {
-          .eye-svg {
-            width: 650px;
-            height: 650px;
-          }
-        }
-
-        @media (max-width: 1024px) {
-          main {
-            padding: 1rem !important;
-            min-height: 100vh !important;
-            display: flex !important;
-            align-items: center !important;
-            justify-content: center !important;
-          }
-
-          main > div {
-            flex-direction: column !important;
-            gap: 2.5rem !important;
-            justify-content: center !important;
-            align-items: center !important;
-            height: auto !important;
-          }
-
-          .eye-container {
-            flex: 0 0 auto !important;
-          }
-
-          .eye-container svg[width="500"] {
-            width: 280px !important;
-            height: 280px !important;
-          }
-
-          .eye-svg {
-            width: 350px !important;
-            height: 350px !important;
-          }
-
-          .text-container {
-            flex: 0 0 auto !important;
-            text-align: center !important;
-          }
-
-          .text-container h1 {
-            font-size: 2rem !important;
-            margin-bottom: 1rem !important;
-            line-height: 1.2 !important;
-            text-align: center !important;
-          }
-
-          .text-container p {
-            font-size: 0.95rem !important;
-            line-height: 1.5 !important;
-            text-align: center !important;
-            margin: 0 auto !important;
-          }
-        }
-
-        @media (max-width: 480px) {
-          main {
-            padding: 0.75rem !important;
-          }
-
-          main > div {
-            gap: 2rem !important;
-          }
-
-          .eye-container svg[width="500"] {
-            width: 220px !important;
-            height: 220px !important;
-          }
-
-          .eye-svg {
-            width: 280px !important;
-            height: 280px !important;
-          }
-
-          .text-container h1 {
-            font-size: 1.6rem !important;
-            margin-bottom: 0.75rem !important;
-            letter-spacing: 0.1em !important;
-          }
-
-          .text-container p {
-            font-size: 0.875rem !important;
           }
         }
       `}</style>
@@ -962,6 +729,47 @@ const LandingPageOldEye = ({ startTime }) => {
           maxWidth: '1400px',
           width: '100%'
         }}>
+          <div style={{
+            flex: '1',
+            textAlign: 'left',
+            maxWidth: '700px'
+          }}
+          className="text-container">
+            <h1 style={{
+              fontFamily: "'Orbitron', sans-serif",
+              fontSize: 'clamp(2.5rem, 5vw, 3.5rem)',
+              fontWeight: 900,
+              color: colors.primary,
+              textTransform: 'uppercase',
+              letterSpacing: '0.2em',
+              textShadow: `0 0 8px ${colors.primary60}, 0 0 15px ${colors.primary35}, 0 0 25px ${colors.primary20}`,
+              marginBottom: '2rem',
+              position: 'relative',
+              cursor: 'pointer',
+              transition: 'all 0.3s ease'
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.animation = 'titleGlitch 2s ease-in-out infinite';
+              e.currentTarget.style.textShadow = `0 0 12px ${colors.primary}, 0 0 20px ${colors.primary50}, 0 0 35px ${colors.primary30}`;
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.animation = 'none';
+              e.currentTarget.style.textShadow = `0 0 8px ${colors.primary60}, 0 0 15px ${colors.primary35}, 0 0 25px ${colors.primary20}`;
+            }}>
+              CONSULENZE<br/>DIGITALI
+            </h1>
+
+            <p style={{
+              fontSize: 'clamp(1rem, 2vw, 1.3rem)',
+              color: colors.textMuted,
+              margin: '0',
+              lineHeight: 1.6,
+              fontFamily: "'Share Tech Mono', monospace"
+            }}>
+              Creo la tua presenza digitale da zero, o ti aiuto a migliorare quella che già hai. Insieme, oltre le stelle.
+            </p>
+          </div>
+
           <div className="eye-container" style={{
             position: 'relative',
             display: 'flex',
@@ -969,70 +777,7 @@ const LandingPageOldEye = ({ startTime }) => {
             justifyContent: 'center',
             flex: '0 0 auto'
           }}>
-            {/* Orbital Rings System */}
-            <div className="orbital-system">
-              {/* Anelli orbitali concentrici */}
-              <svg className="orbital-ring orbital-ring-1" width="500" height="500" viewBox="0 0 500 500">
-                <circle cx="250" cy="250" r="140" />
-                {/* Nodi sui punti cardinali */}
-                <circle className="ring-node" cx="250" cy="110" r="3" />
-                <circle className="ring-node" cx="390" cy="250" r="3" />
-                <circle className="ring-node" cx="250" cy="390" r="3" />
-                <circle className="ring-node" cx="110" cy="250" r="3" />
-              </svg>
-
-              <svg className="orbital-ring orbital-ring-2" width="500" height="500" viewBox="0 0 500 500">
-                <circle cx="250" cy="250" r="180" />
-                {/* Nodi sfalsati */}
-                <circle className="ring-node" cx="295" cy="88" r="2.5" />
-                <circle className="ring-node" cx="412" cy="205" r="2.5" />
-                <circle className="ring-node" cx="295" cy="412" r="2.5" />
-                <circle className="ring-node" cx="88" cy="295" r="2.5" />
-              </svg>
-
-              <svg className="orbital-ring orbital-ring-3" width="500" height="500" viewBox="0 0 500 500">
-                <circle cx="250" cy="250" r="220" />
-                {/* Più nodi per complessità */}
-                <circle className="ring-node" cx="250" cy="30" r="2" />
-                <circle className="ring-node" cx="405" cy="155" r="2" />
-                <circle className="ring-node" cx="470" cy="250" r="2" />
-                <circle className="ring-node" cx="405" cy="345" r="2" />
-                <circle className="ring-node" cx="250" cy="470" r="2" />
-                <circle className="ring-node" cx="95" cy="345" r="2" />
-                <circle className="ring-node" cx="30" cy="250" r="2" />
-                <circle className="ring-node" cx="95" cy="155" r="2" />
-              </svg>
-
-              {/* Griglia HUD */}
-              <svg className="hud-grid" width="500" height="500" viewBox="0 0 500 500">
-                {/* Linee verticali */}
-                <line x1="150" y1="50" x2="150" y2="450" />
-                <line x1="250" y1="50" x2="250" y2="450" />
-                <line x1="350" y1="50" x2="350" y2="450" />
-                {/* Linee orizzontali */}
-                <line x1="50" y1="150" x2="450" y2="150" />
-                <line x1="50" y1="250" x2="450" y2="250" />
-                <line x1="50" y1="350" x2="450" y2="350" />
-                {/* Diagonali per effetto tech */}
-                <line x1="80" y1="80" x2="150" y2="150" className="tech-detail" />
-                <line x1="420" y1="80" x2="350" y2="150" className="tech-detail" />
-                <line x1="420" y1="420" x2="350" y2="350" className="tech-detail" />
-                <line x1="80" y1="420" x2="150" y2="350" className="tech-detail" />
-              </svg>
-
-              {/* Linee di scansione radiale */}
-              <svg className="radial-scan" width="500" height="500" viewBox="0 0 500 500">
-                <line x1="250" y1="250" x2="250" y2="50" />
-                <line x1="250" y1="250" x2="430" y2="130" />
-              </svg>
-
-              {/* Particelle orbitanti */}
-              <div className="orbital-particles">
-                <div className="particle particle-1"></div>
-                <div className="particle particle-2"></div>
-                <div className="particle particle-3"></div>
-              </div>
-            </div>
+            <div className="holographic-circle"></div>
 
             <div
               ref={eyeRef}
@@ -1099,47 +844,6 @@ const LandingPageOldEye = ({ startTime }) => {
                 </g>
               </svg>
             </div>
-          </div>
-
-          <div style={{
-            flex: '1',
-            textAlign: 'left',
-            maxWidth: '700px'
-          }}
-          className="text-container">
-            <h1 style={{
-              fontFamily: "'Orbitron', sans-serif",
-              fontSize: 'clamp(2.5rem, 5vw, 3.5rem)',
-              fontWeight: 900,
-              color: colors.primary,
-              textTransform: 'uppercase',
-              letterSpacing: '0.2em',
-              textShadow: `0 0 8px ${colors.primary60}, 0 0 15px ${colors.primary35}, 0 0 25px ${colors.primary20}`,
-              marginBottom: '2rem',
-              position: 'relative',
-              cursor: 'pointer',
-              transition: 'all 0.3s ease'
-            }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.animation = 'titleGlitch 2s ease-in-out infinite';
-              e.currentTarget.style.textShadow = `0 0 12px ${colors.primary}, 0 0 20px ${colors.primary50}, 0 0 35px ${colors.primary30}`;
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.animation = 'none';
-              e.currentTarget.style.textShadow = `0 0 8px ${colors.primary60}, 0 0 15px ${colors.primary35}, 0 0 25px ${colors.primary20}`;
-            }}>
-              CONSULENZE<br/>DIGITALI
-            </h1>
-
-            <p style={{
-              fontSize: 'clamp(1rem, 2vw, 1.3rem)',
-              color: colors.textMuted,
-              margin: '0',
-              lineHeight: 1.6,
-              fontFamily: "'Share Tech Mono', monospace"
-            }}>
-              Creo la tua presenza digitale da zero, o ti aiuto a migliorare quella che già hai. Insieme, oltre le stelle.
-            </p>
           </div>
         </div>
       </main>

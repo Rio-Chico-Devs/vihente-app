@@ -27,7 +27,6 @@
     padding-right: 18px;
 }
 
-/* Wrapper principale per isolare gli stili */
 .services-page-wrapper {
     font-family: 'Share Tech Mono', monospace;
     min-height: 100vh;
@@ -37,7 +36,6 @@
     transition: background-color var(--transition-theme), color var(--transition-theme);
 }
 
-/* Stili per il body quando è attiva la pagina servizi */
 body.services-page-body {
     font-family: 'Share Tech Mono', monospace;
     background: var(--bg-black);
@@ -48,7 +46,6 @@ body.services-page-body {
     transition: background-color var(--transition-theme), color var(--transition-theme);
 }
 
-/* VHS SCANLINES OVERLAY */
 .services-page-wrapper::after {
     content: '';
     position: fixed;
@@ -67,7 +64,6 @@ body.services-page-body {
     z-index: 2;
 }
 
-/* VIGNETTE SHADOW - ANIMATA */
 .services-page-wrapper::before {
     content: '';
     position: fixed;
@@ -87,7 +83,6 @@ body.services-page-body {
     }
 }
 
-/* LAYER CODICE DI SFONDO */
 .code-background {
     position: fixed;
     inset: 0;
@@ -123,7 +118,6 @@ body.services-page-body {
     }
 }
 
-/* LAYER GRIGLIA ESAGONALE */
 .grid-overlay {
     position: fixed;
     inset: 0;
@@ -170,7 +164,6 @@ body.services-page-body {
     animation: gridFlash 0.5s ease-out;
 }
 
-/* HEADER */
 header {
     position: fixed;
     top: 85px;
@@ -198,8 +191,6 @@ header {
     color: rgb(34, 223, 223);
     text-shadow: 0 0 15px rgb(17, 109, 109), 0 0 7px rgb(21, 112, 112);
 }
-
-/* RESPONSIVE - MOBILE */
 
 @media (max-width: 1024px) and (min-width: 769px){
     header{
@@ -420,7 +411,6 @@ header {
     }
 }
 
-/* FOOTER */
 footer {
     position: fixed;
     bottom: 0;
@@ -959,7 +949,6 @@ footer {
     }
 }
 
-/* SERVICE BOX */
 .service-box {
     position: relative;
     width: 480px;
@@ -969,19 +958,41 @@ footer {
     justify-content: center;
     cursor: pointer;
     transition: all 0.3s ease;
-    overflow: visible;
+    overflow: hidden;
     pointer-events: auto;
-    background: rgba(0, 0, 0, 0.4);
-    border: 2px solid var(--color-primary-30, rgba(0, 255, 255, 0.3));
+    background: var(--bg-black);
     border-radius: 4px;
-    backdrop-filter: blur(10px);
-    box-shadow:
-        0 0 40px var(--color-primary-20, rgba(0, 255, 255, 0.2)),
-        inset 0 0 40px var(--color-primary-05, rgba(0, 255, 255, 0.05));
+    border: 1px solid var(--color-primary-20);
+    box-shadow: 0 0 10px var(--color-primary-15);
 }
 
 .service-box::before {
-    display: none;
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(
+        0deg,
+        transparent,
+        transparent 30%,
+        var(--color-primary-30)
+    );
+    transform: rotate(-45deg);
+    transition: all 0.5s ease;
+    opacity: 0;
+}
+
+.service-box:hover::before {
+    opacity: 1;
+    transform: rotate(-45deg) translateY(100%);
+}
+
+.service-box:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 20px var(--color-primary-50);
+    border-color: var(--color-primary-50);
 }
 
 .border-svg {
@@ -1038,7 +1049,6 @@ footer {
     z-index: 1;
 }
 
-/* ICONA 1 - CONSULENZA */
 .icon-consulenza::before {
     content: '';
     position: absolute;
@@ -1074,7 +1084,6 @@ footer {
     animation: pulse 2s ease-in-out infinite;
 }
 
-/* ICONA 2 - CREAZIONE SITI */
 .icon-siti {
     width: 50px;
     height: 55px;
@@ -1102,7 +1111,6 @@ footer {
     opacity: 0.4;
 }
 
-/* ICONA 3 - PRESENZA ONLINE */
 .icon-presenza {
     width: 55px;
     height: 55px;
@@ -1177,7 +1185,6 @@ footer {
     }
 }
 
-/* ICONA 4 - MULTIMEDIA */
 .icon-multimedia {
     display: flex;
     align-items: center;
@@ -1227,7 +1234,6 @@ footer {
     }
 }
 
-/* GLITCH EFFECT */
 @keyframes glitch {
     0%, 100% {
         transform: translate(0);
@@ -1259,7 +1265,6 @@ footer {
     animation: glitch 0.2s ease-in-out;
 }
 
-/* OVERLAY MODAL */
 .service-overlay {
     position: fixed;
     top: 0;
@@ -1511,15 +1516,6 @@ footer {
     background: var(--color-primary-70);
 }
 
-/* HOVER EFFECTS */
-.service-box:hover {
-    border-color: var(--color-primary-60, rgba(0, 255, 255, 0.6));
-    transform: translateY(-4px);
-    box-shadow:
-        0 8px 50px var(--color-primary-30, rgba(0, 255, 255, 0.3)),
-        inset 0 0 50px var(--color-primary-08, rgba(0, 255, 255, 0.08));
-}
-
 .service-box:hover .icon-consulenza::before,
 .service-box:hover .icon-consulenza::after {
     border-color: var(--color-primary);
@@ -1539,18 +1535,11 @@ footer {
     width: 100%;
 }
 
-/* ================================================
-   LIGHT MODE (NIGHT MODE) - AMBER WARM
-   Scientifically optimized for nighttime viewing
-   ================================================ */
-
-/* Titoli - Amber caldo */
 [data-theme="light"] .service-box-text {
     color: var(--color-primary);
     text-shadow: var(--text-glow-title);
 }
 
-/* Icone e descrizioni - Beige caldo (stesso colore per armonia) */
 [data-theme="light"] .service-box-description {
     color: var(--color-secondary-90);
 }
@@ -1598,27 +1587,30 @@ footer {
     background: var(--color-secondary-80);
 }
 
-/* Bordi box - sottili, caldi */
 [data-theme="light"] .service-box {
-    border-color: var(--color-primary-30);
-    box-shadow:
-        0 0 30px rgba(232, 160, 48, 0.15),
-        inset 0 0 30px rgba(232, 160, 48, 0.03);
+    background: var(--bg-black);
+    border-color: var(--color-primary-20);
+    box-shadow: 0 0 8px rgba(232, 160, 48, 0.12);
+}
+
+[data-theme="light"] .service-box::before {
+    background: linear-gradient(
+        0deg,
+        transparent,
+        transparent 30%,
+        var(--color-primary-30)
+    );
 }
 
 [data-theme="light"] .service-box:hover {
+    box-shadow: 0 0 20px var(--color-primary-50);
     border-color: var(--color-primary-50);
-    box-shadow:
-        0 8px 40px rgba(232, 160, 48, 0.25),
-        inset 0 0 40px rgba(232, 160, 48, 0.05);
 }
 
-/* Griglia esagonale - amber, molto sottile */
 [data-theme="light"] .grid-overlay {
     background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="86.6" height="100" viewBox="0 0 86.6 100"><path d="M43.3 0 L86.6 25 L86.6 75 L43.3 100 L0 75 L0 25 Z" fill="none" stroke="rgba(180,120,60,0.12)" stroke-width="1"/></svg>');
 }
 
-/* Scanlines quasi invisibili per night mode */
 [data-theme="light"] .services-page-wrapper::after {
     background: repeating-linear-gradient(
         0deg,
@@ -1629,12 +1621,10 @@ footer {
     );
 }
 
-/* Footer text */
 [data-theme="light"] .footer-text {
     color: var(--color-secondary-60);
 }
 
-/* Overlay modal */
 [data-theme="light"] .overlay-content {
     border-color: var(--color-primary-30);
     box-shadow: 0 0 15px rgba(232, 160, 48, 0.1);
@@ -1664,7 +1654,6 @@ footer {
     border-left-color: var(--color-primary-40);
 }
 
-/* Close button */
 [data-theme="light"] .overlay-close {
     border-color: var(--color-secondary-50);
     color: var(--color-secondary);
@@ -1676,13 +1665,11 @@ footer {
     color: var(--color-primary);
 }
 
-/* Code background */
 [data-theme="light"] .code-line {
     color: var(--color-secondary-30);
     text-shadow: none;
 }
 
-/* Header e Logo */
 [data-theme="light"] header {
     background: rgba(8, 6, 4, 0.8);
     border-bottom-color: var(--color-primary-20);
@@ -1693,13 +1680,11 @@ footer {
     text-shadow: 0 0 6px rgba(232, 160, 48, 0.3);
 }
 
-/* Footer */
 [data-theme="light"] footer {
     background: rgba(8, 6, 4, 0.8);
     border-top-color: var(--color-primary-20);
 }
 
-/* Hover states */
 [data-theme="light"] .service-box:hover .icon-consulenza::before,
 [data-theme="light"] .service-box:hover .icon-consulenza::after {
     border-color: var(--color-secondary);
@@ -1715,7 +1700,6 @@ footer {
     border-left-color: transparent;
 }
 
-/* Scrollbar amber per light mode */
 [data-theme="light"] .overlay-content::-webkit-scrollbar-thumb {
     background: var(--color-secondary-50);
 }

@@ -179,24 +179,49 @@
   gap: 1.5rem;
 }
 
-/* BIO BOX */
+/* BIO BOX - Con effetto holografico */
 .mystory-box {
   flex: 1;
   padding: 2rem;
   background: var(--card-bg, rgba(0, 0, 0, 0.4));
-  border: 2px solid var(--color-primary-30, rgba(0, 255, 255, 0.3));
+  border: 1px solid var(--color-primary-20, rgba(0, 255, 255, 0.2));
   border-radius: 4px;
   backdrop-filter: blur(10px);
-  box-shadow:
-    0 0 40px var(--color-primary-20, rgba(0, 255, 255, 0.2)),
-    inset 0 0 40px var(--color-primary-05, rgba(0, 255, 255, 0.05));
-  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 0 0 10px var(--color-primary-15, rgba(0, 255, 255, 0.15));
+  transition: all 0.3s ease;
   display: flex;
   flex-direction: column;
+  position: relative;
+  overflow: hidden;
+}
+
+.mystory-box::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(
+    0deg,
+    transparent,
+    transparent 30%,
+    var(--color-primary-30, rgba(0, 255, 255, 0.3))
+  );
+  transform: rotate(-45deg);
+  transition: all 0.5s ease;
+  opacity: 0;
+}
+
+.mystory-box:hover::before {
+  opacity: 1;
+  transform: rotate(-45deg) translateY(100%);
 }
 
 .mystory-box:hover {
-  border-color: var(--color-primary-60, rgba(0, 255, 255, 0.6));
+  transform: scale(1.02);
+  box-shadow: 0 0 20px var(--color-primary-50, rgba(0, 255, 255, 0.5));
+  border-color: var(--color-primary-50, rgba(0, 255, 255, 0.5));
 }
 
 .mystory-title {
@@ -206,6 +231,8 @@
   color: var(--color-primary, #0ff);
   text-shadow: 0 0 15px var(--color-primary-80, rgba(0, 255, 255, 0.8));
   margin: 0 0 1.2rem 0;
+  position: relative;
+  z-index: 1;
 }
 
 .mystory-text {
@@ -214,6 +241,8 @@
   color: var(--color-secondary, rgba(255, 255, 255, 0.9));
   line-height: 1.8;
   margin: 0;
+  position: relative;
+  z-index: 1;
 }
 
 /* LANGUAGES BOX */
@@ -471,7 +500,25 @@
   text-shadow: none;
 }
 
-[data-theme="light"] .mystory-box,
+[data-theme="light"] .mystory-box {
+  border-color: var(--color-primary-20);
+  box-shadow: 0 0 8px rgba(232, 160, 48, 0.12);
+}
+
+[data-theme="light"] .mystory-box::before {
+  background: linear-gradient(
+    0deg,
+    transparent,
+    transparent 30%,
+    var(--color-primary-30)
+  );
+}
+
+[data-theme="light"] .mystory-box:hover {
+  box-shadow: 0 0 20px var(--color-primary-50);
+  border-color: var(--color-primary-50);
+}
+
 [data-theme="light"] .mystory-languages {
   box-shadow: none;
 }
