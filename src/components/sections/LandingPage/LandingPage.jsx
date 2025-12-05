@@ -14,6 +14,8 @@ const LandingPageOldEye = ({ startTime }) => {
     primary30: 'rgba(232, 160, 48, 0.3)',
     primary20: 'rgba(232, 160, 48, 0.2)',
     primary15: 'rgba(232, 160, 48, 0.15)',
+    primary10: 'rgba(232, 160, 48, 0.1)',
+    primary05: 'rgba(232, 160, 48, 0.05)',
     bg: '#080604',
     text: '#e8dcc8',
     textMuted: 'rgba(196, 154, 108, 0.9)',
@@ -30,6 +32,8 @@ const LandingPageOldEye = ({ startTime }) => {
     primary30: 'rgba(0, 255, 255, 0.3)',
     primary20: 'rgba(0, 255, 255, 0.2)',
     primary15: 'rgba(0, 255, 255, 0.15)',
+    primary10: 'rgba(0, 255, 255, 0.1)',
+    primary05: 'rgba(0, 255, 255, 0.05)',
     bg: '#000',
     text: '#fff',
     textMuted: 'rgba(255, 255, 255, 0.7)',
@@ -120,21 +124,26 @@ const LandingPageOldEye = ({ startTime }) => {
   }, []);
 
   useEffect(() => {
-    const handleMouseMove = (e) => {
+    const handlePointerMove = (e) => {
       if (!eyeRef.current) return;
 
       const eyeRect = eyeRef.current.getBoundingClientRect();
       const eyeCenterX = eyeRect.left + eyeRect.width / 2;
       const eyeCenterY = eyeRect.top + eyeRect.height / 2;
 
-      const deltaX = e.clientX - eyeCenterX;
-      const deltaY = e.clientY - eyeCenterY;
+      const clientX = e.clientX || (e.touches && e.touches[0]?.clientX);
+      const clientY = e.clientY || (e.touches && e.touches[0]?.clientY);
+
+      if (!clientX || !clientY) return;
+
+      const deltaX = clientX - eyeCenterX;
+      const deltaY = clientY - eyeCenterY;
       const distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
 
       const now = Date.now();
 
       if (distance < 300 && isNearEye) {
-        const currentPos = { x: e.clientX, y: e.clientY };
+        const currentPos = { x: clientX, y: clientY };
 
         if (lastPositionRef.current) {
           const movementX = currentPos.x - lastPositionRef.current.x;
@@ -195,8 +204,8 @@ const LandingPageOldEye = ({ startTime }) => {
         const svgWidth = 1000;
         const svgHeight = 1000;
 
-        const relativeX = (e.clientX - eyeRect.left) / eyeRect.width;
-        const relativeY = (e.clientY - eyeRect.top) / eyeRect.height;
+        const relativeX = (clientX - eyeRect.left) / eyeRect.width;
+        const relativeY = (clientY - eyeRect.top) / eyeRect.height;
 
         let newX = relativeX * svgWidth;
         let newY = relativeY * svgHeight;
@@ -229,9 +238,14 @@ const LandingPageOldEye = ({ startTime }) => {
       }
     };
 
-    window.addEventListener('mousemove', handleMouseMove);
+    window.addEventListener('mousemove', handlePointerMove);
+    window.addEventListener('touchmove', handlePointerMove, { passive: true });
+    window.addEventListener('touchstart', handlePointerMove, { passive: true });
+
     return () => {
-      window.removeEventListener('mousemove', handleMouseMove);
+      window.removeEventListener('mousemove', handlePointerMove);
+      window.removeEventListener('touchmove', handlePointerMove);
+      window.removeEventListener('touchstart', handlePointerMove);
       const clickMessageTimeout = clickMessageTimeoutRef.current;
 
       if (clickMessageTimeout) {
@@ -358,6 +372,7 @@ const LandingPageOldEye = ({ startTime }) => {
       background: colors.bg,
       color: colors.text,
       minHeight: '100vh',
+      height: '100vh',
       overflow: 'hidden',
       position: 'relative',
       fontFamily: "'Share Tech Mono', monospace",
@@ -374,13 +389,22 @@ const LandingPageOldEye = ({ startTime }) => {
           68% { opacity: 1; }
         }
 
+        @keyframes breathingBorder {
+          0%, 100% {
+            box-shadow: 0 0 2px ${colors.primary05}, 0 0 4px ${colors.primary05};
+          }
+          50% {
+            box-shadow: 0 0 10px ${colors.primary20}, 0 0 15px ${colors.primary15};
+          }
+        }
+
         .holographic-circle {
           position: absolute;
           top: 50%;
           left: 50%;
           transform: translate(-50%, -50%);
-          width: 200px;
-          height: 200px;
+          width: 350px;
+          height: 350px;
           background: ${colors.bg};
           display: flex;
           justify-content: center;
@@ -389,6 +413,8 @@ const LandingPageOldEye = ({ startTime }) => {
           overflow: hidden;
           transition: all 0.5s ease;
           pointer-events: none;
+          box-shadow: 0 0 2px ${colors.primary05}, 0 0 4px ${colors.primary05};
+          animation: breathingBorder 6s ease-in-out infinite;
         }
 
         @media (min-width: 768px) {
@@ -549,21 +575,23 @@ const LandingPageOldEye = ({ startTime }) => {
         }
 
         .eye-svg {
-          width: 280px;
-          height: 280px;
+          width: 480px;
+          height: 480px;
         }
 
         main {
           padding: 0.75rem !important;
           min-height: 100vh !important;
+          height: 100vh !important;
           display: flex !important;
           align-items: center !important;
           justify-content: center !important;
+          overflow: hidden !important;
         }
 
         main > div {
           flex-direction: column-reverse !important;
-          gap: 2rem !important;
+          gap: 1.5rem !important;
           justify-content: center !important;
           align-items: center !important;
           height: auto !important;
@@ -664,14 +692,33 @@ const LandingPageOldEye = ({ startTime }) => {
           }
         }
 
-        @media (max-width: 768px) {
+        @media (max-width: 767px) {
           .system-metrics {
             font-size: 0.65rem;
-            bottom: 1rem;
+            bottom: 0.75rem;
             gap: 1rem;
             flex-wrap: wrap;
             justify-content: center;
             max-width: 90%;
+          }
+
+          main {
+            padding: 0.5rem 0.75rem !important;
+          }
+
+          main > div {
+            gap: 0.5rem !important;
+          }
+        }
+
+        @media (max-width: 380px){
+          .eye-svg {
+            width: 350px;
+            height: 350px;
+          }
+          .holographic-circle {
+            width: 250px;
+            height: 250px;
           }
         }
       `}</style>
@@ -717,10 +764,12 @@ const LandingPageOldEye = ({ startTime }) => {
         position: 'relative',
         zIndex: 1,
         minHeight: '100vh',
+        height: '100vh',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        padding: '2rem'
+        padding: '2rem',
+        overflow: 'hidden'
       }}>
         <div style={{
           display: 'flex',

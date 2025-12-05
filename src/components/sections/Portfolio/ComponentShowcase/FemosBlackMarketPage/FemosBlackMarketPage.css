@@ -8,6 +8,118 @@
 }
 
 /* ===================================
+   PERSONA-STYLE ANIMATIONS
+   =================================== */
+@keyframes personaSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes personaSlideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes personaFadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes personaPulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+}
+
+@keyframes personaGlitch {
+  0% {
+    text-shadow: 0 0 5px rgba(0, 255, 255, 0.5);
+  }
+  14% {
+    text-shadow: 0 0 5px rgba(0, 255, 255, 0.5);
+  }
+  15% {
+    text-shadow: -2px 0 3px rgba(255, 0, 255, 0.5), 2px 0 3px rgba(0, 255, 255, 0.5);
+  }
+  16% {
+    text-shadow: 0 0 5px rgba(0, 255, 255, 0.5);
+  }
+  49% {
+    text-shadow: 0 0 5px rgba(0, 255, 255, 0.5);
+  }
+  50% {
+    text-shadow: 2px 0 3px rgba(255, 0, 255, 0.5), -2px 0 3px rgba(0, 255, 255, 0.5);
+  }
+  51% {
+    text-shadow: 0 0 5px rgba(0, 255, 255, 0.5);
+  }
+  100% {
+    text-shadow: 0 0 5px rgba(0, 255, 255, 0.5);
+  }
+}
+
+@keyframes personaShine {
+  0% {
+    left: -100%;
+  }
+  100% {
+    left: 200%;
+  }
+}
+
+@keyframes mysteryGlow {
+  0%, 100% {
+    filter: brightness(1) contrast(1);
+  }
+  50% {
+    filter: brightness(1.3) contrast(1.2);
+  }
+}
+
+@keyframes mysteryPulse {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.1);
+    opacity: 0.8;
+  }
+}
+
+@keyframes circleExpand {
+  0% {
+    width: 0;
+    height: 0;
+    opacity: 0.8;
+  }
+  100% {
+    width: 300%;
+    height: 300%;
+    opacity: 0;
+  }
+}
+
+/* ===================================
    START SCREEN
    =================================== */
 .start-screen {
@@ -49,16 +161,20 @@
   position: relative;
   z-index: 3;
   text-align: center;
+  animation: personaFadeIn 1s ease-out;
 }
 
 .market-title {
   font-family: 'Orbitron', sans-serif;
   font-size: 4rem;
   color: #0ff;
-  text-shadow: 0 0 20px rgba(0, 255, 255, 0.8), 0 0 40px rgba(0, 255, 255, 0.4);
   margin-bottom: 1rem;
   letter-spacing: 0.1em;
   text-transform: uppercase;
+}
+
+.persona-title {
+  animation: personaGlitch 5s infinite;
 }
 
 .market-subtitle {
@@ -67,6 +183,7 @@
   color: rgba(0, 255, 255, 0.7);
   margin-bottom: 3rem;
   letter-spacing: 0.2em;
+  animation: personaSlideIn 1s ease-out 0.3s backwards;
 }
 
 .start-btn {
@@ -84,6 +201,7 @@
   transition: all 0.3s ease;
   position: relative;
   overflow: hidden;
+  animation: personaSlideIn 1s ease-out 0.6s backwards;
 }
 
 .start-btn::before {
@@ -99,20 +217,82 @@
   transition: width 0.3s ease, height 0.3s ease;
 }
 
-.start-btn:hover::before {
-  width: 100%;
+.start-btn::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 50%;
   height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(0, 255, 255, 0.4), transparent);
+  transition: left 0.5s ease;
+}
+
+.start-btn:hover::before {
+  width: 300%;
+  height: 300%;
+}
+
+.start-btn:hover::after {
+  left: 200%;
 }
 
 .start-btn:hover {
   border-color: rgba(0, 255, 255, 0.9);
-  box-shadow: 0 0 30px rgba(0, 255, 255, 0.5);
   transform: translateY(-3px);
 }
 
 .start-btn span {
   position: relative;
   z-index: 1;
+}
+
+.btn-glitch {
+  position: relative;
+  display: inline-block;
+}
+
+.btn-glitch::before,
+.btn-glitch::after {
+  content: attr(data-text);
+  position: absolute;
+  top: 0;
+  left: 0;
+  opacity: 0;
+}
+
+.start-btn:hover .btn-glitch::before {
+  animation: glitchTop 0.3s infinite;
+  color: rgba(255, 0, 255, 0.8);
+  z-index: -1;
+}
+
+.start-btn:hover .btn-glitch::after {
+  animation: glitchBottom 0.3s infinite;
+  color: rgba(0, 255, 255, 0.8);
+  z-index: -2;
+}
+
+@keyframes glitchTop {
+  0%, 100% {
+    opacity: 0;
+    transform: translate(0, 0);
+  }
+  50% {
+    opacity: 1;
+    transform: translate(-2px, -2px);
+  }
+}
+
+@keyframes glitchBottom {
+  0%, 100% {
+    opacity: 0;
+    transform: translate(0, 0);
+  }
+  50% {
+    opacity: 1;
+    transform: translate(2px, 2px);
+  }
 }
 
 /* ===================================
@@ -147,14 +327,27 @@
   z-index: 2;
 }
 
-.market-content
- {
-    position: relative;
-    z-index: 3;
-    padding-top: 8rem;
-    padding-bottom: 8rem;
-    padding-left: 2rem;
-    padding-right: 2rem;
+.market-content {
+  position: relative;
+  z-index: 3;
+  padding: 8rem 2rem;
+  min-height: calc(100vh - 80px);
+  animation: personaFadeIn 0.6s ease-out;
+}
+
+.page-transition {
+  animation: pageTransitionOut 0.3s ease-out;
+}
+
+@keyframes pageTransitionOut {
+  from {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateX(-30px);
+  }
 }
 
 /* ===================================
@@ -170,20 +363,41 @@
   border: 2px solid rgba(0, 255, 255, 0.3);
   border-radius: 4px;
   backdrop-filter: blur(10px);
+  animation: personaSlideIn 0.6s ease-out;
+}
+
+.persona-header {
+  position: relative;
+  overflow: hidden;
+}
+
+.persona-header::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(0, 255, 255, 0.1), transparent);
+  animation: personaShine 3s infinite;
 }
 
 .header-title {
   font-family: 'Orbitron', sans-serif;
   font-size: 2rem;
   color: #0ff;
-  text-shadow: 0 0 15px rgba(0, 255, 255, 0.6);
   letter-spacing: 0.1em;
+}
+
+.persona-title-small {
+  animation: personaGlitch 8s infinite;
 }
 
 .header-actions {
   display: flex;
   gap: 1rem;
   align-items: center;
+  flex-wrap: wrap;
 }
 
 /* ===================================
@@ -203,13 +417,35 @@
   border-radius: 4px;
   transition: all 0.3s ease;
   position: relative;
+  overflow: hidden;
+}
+
+.persona-btn::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  background: rgba(0, 255, 255, 0.2);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  transition: width 0.4s ease, height 0.4s ease;
+}
+
+.persona-btn:hover::before {
+  width: 300%;
+  height: 300%;
 }
 
 .btn:hover {
   background: rgba(0, 0, 0, 0.9);
   border-color: rgba(0, 255, 255, 0.8);
-  box-shadow: 0 0 20px rgba(0, 255, 255, 0.4);
   transform: translateY(-2px);
+}
+
+.persona-btn:active {
+  transform: translateY(0) scale(0.95);
 }
 
 .btn-danger {
@@ -219,7 +455,6 @@
 
 .btn-danger:hover {
   border-color: rgba(255, 0, 85, 0.8);
-  box-shadow: 0 0 20px rgba(255, 0, 85, 0.4);
 }
 
 .cart-btn {
@@ -228,19 +463,42 @@
 
 .cart-count {
   position: absolute;
-  top: -8px;
-  right: -8px;
+  top: -10px;
+  right: -10px;
   background: #ff0055;
   color: #fff;
   border-radius: 50%;
-  width: 24px;
-  height: 24px;
+  min-width: 26px;
+  height: 26px;
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 0.75rem;
   font-weight: 700;
+  padding: 0 6px;
+  z-index: 10;
+  border: 2px solid #000;
+}
+
+.persona-cart-badge {
   animation: cartPulse 0.3s ease;
+}
+
+.persona-cart-badge::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 100%;
+  height: 100%;
+  background: #ff0055;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  z-index: -1;
+}
+
+.cart-btn:hover .persona-cart-badge::before {
+  animation: circleExpand 0.6s ease-out;
 }
 
 @keyframes cartPulse {
@@ -271,7 +529,10 @@
   max-width: 300px;
   backdrop-filter: blur(10px);
   animation: bubbleFade 0.3s ease;
-  box-shadow: 0 0 20px rgba(0, 255, 255, 0.3);
+}
+
+.persona-bubble {
+  animation: personaSlideInLeft 0.4s ease-out;
 }
 
 @keyframes bubbleFade {
@@ -308,6 +569,7 @@
    =================================== */
 .products-section {
   margin-bottom: 2rem;
+  animation: personaFadeIn 0.8s ease-out;
 }
 
 .section-header {
@@ -321,14 +583,29 @@
   font-family: 'Orbitron', sans-serif;
   font-size: 1.5rem;
   color: #0ff;
-  text-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+}
+
+.persona-section-title {
+  animation: personaSlideInLeft 0.6s ease-out;
 }
 
 .products-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 2rem;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1.5rem;
   margin-bottom: 2rem;
+}
+
+@media (min-width: 1400px) {
+  .products-grid {
+    grid-template-columns: repeat(5, 1fr);
+  }
+}
+
+@media (min-width: 1024px) and (max-width: 1399px) {
+  .products-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
 }
 
 /* ===================================
@@ -345,6 +622,10 @@
   overflow: hidden;
 }
 
+.persona-card {
+  animation: personaSlideIn 0.6s ease-out backwards;
+}
+
 .product-card::before {
   content: '';
   position: absolute;
@@ -357,14 +638,36 @@
   transition: transform 0.3s ease;
 }
 
+.product-card::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  background: radial-gradient(circle, rgba(0, 255, 255, 0.1) 0%, transparent 70%);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  transition: width 0.4s ease, height 0.4s ease;
+  pointer-events: none;
+}
+
 .product-card:hover::before {
   transform: scaleX(1);
+}
+
+.product-card:hover::after {
+  width: 200%;
+  height: 200%;
 }
 
 .product-card:hover {
   transform: translateY(-5px);
   border-color: rgba(0, 255, 255, 0.8);
-  box-shadow: 0 10px 30px rgba(0, 255, 255, 0.3);
+}
+
+.product-card:active::after {
+  animation: circleExpand 0.6s ease-out;
 }
 
 .product-image {
@@ -379,6 +682,13 @@
   margin-bottom: 1rem;
   font-size: 3rem;
   color: rgba(0, 255, 255, 0.3);
+  transition: all 0.3s ease;
+}
+
+.product-card:hover .product-image {
+  background: rgba(0, 255, 255, 0.1);
+  border-color: rgba(0, 255, 255, 0.4);
+  transform: scale(1.05);
 }
 
 .rarity-badge {
@@ -393,6 +703,29 @@
   letter-spacing: 0.05em;
   border: 1px solid;
   z-index: 2;
+  transition: all 0.3s ease;
+}
+
+.persona-badge {
+  transition: transform 0.3s ease;
+}
+
+.product-card:hover .persona-badge {
+  transform: scale(1.1);
+}
+
+.product-card[data-rarity="mystery"] .persona-badge {
+  animation: mysteryPulse 2s ease-in-out infinite;
+  background: linear-gradient(135deg, rgba(138, 43, 226, 1) 0%, rgba(75, 0, 130, 1) 100%) !important;
+}
+
+.product-card[data-rarity="mystery"] {
+  animation: mysteryGlow 3s ease-in-out infinite;
+  border-color: rgba(138, 43, 226, 0.6);
+}
+
+.product-card[data-rarity="mystery"]:hover {
+  border-color: rgba(138, 43, 226, 1);
 }
 
 .stock-badge {
@@ -416,6 +749,11 @@
   font-size: 1.2rem;
   color: #0ff;
   margin-bottom: 0.5rem;
+  transition: all 0.3s ease;
+}
+
+.product-card:hover .product-name {
+  transform: scale(1.02);
 }
 
 .product-desc {
@@ -430,6 +768,16 @@
   color: #00ff88;
   font-weight: 700;
   margin-bottom: 1rem;
+  transition: all 0.3s ease;
+}
+
+.persona-price {
+  position: relative;
+  display: inline-block;
+}
+
+.product-card:hover .persona-price {
+  transform: scale(1.05);
 }
 
 .add-to-cart-btn {
@@ -445,12 +793,40 @@
   cursor: pointer;
   border-radius: 4px;
   transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.add-to-cart-btn::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  background: rgba(0, 255, 136, 0.3);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  transition: width 0.4s ease, height 0.4s ease;
+}
+
+.add-to-cart-btn:hover::before {
+  width: 300%;
+  height: 300%;
 }
 
 .add-to-cart-btn:hover {
   background: rgba(0, 255, 136, 0.2);
   border-color: #00ff88;
-  box-shadow: 0 0 20px rgba(0, 255, 136, 0.4);
+  transform: translateY(-2px);
+}
+
+.add-to-cart-btn:active::before {
+  animation: circleExpand 0.5s ease-out;
+}
+
+.add-to-cart-btn:active {
+  transform: translateY(0) scale(0.95);
 }
 
 .add-to-cart-btn:disabled {
@@ -464,6 +840,7 @@
 .cart-section {
   max-width: 800px;
   margin: 0 auto;
+  animation: personaFadeIn 0.6s ease-out;
 }
 
 .cart-items {
@@ -480,6 +857,12 @@
   grid-template-columns: auto 1fr auto auto;
   gap: 1.5rem;
   align-items: center;
+  transition: all 0.3s ease;
+}
+
+.cart-item:hover {
+  border-color: rgba(0, 255, 255, 0.5);
+  transform: translateX(5px);
 }
 
 .cart-item-image {
@@ -493,6 +876,11 @@
   justify-content: center;
   font-size: 2rem;
   position: relative;
+  transition: all 0.3s ease;
+}
+
+.cart-item:hover .cart-item-image {
+  transform: scale(1.1) rotate(5deg);
 }
 
 .cart-item-info {
@@ -529,11 +917,39 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.persona-btn-small::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  background: rgba(0, 255, 255, 0.3);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  transition: width 0.3s ease, height 0.3s ease;
+}
+
+.persona-btn-small:hover::before {
+  width: 200%;
+  height: 200%;
 }
 
 .qty-btn:hover {
   border-color: #0ff;
-  box-shadow: 0 0 10px rgba(0, 255, 255, 0.3);
+  transform: scale(1.1);
+}
+
+.qty-btn:active .persona-btn-small::before {
+  animation: circleExpand 0.4s ease-out;
+}
+
+.qty-btn:active {
+  transform: scale(0.95);
 }
 
 .qty-btn:disabled {
@@ -557,11 +973,36 @@
   cursor: pointer;
   transition: all 0.2s ease;
   font-size: 0.85rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.remove-btn::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  background: rgba(255, 0, 85, 0.3);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  transition: width 0.3s ease, height 0.3s ease;
+}
+
+.remove-btn:hover::before {
+  width: 200%;
+  height: 200%;
 }
 
 .remove-btn:hover {
   background: rgba(255, 0, 85, 0.2);
   border-color: #ff0055;
+  transform: scale(1.05);
+}
+
+.remove-btn:active {
+  transform: scale(0.95);
 }
 
 .cart-summary {
@@ -570,6 +1011,23 @@
   border-radius: 4px;
   padding: 2rem;
   margin-bottom: 2rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.persona-summary {
+  animation: personaSlideIn 0.8s ease-out;
+}
+
+.persona-summary::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(0, 255, 255, 0.1), transparent);
+  animation: personaShine 4s infinite;
 }
 
 .summary-row {
@@ -591,12 +1049,14 @@
   text-align: center;
   padding: 4rem 2rem;
   color: rgba(255, 255, 255, 0.5);
+  animation: personaFadeIn 0.8s ease-out;
 }
 
 .empty-cart-icon {
   font-size: 4rem;
   margin-bottom: 1rem;
   opacity: 0.3;
+  animation: eyeFloat 3s ease-in-out infinite;
 }
 
 /* ===================================
@@ -611,9 +1071,21 @@
   padding: 2rem;
 }
 
+.persona-form {
+  animation: personaSlideIn 0.8s ease-out;
+}
+
 .form-group {
   margin-bottom: 1.5rem;
+  animation: personaSlideIn 0.6s ease-out backwards;
 }
+
+.form-group:nth-child(1) { animation-delay: 0.1s; }
+.form-group:nth-child(2) { animation-delay: 0.15s; }
+.form-group:nth-child(3) { animation-delay: 0.2s; }
+.form-group:nth-child(4) { animation-delay: 0.25s; }
+.form-group:nth-child(5) { animation-delay: 0.3s; }
+.form-group:nth-child(6) { animation-delay: 0.35s; }
 
 .form-label {
   display: block;
@@ -636,11 +1108,15 @@
   transition: all 0.3s ease;
 }
 
+.persona-input {
+  position: relative;
+}
+
 .form-input:focus {
   outline: none;
   border-color: rgba(0, 255, 255, 0.8);
-  box-shadow: 0 0 10px rgba(0, 255, 255, 0.3);
   background: rgba(0, 0, 0, 0.7);
+  transform: translateY(-2px);
 }
 
 .submit-btn {
@@ -658,13 +1134,40 @@
   border-radius: 4px;
   transition: all 0.3s ease;
   margin-top: 1rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.submit-btn::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  background: rgba(0, 255, 136, 0.3);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  transition: width 0.4s ease, height 0.4s ease;
+}
+
+.submit-btn:hover::before {
+  width: 300%;
+  height: 300%;
 }
 
 .submit-btn:hover {
   background: rgba(0, 255, 136, 0.2);
   border-color: #00ff88;
-  box-shadow: 0 0 30px rgba(0, 255, 136, 0.5);
   transform: translateY(-2px);
+}
+
+.submit-btn:active::before {
+  animation: circleExpand 0.6s ease-out;
+}
+
+.submit-btn:active {
+  transform: translateY(0) scale(0.98);
 }
 
 /* ===================================
@@ -676,7 +1179,7 @@
   }
 
   .market-subtitle {
-    font-size: 1rem;
+    font-size: 0.9rem;
   }
 
   .start-btn {
@@ -689,19 +1192,39 @@
     gap: 1rem;
   }
 
+  .header-actions {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .btn {
+    padding: 0.6rem 1.2rem;
+    font-size: 0.8rem;
+  }
+
   .products-grid {
     grid-template-columns: 1fr;
+    gap: 1.5rem;
   }
 
   .cart-item {
     grid-template-columns: 1fr;
     text-align: center;
+    gap: 1rem;
+  }
+
+  .cart-item-image {
+    margin: 0 auto;
+  }
+
+  .quantity-controls {
+    justify-content: center;
   }
 
   .mascot-container {
-        bottom: 4.9rem;
-        right: 1rem;
-    }
+    bottom: 4.9rem;
+    right: 1rem;
+  }
 
   .mascot-eye {
     width: 80px;
@@ -711,22 +1234,92 @@
   .mascot-bubble {
     max-width: 200px;
     font-size: 0.8rem;
+    padding: 0.8rem 1.2rem;
+  }
+
+  .market-content {
+    padding: 6rem 1rem;
+  }
+
+  .checkout-form {
+    padding: 1.5rem;
+  }
+
+  .summary-total {
+    font-size: 1.4rem;
   }
 }
-.market-content {
 
-  position: relative;
+@media (max-width: 480px) {
+  .market-title {
+    font-size: 2rem;
+  }
 
-  z-index: 3;
+  .market-subtitle {
+    font-size: 0.8rem;
+  }
 
-  padding-top: 8rem;
+  .start-btn {
+    padding: 1rem 2rem;
+    font-size: 1rem;
+  }
 
-  padding-bottom: 8rem;
+  .header-title {
+    font-size: 1.5rem;
+  }
 
-  padding-left: 2rem;
+  .section-title {
+    font-size: 1.2rem;
+  }
 
-  padding-right: 2rem;
+  .product-card {
+    padding: 1rem;
+  }
 
-  min-height: calc(100vh - 80px);
+  .product-image {
+    height: 150px;
+    font-size: 2rem;
+  }
 
+  .product-name {
+    font-size: 1rem;
+  }
+
+  .product-desc {
+    font-size: 0.8rem;
+  }
+
+  .product-price {
+    font-size: 1.2rem;
+  }
+
+  .cart-item {
+    padding: 1rem;
+  }
+
+  .cart-item-image {
+    width: 60px;
+    height: 60px;
+    font-size: 1.5rem;
+  }
+
+  .cart-item-name {
+    font-size: 1rem;
+  }
+
+  .mascot-container {
+    bottom: 3.5rem;
+    right: 0.5rem;
+  }
+
+  .mascot-eye {
+    width: 60px;
+    height: 60px;
+  }
+
+  .mascot-bubble {
+    max-width: 160px;
+    font-size: 0.7rem;
+    padding: 0.6rem 1rem;
+  }
 }
