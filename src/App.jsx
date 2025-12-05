@@ -34,6 +34,7 @@ const PatternMatcherPage = lazy(() => import('./components/sections/Portfolio/Co
 const Contacts = lazy(() => import('./components/sections/Contacts/Contacts'));
 const PrivacyPolicy = lazy(() => import('./components/sections/PrivacyPolicy/PrivacyPolicy'));
 const CookiePolicy = lazy(() => import('./components/sections/CookiePolicy/CookiePolicy'));
+const TermsAndConditions = lazy(() => import('./components/sections/TermsAndConditions/TermsAndConditions'));
 
 // 🎨 Loading Spinner Component
 const LoadingSpinner = () => (
@@ -138,6 +139,7 @@ function App() {
                     {/* Privacy & Cookie Policy */}
                     <Route path="/privacy-policy" element={<PrivacyPolicy />} />
                     <Route path="/cookie-policy" element={<CookiePolicy />} />
+                    <Route path="/termini-e-condizioni" element={<TermsAndConditions />} />
                   </Routes>
                 </Suspense>
               </main>

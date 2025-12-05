@@ -94,18 +94,62 @@ const PrivacyPolicy = () => {
         </section>
 
         <section className="privacy-section">
-          <h2>6. Destinatari dei Dati</h2>
-          <p>I tuoi dati personali possono essere comunicati ai seguenti soggetti terzi:</p>
-          <ul>
-            <li><strong>GitHub Pages (Microsoft):</strong> hosting del sito web (server ubicati negli USA - trasferimento extra-UE con garanzie adeguate)</li>
-            <li><strong>EmailJS:</strong> servizio di invio email per il form di contatto (se implementato)</li>
-          </ul>
-          <p>
-            Per i trasferimenti extra-UE verso gli USA, ci avvaliamo delle clausole contrattuali standard approvate
-            dalla Commissione Europea (art. 46 GDPR) e delle garanzie fornite dal Data Privacy Framework USA-UE.
-          </p>
+          <h2>6. Destinatari dei Dati e Trasferimenti Extra-UE</h2>
+          <p>I tuoi dati personali possono essere comunicati ai seguenti soggetti terzi (Responsabili del Trattamento ai sensi dell'Art. 28 GDPR):</p>
+
+          <div className="info-box">
+            <h3>GitHub Pages (Microsoft Corporation)</h3>
+            <p><strong>Finalità:</strong> Hosting del sito web e gestione infrastruttura</p>
+            <p><strong>Ubicazione server:</strong> USA (trasferimento extra-UE)</p>
+            <p><strong>Dati trasferiti:</strong> Indirizzo IP, dati di navigazione (log del server), cookies tecnici</p>
+            <p><strong>Periodo conservazione:</strong> Massimo 90 giorni (gestito da GitHub)</p>
+            <p><strong>Base giuridica trasferimento:</strong></p>
+            <ul>
+              <li>Clausole Contrattuali Standard (SCC) approvate dalla Commissione Europea (Decisione 2021/914)</li>
+              <li>EU-U.S. Data Privacy Framework (DPF) - Microsoft è certificata</li>
+              <li>Misure tecniche supplementari: Cifratura TLS 1.3, accesso limitato ai dati</li>
+            </ul>
+            <p>
+              <strong>Privacy Policy:</strong>{' '}
+              <a href="https://docs.github.com/en/site-policy/privacy-policies/github-privacy-statement" target="_blank" rel="noopener noreferrer">
+                GitHub Privacy Statement
+              </a>
+            </p>
+            <p>
+              <strong>DPF Certification:</strong>{' '}
+              <a href="https://www.dataprivacyframework.gov/s/participant-search/participant-detail?id=a2zt0000000KzNaAAK&status=Active" target="_blank" rel="noopener noreferrer">
+                Microsoft DPF Status
+              </a>
+            </p>
+          </div>
+
+          <div className="info-box">
+            <h3>EmailJS (se implementato)</h3>
+            <p><strong>Finalità:</strong> Invio email dal form di contatto</p>
+            <p><strong>Ubicazione server:</strong> UE (conformità GDPR)</p>
+            <p><strong>Dati trasferiti:</strong> Nome, email, messaggio inviato tramite form</p>
+            <p><strong>Periodo conservazione:</strong> Immediata cancellazione dopo invio (EmailJS funge da relay)</p>
+            <p>
+              <strong>Privacy Policy:</strong>{' '}
+              <a href="https://www.emailjs.com/legal/privacy-policy/" target="_blank" rel="noopener noreferrer">
+                EmailJS Privacy Policy
+              </a>
+            </p>
+          </div>
+
+          <div className="highlight">
+            <h3>Garanzie per i Trasferimenti Extra-UE (Art. 46 GDPR):</h3>
+            <ul>
+              <li><strong>Clausole Contrattuali Standard (SCC):</strong> Accordi vincolanti approvati dalla Commissione UE</li>
+              <li><strong>EU-U.S. Data Privacy Framework:</strong> Certificazione che garantisce standard di protezione equivalenti al GDPR</li>
+              <li><strong>Misure supplementari (Schrems II):</strong> Cifratura end-to-end, minimizzazione dati, audit periodici</li>
+              <li><strong>Diritto di copia SCC:</strong> Puoi richiedere copia delle clausole contrattuali via email</li>
+            </ul>
+          </div>
+
           <p className="highlight">
-            Non vendiamo né cediamo i tuoi dati a terzi per scopi commerciali o pubblicitari.
+            <strong>Importante:</strong> Non vendiamo, affittiamo né cediamo i tuoi dati a terzi per scopi commerciali, pubblicitari o di marketing.
+            I tuoi dati sono trattati esclusivamente per le finalità dichiarate in questa Privacy Policy.
           </p>
         </section>
 
@@ -164,7 +208,37 @@ const PrivacyPolicy = () => {
         </section>
 
         <section className="privacy-section">
-          <h2>9. Modifiche alla Privacy Policy</h2>
+          <h2>9. Risoluzione Controversie Online (ODR)</h2>
+          <p>
+            Se hai acquistato servizi online e hai una controversia relativa al trattamento dei tuoi dati personali
+            o all'esecuzione del contratto, puoi utilizzare la piattaforma ODR (Online Dispute Resolution) della
+            Commissione Europea per risolvere la questione in modo extragiudiziale.
+          </p>
+          <div className="info-box" style={{ background: 'linear-gradient(135deg, var(--color-primary-10) 0%, var(--color-secondary-10) 100%)', border: '2px solid var(--color-primary)', boxShadow: '0 0 20px var(--color-primary-20)' }}>
+            <p><strong>Piattaforma ODR (Online Dispute Resolution)</strong></p>
+            <p>
+              <a
+                href="https://ec.europa.eu/consumers/odr"
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{ fontSize: '1.1rem', fontWeight: 600, color: 'var(--color-secondary)', wordBreak: 'break-all' }}
+              >
+                https://ec.europa.eu/consumers/odr
+              </a>
+            </p>
+            <p>Email per contatti ODR: <a href="mailto:[TUA-EMAIL]">[TUA-EMAIL]</a></p>
+          </div>
+          <p>
+            La piattaforma ODR facilita la risoluzione extragiudiziale delle controversie tra consumatori e
+            professionisti nell'UE, evitando il ricorso al tribunale.
+          </p>
+          <p className="highlight">
+            Conformità al Regolamento UE 524/2013 sulle controversie online.
+          </p>
+        </section>
+
+        <section className="privacy-section">
+          <h2>10. Modifiche alla Privacy Policy</h2>
           <p>
             Questa Privacy Policy può essere aggiornata periodicamente. La versione più recente sarà sempre
             disponibile su questa pagina.
@@ -173,7 +247,7 @@ const PrivacyPolicy = () => {
         </section>
 
         <section className="privacy-section">
-          <h2>10. Cookie e Tecnologie di Tracciamento</h2>
+          <h2>11. Cookie e Tecnologie di Tracciamento</h2>
           <p>
             Per informazioni dettagliate sull'uso dei cookie, consulta la nostra{' '}
             <a href="/cookie-policy" className="internal-link">Cookie Policy</a>.
