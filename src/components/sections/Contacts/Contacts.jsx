@@ -9,13 +9,15 @@ const Contacts = () => {
     email: '',
     reason: '',
     service: 'Consulenza',
-    message: ''
+    message: '',
+    privacyConsent: false
   });
 
   const [errors, setErrors] = useState({
     name: '',
     email: '',
-    message: ''
+    message: '',
+    privacyConsent: ''
   });
 
   const [submitStatus, setSubmitStatus] = useState(null);
@@ -35,14 +37,14 @@ const Contacts = () => {
   }, []);
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
-    
+    const { name, value, type, checked } = e.target;
+
     setFormData({
       ...formData,
-      [name]: value
+      [name]: type === 'checkbox' ? checked : value
     });
 
-    // Clear error for this field when user starts typing
+    // Clear error for this field when user starts typing/clicking
     if (errors[name]) {
       setErrors(prev => ({
         ...prev,
@@ -58,9 +60,10 @@ const Contacts = () => {
       email: '',
       reason: '',
       service: 'Consulenza',
-      message: ''
+      message: '',
+      privacyConsent: false
     });
-    setErrors({ name: '', email: '', message: '' });
+    setErrors({ name: '', email: '', message: '', privacyConsent: '' });
     setSubmitStatus(null);
     setShowRateLimit(false);
   };
@@ -69,7 +72,7 @@ const Contacts = () => {
     e.preventDefault();
 
     // Reset errors
-    setErrors({ name: '', email: '', message: '' });
+    setErrors({ name: '', email: '', message: '', privacyConsent: '' });
 
     if (!canSubmit) {
       setShowRateLimit(true);
@@ -83,14 +86,23 @@ const Contacts = () => {
 
     if (!validation.valid) {
       setErrors(validation.errors);
-      
+
       // Scroll to first error
       const firstErrorField = Object.keys(validation.errors)[0];
       const errorElement = document.querySelector(`[name="${firstErrorField}"]`);
       if (errorElement) {
         errorElement.focus();
       }
-      
+
+      return;
+    }
+
+    // ✅ VALIDAZIONE CONSENSO PRIVACY (OBBLIGATORIO GDPR)
+    if (!formData.privacyConsent) {
+      setErrors(prev => ({
+        ...prev,
+        privacyConsent: 'Devi accettare la Privacy Policy per continuare'
+      }));
       return;
     }
 
@@ -335,7 +347,7 @@ const Contacts = () => {
                   className={`form-textarea ${errors.message ? 'form-textarea-error' : ''}`}
                   value={formData.message}
                   onChange={handleChange}
-                  placeholder={isQuoteMode 
+                  placeholder={isQuoteMode
                     ? "Descrivi in dettaglio il progetto e i tuoi obiettivi..."
                     : "Scrivi qui il tuo messaggio..."}
                   required
@@ -350,14 +362,57 @@ const Contacts = () => {
                 )}
               </div>
 
+              {/* ✅ CHECKBOX CONSENSO PRIVACY (OBBLIGATORIO GDPR) */}
+              <div className="form-group form-field-full privacy-consent-group">
+                <label className="privacy-consent-label">
+                  <input
+                    type="checkbox"
+                    name="privacyConsent"
+                    className="privacy-consent-checkbox"
+                    checked={formData.privacyConsent}
+                    onChange={handleChange}
+                    required
+                    aria-required="true"
+                    aria-invalid={!!errors.privacyConsent}
+                    aria-describedby={errors.privacyConsent ? "privacy-consent-error" : undefined}
+                  />
+                  <span className="privacy-consent-text">
+                    Acconsento al trattamento dei miei dati personali secondo la{' '}
+                    <a
+                      href="/privacy-policy"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="privacy-link"
+                    >
+                      Privacy Policy
+                    </a>
+                    {' '}e i{' '}
+                    <a
+                      href="/termini-e-condizioni"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="privacy-link"
+                    >
+                      Termini e Condizioni
+                    </a>
+                    {' '}*
+                  </span>
+                </label>
+                {errors.privacyConsent && (
+                  <span id="privacy-consent-error" className="form-error privacy-consent-error" role="alert">
+                    {errors.privacyConsent}
+                  </span>
+                )}
+              </div>
+
               <button
                 type="submit"
                 className="submit-button"
                 disabled={isAnimating}
               >
                 <span className="submit-button-text">
-                  {isQuoteMode 
-                    ? '→ INVIA RICHIESTA PREVENTIVO' 
+                  {isQuoteMode
+                    ? '→ INVIA RICHIESTA PREVENTIVO'
                     : '→ INVIA MESSAGGIO'}
                 </span>
               </button>

@@ -608,7 +608,7 @@ const LandingPageOldEye = ({ startTime }) => {
           }
 
           .text-container h1 {
-            font-size: 2rem !important;
+            font-size: 4rem !important;
             margin-bottom: 1rem !important;
             letter-spacing: 0.15em !important;
           }
@@ -756,7 +756,7 @@ const LandingPageOldEye = ({ startTime }) => {
               e.currentTarget.style.animation = 'none';
               e.currentTarget.style.textShadow = `0 0 8px ${colors.primary60}, 0 0 15px ${colors.primary35}, 0 0 25px ${colors.primary20}`;
             }}>
-              CONSULENZE<br/>DIGITALI
+              V//HENTE
             </h1>
 
             <p style={{

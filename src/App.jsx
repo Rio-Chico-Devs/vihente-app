@@ -21,7 +21,7 @@ const MultimediaPage = lazy(() => import('./components/sections/MultimediaPage/M
 const Portfolio = lazy(() => import('./components/sections/Portfolio/Portfolio'));
 const ComponentShowcase = lazy(() => import('./components/sections/Portfolio/ComponentShowcase/ComponentShowcase'));
 const GraficheShowcase = lazy(() => import('./components/sections/Portfolio/GraficheShowcase/GraficheShowcase'));
-const SitiWebShowcase = lazy(() => import('./components/sections/Portfolio/SitiWebShowcase/SitiWebShowcase')); // ✅ AGGIUNTO
+const SitiWebShowcase = lazy(() => import('./components/sections/Portfolio/SitiWebShowcase/SitiWebShowcase'));
 const SliderPage = lazy(() => import('./components/sections/Portfolio/ComponentShowcase/SliderPage/SliderPage'));
 const TextSamplerPage = lazy(() => import('./components/sections/Portfolio/ComponentShowcase/TextSamplerPage/TextSamplerPage'));
 const Cubo3DPage = lazy(() => import('./components/sections/Portfolio/ComponentShowcase/Cubo3DPage/Cubo3DPage'));
@@ -34,6 +34,7 @@ const PatternMatcherPage = lazy(() => import('./components/sections/Portfolio/Co
 const Contacts = lazy(() => import('./components/sections/Contacts/Contacts'));
 const PrivacyPolicy = lazy(() => import('./components/sections/PrivacyPolicy/PrivacyPolicy'));
 const CookiePolicy = lazy(() => import('./components/sections/CookiePolicy/CookiePolicy'));
+const TermsAndConditions = lazy(() => import('./components/sections/TermsAndConditions/TermsAndConditions'));
 
 // 🎨 Loading Spinner Component
 const LoadingSpinner = () => (
@@ -119,7 +120,7 @@ function App() {
                     <Route path="/portfolio" element={<Portfolio />} />
                     <Route path="/portfolio/componenti" element={<ComponentShowcase />} />
                     <Route path="/portfolio/grafiche" element={<GraficheShowcase />} />
-                    <Route path="/portfolio/sitiweb" element={<SitiWebShowcase />} /> {/* ✅ AGGIUNTO */}
+                    <Route path="/portfolio/sitiweb" element={<SitiWebShowcase />} />
 
                     {/* Portfolio Component Details */}
                     <Route path="/portfolio/componenti/slider" element={<SliderPage />} />
@@ -138,6 +139,7 @@ function App() {
                     {/* Privacy & Cookie Policy */}
                     <Route path="/privacy-policy" element={<PrivacyPolicy />} />
                     <Route path="/cookie-policy" element={<CookiePolicy />} />
+                    <Route path="/termini-e-condizioni" element={<TermsAndConditions />} />
                   </Routes>
                 </Suspense>
               </main>
