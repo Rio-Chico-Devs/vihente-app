@@ -220,30 +220,15 @@ const Contacts = () => {
       <div className="contacts-container">
         <h1 className="section-title">CONTATTI</h1>
 
-        <div 
+        <div
           className={`form-container ${isAnimating ? 'cube-animation' : ''} ${submitStatus === 'success' && !isAnimating ? 'reappearing' : ''}`}
         >
-          <div className="mode-toggle-container">
-            <button 
-              type="button"
-              className="mode-toggle-button"
-              onClick={toggleMode}
-            >
-              <span className="mode-toggle-text">
-                {isQuoteMode ? '📧 Contatto Generale' : '💰 Richiedi un Preventivo'}
-              </span>
-            </button>
-            <p className="section-subtitle">
-              {isQuoteMode ? '→ RICHIEDI UN PREVENTIVO' : ''}
-            </p>
-          </div>
-
           <div>
             <h2 className="form-title">
               {isQuoteMode ? 'RICHIESTA PREVENTIVO' : 'MODULO DI CONTATTO'}
             </h2>
             <p className="form-description">
-              {isQuoteMode 
+              {isQuoteMode
                 ? 'Compila il form con i dettagli del servizio richiesto e ti risponderò con un preventivo personalizzato.'
                 : 'Compila il form e ti risponderò il prima possibile. Tutti i campi sono obbligatori.'}
             </p>
@@ -404,6 +389,16 @@ const Contacts = () => {
                   </span>
                 )}
               </div>
+
+              <button
+                type="button"
+                className="mode-toggle-button"
+                onClick={toggleMode}
+              >
+                <span className="mode-toggle-text">
+                  {isQuoteMode ? '📧 Contatto Generale' : '💰 Richiedi Preventivo'}
+                </span>
+              </button>
 
               <button
                 type="submit"

@@ -9,13 +9,23 @@
 .contacts-section {
   background: var(--bg-black);
   color: var(--text-primary);
-  min-height: 100vh;
+  min-height: auto;
+  height: auto;
   position: relative;
   overflow: hidden;
   font-family: 'Share Tech Mono', monospace;
   display: flex;
   align-items: center;
   justify-content: center;
+  padding: 2rem 0;
+}
+
+@media (min-width: 1025px) {
+  .contacts-section {
+    padding: 3rem 0;
+    height: calc(100vh - var(--header-height, 80px) - var(--footer-height, 60px));
+    overflow-y: auto;
+  }
 }
 
 * {
@@ -309,27 +319,9 @@
    MODE TOGGLE
    ============================================ */
 
-.mode-toggle-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.5rem;
-  margin-bottom: 1.5rem;
-}
-
-@media (min-width: 1025px) {
-  .mode-toggle-container {
-    position: absolute;
-    left: -260px;
-    top: 0;
-    margin-bottom: 0;
-    align-items: flex-start;
-    width: 220px;
-  }
-}
-
 .mode-toggle-button {
-  padding: 0.7rem 1.8rem;
+  grid-column: 1 / -1;
+  padding: 0.9rem 1.8rem;
   background: var(--color-primary-10);
   border: 2px solid var(--color-primary-40);
   color: var(--color-primary-80);
@@ -342,6 +334,7 @@
   transition: all var(--transition-base);
   position: relative;
   overflow: hidden;
+  margin-bottom: 0.5rem;
 }
 
 .mode-toggle-button:hover {
