@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import './QuizPage.css';
 
 const QuizPage = () => {
@@ -8,7 +8,7 @@ const QuizPage = () => {
       id: 1,
       question: "Qual è la profondità di colore standard per il formato PNG-24?",
       options: ["16 bit", "24 bit", "32 bit", "48 bit"],
-      correct: 2 // 32 bit (24 bit RGB + 8 bit alpha)
+      correct: 2
     },
     {
       id: 2,
@@ -187,6 +187,7 @@ const QuizPage = () => {
     }
   ];
 
+  const [quizStarted, setQuizStarted] = useState(false);
   const [selectedQuestions, setSelectedQuestions] = useState([]);
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [selectedAnswer, setSelectedAnswer] = useState(null);
@@ -194,16 +195,125 @@ const QuizPage = () => {
   const [showResult, setShowResult] = useState(false);
   const [answerFeedback, setAnswerFeedback] = useState(null);
   const [answeredQuestions, setAnsweredQuestions] = useState([]);
+  const [timeLeft, setTimeLeft] = useState(15);
+  const timerRef = useRef(null);
+  const bgMusicRef = useRef(null);
+  const resultSoundRef = useRef(null);
 
-  // Seleziona 7 domande randomiche all'inizio
+  // Percorsi audio (MODIFICA QUESTI PERCORSI)
+  const BG_MUSIC_PATH = '/path/to/quiz-background-music.mp3';
+  const RESULT_SOUND_PATH = '/path/to/result-sound.mp3';
+
+  // Inizializza audio refs
   useEffect(() => {
-    const shuffled = [...questionPool].sort(() => Math.random() - 0.5);
-    setSelectedQuestions(shuffled.slice(0, 7));
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    bgMusicRef.current = new Audio(BG_MUSIC_PATH);
+    bgMusicRef.current.loop = true;
+    bgMusicRef.current.volume = 0.5;
+
+    resultSoundRef.current = new Audio(RESULT_SOUND_PATH);
+    resultSoundRef.current.volume = 0.7;
+
+    return () => {
+      if (bgMusicRef.current) {
+        bgMusicRef.current.pause();
+        bgMusicRef.current = null;
+      }
+      if (resultSoundRef.current) {
+        resultSoundRef.current.pause();
+        resultSoundRef.current = null;
+      }
+    };
   }, []);
 
+  // Gestione musica di sottofondo
+  useEffect(() => {
+    if (quizStarted && !showResult && bgMusicRef.current) {
+      bgMusicRef.current.play().catch(err => console.log('Audio play error:', err));
+    }
+
+    if (showResult && bgMusicRef.current) {
+      bgMusicRef.current.pause();
+      bgMusicRef.current.currentTime = 0;
+    }
+
+    return () => {
+      if (bgMusicRef.current) {
+        bgMusicRef.current.pause();
+      }
+    };
+  }, [quizStarted, showResult]);
+
+  // Riproduce suono risultato
+  useEffect(() => {
+    if (showResult && resultSoundRef.current) {
+      resultSoundRef.current.play().catch(err => console.log('Result sound error:', err));
+    }
+  }, [showResult]);
+
+  // Avvia il quiz
+  const startQuiz = () => {
+    const shuffled = [...questionPool].sort(() => Math.random() - 0.5);
+    setSelectedQuestions(shuffled.slice(0, 7));
+    setQuizStarted(true);
+  };
+
+  // Timer 15 secondi
+  useEffect(() => {
+    if (!quizStarted || showResult || selectedAnswer !== null) return;
+
+    setTimeLeft(15);
+    
+    timerRef.current = setInterval(() => {
+      setTimeLeft((prev) => {
+        if (prev <= 1) {
+          handleTimeout();
+          return 0;
+        }
+        return prev - 1;
+      });
+    }, 1000);
+
+    return () => {
+      if (timerRef.current) {
+        clearInterval(timerRef.current);
+      }
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentQuestion, showResult, quizStarted]);
+
+  const handleTimeout = () => {
+    if (selectedAnswer !== null || showResult) return;
+
+    setAnswerFeedback('timeout');
+    setSelectedAnswer(-1);
+
+    setAnsweredQuestions([
+      ...answeredQuestions,
+      {
+        question: selectedQuestions[currentQuestion].question,
+        selectedAnswer: -1,
+        correctAnswer: selectedQuestions[currentQuestion].correct,
+        isCorrect: false
+      }
+    ]);
+
+    setTimeout(() => {
+      if (currentQuestion < 6) {
+        setCurrentQuestion(currentQuestion + 1);
+        setSelectedAnswer(null);
+        setAnswerFeedback(null);
+      } else {
+        setShowResult(true);
+      }
+    }, 1500);
+  };
+
   const handleAnswerClick = (answerIndex) => {
-    if (selectedAnswer !== null) return; // Previeni click multipli
+    if (selectedAnswer !== null) return;
+
+    if (timerRef.current) {
+      clearInterval(timerRef.current);
+    }
 
     setSelectedAnswer(answerIndex);
     const isCorrect = answerIndex === selectedQuestions[currentQuestion].correct;
@@ -214,7 +324,6 @@ const QuizPage = () => {
       setScore(score + 1);
     }
 
-    // Salva la risposta
     setAnsweredQuestions([
       ...answeredQuestions,
       {
@@ -225,7 +334,6 @@ const QuizPage = () => {
       }
     ]);
 
-    // Passa alla prossima domanda dopo 1.5 secondi
     setTimeout(() => {
       if (currentQuestion < 6) {
         setCurrentQuestion(currentQuestion + 1);
@@ -246,23 +354,46 @@ const QuizPage = () => {
     setShowResult(false);
     setAnswerFeedback(null);
     setAnsweredQuestions([]);
+    setTimeLeft(15);
+    setQuizStarted(true);
   };
 
   const getScoreMessage = () => {
-    if (score === 7) return "PERFETTO! Sei un vero esperto! 🎯";
-    if (score >= 5) return "Ottimo lavoro! 👏";
-    if (score >= 3) return "Non male, continua così! 💪";
-    return "Dai, riprova! Puoi fare meglio! 📚";
+    if (score === 7) return "PERFETTO! Sei un vero esperto!";
+    if (score >= 5) return "Ottimo lavoro!";
+    if (score >= 3) return "Non male, continua così!";
+    return "Dai, riprova! Puoi fare meglio!";
   };
 
-  if (selectedQuestions.length === 0) {
+  // SCHERMATA INIZIALE
+  if (!quizStarted) {
     return (
       <div className="quiz-page">
-        <div className="quiz-loading">Caricamento quiz...</div>
+        <div className="quiz-container quiz-start-screen">
+          <div className="start-content">
+            <h1 className="start-title">Tech & Design Quiz</h1>
+            <div className="start-icon">
+              <svg width="80" height="80" viewBox="0 0 80 80" fill="none">
+                <circle cx="40" cy="40" r="35" stroke="var(--color-primary, #0ff)" strokeWidth="3"/>
+                <path d="M40 20 L40 40 L55 55" stroke="var(--color-primary, #0ff)" strokeWidth="3" strokeLinecap="round"/>
+              </svg>
+            </div>
+            <h2 className="start-question">Sei pronto per il quiz?</h2>
+            <p className="start-description">
+              7 domande su informatica e grafica.<br />
+              Hai 15 secondi per risposta.<br />
+              Metti alla prova le tue conoscenze!
+            </p>
+            <button className="start-button" onClick={startQuiz}>
+              <span className="start-button-text">INIZIA</span>
+            </button>
+          </div>
+        </div>
       </div>
     );
   }
 
+  // SCHERMATA RISULTATI
   if (showResult) {
     return (
       <div className="quiz-page">
@@ -282,10 +413,10 @@ const QuizPage = () => {
                   key={index}
                   className={`answer-review ${answer.isCorrect ? 'correct' : 'wrong'}`}
                 >
-                  <div className="answer-review-number">Domanda {index + 1}</div>
+                  <div className="answer-review-number">Q{index + 1}</div>
                   <div className="answer-review-question">{answer.question}</div>
                   <div className="answer-review-status">
-                    {answer.isCorrect ? '✓ Corretta' : '✗ Sbagliata'}
+                    {answer.isCorrect ? 'OK' : 'NO'}
                   </div>
                 </div>
               ))}
@@ -300,6 +431,7 @@ const QuizPage = () => {
     );
   }
 
+  // SCHERMATA QUIZ
   const question = selectedQuestions[currentQuestion];
 
   return (
@@ -307,16 +439,27 @@ const QuizPage = () => {
       <div className="quiz-container">
         <div className="quiz-header">
           <h1 className="quiz-title">Tech & Design Quiz</h1>
-          <div className="quiz-progress">
-            <span className="progress-text">Domanda {currentQuestion + 1} di 7</span>
-            <div className="progress-bar">
-              <div
-                className="progress-fill"
-                style={{ width: `${((currentQuestion + 1) / 7) * 100}%` }}
-              ></div>
+          <div className="quiz-meta">
+            <div className="quiz-progress-info">
+              <span className="progress-text">Domanda {currentQuestion + 1} / 7</span>
+              <div className="progress-bar">
+                <div
+                  className="progress-fill"
+                  style={{ width: `${((currentQuestion + 1) / 7) * 100}%` }}
+                ></div>
+              </div>
+            </div>
+            <div className="quiz-stats">
+              <div className="stat-item">
+                <span className="stat-label">Punteggio</span>
+                <span className="stat-value">{score}</span>
+              </div>
+              <div className={`stat-item timer ${timeLeft <= 5 ? 'timer-warning' : ''}`}>
+                <span className="stat-label">Tempo</span>
+                <span className="stat-value">{timeLeft}s</span>
+              </div>
             </div>
           </div>
-          <div className="quiz-score">Punteggio: {score}</div>
         </div>
 
         <div className="quiz-content">
@@ -350,15 +493,11 @@ const QuizPage = () => {
 
           {answerFeedback && (
             <div className={`feedback-message ${answerFeedback}`}>
-              {answerFeedback === 'correct' ? '✓ Risposta Corretta!' : '✗ Risposta Sbagliata!'}
+              {answerFeedback === 'correct' && 'Risposta Corretta!'}
+              {answerFeedback === 'wrong' && 'Risposta Sbagliata!'}
+              {answerFeedback === 'timeout' && 'Tempo Scaduto!'}
             </div>
           )}
-        </div>
-
-        <div className="quiz-footer">
-          <div className="quiz-info">
-            Domande randomiche da un pool di {questionPool.length} domande
-          </div>
         </div>
       </div>
     </div>

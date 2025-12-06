@@ -104,13 +104,32 @@
   transition: all 0.3s ease;
   text-transform: uppercase;
   letter-spacing: 0.05em;
+  position: relative;
+  overflow: hidden;
+}
+
+.back-button::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  background: rgba(0, 255, 255, 0.2);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  transition: width 0.4s ease, height 0.4s ease;
+}
+
+.back-button:hover::before {
+  width: 300%;
+  height: 300%;
 }
 
 .back-button:hover {
   background: rgba(0, 255, 255, 0.2);
   border-color: var(--color-primary, #0ff);
   transform: translateX(-4px);
-  box-shadow: 0 0 20px rgba(0, 255, 255, 0.3);
 }
 
 .back-arrow {
@@ -151,17 +170,14 @@
   align-items: center;
   justify-content: center;
   animation: iconPulse 3s ease-in-out infinite;
-  box-shadow: 0 0 30px rgba(0, 255, 255, 0.4);
 }
 
 @keyframes iconPulse {
   0%, 100% {
     transform: scale(1);
-    box-shadow: 0 0 30px rgba(0, 255, 255, 0.4);
   }
   50% {
     transform: scale(1.05);
-    box-shadow: 0 0 50px rgba(0, 255, 255, 0.6);
   }
 }
 
@@ -209,7 +225,6 @@
   font-size: 3.5rem;
   font-weight: 900;
   color: var(--color-primary, #0ff);
-  text-shadow: 0 0 20px rgba(0, 255, 255, 0.8);
   letter-spacing: 0.1em;
   margin: 0 0 1rem 0;
   text-transform: uppercase;
@@ -264,7 +279,6 @@
   padding: 2rem;
   text-align: center;
   backdrop-filter: blur(10px);
-  box-shadow: 0 0 10px var(--color-primary-15, rgba(0, 255, 255, 0.15));
   transition: all 0.3s ease;
   position: relative;
   overflow: hidden;
@@ -296,7 +310,6 @@
 .platform-card:hover {
   border-color: var(--color-primary-50, rgba(0, 255, 255, 0.5));
   transform: scale(1.05);
-  box-shadow: 0 0 20px var(--color-primary-50, rgba(0, 255, 255, 0.5));
 }
 
 .platform-icon {
@@ -343,7 +356,6 @@
   border-radius: 8px;
   padding: 2rem;
   backdrop-filter: blur(10px);
-  box-shadow: 0 0 10px var(--color-primary-15, rgba(0, 255, 255, 0.15));
   transition: all 0.3s ease;
   position: relative;
   overflow: hidden;
@@ -375,7 +387,6 @@
 .service-card:hover {
   border-color: var(--color-primary-50, rgba(0, 255, 255, 0.5));
   transform: scale(1.05);
-  box-shadow: 0 0 20px var(--color-primary-50, rgba(0, 255, 255, 0.5));
 }
 
 .service-card-icon {
@@ -422,7 +433,6 @@
   border-radius: 12px;
   padding: 2.5rem;
   backdrop-filter: blur(10px);
-  box-shadow: 0 0 10px var(--color-primary-15, rgba(0, 255, 255, 0.15));
   transition: all 0.3s ease;
   position: relative;
   overflow: hidden;
@@ -454,13 +464,11 @@
 .package-card:hover {
   border-color: var(--color-primary-50, rgba(0, 255, 255, 0.5));
   transform: scale(1.05);
-  box-shadow: 0 0 20px var(--color-primary-50, rgba(0, 255, 255, 0.5));
 }
 
 .package-featured {
   border-color: var(--color-primary-40, rgba(0, 255, 255, 0.4));
   background: rgba(0, 255, 255, 0.05);
-  box-shadow: 0 0 15px var(--color-primary-20, rgba(0, 255, 255, 0.2));
 }
 
 .package-badge {
@@ -527,17 +535,6 @@
   padding: 3rem;
   text-align: center;
   margin-bottom: 3rem;
-  box-shadow: 0 0 40px rgba(0, 255, 255, 0.2);
-  animation: highlightGlow 3s ease-in-out infinite;
-}
-
-@keyframes highlightGlow {
-  0%, 100% {
-    box-shadow: 0 0 40px rgba(0, 255, 255, 0.2);
-  }
-  50% {
-    box-shadow: 0 0 60px rgba(0, 255, 255, 0.4);
-  }
 }
 
 .highlight-icon {
@@ -600,7 +597,6 @@
 
 .detail-cta:hover {
   background: rgba(0, 255, 255, 0.2);
-  box-shadow: 0 0 40px rgba(0, 255, 255, 0.5);
   transform: translateY(-2px);
 }
 
@@ -644,20 +640,10 @@
   text-shadow: none;
 }
 
-[data-theme="light"] .detail-title,
-[data-theme="light"] .section-title,
-[data-theme="light"] .platform-name,
-[data-theme="light"] .service-card-title,
-[data-theme="light"] .package-title,
-[data-theme="light"] .highlight-title {
-  text-shadow: none;
-}
-
 [data-theme="light"] .platform-card,
 [data-theme="light"] .service-card,
 [data-theme="light"] .package-card {
   border-color: var(--color-primary-20);
-  box-shadow: 0 0 8px rgba(232, 160, 48, 0.12);
 }
 
 [data-theme="light"] .platform-card::before,
@@ -674,13 +660,11 @@
 [data-theme="light"] .platform-card:hover,
 [data-theme="light"] .service-card:hover,
 [data-theme="light"] .package-card:hover {
-  box-shadow: 0 0 20px var(--color-primary-50);
   border-color: var(--color-primary-50);
 }
 
 [data-theme="light"] .package-featured {
   border-color: var(--color-primary-40);
-  box-shadow: 0 0 12px rgba(232, 160, 48, 0.18);
 }
 
 /* Responsive */

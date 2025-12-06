@@ -2,55 +2,93 @@ import { useState, useRef, useEffect } from 'react';
 import './ImageCheckerPage.css';
 
 const ImageCheckerPage = () => {
-  const [image, setImage] = useState(null);
   const [lensActive, setLensActive] = useState(false);
   const [lensPosition, setLensPosition] = useState({ x: 0, y: 0 });
+  const [isTouching, setIsTouching] = useState(false);
+  const [lensSize, setLensSize] = useState(200);
   const imageRef = useRef(null);
   const containerRef = useRef(null);
 
-  const LENS_SIZE = 200; // Dimensione della lente in pixel
-  const ZOOM_LEVEL = 2.5; // Livello di ingrandimento
+  // Immagine fornita (MODIFICA QUESTO PATH)
+  const image = '../../../../../screenshots/VIejcO5.png';
 
-  const handleImageUpload = (e) => {
-    const file = e.target.files[0];
-    if (file && file.type.startsWith('image/')) {
-      const reader = new FileReader();
-      reader.onload = (event) => {
-        setImage(event.target.result);
-        setLensActive(false);
-      };
-      reader.readAsDataURL(file);
+  const ZOOM_LEVEL = 2.5;
+
+  // Aggiorna dimensione lente in base allo schermo
+  useEffect(() => {
+    const updateLensSize = () => {
+      if (window.innerWidth <= 480) {
+        setLensSize(140);
+      } else if (window.innerWidth <= 768) {
+        setLensSize(160);
+      } else {
+        setLensSize(200);
+      }
+    };
+
+    updateLensSize();
+    window.addEventListener('resize', updateLensSize);
+
+    return () => {
+      window.removeEventListener('resize', updateLensSize);
+    };
+  }, []);
+
+  const updateLensPosition = (clientX, clientY) => {
+    if (!imageRef.current) return;
+
+    const imageRect = imageRef.current.getBoundingClientRect();
+    
+    // Calcola posizione relativa all'immagine
+    const x = clientX - imageRect.left;
+    const y = clientY - imageRect.top;
+
+    const halfLens = lensSize / 2;
+    
+    // Su MOBILE (touch): nessun limite, lente libera di uscire
+    // Su DESKTOP (mouse): confina dentro l'immagine
+    if (isTouching) {
+      // Mobile: nessun bounds, la lente segue esattamente il dito
+      setLensPosition({ x, y });
+    } else {
+      // Desktop: confina la lente dentro l'immagine
+      const boundedX = Math.max(halfLens, Math.min(x, imageRect.width - halfLens));
+      const boundedY = Math.max(halfLens, Math.min(y, imageRect.height - halfLens));
+      setLensPosition({ x: boundedX, y: boundedY });
     }
   };
 
+  // Handler DESKTOP - Mouse
   const handleMouseMove = (e) => {
-    if (!lensActive || !imageRef.current || !containerRef.current) return;
-
-    const image = imageRef.current.getBoundingClientRect();
-
-    // Calcola la posizione del mouse relativa all'immagine
-    const x = e.clientX - image.left;
-    const y = e.clientY - image.top;
-
-    // Assicurati che la lente rimanga all'interno dei confini dell'immagine
-    const halfLens = LENS_SIZE / 2;
-    const boundedX = Math.max(halfLens, Math.min(x, image.width - halfLens));
-    const boundedY = Math.max(halfLens, Math.min(y, image.height - halfLens));
-
-    setLensPosition({ x: boundedX, y: boundedY });
+    if (!lensActive || isTouching) return;
+    updateLensPosition(e.clientX, e.clientY);
   };
 
-  const handleMouseLeave = () => {
-    // La lente scompare quando il mouse esce dall'immagine
+  // Handler MOBILE - Touch Start
+  const handleTouchStart = (e) => {
+    if (!lensActive) return;
+    e.preventDefault(); // Previeni comportamenti default
+    setIsTouching(true);
+    const touch = e.touches[0];
+    updateLensPosition(touch.clientX, touch.clientY);
+  };
+
+  // Handler MOBILE - Touch Move (drag con dito)
+  const handleTouchMove = (e) => {
+    if (!lensActive || !isTouching) return;
+    e.preventDefault(); // Previeni scroll durante il drag
+    const touch = e.touches[0];
+    updateLensPosition(touch.clientX, touch.clientY);
+  };
+
+  // Handler MOBILE - Touch End
+  const handleTouchEnd = (e) => {
+    e.preventDefault();
+    setIsTouching(false);
   };
 
   const toggleLens = () => {
     setLensActive(!lensActive);
-  };
-
-  const resetImage = () => {
-    setImage(null);
-    setLensActive(false);
   };
 
   useEffect(() => {
@@ -58,6 +96,7 @@ const ImageCheckerPage = () => {
       document.body.style.cursor = 'none';
     } else {
       document.body.style.cursor = 'default';
+      setIsTouching(false);
     }
 
     return () => {
@@ -71,107 +110,80 @@ const ImageCheckerPage = () => {
         <div className="checker-header">
           <h1 className="checker-title">Image Checker</h1>
           <p className="checker-subtitle">
-            Carica un'immagine e attiva la lente per esplorare i dettagli
+            Attiva la lente per esplorare i dettagli dell'immagine
           </p>
         </div>
 
-        {!image ? (
-          <div className="upload-zone">
-            <label htmlFor="image-upload" className="upload-label">
-              <div className="upload-icon">📷</div>
-              <div className="upload-text">
-                <span className="upload-main-text">Clicca per caricare un'immagine</span>
-                <span className="upload-sub-text">Supporta JPG, PNG, GIF, WebP</span>
-              </div>
-              <input
-                id="image-upload"
-                type="file"
-                accept="image/*"
-                onChange={handleImageUpload}
-                className="upload-input"
-              />
-            </label>
-          </div>
-        ) : (
-          <>
-            <div className="checker-controls">
-              <button
-                className={`lens-toggle-btn ${lensActive ? 'active' : ''}`}
-                onClick={toggleLens}
-              >
-                <span className="lens-icon">🔍</span>
-                {lensActive ? 'Disattiva Lente' : 'Attiva Lente'}
-              </button>
-              <button className="reset-btn" onClick={resetImage}>
-                Cambia Immagine
-              </button>
-            </div>
+        <div className="checker-controls">
+          <button
+            className={`lens-toggle-btn ${lensActive ? 'active' : ''}`}
+            onClick={toggleLens}
+          >
+            <span className="lens-icon">🔍</span>
+            {lensActive ? 'Disattiva Lente' : 'Attiva Lente'}
+          </button>
+        </div>
 
+        <div
+          ref={containerRef}
+          className={`image-container ${lensActive ? 'lens-active' : ''}`}
+          onMouseMove={handleMouseMove}
+          onTouchStart={handleTouchStart}
+          onTouchMove={handleTouchMove}
+          onTouchEnd={handleTouchEnd}
+          onTouchCancel={handleTouchEnd}
+        >
+          <img
+            ref={imageRef}
+            src={image}
+            alt="Image to inspect"
+            className="uploaded-image"
+            draggable="false"
+          />
+
+          {lensActive && imageRef.current && (
             <div
-              ref={containerRef}
-              className={`image-container ${lensActive ? 'lens-active' : ''}`}
-              onMouseMove={handleMouseMove}
-              onMouseLeave={handleMouseLeave}
+              className="magnifier-lens"
+              style={{
+                left: `${lensPosition.x}px`,
+                top: `${lensPosition.y}px`,
+                width: `${lensSize}px`,
+                height: `${lensSize}px`,
+              }}
             >
-              <img
-                ref={imageRef}
-                src={image}
-                alt="Uploaded"
-                className="uploaded-image"
-                draggable="false"
+              <div
+                className="magnifier-image"
+                style={{
+                  backgroundImage: `url(${image})`,
+                  backgroundSize: `${imageRef.current.width * ZOOM_LEVEL}px ${imageRef.current.height * ZOOM_LEVEL}px`,
+                  backgroundPosition: `${-lensPosition.x * ZOOM_LEVEL + lensSize / 2}px ${-lensPosition.y * ZOOM_LEVEL + lensSize / 2}px`,
+                }}
               />
-
-              {lensActive && (
-                <div
-                  className="magnifier-lens"
-                  style={{
-                    left: `${lensPosition.x}px`,
-                    top: `${lensPosition.y}px`,
-                    width: `${LENS_SIZE}px`,
-                    height: `${LENS_SIZE}px`,
-                  }}
-                >
-                  <div
-                    className="magnifier-image"
-                    style={{
-                      backgroundImage: `url(${image})`,
-                      backgroundSize: `${
-                        imageRef.current ? imageRef.current.width * ZOOM_LEVEL : 0
-                      }px ${
-                        imageRef.current ? imageRef.current.height * ZOOM_LEVEL : 0
-                      }px`,
-                      backgroundPosition: `${-lensPosition.x * ZOOM_LEVEL + LENS_SIZE / 2}px ${
-                        -lensPosition.y * ZOOM_LEVEL + LENS_SIZE / 2
-                      }px`,
-                    }}
-                  />
-                </div>
-              )}
             </div>
+          )}
+        </div>
 
-            <div className="checker-info">
-              <div className="info-item">
-                <span className="info-label">Stato Lente:</span>
-                <span className={`info-value ${lensActive ? 'active' : 'inactive'}`}>
-                  {lensActive ? 'Attiva' : 'Inattiva'}
-                </span>
-              </div>
-              <div className="info-item">
-                <span className="info-label">Zoom:</span>
-                <span className="info-value">{ZOOM_LEVEL}x</span>
-              </div>
-              <div className="info-item">
-                <span className="info-label">Dimensione Lente:</span>
-                <span className="info-value">{LENS_SIZE}px</span>
-              </div>
-            </div>
+        <div className="checker-info">
+          <div className="info-item">
+            <span className="info-label">Stato Lente</span>
+            <span className={`info-value ${lensActive ? 'active' : 'inactive'}`}>
+              {lensActive ? 'Attiva' : 'Inattiva'}
+            </span>
+          </div>
+          <div className="info-item">
+            <span className="info-label">Zoom</span>
+            <span className="info-value">{ZOOM_LEVEL}x</span>
+          </div>
+          <div className="info-item">
+            <span className="info-label">Dimensione Lente</span>
+            <span className="info-value">{lensSize}px</span>
+          </div>
+        </div>
 
-            {lensActive && (
-              <div className="lens-instructions">
-                <p>💡 Muovi il mouse sull'immagine per esplorare i dettagli</p>
-              </div>
-            )}
-          </>
+        {lensActive && (
+          <div className="lens-instructions">
+            <p>Desktop: muovi il mouse - Mobile: tocca e trascina il dito</p>
+          </div>
         )}
       </div>
     </div>
