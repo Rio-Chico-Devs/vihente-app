@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import './PatternMatcherPage.css';
 
 const PatternMatcherPage = () => {
@@ -22,24 +22,7 @@ const PatternMatcherPage = () => {
 
   const shapes = ['circle', 'square', 'triangle', 'diamond'];
 
-  const generatePuzzle = () => {
-    const type = patternTypes[Math.floor(Math.random() * patternTypes.length)];
-
-    switch (type) {
-      case 'colors':
-        return generateColorPattern();
-      case 'shapes':
-        return generateShapePattern();
-      case 'rotation':
-        return generateRotationPattern();
-      case 'size':
-        return generateSizePattern();
-      default:
-        return generateColorPattern();
-    }
-  };
-
-  const generateColorPattern = () => {
+  const generateColorPattern = useCallback(() => {
     const selectedColors = [...colors].sort(() => Math.random() - 0.5).slice(0, 3);
     const grid = [];
 
@@ -52,18 +35,27 @@ const PatternMatcherPage = () => {
     }
 
     const correctAnswer = grid[8];
-    const wrongAnswers = generateWrongColorAnswers(selectedColors, correctAnswer);
+    const wrong = [];
+    const availableColors = colors.filter(c => !selectedColors.includes(c));
+
+    for (let i = 0; i < Math.min(3, availableColors.length); i++) {
+      wrong.push({
+        type: 'color',
+        color: availableColors[i],
+        shape: correctAnswer.shape
+      });
+    }
 
     return {
       type: 'colors',
       grid: grid.slice(0, 8),
       correctAnswer,
-      options: shuffleArray([correctAnswer, ...wrongAnswers]),
+      options: [...wrong, correctAnswer].sort(() => Math.random() - 0.5),
       description: 'Trova il colore che completa il pattern'
     };
-  };
+  }, []);
 
-  const generateShapePattern = () => {
+  const generateShapePattern = useCallback(() => {
     const selectedShapes = [...shapes].sort(() => Math.random() - 0.5).slice(0, 3);
     const color = colors[Math.floor(Math.random() * colors.length)];
     const grid = [];
@@ -77,18 +69,23 @@ const PatternMatcherPage = () => {
     }
 
     const correctAnswer = grid[8];
-    const wrongAnswers = generateWrongShapeAnswers(selectedShapes, color, correctAnswer);
+    const availableShapes = shapes.filter(s => !selectedShapes.includes(s));
+    const wrong = availableShapes.slice(0, 3).map(shape => ({
+      type: 'shape',
+      shape,
+      color
+    }));
 
     return {
       type: 'shapes',
       grid: grid.slice(0, 8),
       correctAnswer,
-      options: shuffleArray([correctAnswer, ...wrongAnswers]),
+      options: [...wrong, correctAnswer].sort(() => Math.random() - 0.5),
       description: 'Trova la forma che completa il pattern'
     };
-  };
+  }, []);
 
-  const generateRotationPattern = () => {
+  const generateRotationPattern = useCallback(() => {
     const color = colors[Math.floor(Math.random() * colors.length)];
     const grid = [];
     const rotationStep = 45;
@@ -103,18 +100,26 @@ const PatternMatcherPage = () => {
     }
 
     const correctAnswer = grid[8];
-    const wrongAnswers = generateWrongRotationAnswers(color, correctAnswer);
+    const allRotations = [0, 45, 90, 135, 180, 225, 270, 315];
+    const wrongRotations = allRotations.filter(r => r !== correctAnswer.rotation);
+    const shuffled = wrongRotations.sort(() => Math.random() - 0.5);
+    const wrong = shuffled.slice(0, 3).map(rotation => ({
+      type: 'rotation',
+      rotation,
+      color,
+      shape: 'triangle'
+    }));
 
     return {
       type: 'rotation',
       grid: grid.slice(0, 8),
       correctAnswer,
-      options: shuffleArray([correctAnswer, ...wrongAnswers]),
+      options: [...wrong, correctAnswer].sort(() => Math.random() - 0.5),
       description: 'Trova la rotazione corretta che completa il pattern'
     };
-  };
+  }, []);
 
-  const generateSizePattern = () => {
+  const generateSizePattern = useCallback(() => {
     const color = colors[Math.floor(Math.random() * colors.length)];
     const grid = [];
     const sizes = [15, 22, 30];
@@ -129,86 +134,55 @@ const PatternMatcherPage = () => {
     }
 
     const correctAnswer = grid[8];
-    const wrongAnswers = generateWrongSizeAnswers(color, sizes, correctAnswer);
-
-    return {
-      type: 'size',
-      grid: grid.slice(0, 8),
-      correctAnswer,
-      options: shuffleArray([correctAnswer, ...wrongAnswers]),
-      description: 'Trova la dimensione corretta che completa il pattern'
-    };
-  };
-
-  const generateWrongColorAnswers = (usedColors, correct) => {
-    const wrong = [];
-    const availableColors = colors.filter(c => !usedColors.includes(c));
-
-    for (let i = 0; i < Math.min(3, availableColors.length); i++) {
-      wrong.push({
-        type: 'color',
-        color: availableColors[i],
-        shape: correct.shape
-      });
-    }
-
-    return wrong;
-  };
-
-  const generateWrongShapeAnswers = (usedShapes, color, correct) => {
-    const availableShapes = shapes.filter(s => !usedShapes.includes(s));
-
-    return availableShapes.slice(0, 3).map(shape => ({
-      type: 'shape',
-      shape,
-      color
-    }));
-  };
-
-  const generateWrongRotationAnswers = (color, correct) => {
-    const allRotations = [0, 45, 90, 135, 180, 225, 270, 315];
-    const wrongRotations = allRotations.filter(r => r !== correct.rotation);
-    const shuffled = wrongRotations.sort(() => Math.random() - 0.5);
-
-    return shuffled.slice(0, 3).map(rotation => ({
-      type: 'rotation',
-      rotation,
-      color,
-      shape: 'triangle'
-    }));
-  };
-
-  const generateWrongSizeAnswers = (color, usedSizes, correct) => {
     const allSizes = [12, 15, 18, 22, 26, 30, 35, 40];
-    const wrongSizes = allSizes.filter(s => !usedSizes.includes(s));
-
-    return wrongSizes.slice(0, 3).map(size => ({
+    const wrongSizes = allSizes.filter(s => !sizes.includes(s));
+    const wrong = wrongSizes.slice(0, 3).map(size => ({
       type: 'size',
       size,
       color,
       shape: 'circle'
     }));
-  };
 
-  const shuffleArray = (array) => {
-    return [...array].sort(() => Math.random() - 0.5);
-  };
+    return {
+      type: 'size',
+      grid: grid.slice(0, 8),
+      correctAnswer,
+      options: [...wrong, correctAnswer].sort(() => Math.random() - 0.5),
+      description: 'Trova la dimensione corretta che completa il pattern'
+    };
+  }, []);
+
+  const generatePuzzle = useCallback(() => {
+    const type = patternTypes[Math.floor(Math.random() * patternTypes.length)];
+
+    switch (type) {
+      case 'colors':
+        return generateColorPattern();
+      case 'shapes':
+        return generateShapePattern();
+      case 'rotation':
+        return generateRotationPattern();
+      case 'size':
+        return generateSizePattern();
+      default:
+        return generateColorPattern();
+    }
+  }, [generateColorPattern, generateShapePattern, generateRotationPattern, generateSizePattern]);
 
   useEffect(() => {
     setCurrentPuzzle(generatePuzzle());
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [generatePuzzle]);
 
   const handleAnswerClick = (answer, index) => {
     if (showResult) return;
 
     setSelectedAnswer(index);
-    const correct = JSON.stringify(answer) === JSON.stringify(currentPuzzle.correctAnswer);
-    setIsCorrect(correct);
+    const isAnswerCorrect = JSON.stringify(answer) === JSON.stringify(currentPuzzle.correctAnswer);
+    setIsCorrect(isAnswerCorrect);
     setShowResult(true);
     setTotalGames(totalGames + 1);
 
-    if (correct) {
+    if (isAnswerCorrect) {
       setScore(score + 1);
     }
   };
@@ -220,7 +194,7 @@ const PatternMatcherPage = () => {
     setIsCorrect(false);
   };
 
-  const renderPattern = (pattern, size = 28) => {
+  const renderPattern = (pattern, size = 24) => {
     if (!pattern) return null;
 
     const commonStyle = {
@@ -288,7 +262,7 @@ const PatternMatcherPage = () => {
         <div className="puzzle-grid">
           {currentPuzzle.grid.map((pattern, index) => (
             <div key={index} className="grid-cell">
-              {renderPattern(pattern)}
+              {renderPattern(pattern, 24)}
             </div>
           ))}
           <div className="grid-cell missing-cell">
@@ -298,7 +272,7 @@ const PatternMatcherPage = () => {
 
         <div className="right-column">
           <div className="options-section">
-            <h3 className="options-title">Seleziona il pattern mancante:</h3>
+            <h3 className="options-title">Seleziona la risposta:</h3>
             <div className="options-grid">
               {currentPuzzle.options.map((option, index) => (
                 <div
@@ -317,7 +291,7 @@ const PatternMatcherPage = () => {
                   }`}
                   onClick={() => handleAnswerClick(option, index)}
                 >
-                  {renderPattern(option, 24)}
+                  {renderPattern(option, 20)}
                 </div>
               ))}
             </div>
@@ -329,7 +303,7 @@ const PatternMatcherPage = () => {
                 {isCorrect ? '✓ Corretto!' : '✗ Riprova'}
               </div>
               <button className="next-btn" onClick={nextPuzzle}>
-                Prossimo Pattern
+                Prossimo
               </button>
             </div>
           )}
@@ -337,7 +311,7 @@ const PatternMatcherPage = () => {
 
         <div className="pattern-info">
           <p>
-            💡 Analizza il pattern: colori, forme, rotazioni o dimensioni seguono una sequenza logica
+            💡 Trova il pattern che completa la sequenza logica
           </p>
         </div>
       </div>
