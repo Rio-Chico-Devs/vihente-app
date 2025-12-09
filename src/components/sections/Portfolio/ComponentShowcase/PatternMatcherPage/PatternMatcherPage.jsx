@@ -9,27 +9,19 @@ const PatternMatcherPage = () => {
   const [totalGames, setTotalGames] = useState(0);
   const [isCorrect, setIsCorrect] = useState(false);
 
-  // Tipi di pattern possibili
-  const patternTypes = [
-    'colors',
-    'shapes',
-    'rotation',
-    'size'
-  ];
+  const patternTypes = ['colors', 'shapes', 'rotation', 'size'];
 
-  // Colori ben distinguibili
   const colors = [
-    '#ff0000',  // Rosso puro
-    '#00ff00',  // Verde puro
-    '#0000ff',  // Blu puro
-    '#ffff00',  // Giallo puro
-    '#ff00ff',  // Magenta
-    '#00ffff'   // Ciano
+    '#ff0000',
+    '#00ff00',
+    '#0000ff',
+    '#ffff00',
+    '#ff00ff',
+    '#00ffff'
   ];
 
   const shapes = ['circle', 'square', 'triangle', 'diamond'];
 
-  // Genera un puzzle randomico
   const generatePuzzle = () => {
     const type = patternTypes[Math.floor(Math.random() * patternTypes.length)];
 
@@ -47,12 +39,10 @@ const PatternMatcherPage = () => {
     }
   };
 
-  // Pattern di colori crescenti
   const generateColorPattern = () => {
     const selectedColors = [...colors].sort(() => Math.random() - 0.5).slice(0, 3);
     const grid = [];
 
-    // Crea pattern: ripete i 3 colori in sequenza
     for (let i = 0; i < 9; i++) {
       grid.push({
         type: 'color',
@@ -73,7 +63,6 @@ const PatternMatcherPage = () => {
     };
   };
 
-  // Pattern di forme che si ripetono
   const generateShapePattern = () => {
     const selectedShapes = [...shapes].sort(() => Math.random() - 0.5).slice(0, 3);
     const color = colors[Math.floor(Math.random() * colors.length)];
@@ -99,7 +88,6 @@ const PatternMatcherPage = () => {
     };
   };
 
-  // Pattern di rotazione
   const generateRotationPattern = () => {
     const color = colors[Math.floor(Math.random() * colors.length)];
     const grid = [];
@@ -126,11 +114,10 @@ const PatternMatcherPage = () => {
     };
   };
 
-  // Pattern di dimensioni crescenti
   const generateSizePattern = () => {
     const color = colors[Math.floor(Math.random() * colors.length)];
     const grid = [];
-    const sizes = [20, 30, 40];
+    const sizes = [15, 22, 30];
 
     for (let i = 0; i < 9; i++) {
       grid.push({
@@ -153,12 +140,10 @@ const PatternMatcherPage = () => {
     };
   };
 
-  // Genera risposte sbagliate per colori (no duplicati)
   const generateWrongColorAnswers = (usedColors, correct) => {
     const wrong = [];
     const availableColors = colors.filter(c => !usedColors.includes(c));
 
-    // Prendi 3 colori diversi che non sono stati usati
     for (let i = 0; i < Math.min(3, availableColors.length); i++) {
       wrong.push({
         type: 'color',
@@ -170,7 +155,6 @@ const PatternMatcherPage = () => {
     return wrong;
   };
 
-  // Genera risposte sbagliate per forme (no duplicati)
   const generateWrongShapeAnswers = (usedShapes, color, correct) => {
     const availableShapes = shapes.filter(s => !usedShapes.includes(s));
 
@@ -181,12 +165,9 @@ const PatternMatcherPage = () => {
     }));
   };
 
-  // Genera risposte sbagliate per rotazione (no duplicati)
   const generateWrongRotationAnswers = (color, correct) => {
     const allRotations = [0, 45, 90, 135, 180, 225, 270, 315];
     const wrongRotations = allRotations.filter(r => r !== correct.rotation);
-
-    // Prendi 3 rotazioni casuali diverse dalla corretta
     const shuffled = wrongRotations.sort(() => Math.random() - 0.5);
 
     return shuffled.slice(0, 3).map(rotation => ({
@@ -197,9 +178,8 @@ const PatternMatcherPage = () => {
     }));
   };
 
-  // Genera risposte sbagliate per dimensioni (no duplicati)
   const generateWrongSizeAnswers = (color, usedSizes, correct) => {
-    const allSizes = [15, 20, 25, 30, 35, 40, 45, 50];
+    const allSizes = [12, 15, 18, 22, 26, 30, 35, 40];
     const wrongSizes = allSizes.filter(s => !usedSizes.includes(s));
 
     return wrongSizes.slice(0, 3).map(size => ({
@@ -240,7 +220,7 @@ const PatternMatcherPage = () => {
     setIsCorrect(false);
   };
 
-  const renderPattern = (pattern, size = 40) => {
+  const renderPattern = (pattern, size = 28) => {
     if (!pattern) return null;
 
     const commonStyle = {
@@ -337,7 +317,7 @@ const PatternMatcherPage = () => {
                   }`}
                   onClick={() => handleAnswerClick(option, index)}
                 >
-                  {renderPattern(option, 35)}
+                  {renderPattern(option, 24)}
                 </div>
               ))}
             </div>
