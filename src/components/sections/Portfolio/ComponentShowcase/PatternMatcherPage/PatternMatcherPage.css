@@ -148,20 +148,21 @@
 }
 
 /* ============================================
-   PUZZLE GRID
+   PUZZLE GRID - RIDIMENSIONATA
    ============================================ */
 
 .puzzle-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 0.3rem;
-  padding: 0.5rem;
+  gap: 0.25rem;
+  padding: 0.4rem;
   background: var(--card-bg, rgba(0, 0, 0, 0.3));
   border: 2px solid var(--color-primary-20, rgba(0, 255, 255, 0.2));
   border-radius: 4px;
   backdrop-filter: blur(8px);
   align-self: center;
   max-height: 100%;
+  max-width: 400px;
 }
 
 .grid-cell {
@@ -253,7 +254,7 @@
 }
 
 /* ============================================
-   OPTIONS SECTION
+   OPTIONS SECTION - RIDIMENSIONATA
    ============================================ */
 
 .options-section {
@@ -277,7 +278,9 @@
 .options-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 0.4rem;
+  gap: 0.3rem;
+  max-width: 300px;
+  margin: 0 auto;
 }
 
 .option-cell {
@@ -464,8 +467,9 @@
   }
 
   .puzzle-grid {
-    padding: 0.4rem;
-    gap: 0.25rem;
+    padding: 0.3rem;
+    gap: 0.2rem;
+    max-width: 100%;
   }
 
   .question-mark {
@@ -482,7 +486,8 @@
   }
 
   .options-grid {
-    gap: 0.3rem;
+    gap: 0.25rem;
+    max-width: 100%;
   }
 
   .pattern-info {
