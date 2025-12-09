@@ -130,7 +130,7 @@ const PatternMatcherPage = () => {
   const generateSizePattern = () => {
     const color = colors[Math.floor(Math.random() * colors.length)];
     const grid = [];
-    const sizes = [25, 40, 55];
+    const sizes = [20, 30, 40];
 
     for (let i = 0; i < 9; i++) {
       grid.push({
@@ -199,7 +199,7 @@ const PatternMatcherPage = () => {
 
   // Genera risposte sbagliate per dimensioni (no duplicati)
   const generateWrongSizeAnswers = (color, usedSizes, correct) => {
-    const allSizes = [20, 25, 30, 35, 40, 45, 50, 55, 60, 65];
+    const allSizes = [15, 20, 25, 30, 35, 40, 45, 50];
     const wrongSizes = allSizes.filter(s => !usedSizes.includes(s));
 
     return wrongSizes.slice(0, 3).map(size => ({
@@ -240,7 +240,7 @@ const PatternMatcherPage = () => {
     setIsCorrect(false);
   };
 
-  const renderPattern = (pattern, size = 60) => {
+  const renderPattern = (pattern, size = 40) => {
     if (!pattern) return null;
 
     const commonStyle = {
@@ -337,7 +337,7 @@ const PatternMatcherPage = () => {
                   }`}
                   onClick={() => handleAnswerClick(option, index)}
                 >
-                  {renderPattern(option, 50)}
+                  {renderPattern(option, 35)}
                 </div>
               ))}
             </div>

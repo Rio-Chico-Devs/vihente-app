@@ -61,7 +61,7 @@
 .pattern-container {
   position: relative;
   z-index: 10;
-  max-width: 1400px;
+  max-width: 1200px;
   width: 100%;
   height: 100%;
   background: var(--card-bg, rgba(0, 0, 0, 0.4));
@@ -71,12 +71,12 @@
   box-shadow:
     0 0 40px var(--color-primary-20, rgba(0, 255, 255, 0.2)),
     inset 0 0 40px var(--color-primary-05, rgba(0, 255, 255, 0.05));
-  padding: 1rem;
+  padding: 0.8rem;
   transition: border-color 0.3s ease, box-shadow 0.3s ease;
   display: grid;
   grid-template-columns: 1fr 1fr;
   grid-template-rows: auto 1fr auto;
-  gap: 1rem;
+  gap: 0.8rem;
   overflow: hidden;
 }
 
@@ -87,7 +87,7 @@
 .loading {
   font-family: 'Share Tech Mono', monospace;
   color: var(--color-primary, #0ff);
-  font-size: 1.5rem;
+  font-size: 1.2rem;
   text-align: center;
   text-shadow: 0 0 15px var(--color-primary-80, rgba(0, 255, 255, 0.8));
 }
@@ -103,28 +103,28 @@
 
 .pattern-title {
   font-family: 'Orbitron', sans-serif;
-  font-size: 1.5rem;
+  font-size: 1.3rem;
   font-weight: 700;
   color: var(--color-primary, #0ff);
   text-shadow: 0 0 15px var(--color-primary-80, rgba(0, 255, 255, 0.8));
-  margin: 0 0 0.3rem 0;
+  margin: 0 0 0.2rem 0;
   text-transform: uppercase;
   letter-spacing: 0.15em;
 }
 
 .pattern-subtitle {
   font-family: 'Share Tech Mono', monospace;
-  font-size: 0.8rem;
+  font-size: 0.7rem;
   color: var(--color-secondary, rgba(255, 255, 255, 0.9));
-  line-height: 1.3;
-  margin: 0 0 0.5rem 0;
+  line-height: 1.2;
+  margin: 0 0 0.3rem 0;
 }
 
 .pattern-stats {
   display: flex;
   justify-content: center;
-  gap: 2rem;
-  margin-top: 0.5rem;
+  gap: 1.5rem;
+  margin-top: 0.3rem;
 }
 
 .stat-item {
@@ -137,7 +137,7 @@
 .stat-label {
   font-family: 'Share Tech Mono', monospace;
   color: var(--color-secondary, rgba(255, 255, 255, 0.9));
-  font-size: 0.7rem;
+  font-size: 0.65rem;
   text-transform: uppercase;
   letter-spacing: 0.05em;
   opacity: 0.8;
@@ -146,7 +146,7 @@
 .stat-value {
   font-family: 'Share Tech Mono', monospace;
   color: var(--color-primary, #0ff);
-  font-size: 1rem;
+  font-size: 0.9rem;
   font-weight: bold;
   text-shadow: 0 0 10px var(--color-primary-50, rgba(0, 255, 255, 0.5));
 }
@@ -158,13 +158,14 @@
 .puzzle-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 0.5rem;
-  padding: 1rem;
+  gap: 0.4rem;
+  padding: 0.8rem;
   background: var(--card-bg, rgba(0, 0, 0, 0.3));
   border: 2px solid var(--color-primary-20, rgba(0, 255, 255, 0.2));
   border-radius: 4px;
   backdrop-filter: blur(8px);
   align-self: center;
+  max-height: 100%;
 }
 
 .grid-cell {
@@ -177,6 +178,7 @@
   align-items: center;
   position: relative;
   transition: all 0.3s ease;
+  min-height: 0;
 }
 
 .grid-cell:hover {
@@ -203,7 +205,7 @@
 
 .question-mark {
   font-family: 'Orbitron', sans-serif;
-  font-size: 2rem;
+  font-size: 1.5rem;
   color: var(--color-primary, #0ff);
   font-weight: bold;
   text-shadow: 0 0 15px var(--color-primary-80, rgba(0, 255, 255, 0.8));
@@ -230,9 +232,9 @@
   width: 0 !important;
   height: 0 !important;
   background-color: transparent !important;
-  border-left: 30px solid transparent;
-  border-right: 30px solid transparent;
-  border-bottom: 52px solid;
+  border-left: 20px solid transparent;
+  border-right: 20px solid transparent;
+  border-bottom: 35px solid;
   border-bottom-color: inherit;
 }
 
@@ -248,8 +250,9 @@
 .right-column {
   display: flex;
   flex-direction: column;
-  gap: 0.8rem;
+  gap: 0.6rem;
   align-self: center;
+  max-height: 100%;
 }
 
 /* ============================================
@@ -260,14 +263,15 @@
   flex: 1;
   display: flex;
   flex-direction: column;
+  min-height: 0;
 }
 
 .options-title {
   font-family: 'Orbitron', sans-serif;
   color: var(--color-primary, #0ff);
-  font-size: 0.85rem;
+  font-size: 0.75rem;
   text-align: center;
-  margin-bottom: 0.8rem;
+  margin-bottom: 0.5rem;
   text-transform: uppercase;
   letter-spacing: 0.1em;
   text-shadow: 0 0 10px var(--color-primary-50, rgba(0, 255, 255, 0.5));
@@ -276,7 +280,7 @@
 .options-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 0.6rem;
+  gap: 0.5rem;
 }
 
 .option-cell {
@@ -290,6 +294,7 @@
   cursor: pointer;
   transition: all 0.3s ease;
   position: relative;
+  min-height: 0;
 }
 
 .option-cell:hover {
@@ -319,13 +324,13 @@
 
 @keyframes correctPulse {
   0%, 100% { transform: scale(1); }
-  50% { transform: scale(1.1); }
+  50% { transform: scale(1.05); }
 }
 
 @keyframes wrongShake {
   0%, 100% { transform: translateX(0); }
-  25% { transform: translateX(-10px); }
-  75% { transform: translateX(10px); }
+  25% { transform: translateX(-8px); }
+  75% { transform: translateX(8px); }
 }
 
 /* ============================================
@@ -338,11 +343,11 @@
 
 .result-message {
   font-family: 'Share Tech Mono', monospace;
-  font-size: 0.95rem;
+  font-size: 0.8rem;
   font-weight: bold;
-  padding: 0.6rem;
+  padding: 0.5rem;
   border-radius: 4px;
-  margin-bottom: 0.6rem;
+  margin-bottom: 0.5rem;
   animation: fadeIn 0.5s ease;
 }
 
@@ -363,7 +368,7 @@
 @keyframes fadeIn {
   from {
     opacity: 0;
-    transform: translateY(-20px);
+    transform: translateY(-10px);
   }
   to {
     opacity: 1;
@@ -377,8 +382,8 @@
   color: var(--color-primary, #0ff);
   border: 2px solid var(--color-primary-40, rgba(0, 255, 255, 0.4));
   border-radius: 4px;
-  padding: 0.6rem 1.5rem;
-  font-size: 0.85rem;
+  padding: 0.5rem 1.2rem;
+  font-size: 0.75rem;
   font-weight: bold;
   cursor: pointer;
   transition: all 0.3s ease;
@@ -401,7 +406,7 @@
 .pattern-info {
   grid-column: 1 / -1;
   text-align: center;
-  padding: 0.5rem;
+  padding: 0.4rem;
   background: var(--color-primary-05, rgba(0, 255, 255, 0.05));
   border-radius: 4px;
   border: 2px solid var(--color-primary-20, rgba(0, 255, 255, 0.2));
@@ -410,9 +415,9 @@
 .pattern-info p {
   font-family: 'Share Tech Mono', monospace;
   color: var(--color-secondary, rgba(255, 255, 255, 0.9));
-  font-size: 0.7rem;
+  font-size: 0.65rem;
   margin: 0;
-  line-height: 1.3;
+  line-height: 1.2;
 }
 
 /* ============================================
@@ -429,9 +434,9 @@
 
   .pattern-container {
     grid-template-columns: 1fr;
-    grid-template-rows: auto auto auto auto;
-    padding: 0.8rem;
-    gap: 0.8rem;
+    grid-template-rows: auto 1fr auto auto;
+    padding: 0.6rem;
+    gap: 0.6rem;
   }
 
   .pattern-header {
@@ -439,51 +444,59 @@
   }
 
   .pattern-title {
-    font-size: 1.3rem;
+    font-size: 1.1rem;
   }
 
   .pattern-subtitle {
-    font-size: 0.75rem;
-  }
-
-  .puzzle-grid {
-    padding: 0.8rem;
-    gap: 0.4rem;
-  }
-
-  .question-mark {
-    font-size: 1.5rem;
-  }
-
-  .right-column {
-    gap: 0.6rem;
-  }
-
-  .options-grid {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 0.5rem;
-  }
-
-  .pattern-stats {
-    gap: 1.2rem;
-  }
-
-  .stat-value {
-    font-size: 0.9rem;
-  }
-
-  .pattern-info p {
     font-size: 0.65rem;
   }
 
+  .puzzle-grid {
+    padding: 0.6rem;
+    gap: 0.3rem;
+  }
+
+  .question-mark {
+    font-size: 1.2rem;
+  }
+
+  .right-column {
+    gap: 0.5rem;
+  }
+
+  .options-grid {
+    gap: 0.4rem;
+  }
+
+  .pattern-stats {
+    gap: 1rem;
+  }
+
+  .stat-label {
+    font-size: 0.6rem;
+  }
+
+  .stat-value {
+    font-size: 0.8rem;
+  }
+
+  .pattern-info p {
+    font-size: 0.6rem;
+  }
+
   .result-message {
-    font-size: 0.85rem;
-    padding: 0.5rem;
+    font-size: 0.75rem;
+    padding: 0.4rem;
   }
 
   .next-btn {
-    padding: 0.5rem 1.2rem;
-    font-size: 0.75rem;
+    padding: 0.4rem 1rem;
+    font-size: 0.7rem;
+  }
+
+  .options-title {
+    font-size: 0.7rem;
+    margin-bottom: 0.4rem;
   }
 }
 
