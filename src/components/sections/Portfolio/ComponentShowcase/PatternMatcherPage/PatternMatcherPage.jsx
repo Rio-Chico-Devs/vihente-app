@@ -11,14 +11,22 @@ const PatternMatcherPage = () => {
 
   // Tipi di pattern possibili
   const patternTypes = [
-    'colors',       // Pattern di colori
-    'shapes',       // Pattern di forme
-    'rotation',     // Pattern di rotazione
-    'size',         // Pattern di dimensioni
-    'position'      // Pattern di posizione
+    'colors',
+    'shapes',
+    'rotation',
+    'size'
   ];
 
-  const colors = ['#ff6b6b', '#4ecdc4', '#45b7d1', '#f9ca24', '#6c5ce7', '#a29bfe'];
+  // Colori ben distinguibili
+  const colors = [
+    '#ff0000',  // Rosso puro
+    '#00ff00',  // Verde puro
+    '#0000ff',  // Blu puro
+    '#ffff00',  // Giallo puro
+    '#ff00ff',  // Magenta
+    '#00ffff'   // Ciano
+  ];
+
   const shapes = ['circle', 'square', 'triangle', 'diamond'];
 
   // Genera un puzzle randomico
@@ -34,8 +42,6 @@ const PatternMatcherPage = () => {
         return generateRotationPattern();
       case 'size':
         return generateSizePattern();
-      case 'position':
-        return generatePositionPattern();
       default:
         return generateColorPattern();
     }
@@ -82,7 +88,7 @@ const PatternMatcherPage = () => {
     }
 
     const correctAnswer = grid[8];
-    const wrongAnswers = generateWrongShapeAnswers(shapes, color, correctAnswer);
+    const wrongAnswers = generateWrongShapeAnswers(selectedShapes, color, correctAnswer);
 
     return {
       type: 'shapes',
@@ -97,11 +103,12 @@ const PatternMatcherPage = () => {
   const generateRotationPattern = () => {
     const color = colors[Math.floor(Math.random() * colors.length)];
     const grid = [];
+    const rotationStep = 45;
 
     for (let i = 0; i < 9; i++) {
       grid.push({
         type: 'rotation',
-        rotation: (i * 45) % 360,
+        rotation: (i * rotationStep) % 360,
         color,
         shape: 'triangle'
       });
@@ -123,18 +130,19 @@ const PatternMatcherPage = () => {
   const generateSizePattern = () => {
     const color = colors[Math.floor(Math.random() * colors.length)];
     const grid = [];
+    const sizes = [25, 40, 55];
 
     for (let i = 0; i < 9; i++) {
       grid.push({
         type: 'size',
-        size: 30 + (i % 3) * 15,
+        size: sizes[i % 3],
         color,
         shape: 'circle'
       });
     }
 
     const correctAnswer = grid[8];
-    const wrongAnswers = generateWrongSizeAnswers(color, correctAnswer);
+    const wrongAnswers = generateWrongSizeAnswers(color, sizes, correctAnswer);
 
     return {
       type: 'size',
@@ -145,63 +153,43 @@ const PatternMatcherPage = () => {
     };
   };
 
-  // Pattern di posizione
-  const generatePositionPattern = () => {
-    const color = colors[Math.floor(Math.random() * colors.length)];
-    const grid = [];
-
-    for (let i = 0; i < 9; i++) {
-      grid.push({
-        type: 'position',
-        position: ['top-left', 'top-center', 'top-right'][i % 3],
-        color,
-        shape: 'square'
-      });
-    }
-
-    const correctAnswer = grid[8];
-    const wrongAnswers = generateWrongPositionAnswers(color, correctAnswer);
-
-    return {
-      type: 'position',
-      grid: grid.slice(0, 8),
-      correctAnswer,
-      options: shuffleArray([correctAnswer, ...wrongAnswers]),
-      description: 'Trova la posizione corretta che completa il pattern'
-    };
-  };
-
-  // Genera risposte sbagliate per colori
+  // Genera risposte sbagliate per colori (no duplicati)
   const generateWrongColorAnswers = (usedColors, correct) => {
     const wrong = [];
     const availableColors = colors.filter(c => !usedColors.includes(c));
 
-    for (let i = 0; i < 3; i++) {
-      if (availableColors[i]) {
-        wrong.push({
-          type: 'color',
-          color: availableColors[i],
-          shape: correct.shape
-        });
-      }
+    // Prendi 3 colori diversi che non sono stati usati
+    for (let i = 0; i < Math.min(3, availableColors.length); i++) {
+      wrong.push({
+        type: 'color',
+        color: availableColors[i],
+        shape: correct.shape
+      });
     }
+
     return wrong;
   };
 
-  const generateWrongShapeAnswers = (allShapes, color, correct) => {
-    return allShapes
-      .filter(s => s !== correct.shape)
-      .slice(0, 3)
-      .map(shape => ({
-        type: 'shape',
-        shape,
-        color
-      }));
+  // Genera risposte sbagliate per forme (no duplicati)
+  const generateWrongShapeAnswers = (usedShapes, color, correct) => {
+    const availableShapes = shapes.filter(s => !usedShapes.includes(s));
+
+    return availableShapes.slice(0, 3).map(shape => ({
+      type: 'shape',
+      shape,
+      color
+    }));
   };
 
+  // Genera risposte sbagliate per rotazione (no duplicati)
   const generateWrongRotationAnswers = (color, correct) => {
-    const wrongRotations = [0, 90, 180, 270].filter(r => r !== correct.rotation);
-    return wrongRotations.slice(0, 3).map(rotation => ({
+    const allRotations = [0, 45, 90, 135, 180, 225, 270, 315];
+    const wrongRotations = allRotations.filter(r => r !== correct.rotation);
+
+    // Prendi 3 rotazioni casuali diverse dalla corretta
+    const shuffled = wrongRotations.sort(() => Math.random() - 0.5);
+
+    return shuffled.slice(0, 3).map(rotation => ({
       type: 'rotation',
       rotation,
       color,
@@ -209,27 +197,17 @@ const PatternMatcherPage = () => {
     }));
   };
 
-  const generateWrongSizeAnswers = (color, correct) => {
-    const wrongSizes = [30, 45, 60, 75].filter(s => s !== correct.size);
+  // Genera risposte sbagliate per dimensioni (no duplicati)
+  const generateWrongSizeAnswers = (color, usedSizes, correct) => {
+    const allSizes = [20, 25, 30, 35, 40, 45, 50, 55, 60, 65];
+    const wrongSizes = allSizes.filter(s => !usedSizes.includes(s));
+
     return wrongSizes.slice(0, 3).map(size => ({
       type: 'size',
       size,
       color,
       shape: 'circle'
     }));
-  };
-
-  const generateWrongPositionAnswers = (color, correct) => {
-    const positions = ['top-left', 'top-center', 'top-right', 'center', 'bottom-left'];
-    return positions
-      .filter(p => p !== correct.position)
-      .slice(0, 3)
-      .map(position => ({
-        type: 'position',
-        position,
-        color,
-        shape: 'square'
-      }));
   };
 
   const shuffleArray = (array) => {
@@ -272,18 +250,6 @@ const PatternMatcherPage = () => {
       transform: pattern.rotation ? `rotate(${pattern.rotation}deg)` : 'none'
     };
 
-    let positionStyle = {};
-    if (pattern.position) {
-      const positions = {
-        'top-left': { top: '10%', left: '10%' },
-        'top-center': { top: '10%', left: '50%', transform: 'translateX(-50%)' },
-        'top-right': { top: '10%', right: '10%' },
-        'center': { top: '50%', left: '50%', transform: 'translate(-50%, -50%)' },
-        'bottom-left': { bottom: '10%', left: '10%' }
-      };
-      positionStyle = positions[pattern.position] || {};
-    }
-
     let className = 'pattern-shape ';
 
     switch (pattern.shape) {
@@ -306,7 +272,7 @@ const PatternMatcherPage = () => {
     return (
       <div
         className={className}
-        style={{ ...commonStyle, ...positionStyle }}
+        style={commonStyle}
       />
     );
   };
@@ -350,47 +316,48 @@ const PatternMatcherPage = () => {
           </div>
         </div>
 
-        <div className="options-section">
-          <h3 className="options-title">Seleziona il pattern mancante:</h3>
-          <div className="options-grid">
-            {currentPuzzle.options.map((option, index) => (
-              <div
-                key={index}
-                className={`option-cell ${
-                  selectedAnswer === index
-                    ? isCorrect
-                      ? 'correct-answer'
-                      : 'wrong-answer'
-                    : ''
-                } ${
-                  showResult &&
-                  JSON.stringify(option) === JSON.stringify(currentPuzzle.correctAnswer)
-                    ? 'show-correct'
-                    : ''
-                }`}
-                onClick={() => handleAnswerClick(option, index)}
-              >
-                {renderPattern(option, 50)}
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {showResult && (
-          <div className="result-section">
-            <div className={`result-message ${isCorrect ? 'correct' : 'wrong'}`}>
-              {isCorrect ? '✓ Corretto! Ottimo lavoro!' : '✗ Ops! Riprova con il prossimo'}
+        <div className="right-column">
+          <div className="options-section">
+            <h3 className="options-title">Seleziona il pattern mancante:</h3>
+            <div className="options-grid">
+              {currentPuzzle.options.map((option, index) => (
+                <div
+                  key={index}
+                  className={`option-cell ${
+                    selectedAnswer === index
+                      ? isCorrect
+                        ? 'correct-answer'
+                        : 'wrong-answer'
+                      : ''
+                  } ${
+                    showResult &&
+                    JSON.stringify(option) === JSON.stringify(currentPuzzle.correctAnswer)
+                      ? 'show-correct'
+                      : ''
+                  }`}
+                  onClick={() => handleAnswerClick(option, index)}
+                >
+                  {renderPattern(option, 50)}
+                </div>
+              ))}
             </div>
-            <button className="next-btn" onClick={nextPuzzle}>
-              Prossimo Pattern
-            </button>
           </div>
-        )}
+
+          {showResult && (
+            <div className="result-section">
+              <div className={`result-message ${isCorrect ? 'correct' : 'wrong'}`}>
+                {isCorrect ? '✓ Corretto!' : '✗ Riprova'}
+              </div>
+              <button className="next-btn" onClick={nextPuzzle}>
+                Prossimo Pattern
+              </button>
+            </div>
+          )}
+        </div>
 
         <div className="pattern-info">
           <p>
-            💡 Analizza attentamente il pattern: colori, forme, rotazioni, dimensioni o posizioni
-            potrebbero seguire una sequenza logica
+            💡 Analizza il pattern: colori, forme, rotazioni o dimensioni seguono una sequenza logica
           </p>
         </div>
       </div>
