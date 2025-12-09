@@ -8,7 +8,9 @@ const PatternMatcherPage = () => {
   const [score, setScore] = useState(0);
   const [totalGames, setTotalGames] = useState(0);
   const [isCorrect, setIsCorrect] = useState(false);
+  const [gameFinished, setGameFinished] = useState(false);
 
+  const MAX_GAMES = 10;
   const patternTypes = ['colors', 'shapes', 'rotation', 'size'];
 
   const colors = [
@@ -180,10 +182,16 @@ const PatternMatcherPage = () => {
     const isAnswerCorrect = JSON.stringify(answer) === JSON.stringify(currentPuzzle.correctAnswer);
     setIsCorrect(isAnswerCorrect);
     setShowResult(true);
-    setTotalGames(totalGames + 1);
+
+    const newTotalGames = totalGames + 1;
+    setTotalGames(newTotalGames);
 
     if (isAnswerCorrect) {
       setScore(score + 1);
+    }
+
+    if (newTotalGames >= MAX_GAMES) {
+      setGameFinished(true);
     }
   };
 
@@ -192,6 +200,16 @@ const PatternMatcherPage = () => {
     setSelectedAnswer(null);
     setShowResult(false);
     setIsCorrect(false);
+  };
+
+  const restartGame = () => {
+    setScore(0);
+    setTotalGames(0);
+    setGameFinished(false);
+    setSelectedAnswer(null);
+    setShowResult(false);
+    setIsCorrect(false);
+    setCurrentPuzzle(generatePuzzle());
   };
 
   const renderPattern = (pattern, size = 24) => {
@@ -239,6 +257,28 @@ const PatternMatcherPage = () => {
     );
   }
 
+  if (gameFinished) {
+    return (
+      <div className="pattern-matcher-page">
+        <div className="pattern-container game-over">
+          <div className="game-over-content">
+            <h1 className="pattern-title">Gioco Completato!</h1>
+            <div className="final-score">
+              <div className="score-label">Punteggio Finale</div>
+              <div className="score-value">{score} / {MAX_GAMES}</div>
+              <div className="score-percentage">
+                {Math.round((score / MAX_GAMES) * 100)}% Precisione
+              </div>
+            </div>
+            <button className="restart-btn" onClick={restartGame}>
+              Gioca Ancora
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="pattern-matcher-page">
       <div className="pattern-container">
@@ -247,8 +287,12 @@ const PatternMatcherPage = () => {
           <p className="pattern-subtitle">{currentPuzzle.description}</p>
           <div className="pattern-stats">
             <div className="stat-item">
+              <span className="stat-label">Domanda</span>
+              <span className="stat-value">{totalGames + 1} / {MAX_GAMES}</span>
+            </div>
+            <div className="stat-item">
               <span className="stat-label">Punteggio</span>
-              <span className="stat-value">{score} / {totalGames}</span>
+              <span className="stat-value">{score}</span>
             </div>
             <div className="stat-item">
               <span className="stat-label">Precisione</span>
@@ -303,7 +347,7 @@ const PatternMatcherPage = () => {
                 {isCorrect ? '✓ Corretto!' : '✗ Riprova'}
               </div>
               <button className="next-btn" onClick={nextPuzzle}>
-                Prossimo
+                {totalGames >= MAX_GAMES ? 'Vedi Risultati' : 'Prossimo'}
               </button>
             </div>
           )}

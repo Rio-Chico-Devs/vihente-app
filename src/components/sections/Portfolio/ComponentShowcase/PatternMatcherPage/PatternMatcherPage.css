@@ -13,7 +13,7 @@
   justify-content: center;
   height: calc(100vh - 272px);
   margin-top: 142px;
-  margin-bottom: 10px;
+  margin-bottom: 120px;
   padding: 0.5rem;
 }
 
@@ -88,6 +88,77 @@
 }
 
 /* ============================================
+   GAME OVER
+   ============================================ */
+
+.pattern-container.game-over {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.game-over-content {
+  text-align: center;
+  max-width: 500px;
+}
+
+.final-score {
+  margin: 3rem 0;
+  padding: 2rem;
+  background: var(--card-bg, rgba(0, 0, 0, 0.3));
+  border: 2px solid var(--color-primary-20, rgba(0, 255, 255, 0.2));
+  border-radius: 4px;
+}
+
+.score-label {
+  font-family: 'Share Tech Mono', monospace;
+  color: var(--color-secondary, rgba(255, 255, 255, 0.9));
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: 1rem;
+}
+
+.final-score .score-value {
+  font-family: 'Orbitron', sans-serif;
+  color: var(--color-primary, #0ff);
+  font-size: 3rem;
+  font-weight: bold;
+  text-shadow: 0 0 20px var(--color-primary-80, rgba(0, 255, 255, 0.8));
+  margin-bottom: 1rem;
+}
+
+.score-percentage {
+  font-family: 'Share Tech Mono', monospace;
+  color: var(--color-secondary, rgba(255, 255, 255, 0.9));
+  font-size: 1.2rem;
+  letter-spacing: 0.05em;
+}
+
+.restart-btn {
+  font-family: 'Share Tech Mono', monospace;
+  background: var(--card-bg, rgba(0, 0, 0, 0.4));
+  color: var(--color-primary, #0ff);
+  border: 2px solid var(--color-primary-40, rgba(0, 255, 255, 0.4));
+  border-radius: 4px;
+  padding: 1rem 3rem;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  box-shadow: 0 0 20px var(--color-primary-20, rgba(0, 255, 255, 0.2));
+}
+
+.restart-btn:hover {
+  background: var(--color-primary-10, rgba(0, 255, 255, 0.1));
+  border-color: var(--color-primary, #0ff);
+  transform: translateY(-2px);
+  box-shadow: 0 0 30px var(--color-primary-40, rgba(0, 255, 255, 0.4));
+}
+
+/* ============================================
    HEADER
    ============================================ */
 
@@ -118,7 +189,7 @@
 .pattern-stats {
   display: flex;
   justify-content: center;
-  gap: 2rem;
+  gap: 1.5rem;
 }
 
 .stat-item {
@@ -146,7 +217,7 @@
 }
 
 /* ============================================
-   PUZZLE GRID - DIMENSIONI FISSE
+   PUZZLE GRID
    ============================================ */
 
 .puzzle-grid {
@@ -249,7 +320,7 @@
 }
 
 /* ============================================
-   OPTIONS SECTION - DIMENSIONI FISSE
+   OPTIONS SECTION
    ============================================ */
 
 .options-section {
@@ -421,6 +492,7 @@
   .pattern-matcher-page {
     height: calc(100vh - 210px);
     margin-top: 90px;
+    margin-bottom: 110px;
     padding: 0.5rem;
   }
 
@@ -445,7 +517,7 @@
   }
 
   .pattern-stats {
-    gap: 1.5rem;
+    gap: 1rem;
   }
 
   .stat-label {
@@ -501,6 +573,19 @@
     padding: 0.4rem 1rem;
     font-size: 0.7rem;
   }
+
+  .final-score .score-value {
+    font-size: 2rem;
+  }
+
+  .score-percentage {
+    font-size: 1rem;
+  }
+
+  .restart-btn {
+    padding: 0.8rem 2rem;
+    font-size: 0.9rem;
+  }
 }
 
 /* ============================================
@@ -530,11 +615,13 @@
 [data-theme="light"] .pattern-title,
 [data-theme="light"] .stat-value,
 [data-theme="light"] .question-mark,
-[data-theme="light"] .options-title {
+[data-theme="light"] .options-title,
+[data-theme="light"] .final-score .score-value {
   text-shadow: none;
 }
 
-[data-theme="light"] .next-btn {
+[data-theme="light"] .next-btn,
+[data-theme="light"] .restart-btn {
   box-shadow: none;
 }
 
