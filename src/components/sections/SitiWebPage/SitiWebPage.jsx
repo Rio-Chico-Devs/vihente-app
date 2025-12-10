@@ -34,7 +34,7 @@ const SitiWebPage = () => {
     <div className="sitiweb-page-wrapper">
       {/* Background grid overlay */}
       <div className="sitiweb-grid-overlay"></div>
-      
+
       {/* Scrollable content */}
       <div className="sitiweb-content">
         {/* Hero section */}
@@ -48,7 +48,7 @@ const SitiWebPage = () => {
           <div className="intro-box">
             <h2 className="intro-title">Introduzione</h2>
             <p className="intro-text">
-              In questa pagina troverai tutte le informazioni utili per scoprire come lavoro, i prodotti che sono in grado di creare 
+              In questa pagina troverai tutte le informazioni utili per scoprire come lavoro, i prodotti che sono in grado di creare
               e il mio metodo di lavoro. Se vuoi sapere di più su cosa so fare contattami per un meeting.
             </p>
           </div>
@@ -57,13 +57,13 @@ const SitiWebPage = () => {
         {/* What we offer section */}
         <section className="sitiweb-section">
           <h2 className="section-title">Che tipo di tecnologie utilizzo per il web Development</h2>
-          
+
           <div className="offer-content">
             <div className="offer-text-box">
               <h3 className="offer-subtitle">Web Development</h3>
               <p className="offer-description">
-                Mi occupo principalmente dello sviluppo e della scrittura del codice necessario per creare <strong>Siti Web estremamente personalizzati</strong>, o componenti per le tue web app o siti. A seconda della grandezza del tuo progetto posso o occuparmene personalmente o entrare a far parte del tuo team.  
-                Il mio punto forte è l'analisi delle risorse già presenti, implementarne di nuove, ridimensionare la grafica o creare siti personalizzati da zero. 
+                Mi occupo principalmente dello sviluppo e della scrittura del codice necessario per creare <strong>Siti Web estremamente personalizzati</strong>, o componenti per le tue web app o siti. A seconda della grandezza del tuo progetto posso o occuparmene personalmente o entrare a far parte del tuo team.
+                Il mio punto forte è l'analisi delle risorse già presenti, implementarne di nuove, ridimensionare la grafica o creare siti personalizzati da zero.
               </p>
             </div>
 
@@ -97,140 +97,55 @@ const SitiWebPage = () => {
           </div>
         </section>
 
-        {/* Pricing packages section */}
+        {/* Programming Languages section */}
         <section className="sitiweb-section packages-section">
-          <h2 className="section-title">Pacchetti Disponibili</h2>
-          
+          <h2 className="section-title">Linguaggi di Programmazione</h2>
+
           <div className="pricing-table-container">
             <table className="pricing-table">
               <thead>
                 <tr>
-                  <th className="feature-column">Servizi Inclusi</th>
-                  <th className="package-column package-base">
+                  <th className="feature-column">Linguaggio</th>
+                  <th className="package-column">
                     <div className="package-header">
-                      <span className="package-name">Base</span>
-                      <span className="package-badge">Starter</span>
-                    </div>
-                  </th>
-                  <th className="package-column package-plus">
-                    <div className="package-header">
-                      <span className="package-name">Plus</span>
-                      <span className="package-badge">Popolare</span>
-                    </div>
-                  </th>
-                  <th className="package-column package-deluxe">
-                    <div className="package-header">
-                      <span className="package-name">Deluxe</span>
-                      <span className="package-badge">Premium</span>
+                      <span className="package-name">Competenza</span>
                     </div>
                   </th>
                 </tr>
               </thead>
               <tbody>
                 <tr>
-                  <td className="feature-name">Ottimizzazione SEO</td>
-                  <td className="feature-value">
-                    <span className="check-icon">✓</span>
-                  </td>
-                  <td className="feature-value">
-                    <span className="check-icon">✓</span>
-                  </td>
+                  <td className="feature-name">C</td>
                   <td className="feature-value">
                     <span className="check-icon">✓</span>
                   </td>
                 </tr>
                 <tr>
-                  <td className="feature-name">Ottimizzazione regole accessibilità base</td>
-                  <td className="feature-value">
-                    <span className="check-icon">✓</span>
-                  </td>
-                  <td className="feature-value">
-                    <span className="check-icon">✓</span>
-                  </td>
+                  <td className="feature-name">C++</td>
                   <td className="feature-value">
                     <span className="check-icon">✓</span>
                   </td>
                 </tr>
                 <tr>
-                  <td className="feature-name">Progettazione grafica</td>
-                  <td className="feature-value">
-                    <span className="check-icon">✓</span>
-                  </td>
-                  <td className="feature-value">
-                    <span className="check-icon">✓</span>
-                  </td>
+                  <td className="feature-name">Js/JSX</td>
                   <td className="feature-value">
                     <span className="check-icon">✓</span>
                   </td>
                 </tr>
                 <tr>
-                  <td className="feature-name">Ottimizzazione immagini e caricamento</td>
-                  <td className="feature-value">
-                    <span className="check-icon">✓</span>
-                  </td>
-                  <td className="feature-value">
-                    <span className="check-icon">✓</span>
-                  </td>
+                  <td className="feature-name">HTML</td>
                   <td className="feature-value">
                     <span className="check-icon">✓</span>
                   </td>
                 </tr>
                 <tr>
-                  <td className="feature-name">Sito multipagina</td>
-                  <td className="feature-value">
-                    <span className="cross-icon">✗</span>
-                  </td>
-                  <td className="feature-value">
-                    <span className="check-icon">✓</span>
-                  </td>
+                  <td className="feature-name">CSS</td>
                   <td className="feature-value">
                     <span className="check-icon">✓</span>
                   </td>
                 </tr>
                 <tr>
-                  <td className="feature-name">Blog</td>
-                  <td className="feature-value">
-                    <span className="cross-icon">✗</span>
-                  </td>
-                  <td className="feature-value">
-                    <span className="check-icon">✓</span>
-                  </td>
-                  <td className="feature-value">
-                    <span className="check-icon">✓</span>
-                  </td>
-                </tr>
-                <tr>
-                  <td className="feature-name">Cookie Policy</td>
-                  <td className="feature-value">
-                    <span className="cross-icon">✗</span>
-                  </td>
-                  <td className="feature-value">
-                    <span className="check-icon">✓</span>
-                  </td>
-                  <td className="feature-value">
-                    <span className="check-icon">✓</span>
-                  </td>
-                </tr>
-                <tr>
-                  <td className="feature-name">Privacy Policy</td>
-                  <td className="feature-value">
-                    <span className="cross-icon">✗</span>
-                  </td>
-                  <td className="feature-value">
-                    <span className="check-icon">✓</span>
-                  </td>
-                  <td className="feature-value">
-                    <span className="check-icon">✓</span>
-                  </td>
-                </tr>
-                <tr>
-                  <td className="feature-name">Grafica personalizzata</td>
-                  <td className="feature-value">
-                    <span className="cross-icon">✗</span>
-                  </td>
-                  <td className="feature-value">
-                    <span className="cross-icon">✗</span>
-                  </td>
+                  <td className="feature-name">Python</td>
                   <td className="feature-value">
                     <span className="check-icon">✓</span>
                   </td>
@@ -246,7 +161,7 @@ const SitiWebPage = () => {
           <p className="cta-text">
             Contattami per discutere il tuo progetto e trovare il pacchetto perfetto per te
           </p>
-          <button 
+          <button
             className="sitiweb-cta-button"
             onClick={() => navigate('/contatti')}
           >
