@@ -1,401 +1,731 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
+
 import './PatternMatcherPage.css';
 
+ 
+
 const PatternMatcherPage = () => {
+
   const [currentPuzzle, setCurrentPuzzle] = useState(null);
+
   const [selectedAnswer, setSelectedAnswer] = useState(null);
+
   const [showResult, setShowResult] = useState(false);
+
   const [score, setScore] = useState(0);
+
   const [totalGames, setTotalGames] = useState(0);
+
   const [isCorrect, setIsCorrect] = useState(false);
 
-  // Tipi di pattern possibili
-  const patternTypes = [
-    'colors',       // Pattern di colori
-    'shapes',       // Pattern di forme
-    'rotation',     // Pattern di rotazione
-    'size',         // Pattern di dimensioni
-    'position'      // Pattern di posizione
+  const [gameFinished, setGameFinished] = useState(false);
+
+ 
+
+  const MAX_GAMES = 10;
+
+  const patternTypes = ['colors', 'shapes', 'rotation', 'size'];
+
+ 
+
+  const colors = [
+
+    '#ff0000',
+
+    '#00ff00',
+
+    '#0000ff',
+
+    '#ffff00',
+
+    '#ff00ff',
+
+    '#00ffff'
+
   ];
 
-  const colors = ['#ff6b6b', '#4ecdc4', '#45b7d1', '#f9ca24', '#6c5ce7', '#a29bfe'];
+ 
+
   const shapes = ['circle', 'square', 'triangle', 'diamond'];
 
-  // Genera un puzzle randomico
-  const generatePuzzle = () => {
-    const type = patternTypes[Math.floor(Math.random() * patternTypes.length)];
+ 
 
-    switch (type) {
-      case 'colors':
-        return generateColorPattern();
-      case 'shapes':
-        return generateShapePattern();
-      case 'rotation':
-        return generateRotationPattern();
-      case 'size':
-        return generateSizePattern();
-      case 'position':
-        return generatePositionPattern();
-      default:
-        return generateColorPattern();
-    }
-  };
+  const generateColorPattern = useCallback(() => {
 
-  // Pattern di colori crescenti
-  const generateColorPattern = () => {
     const selectedColors = [...colors].sort(() => Math.random() - 0.5).slice(0, 3);
+
     const grid = [];
 
-    // Crea pattern: ripete i 3 colori in sequenza
+ 
+
     for (let i = 0; i < 9; i++) {
+
       grid.push({
+
         type: 'color',
+
         color: selectedColors[i % 3],
+
         shape: 'circle'
+
       });
+
     }
 
-    const correctAnswer = grid[8];
-    const wrongAnswers = generateWrongColorAnswers(selectedColors, correctAnswer);
-
-    return {
-      type: 'colors',
-      grid: grid.slice(0, 8),
-      correctAnswer,
-      options: shuffleArray([correctAnswer, ...wrongAnswers]),
-      description: 'Trova il colore che completa il pattern'
-    };
-  };
-
-  // Pattern di forme che si ripetono
-  const generateShapePattern = () => {
-    const selectedShapes = [...shapes].sort(() => Math.random() - 0.5).slice(0, 3);
-    const color = colors[Math.floor(Math.random() * colors.length)];
-    const grid = [];
-
-    for (let i = 0; i < 9; i++) {
-      grid.push({
-        type: 'shape',
-        shape: selectedShapes[i % 3],
-        color
-      });
-    }
+ 
 
     const correctAnswer = grid[8];
-    const wrongAnswers = generateWrongShapeAnswers(shapes, color, correctAnswer);
 
-    return {
-      type: 'shapes',
-      grid: grid.slice(0, 8),
-      correctAnswer,
-      options: shuffleArray([correctAnswer, ...wrongAnswers]),
-      description: 'Trova la forma che completa il pattern'
-    };
-  };
-
-  // Pattern di rotazione
-  const generateRotationPattern = () => {
-    const color = colors[Math.floor(Math.random() * colors.length)];
-    const grid = [];
-
-    for (let i = 0; i < 9; i++) {
-      grid.push({
-        type: 'rotation',
-        rotation: (i * 45) % 360,
-        color,
-        shape: 'triangle'
-      });
-    }
-
-    const correctAnswer = grid[8];
-    const wrongAnswers = generateWrongRotationAnswers(color, correctAnswer);
-
-    return {
-      type: 'rotation',
-      grid: grid.slice(0, 8),
-      correctAnswer,
-      options: shuffleArray([correctAnswer, ...wrongAnswers]),
-      description: 'Trova la rotazione corretta che completa il pattern'
-    };
-  };
-
-  // Pattern di dimensioni crescenti
-  const generateSizePattern = () => {
-    const color = colors[Math.floor(Math.random() * colors.length)];
-    const grid = [];
-
-    for (let i = 0; i < 9; i++) {
-      grid.push({
-        type: 'size',
-        size: 30 + (i % 3) * 15,
-        color,
-        shape: 'circle'
-      });
-    }
-
-    const correctAnswer = grid[8];
-    const wrongAnswers = generateWrongSizeAnswers(color, correctAnswer);
-
-    return {
-      type: 'size',
-      grid: grid.slice(0, 8),
-      correctAnswer,
-      options: shuffleArray([correctAnswer, ...wrongAnswers]),
-      description: 'Trova la dimensione corretta che completa il pattern'
-    };
-  };
-
-  // Pattern di posizione
-  const generatePositionPattern = () => {
-    const color = colors[Math.floor(Math.random() * colors.length)];
-    const grid = [];
-
-    for (let i = 0; i < 9; i++) {
-      grid.push({
-        type: 'position',
-        position: ['top-left', 'top-center', 'top-right'][i % 3],
-        color,
-        shape: 'square'
-      });
-    }
-
-    const correctAnswer = grid[8];
-    const wrongAnswers = generateWrongPositionAnswers(color, correctAnswer);
-
-    return {
-      type: 'position',
-      grid: grid.slice(0, 8),
-      correctAnswer,
-      options: shuffleArray([correctAnswer, ...wrongAnswers]),
-      description: 'Trova la posizione corretta che completa il pattern'
-    };
-  };
-
-  // Genera risposte sbagliate per colori
-  const generateWrongColorAnswers = (usedColors, correct) => {
     const wrong = [];
-    const availableColors = colors.filter(c => !usedColors.includes(c));
 
-    for (let i = 0; i < 3; i++) {
-      if (availableColors[i]) {
-        wrong.push({
-          type: 'color',
-          color: availableColors[i],
-          shape: correct.shape
-        });
-      }
+    const availableColors = colors.filter(c => !selectedColors.includes(c));
+
+ 
+
+    for (let i = 0; i < Math.min(3, availableColors.length); i++) {
+
+      wrong.push({
+
+        type: 'color',
+
+        color: availableColors[i],
+
+        shape: correctAnswer.shape
+
+      });
+
     }
-    return wrong;
-  };
 
-  const generateWrongShapeAnswers = (allShapes, color, correct) => {
-    return allShapes
-      .filter(s => s !== correct.shape)
-      .slice(0, 3)
-      .map(shape => ({
-        type: 'shape',
-        shape,
-        color
-      }));
-  };
+ 
 
-  const generateWrongRotationAnswers = (color, correct) => {
-    const wrongRotations = [0, 90, 180, 270].filter(r => r !== correct.rotation);
-    return wrongRotations.slice(0, 3).map(rotation => ({
-      type: 'rotation',
-      rotation,
-      color,
-      shape: 'triangle'
-    }));
-  };
+    return {
 
-  const generateWrongSizeAnswers = (color, correct) => {
-    const wrongSizes = [30, 45, 60, 75].filter(s => s !== correct.size);
-    return wrongSizes.slice(0, 3).map(size => ({
-      type: 'size',
-      size,
-      color,
-      shape: 'circle'
-    }));
-  };
+      type: 'colors',
 
-  const generateWrongPositionAnswers = (color, correct) => {
-    const positions = ['top-left', 'top-center', 'top-right', 'center', 'bottom-left'];
-    return positions
-      .filter(p => p !== correct.position)
-      .slice(0, 3)
-      .map(position => ({
-        type: 'position',
-        position,
-        color,
-        shape: 'square'
-      }));
-  };
+      grid: grid.slice(0, 8),
 
-  const shuffleArray = (array) => {
-    return [...array].sort(() => Math.random() - 0.5);
-  };
+      correctAnswer,
 
-  useEffect(() => {
-    setCurrentPuzzle(generatePuzzle());
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+      options: [...wrong, correctAnswer].sort(() => Math.random() - 0.5),
+
+      description: 'Trova il colore che completa il pattern'
+
+    };
+
   }, []);
 
-  const handleAnswerClick = (answer, index) => {
-    if (showResult) return;
+ 
 
-    setSelectedAnswer(index);
-    const correct = JSON.stringify(answer) === JSON.stringify(currentPuzzle.correctAnswer);
-    setIsCorrect(correct);
-    setShowResult(true);
-    setTotalGames(totalGames + 1);
+  const generateShapePattern = useCallback(() => {
 
-    if (correct) {
-      setScore(score + 1);
+    const selectedShapes = [...shapes].sort(() => Math.random() - 0.5).slice(0, 3);
+
+    const color = colors[Math.floor(Math.random() * colors.length)];
+
+    const grid = [];
+
+ 
+
+    for (let i = 0; i < 9; i++) {
+
+      grid.push({
+
+        type: 'shape',
+
+        shape: selectedShapes[i % 3],
+
+        color
+
+      });
+
     }
-  };
 
-  const nextPuzzle = () => {
-    setCurrentPuzzle(generatePuzzle());
-    setSelectedAnswer(null);
-    setShowResult(false);
-    setIsCorrect(false);
-  };
+ 
 
-  const renderPattern = (pattern, size = 60) => {
-    if (!pattern) return null;
+    const correctAnswer = grid[8];
 
-    const commonStyle = {
-      width: `${pattern.size || size}px`,
-      height: `${pattern.size || size}px`,
-      backgroundColor: pattern.color,
-      transform: pattern.rotation ? `rotate(${pattern.rotation}deg)` : 'none'
+    const availableShapes = shapes.filter(s => !selectedShapes.includes(s));
+
+    const wrong = availableShapes.slice(0, 3).map(shape => ({
+
+      type: 'shape',
+
+      shape,
+
+      color
+
+    }));
+
+ 
+
+    return {
+
+      type: 'shapes',
+
+      grid: grid.slice(0, 8),
+
+      correctAnswer,
+
+      options: [...wrong, correctAnswer].sort(() => Math.random() - 0.5),
+
+      description: 'Trova la forma che completa il pattern'
+
     };
 
-    let positionStyle = {};
-    if (pattern.position) {
-      const positions = {
-        'top-left': { top: '10%', left: '10%' },
-        'top-center': { top: '10%', left: '50%', transform: 'translateX(-50%)' },
-        'top-right': { top: '10%', right: '10%' },
-        'center': { top: '50%', left: '50%', transform: 'translate(-50%, -50%)' },
-        'bottom-left': { bottom: '10%', left: '10%' }
-      };
-      positionStyle = positions[pattern.position] || {};
+  }, []);
+
+ 
+
+  const generateRotationPattern = useCallback(() => {
+
+    const color = colors[Math.floor(Math.random() * colors.length)];
+
+    const grid = [];
+
+    const rotationStep = 45;
+
+ 
+
+    for (let i = 0; i < 9; i++) {
+
+      grid.push({
+
+        type: 'rotation',
+
+        rotation: (i * rotationStep) % 360,
+
+        color,
+
+        shape: 'triangle'
+
+      });
+
     }
+
+ 
+
+    const correctAnswer = grid[8];
+
+    const allRotations = [0, 45, 90, 135, 180, 225, 270, 315];
+
+    const wrongRotations = allRotations.filter(r => r !== correctAnswer.rotation);
+
+    const shuffled = wrongRotations.sort(() => Math.random() - 0.5);
+
+    const wrong = shuffled.slice(0, 3).map(rotation => ({
+
+      type: 'rotation',
+
+      rotation,
+
+      color,
+
+      shape: 'triangle'
+
+    }));
+
+ 
+
+    return {
+
+      type: 'rotation',
+
+      grid: grid.slice(0, 8),
+
+      correctAnswer,
+
+      options: [...wrong, correctAnswer].sort(() => Math.random() - 0.5),
+
+      description: 'Trova la rotazione corretta che completa il pattern'
+
+    };
+
+  }, []);
+
+ 
+
+  const generateSizePattern = useCallback(() => {
+
+    const color = colors[Math.floor(Math.random() * colors.length)];
+
+    const grid = [];
+
+    const sizes = [15, 22, 30];
+
+ 
+
+    for (let i = 0; i < 9; i++) {
+
+      grid.push({
+
+        type: 'size',
+
+        size: sizes[i % 3],
+
+        color,
+
+        shape: 'circle'
+
+      });
+
+    }
+
+ 
+
+    const correctAnswer = grid[8];
+
+    const allSizes = [12, 15, 18, 22, 26, 30, 35, 40];
+
+    const wrongSizes = allSizes.filter(s => !sizes.includes(s));
+
+    const wrong = wrongSizes.slice(0, 3).map(size => ({
+
+      type: 'size',
+
+      size,
+
+      color,
+
+      shape: 'circle'
+
+    }));
+
+ 
+
+    return {
+
+      type: 'size',
+
+      grid: grid.slice(0, 8),
+
+      correctAnswer,
+
+      options: [...wrong, correctAnswer].sort(() => Math.random() - 0.5),
+
+      description: 'Trova la dimensione corretta che completa il pattern'
+
+    };
+
+  }, []);
+
+ 
+
+  const generatePuzzle = useCallback(() => {
+
+    const type = patternTypes[Math.floor(Math.random() * patternTypes.length)];
+
+ 
+
+    switch (type) {
+
+      case 'colors':
+
+        return generateColorPattern();
+
+      case 'shapes':
+
+        return generateShapePattern();
+
+      case 'rotation':
+
+        return generateRotationPattern();
+
+      case 'size':
+
+        return generateSizePattern();
+
+      default:
+
+        return generateColorPattern();
+
+    }
+
+  }, [generateColorPattern, generateShapePattern, generateRotationPattern, generateSizePattern]);
+
+ 
+
+  useEffect(() => {
+
+    setCurrentPuzzle(generatePuzzle());
+
+  }, [generatePuzzle]);
+
+ 
+
+  const handleAnswerClick = (answer, index) => {
+
+    if (showResult) return;
+
+ 
+
+    setSelectedAnswer(index);
+
+    const isAnswerCorrect = JSON.stringify(answer) === JSON.stringify(currentPuzzle.correctAnswer);
+
+    setIsCorrect(isAnswerCorrect);
+
+    setShowResult(true);
+
+ 
+
+    const newTotalGames = totalGames + 1;
+
+    setTotalGames(newTotalGames);
+
+ 
+
+    if (isAnswerCorrect) {
+
+      setScore(score + 1);
+
+    }
+
+ 
+
+    if (newTotalGames >= MAX_GAMES) {
+
+      setGameFinished(true);
+
+    }
+
+  };
+
+ 
+
+  const nextPuzzle = () => {
+
+    setCurrentPuzzle(generatePuzzle());
+
+    setSelectedAnswer(null);
+
+    setShowResult(false);
+
+    setIsCorrect(false);
+
+  };
+
+ 
+
+  const restartGame = () => {
+
+    setScore(0);
+
+    setTotalGames(0);
+
+    setGameFinished(false);
+
+    setSelectedAnswer(null);
+
+    setShowResult(false);
+
+    setIsCorrect(false);
+
+    setCurrentPuzzle(generatePuzzle());
+
+  };
+
+ 
+
+  const renderPattern = (pattern, size = 24) => {
+
+    if (!pattern) return null;
+
+ 
+
+    const commonStyle = {
+
+      width: `${pattern.size || size}px`,
+
+      height: `${pattern.size || size}px`,
+
+      backgroundColor: pattern.color,
+
+      transform: pattern.rotation ? `rotate(${pattern.rotation}deg)` : 'none'
+
+    };
+
+ 
 
     let className = 'pattern-shape ';
 
+ 
+
     switch (pattern.shape) {
+
       case 'circle':
+
         className += 'circle-shape';
+
         break;
+
       case 'square':
+
         className += 'square-shape';
+
         break;
+
       case 'triangle':
+
         className += 'triangle-shape';
+
         break;
+
       case 'diamond':
+
         className += 'diamond-shape';
+
         break;
+
       default:
+
         className += 'circle-shape';
+
     }
 
+ 
+
     return (
+
       <div
+
         className={className}
-        style={{ ...commonStyle, ...positionStyle }}
+
+        style={commonStyle}
+
       />
+
     );
+
   };
 
+ 
+
   if (!currentPuzzle) {
+
     return (
+
       <div className="pattern-matcher-page">
+
         <div className="loading">Generazione puzzle...</div>
+
       </div>
+
     );
+
   }
 
-  return (
-    <div className="pattern-matcher-page">
-      <div className="pattern-container">
-        <div className="pattern-header">
-          <h1 className="pattern-title">Pattern Matcher</h1>
-          <p className="pattern-subtitle">{currentPuzzle.description}</p>
-          <div className="pattern-stats">
-            <div className="stat-item">
-              <span className="stat-label">Punteggio</span>
-              <span className="stat-value">{score} / {totalGames}</span>
+ 
+
+  if (gameFinished) {
+
+    return (
+
+      <div className="pattern-matcher-page">
+
+        <div className="pattern-container game-over">
+
+          <div className="game-over-content">
+
+            <h1 className="pattern-title">Gioco Completato!</h1>
+
+            <div className="final-score">
+
+              <div className="score-label">Punteggio Finale</div>
+
+              <div className="score-value">{score} / {MAX_GAMES}</div>
+
+              <div className="score-percentage">
+
+                {Math.round((score / MAX_GAMES) * 100)}% Precisione
+
+              </div>
+
             </div>
-            <div className="stat-item">
-              <span className="stat-label">Precisione</span>
-              <span className="stat-value">
-                {totalGames > 0 ? Math.round((score / totalGames) * 100) : 0}%
-              </span>
-            </div>
+
+            <button className="restart-btn" onClick={restartGame}>
+
+              Gioca Ancora
+
+            </button>
+
           </div>
+
         </div>
+
+      </div>
+
+    );
+
+  }
+
+ 
+
+  return (
+
+    <div className="pattern-matcher-page">
+
+      <div className="pattern-container">
+
+        <div className="pattern-header">
+
+          <h1 className="pattern-title">Pattern Matcher</h1>
+
+          <p className="pattern-subtitle">{currentPuzzle.description}</p>
+
+          <div className="pattern-stats">
+
+            <div className="stat-item">
+
+              <span className="stat-label">Domanda</span>
+
+              <span className="stat-value">{totalGames + 1} / {MAX_GAMES}</span>
+
+            </div>
+
+            <div className="stat-item">
+
+              <span className="stat-label">Punteggio</span>
+
+              <span className="stat-value">{score}</span>
+
+            </div>
+
+            <div className="stat-item">
+
+              <span className="stat-label">Precisione</span>
+
+              <span className="stat-value">
+
+                {totalGames > 0 ? Math.round((score / totalGames) * 100) : 0}%
+
+              </span>
+
+            </div>
+
+          </div>
+
+        </div>
+
+ 
 
         <div className="puzzle-grid">
+
           {currentPuzzle.grid.map((pattern, index) => (
+
             <div key={index} className="grid-cell">
-              {renderPattern(pattern)}
+
+              {renderPattern(pattern, 24)}
+
             </div>
+
           ))}
+
           <div className="grid-cell missing-cell">
+
             <span className="question-mark">?</span>
+
           </div>
+
         </div>
 
-        <div className="options-section">
-          <h3 className="options-title">Seleziona il pattern mancante:</h3>
-          <div className="options-grid">
-            {currentPuzzle.options.map((option, index) => (
-              <div
-                key={index}
-                className={`option-cell ${
-                  selectedAnswer === index
-                    ? isCorrect
-                      ? 'correct-answer'
-                      : 'wrong-answer'
-                    : ''
-                } ${
-                  showResult &&
-                  JSON.stringify(option) === JSON.stringify(currentPuzzle.correctAnswer)
-                    ? 'show-correct'
-                    : ''
-                }`}
-                onClick={() => handleAnswerClick(option, index)}
-              >
-                {renderPattern(option, 50)}
-              </div>
-            ))}
-          </div>
-        </div>
+ 
 
-        {showResult && (
-          <div className="result-section">
-            <div className={`result-message ${isCorrect ? 'correct' : 'wrong'}`}>
-              {isCorrect ? '✓ Corretto! Ottimo lavoro!' : '✗ Ops! Riprova con il prossimo'}
+        <div className="right-column">
+
+          <div className="options-section">
+
+            <h3 className="options-title">Seleziona la risposta:</h3>
+
+            <div className="options-grid">
+
+              {currentPuzzle.options.map((option, index) => (
+
+                <div
+
+                  key={index}
+
+                  className={`option-cell ${
+
+                    selectedAnswer === index
+
+                      ? isCorrect
+
+                        ? 'correct-answer'
+
+                        : 'wrong-answer'
+
+                      : ''
+
+                  } ${
+
+                    showResult &&
+
+                    JSON.stringify(option) === JSON.stringify(currentPuzzle.correctAnswer)
+
+                      ? 'show-correct'
+
+                      : ''
+
+                  }`}
+
+                  onClick={() => handleAnswerClick(option, index)}
+
+                >
+
+                  {renderPattern(option, 20)}
+
+                </div>
+
+              ))}
+
             </div>
-            <button className="next-btn" onClick={nextPuzzle}>
-              Prossimo Pattern
-            </button>
+
           </div>
-        )}
+
+ 
+
+          {showResult && (
+
+            <div className="result-section">
+
+              <div className={`result-message ${isCorrect ? 'correct' : 'wrong'}`}>
+
+                {isCorrect ? '✓ Corretto!' : '✗ Riprova'}
+
+              </div>
+
+              <button className="next-btn" onClick={nextPuzzle}>
+
+                {totalGames >= MAX_GAMES ? 'Vedi Risultati' : 'Prossimo'}
+
+              </button>
+
+            </div>
+
+          )}
+
+        </div>
+
+ 
 
         <div className="pattern-info">
+
           <p>
-            💡 Analizza attentamente il pattern: colori, forme, rotazioni, dimensioni o posizioni
-            potrebbero seguire una sequenza logica
+
+            💡 Trova il pattern che completa la sequenza logica
+
           </p>
+
         </div>
+
       </div>
+
     </div>
+
   );
+
 };
+
+ 
 
 export default PatternMatcherPage;

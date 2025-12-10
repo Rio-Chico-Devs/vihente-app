@@ -1,9 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
-import { useNavigate } from 'react-router-dom';
 import './Cubo3DPage.css';
 
 const Cubo3DPage = () => {
-  const navigate = useNavigate();
   const [rotation, setRotation] = useState({ x: 0, y: 0 });
   const [isDragging, setIsDragging] = useState(false);
   const [startPos, setStartPos] = useState({ x: 0, y: 0 });
@@ -102,13 +100,6 @@ const Cubo3DPage = () => {
 
   return (
     <div className="cubo3d-page">
-      {/* Back button */}
-      <button className="back-to-showcase" onClick={() => navigate('/portfolio/componenti')}>
-        <svg viewBox="0 0 24 24" width="20" height="20">
-          <path d="M15 18l-6-6 6-6" stroke="currentColor" strokeWidth="2" fill="none" />
-        </svg>
-        <span>Torna alla Showcase</span>
-      </button>
 
       <div className="model3d-container">
         <h2 className="model3d-title">3D Interactive Model</h2>

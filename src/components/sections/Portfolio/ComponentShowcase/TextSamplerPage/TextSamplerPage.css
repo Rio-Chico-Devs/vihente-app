@@ -6,36 +6,6 @@
   overflow: hidden;
 }
 
-.back-to-showcase {
-  position: fixed;
-  top: 110px;
-  left: 2rem;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  background: var(--color-primary-10, rgba(0, 255, 255, 0.1));
-  border: 2px solid var(--color-primary-60, rgba(0, 255, 255, 0.6));
-  color: var(--color-primary, #0ff);
-  padding: 0.75rem 1.5rem;
-  font-family: 'Share Tech Mono', monospace;
-  font-size: 0.9rem;
-  cursor: pointer;
-  border-radius: 4px;
-  transition: all 0.3s ease;
-  z-index: 100;
-  backdrop-filter: blur(10px);
-}
-
-.back-to-showcase:hover {
-  background: var(--color-primary-20, rgba(0, 255, 255, 0.2));
-  box-shadow: 0 0 15px var(--color-primary-40, rgba(0, 255, 255, 0.4));
-  transform: translateX(-3px);
-}
-
-.back-to-showcase svg {
-  stroke: currentColor;
-}
-
 .text-sampler-container {
   width: 100%;
   height: 100vh;
@@ -376,7 +346,6 @@
   text-shadow: none;
 }
 
-[data-theme="light"] .back-to-showcase:hover,
 [data-theme="light"] .effect-button.active,
 [data-theme="light"] .cube-face {
   box-shadow: none;
@@ -400,12 +369,6 @@
 }
 
 @media (max-width: 768px) {
-  .back-to-showcase {
-    top: 90px;
-    left: 1rem;
-    padding: 0.5rem 1rem;
-    font-size: 0.75rem;
-  }
 
   .sampler-layout {
     gap: 1rem;
@@ -431,12 +394,6 @@
 }
 
 @media (max-width: 480px) {
-  .back-to-showcase {
-    top: 80px;
-    left: 0.5rem;
-    padding: 0.5rem 0.75rem;
-    font-size: 0.7rem;
-  }
 
   .sampler-layout {
     height: 65vh;

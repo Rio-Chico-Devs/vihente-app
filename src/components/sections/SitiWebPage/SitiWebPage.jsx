@@ -48,25 +48,22 @@ const SitiWebPage = () => {
           <div className="intro-box">
             <h2 className="intro-title">Introduzione</h2>
             <p className="intro-text">
-              In questa pagina troverai tutte le informazioni utili per scoprire come lavoro, i prodotti che offro 
-              e se vorrai avere anche informazioni tecniche che spesso e volentieri non vengono fornite data la 
-              complessità della materia. Se hai piacere clicca sui tasti <span className="highlight-plus">+</span> per 
-              approfondire, altrimenti consulta solo quello che ti è più strettamente necessario.
+              In questa pagina troverai tutte le informazioni utili per scoprire come lavoro, i prodotti che sono in grado di creare 
+              e il mio metodo di lavoro. Se vuoi sapere di più su cosa so fare contattami per un meeting.
             </p>
           </div>
         </section>
 
         {/* What we offer section */}
         <section className="sitiweb-section">
-          <h2 className="section-title">Cosa Offriamo</h2>
+          <h2 className="section-title">Che tipo di tecnologie utilizzo per il web Development</h2>
           
           <div className="offer-content">
             <div className="offer-text-box">
-              <h3 className="offer-subtitle">Prestazioni di Sviluppo Web</h3>
+              <h3 className="offer-subtitle">Web Development</h3>
               <p className="offer-description">
-                Offro <strong>prestazioni di sviluppo web</strong>, non cessione di prodotti. Questo significa che 
-                scrivo il codice personalizzato per te e ti consegno un prodotto funzionante come opera di prestazione. 
-                Non vendo licenze, ma creo soluzioni su misura.
+                Mi occupo principalmente dello sviluppo e della scrittura del codice necessario per creare <strong>Siti Web estremamente personalizzati</strong>, o componenti per le tue web app o siti. A seconda della grandezza del tuo progetto posso o occuparmene personalmente o entrare a far parte del tuo team.  
+                Il mio punto forte è l'analisi delle risorse già presenti, implementarne di nuove, ridimensionare la grafica o creare siti personalizzati da zero. 
               </p>
             </div>
 
@@ -94,7 +91,7 @@ const SitiWebPage = () => {
 
             <div className="price-note">
               <p>
-                💰 Il prezzo varia a seconda della <strong>complessità</strong> e delle <strong>tecnologie utilizzate</strong>
+                Principalmente uso <strong>React</strong> o <strong>CMS come wordpress</strong>, ma scrivo anche a codice per soluzioni più legacy.
               </p>
             </div>
           </div>

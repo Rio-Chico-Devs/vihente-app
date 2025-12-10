@@ -160,7 +160,7 @@ const ConsulenzePage = () => {
             <div className="step">
               <div className="step-number">01</div>
               <h3 className="step-title">Contatto Iniziale</h3>
-              <p className="step-description">Prenota la tua prima consulenza gratuita online.</p>
+              <p className="step-description">Conosciamoci e parliamo del tuo progetto.</p>
             </div>
             <div className="step">
               <div className="step-number">02</div>
@@ -184,9 +184,9 @@ const ConsulenzePage = () => {
           <div className="highlight-icon">
             <GiftIcon />
           </div>
-          <h3 className="highlight-title">Prima Consulenza Gratuita</h3>
+          <h3 className="highlight-title">Sono a disposizione anche online!</h3>
           <p className="highlight-text">
-            La prima consulenza online è sempre gratuita! Parliamo insieme dei tuoi obiettivi 
+            Se l'icona è su disponibile, sarò felice di aiutarti! Parliamo insieme dei tuoi obiettivi 
             e vediamo come posso aiutarti a raggiungerli.
           </p>
         </div>
@@ -195,7 +195,9 @@ const ConsulenzePage = () => {
           className="detail-cta"
           onClick={() => navigate('/contatti')}
         >
-          <span className="cta-text">Richiedi Consulenza Gratuita</span>
+          
+          
+          <span className="cta-text"><br></br><br></br>Fissa un colloquio contattandomi.</span>
           <span className="cta-arrow">→</span>
         </button>
       </div>

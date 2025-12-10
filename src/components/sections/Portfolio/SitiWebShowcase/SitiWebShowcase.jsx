@@ -39,12 +39,6 @@ const SitiWebShowcase = () => {
     <div className="sitiweb-showcase">
       {/* Header */}
       <div className="showcase-header">
-        <button 
-          className="back-button"
-          onClick={() => navigate('/portfolio')}
-        >
-          ← Torna al Portfolio
-        </button>
         
         <h1 className="showcase-title">Siti Web Realizzati</h1>
         <p className="showcase-subtitle">
