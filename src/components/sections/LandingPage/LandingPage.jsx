@@ -43,11 +43,6 @@ const LandingPageOldEye = ({ startTime }) => {
     accentLight: 'rgba(103, 232, 249, 0.8)',
   };
 
-  const [uptime, setUptime] = useState('0m 0s');
-  const [currentTime, setCurrentTime] = useState('00:00:00');
-  const [fps, setFps] = useState(60);
-  const [memory, setMemory] = useState('N/A');
-  const [network, setNetwork] = useState('UNKNOWN');
   const [isEyeGlitching, setIsEyeGlitching] = useState(false);
   const [pupilPosition, setPupilPosition] = useState({ x: 500, y: 500 });
   const [isNearEye, setIsNearEye] = useState(false);
@@ -56,8 +51,6 @@ const LandingPageOldEye = ({ startTime }) => {
   const [clickMessage, setClickMessage] = useState('');
 
   const canvasRef = useRef(null);
-  const animationFrameRef = useRef(null);
-  const intervalsRef = useRef([]);
   const eyeRef = useRef(null);
   const targetPositionRef = useRef({ x: 500, y: 500 });
   const currentPositionRef = useRef({ x: 500, y: 500 });
@@ -171,7 +164,6 @@ const LandingPageOldEye = ({ startTime }) => {
                 );
 
                 if (directionChangesRef.current.length >= 10) {
-                  console.log('🎮 DETECTED: ' + directionChangesRef.current.length + ' direction changes in 3s');
                   directionChangesRef.current = [];
                   lastDirectionRef.current = null;
                   lastPositionRef.current = null;
@@ -256,66 +248,6 @@ const LandingPageOldEye = ({ startTime }) => {
   }, [isNearEye]);
 
   useEffect(() => {
-    console.log('🎯 LandingPage mounted');
-
-    const timeInterval = setInterval(() => {
-      const now = new Date();
-      setCurrentTime(now.toLocaleTimeString('it-IT', {
-        hour: '2-digit', minute: '2-digit', second: '2-digit'
-      }));
-
-      const elapsed = Math.floor((Date.now() - startTime) / 1000);
-      const mins = Math.floor(elapsed / 60);
-      const secs = elapsed % 60;
-      setUptime(`${mins}m ${secs}s`);
-
-      if (performance.memory) {
-        const memoryMB = Math.round(performance.memory.usedJSHeapSize / 1048576);
-        setMemory(`${memoryMB}MB`);
-      }
-
-      const conn = navigator.connection;
-      const netType = conn && conn.effectiveType ? conn.effectiveType.toUpperCase() : 'ONLINE';
-      setNetwork(netType);
-    }, 2000);
-
-    intervalsRef.current.push(timeInterval);
-
-    let frameCount = 0;
-    let lastTime = performance.now();
-
-    function measureFPS() {
-      frameCount++;
-      const currentTime = performance.now();
-
-      if (currentTime >= lastTime + 2000) {
-        const calculatedFps = Math.round(frameCount * 1000 / (currentTime - lastTime));
-        setFps(Math.min(calculatedFps, 60));
-        frameCount = 0;
-        lastTime = currentTime;
-      }
-
-      animationFrameRef.current = requestAnimationFrame(measureFPS);
-    }
-
-    measureFPS();
-
-    return () => {
-      console.log('🧹 LandingPage cleanup START');
-
-      intervalsRef.current.forEach(interval => clearInterval(interval));
-      intervalsRef.current = [];
-
-      if (animationFrameRef.current) {
-        cancelAnimationFrame(animationFrameRef.current);
-        animationFrameRef.current = null;
-      }
-
-      console.log('✅ LandingPage cleanup COMPLETE');
-    };
-  }, [startTime]);
-
-  useEffect(() => {
     if (!canvasRef.current) return;
 
     const canvas = canvasRef.current;
@@ -351,7 +283,6 @@ const LandingPageOldEye = ({ startTime }) => {
     }
 
     const interval = setInterval(draw, 100);
-    intervalsRef.current.push(interval);
 
     const handleResize = () => {
       canvas.width = window.innerWidth;
@@ -412,29 +343,6 @@ const LandingPageOldEye = ({ startTime }) => {
       />
 
       {showClickMessage && <div className="click-message">{clickMessage}</div>}
-
-      <div className="system-metrics">
-        <div className="metric-item">
-          <span className="metric-label">UPTIME:</span>
-          <span className="metric-value">{uptime}</span>
-        </div>
-        <div className="metric-item">
-          <span className="metric-label">TIME:</span>
-          <span className="metric-value">{currentTime}</span>
-        </div>
-        <div className="metric-item">
-          <span className="metric-label">FPS:</span>
-          <span className="metric-value">{fps}</span>
-        </div>
-        <div className="metric-item">
-          <span className="metric-label">MEM:</span>
-          <span className="metric-value">{memory}</span>
-        </div>
-        <div className="metric-item">
-          <span className="metric-label">NET:</span>
-          <span className="metric-value">{network}</span>
-        </div>
-      </div>
 
       <main style={{
         position: 'relative',
