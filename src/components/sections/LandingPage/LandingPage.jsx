@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { useTheme } from '../../../contexts/theme';
+import './LandingPage.css';
 
 const LandingPageOldEye = ({ startTime }) => {
   const { theme } = useTheme();
@@ -368,361 +369,36 @@ const LandingPageOldEye = ({ startTime }) => {
   }, [theme, colors.bg, colors.primary15]);
 
   return (
-    <div style={{
-      background: colors.bg,
-      color: colors.text,
-      minHeight: '100vh',
-      height: '100vh',
-      overflow: 'hidden',
-      position: 'relative',
-      fontFamily: "'Share Tech Mono', monospace",
-      animation: 'fadeInScan 2.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards'
-    }}>
-      <style>{`
-        @keyframes titleGlitch {
-          0%, 100% { opacity: 1; }
-          23% { opacity: 1; }
-          25% { opacity: 0.5; }
-          27% { opacity: 1; }
-          64% { opacity: 1; }
-          66% { opacity: 0.5; }
-          68% { opacity: 1; }
-        }
-
-        @keyframes breathingBorder {
-          0%, 100% {
-            box-shadow: 0 0 2px ${colors.primary05}, 0 0 4px ${colors.primary05};
-          }
-          50% {
-            box-shadow: 0 0 10px ${colors.primary20}, 0 0 15px ${colors.primary15};
-          }
-        }
-
-        .holographic-circle {
-          position: absolute;
-          top: 50%;
-          left: 50%;
-          transform: translate(-50%, -50%);
-          width: 350px;
-          height: 350px;
-          background: ${colors.bg};
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          border-radius: 50%;
-          overflow: hidden;
-          transition: all 0.5s ease;
-          pointer-events: none;
-          box-shadow: 0 0 2px ${colors.primary05}, 0 0 4px ${colors.primary05};
-          animation: breathingBorder 6s ease-in-out infinite;
-        }
-
-        @media (min-width: 768px) {
-          .holographic-circle {
-            width: 300px;
-            height: 300px;
-          }
-        }
-
-        @media (min-width: 1024px) {
-          .holographic-circle {
-            width: 400px;
-            height: 400px;
-          }
-        }
-
-        @media (min-width: 1440px) {
-          .holographic-circle {
-            width: 500px;
-            height: 500px;
-          }
-        }
-
-        .holographic-circle::before {
-          content: '';
-          position: absolute;
-          top: -50%;
-          left: -50%;
-          width: 200%;
-          height: 200%;
-          background: linear-gradient(
-            0deg,
-            transparent,
-            transparent 30%,
-            ${colors.primary30}
-          );
-          transform: rotate(-45deg);
-          transition: all 0.5s ease;
-          opacity: 0;
-        }
-
-        .eye-container:hover .holographic-circle {
-          transform: translate(-50%, -50%) scale(1.05);
-          box-shadow: 0 0 20px ${colors.primary50};
-        }
-
-        .eye-container:hover .holographic-circle::before {
-          opacity: 1;
-          transform: rotate(-45deg) translateY(100%);
-        }
-
-        @keyframes subtleGlow {
-          0%, 100% {
-            filter: drop-shadow(0 0 8px ${colors.primary40});
-          }
-          50% {
-            filter: drop-shadow(0 0 15px ${colors.primary60});
-          }
-        }
-
-        .eye-svg {
-          animation: subtleGlow 4s ease-in-out infinite;
-        }
-
-        @keyframes glitchEffect {
-          0%, 100% {
-            transform: translate(0);
-            filter: hue-rotate(0deg);
-          }
-          10% {
-            transform: translate(-2px, 0);
-            filter: hue-rotate(90deg);
-          }
-          20% {
-            transform: translate(2px, 0);
-            filter: hue-rotate(-90deg);
-          }
-          30% {
-            transform: translate(-3px, 1px);
-            filter: hue-rotate(180deg);
-          }
-          40% {
-            transform: translate(3px, -1px);
-            filter: hue-rotate(-180deg);
-          }
-          50% {
-            transform: translate(-1px, 2px);
-            filter: hue-rotate(45deg);
-          }
-        }
-
-        @keyframes glitchScan {
-          0%, 100% { clip-path: inset(0 0 0 0); }
-          20% { clip-path: inset(40% 0 40% 0); }
-          40% { clip-path: inset(0 0 80% 0); }
-          60% { clip-path: inset(80% 0 0 0); }
-          80% { clip-path: inset(30% 0 50% 0); }
-        }
-
-        .eye-glitch {
-          position: relative;
-          display: inline-block;
-        }
-
-        .eye-glitch.active svg {
-          animation:
-            glitchEffect 0.1s ease-in-out 2,
-            glitchScan 0.05s steps(5) 4;
-        }
-
-        @keyframes fadeInScan {
-          0% { opacity: 0; }
-          100% { opacity: 1; }
-        }
-
-        .click-message {
-          position: fixed;
-          top: 70%;
-          left: 50%;
-          transform: translateX(-50%);
-          font-family: 'Share Tech Mono', monospace;
-          font-size: 1rem;
-          color: ${colors.primary95};
-          text-shadow: 0 0 5px ${colors.primary60};
-          z-index: 1000;
-          pointer-events: none;
-        }
-
-        .system-metrics {
-          position: fixed;
-          bottom: 1.5rem;
-          left: 50%;
-          transform: translateX(-50%);
-          display: flex;
-          flex-direction: row;
-          gap: 2rem;
-          font-size: 0.75rem;
-          color: ${colors.accent};
-          z-index: 10;
-          user-select: none;
-          font-family: 'Share Tech Mono', monospace;
-        }
-
-        .metric-item {
-          display: flex;
-          align-items: center;
-          gap: 0.5rem;
-          opacity: 0.8;
-        }
-
-        .metric-label {
-          color: ${colors.accentMuted};
-          font-weight: 600;
-        }
-
-        .metric-value {
-          color: ${colors.accentLight};
-        }
-
-        .eye-svg {
-          width: 480px;
-          height: 480px;
-        }
-
-        main {
-          padding: 0.75rem !important;
-          min-height: 100vh !important;
-          height: 100vh !important;
-          display: flex !important;
-          align-items: center !important;
-          justify-content: center !important;
-          overflow: hidden !important;
-        }
-
-        main > div {
-          flex-direction: column-reverse !important;
-          gap: 1.5rem !important;
-          justify-content: center !important;
-          align-items: center !important;
-          height: auto !important;
-        }
-
-        .eye-container {
-          flex: 0 0 auto !important;
-        }
-
-        .text-container {
-          flex: 0 0 auto !important;
-          text-align: center !important;
-        }
-
-        .text-container h1 {
-          font-size: 1.6rem !important;
-          margin-bottom: 0.75rem !important;
-          line-height: 1.2 !important;
-          text-align: center !important;
-          letter-spacing: 0.1em !important;
-        }
-
-        .text-container p {
-          font-size: 0.875rem !important;
-          line-height: 1.5 !important;
-          text-align: center !important;
-          margin: 0 auto !important;
-        }
-
-        @media (min-width: 768px) {
-          .eye-svg {
-            width: 400px;
-            height: 400px;
-          }
-
-          main {
-            padding: 1rem !important;
-          }
-
-          main > div {
-            gap: 2.5rem !important;
-          }
-
-          .text-container h1 {
-            font-size: 4rem !important;
-            margin-bottom: 1rem !important;
-            letter-spacing: 0.15em !important;
-          }
-
-          .text-container p {
-            font-size: 0.95rem !important;
-          }
-        }
-
-        @media (min-width: 1024px) {
-          .eye-svg {
-            width: 500px;
-            height: 500px;
-          }
-
-          main {
-            padding: 2rem !important;
-          }
-
-          main > div {
-            flex-direction: row !important;
-            gap: 4rem !important;
-          }
-
-          .text-container {
-            text-align: left !important;
-            order: 1;
-          }
-
-          .eye-container {
-            order: 2;
-          }
-
-          .text-container h1 {
-            text-align: left !important;
-            letter-spacing: 0.2em !important;
-          }
-
-          .text-container p {
-            text-align: left !important;
-            font-size: 1.1rem !important;
-          }
-        }
-
-        @media (min-width: 1440px) {
-          .eye-svg {
-            width: 650px;
-            height: 650px;
-          }
-
-          .text-container p {
-            font-size: 1.3rem !important;
-          }
-        }
-
-        @media (max-width: 767px) {
-          .system-metrics {
-            font-size: 0.65rem;
-            bottom: 0.75rem;
-            gap: 1rem;
-            flex-wrap: wrap;
-            justify-content: center;
-            max-width: 90%;
-          }
-
-          main {
-            padding: 0.5rem 0.75rem !important;
-          }
-
-          main > div {
-            gap: 0.5rem !important;
-          }
-        }
-
-        @media (max-width: 380px){
-          .eye-svg {
-            width: 350px;
-            height: 350px;
-          }
-          .holographic-circle {
-            width: 250px;
-            height: 250px;
-          }
-        }
-      `}</style>
-
+    <div 
+      className="landing-page-container"
+      style={{
+        '--color-primary': colors.primary,
+        '--color-primary95': colors.primary95,
+        '--color-primary60': colors.primary60,
+        '--color-primary50': colors.primary50,
+        '--color-primary40': colors.primary40,
+        '--color-primary35': colors.primary35,
+        '--color-primary30': colors.primary30,
+        '--color-primary20': colors.primary20,
+        '--color-primary15': colors.primary15,
+        '--color-primary10': colors.primary10,
+        '--color-primary05': colors.primary05,
+        '--color-bg': colors.bg,
+        '--color-text': colors.text,
+        '--color-text-muted': colors.textMuted,
+        '--color-accent': colors.accent,
+        '--color-accent-muted': colors.accentMuted,
+        '--color-accent-light': colors.accentLight,
+        background: colors.bg,
+        color: colors.text,
+        minHeight: '100vh',
+        height: '100vh',
+        overflow: 'hidden',
+        position: 'relative',
+        fontFamily: "'Share Tech Mono', monospace",
+        animation: 'fadeInScan 2.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards'
+      }}
+    >
       <canvas
         ref={canvasRef}
         style={{
