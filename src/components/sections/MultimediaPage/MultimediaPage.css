@@ -180,6 +180,9 @@ body.multimedia-page-body {
     transition: all 0.3s ease;
     border-radius: 8px;
     backdrop-filter: blur(10px);
+    box-shadow:
+        0 0 20px var(--color-primary-30),
+        inset 0 0 15px rgba(0, 255, 255, 0.1);
     position: relative;
     overflow: hidden;
 }
@@ -211,7 +214,9 @@ body.multimedia-page-body {
 .work-cta:hover {
     background: rgba(0, 0, 0, 0.5);
     border-color: var(--color-primary);
-    box-shadow: 0 0 30px var(--color-primary-50);
+    box-shadow:
+        0 0 30px var(--color-primary-50),
+        inset 0 0 20px rgba(0, 255, 255, 0.15);
     transform: translateY(-3px);
     backdrop-filter: blur(15px);
 }
@@ -483,6 +488,9 @@ body.multimedia-page-body {
     transition: all 0.3s ease;
     border-radius: 8px;
     backdrop-filter: blur(10px);
+    box-shadow:
+        0 0 20px var(--color-primary-30),
+        inset 0 0 15px rgba(0, 255, 255, 0.1);
     position: relative;
     overflow: hidden;
 }
@@ -514,7 +522,9 @@ body.multimedia-page-body {
 .multimedia-cta-button:hover {
     background: rgba(0, 0, 0, 0.5);
     border-color: var(--color-primary);
-    box-shadow: 0 0 40px var(--color-primary-50);
+    box-shadow:
+        0 0 40px var(--color-primary-50),
+        inset 0 0 20px rgba(0, 255, 255, 0.15);
     transform: translateY(-3px);
     backdrop-filter: blur(15px);
 }
@@ -819,6 +829,16 @@ body.multimedia-page-body {
 [data-theme="light"] .work-cta,
 [data-theme="light"] .multimedia-cta-button {
     background: rgba(255, 255, 255, 0.3);
+    box-shadow:
+        0 0 15px var(--color-primary-20),
+        inset 0 0 12px rgba(232, 160, 48, 0.1);
+}
+
+[data-theme="light"] .work-cta:hover,
+[data-theme="light"] .multimedia-cta-button:hover {
+    box-shadow:
+        0 0 20px var(--color-primary-30),
+        inset 0 0 15px rgba(232, 160, 48, 0.15);
 }
 
 [data-theme="light"] .work-cta-primary {
