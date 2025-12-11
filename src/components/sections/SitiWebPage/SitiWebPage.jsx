@@ -106,9 +106,9 @@ const SitiWebPage = () => {
               <thead>
                 <tr>
                   <th className="feature-column">Linguaggio</th>
-                  <th className="package-column">
+                  <th className="package-column-wide">
                     <div className="package-header">
-                      <span className="package-name">Competenza</span>
+                      <span className="package-name">Utilizzo</span>
                     </div>
                   </th>
                 </tr>
@@ -116,38 +116,38 @@ const SitiWebPage = () => {
               <tbody>
                 <tr>
                   <td className="feature-name">C</td>
-                  <td className="feature-value">
-                    <span className="check-icon">✓</span>
+                  <td className="feature-description">
+                    Programmazione di sistema e algoritmi di basso livello
                   </td>
                 </tr>
                 <tr>
                   <td className="feature-name">C++</td>
-                  <td className="feature-value">
-                    <span className="check-icon">✓</span>
+                  <td className="feature-description">
+                    Sviluppo di applicazioni performanti e gestione della memoria
                   </td>
                 </tr>
                 <tr>
                   <td className="feature-name">Js/JSX</td>
-                  <td className="feature-value">
-                    <span className="check-icon">✓</span>
+                  <td className="feature-description">
+                    Sviluppo di applicazioni web moderne con React e framework JavaScript
                   </td>
                 </tr>
                 <tr>
                   <td className="feature-name">HTML</td>
-                  <td className="feature-value">
-                    <span className="check-icon">✓</span>
+                  <td className="feature-description">
+                    Strutturazione semantica di pagine web e applicazioni
                   </td>
                 </tr>
                 <tr>
                   <td className="feature-name">CSS</td>
-                  <td className="feature-value">
-                    <span className="check-icon">✓</span>
+                  <td className="feature-description">
+                    Styling avanzato, animazioni e design responsive
                   </td>
                 </tr>
                 <tr>
                   <td className="feature-name">Python</td>
-                  <td className="feature-value">
-                    <span className="check-icon">✓</span>
+                  <td className="feature-description">
+                    Scripting, automazione e sviluppo backend
                   </td>
                 </tr>
               </tbody>
