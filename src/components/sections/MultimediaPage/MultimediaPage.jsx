@@ -35,7 +35,7 @@ const MultimediaPage = () => {
               o illustrazioni, sei nel posto giusto:
             </p>
             <p className="intro-highlight">
-              Ecco una piccola dimostrazione dei miei lavori
+              Qui sotto puoi dare un' occhiata ad alcuni dei miei campioni.
             </p>
           </div>
         </section>
@@ -78,7 +78,7 @@ const MultimediaPage = () => {
               <h2 className="work-title">Grafiche Digitali</h2>
               <p className="work-text">
                 Creo banner, sfondi e immagini utilizzabili in vari tipi di progetti e piattaforme.
-                Contattami subito per illustrarmi il tuo progetto!
+                Contattami subito per creare le tue!
               </p>
               <button
                 className="work-cta"
@@ -136,7 +136,7 @@ const MultimediaPage = () => {
               <p className="work-text">
                 Da anni seguo il mondo delle illustrazioni, metto a disposizione tutta la mia esperienza per
                 insegnarti, aiutarti nei tuoi progetti o creare direttamente illustrazioni su commissione,
-                visita i miei canali social per avere un'idea più precisa dei miei vari stili e tecniche!
+                visita i miei canali social o consulta il mio portfolio per avere un'idea più precisa dei miei vari stili e tecniche!
               </p>
               <button
                 className="work-cta"
@@ -232,7 +232,7 @@ const MultimediaPage = () => {
             className="multimedia-cta-button"
             onClick={() => navigate('/contatti')}
           >
-            Richiedi Preventivo
+            Contattami
           </button>
         </section>
       </div>
