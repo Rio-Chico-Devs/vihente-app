@@ -17,7 +17,6 @@ export default defineConfig(({ mode }) => ({
         // Chunking manuale per ottimizzare il caricamento
         manualChunks: {
           'react-vendor': ['react', 'react-dom', 'react-router-dom'],
-          'animation-vendor': ['framer-motion'],
           'utils-vendor': ['validator', 'dompurify']
         }
       }

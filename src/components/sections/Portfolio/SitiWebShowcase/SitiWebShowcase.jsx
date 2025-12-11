@@ -98,7 +98,7 @@ const SitiWebShowcase = () => {
           className="cta-button"
           onClick={() => navigate('/contatti')}
         >
-          Richiedi Preventivo
+          Contattami
         </button>
       </div>
     </div>

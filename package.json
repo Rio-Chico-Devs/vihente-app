@@ -34,15 +34,12 @@
     "build:analyze": "vite build --mode analyze"
   },
   "dependencies": {
-    "@fontsource/electrolize": "^5.2.8",
     "@fontsource/orbitron": "^5.2.8",
     "@fontsource/share-tech-mono": "^5.2.7",
     "dompurify": "^3.3.0",
-    "framer-motion": "^12.23.24",
     "lucide-react": "^0.545.0",
     "react": "^19.1.1",
     "react-dom": "^19.1.1",
-    "react-intersection-observer": "^9.16.0",
     "react-router-dom": "^7.9.6",
     "validator": "^13.15.15",
     "vanilla-cookieconsent": "^3.1.0"
