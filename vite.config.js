@@ -17,13 +17,10 @@ export default defineConfig(({ mode }) => ({
         // Chunking manuale per ottimizzare il caricamento
         manualChunks: {
           'react-vendor': ['react', 'react-dom', 'react-router-dom'],
-          'animation-vendor': ['framer-motion'],
           'utils-vendor': ['validator', 'dompurify']
         }
       }
-    },
-    // Aumenta il limite di warning per chunks (opzionale)
-    chunkSizeWarningLimit: 1000
+    }
   },
   
   // Rimuovi console.log in produzione
