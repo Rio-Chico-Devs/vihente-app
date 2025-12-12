@@ -618,6 +618,7 @@ const MusicPlayerPage = () => {
               onTimeUpdate={handleTimeUpdate}
               onLoadedMetadata={handleLoadedMetadata}
               onEnded={handleEnded}
+              preload="none"
             />
 
             <div className="track-selector" ref={dropdownRef}>
