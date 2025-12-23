@@ -72,6 +72,8 @@
   padding: 0;
   flex-shrink: 0;
   transition: transform 0.2s ease;
+  z-index: 100;
+  position: relative;
 }
 
 .nav-arrow:hover {

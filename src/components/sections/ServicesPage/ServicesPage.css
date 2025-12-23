@@ -40,8 +40,9 @@ body.services-page-body {
     font-family: 'Share Tech Mono', monospace;
     background: var(--bg-black);
     color: var(--text-primary);
-    overflow: hidden;
-    height: 100vh;
+    overflow-x: hidden;
+    overflow-y: auto;
+    min-height: 100vh;
     position: relative;
     transition: background-color var(--transition-theme), color var(--transition-theme);
 }
