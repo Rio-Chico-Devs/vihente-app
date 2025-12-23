@@ -167,7 +167,7 @@
   height: 480px;
 }
 
-main {
+.landing-page-main {
   padding: 0.75rem !important;
   min-height: 100vh !important;
   height: 100vh !important;
@@ -177,7 +177,7 @@ main {
   overflow: hidden !important;
 }
 
-main > div {
+.landing-page-main > div {
   flex-direction: column-reverse !important;
   gap: 1.5rem !important;
   justify-content: center !important;

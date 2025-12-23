@@ -344,16 +344,10 @@ const LandingPageOldEye = ({ startTime }) => {
 
       {showClickMessage && <div className="click-message">{clickMessage}</div>}
 
-      <main style={{
+      <div className="landing-page-main" style={{
         position: 'relative',
         zIndex: 1,
-        minHeight: '100vh',
-        height: '100vh',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        padding: '2rem',
-        overflow: 'hidden'
+        padding: '2rem'
       }}>
         <div style={{
           display: 'flex',
@@ -479,7 +473,7 @@ const LandingPageOldEye = ({ startTime }) => {
             </div>
           </div>
         </div>
-      </main>
+      </div>
     </div>
   );
 };
