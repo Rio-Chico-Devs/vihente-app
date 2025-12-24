@@ -124,48 +124,70 @@ const Contacts = () => {
     timeoutsRef.current.push(timeout2);
 
     const timeout3 = setTimeout(async () => {
-      // ✅ USO SANITIZED DATA per invio reale
+      // ✅ INVIO REALE A BACKEND PHP
       try {
-        // TODO: Sostituisci con tua API
-        console.log('Invio dati sanitizzati:', sanitizedData);
-        
-        // Simula API call
-        // const response = await fetch('/api/contact', {
-        //   method: 'POST',
-        //   headers: { 'Content-Type': 'application/json' },
-        //   body: JSON.stringify(sanitizedData)
-        // });
-        // if (!response.ok) throw new Error('Errore invio');
+        const response = await fetch('/api/contact.php', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+          },
+          body: JSON.stringify({
+            name: sanitizedData.name,
+            email: sanitizedData.email,
+            message: sanitizedData.message,
+            service: isQuoteMode ? sanitizedData.service : undefined,
+            reason: !isQuoteMode ? sanitizedData.reason : undefined,
+            privacyConsent: formData.privacyConsent
+          })
+        });
 
+        const result = await response.json();
+
+        if (!response.ok) {
+          throw new Error(result.message || 'Errore durante l\'invio');
+        }
+
+        // ✅ SUCCESSO
         setIsAnimating(false);
         setSubmitStatus('success');
 
+        // Reset form dopo successo
         const timeout4 = setTimeout(() => {
           setFormData({
             name: '',
             email: '',
             reason: '',
             service: 'Consulenza',
-            message: ''
+            message: '',
+            privacyConsent: false
           });
         }, 100);
         timeoutsRef.current.push(timeout4);
 
+        // Rate limiting (10 secondi)
         setCanSubmit(false);
         const timeout5 = setTimeout(() => {
           setCanSubmit(true);
         }, 10000);
         timeoutsRef.current.push(timeout5);
 
+        // Nascondi messaggio successo dopo 5 secondi
         const timeout6 = setTimeout(() => {
           setSubmitStatus(null);
-        }, 4000);
+        }, 5000);
         timeoutsRef.current.push(timeout6);
 
       } catch (error) {
         console.error('Errore invio form:', error);
         setIsAnimating(false);
         setSubmitStatus('error');
+
+        // Nascondi messaggio errore dopo 5 secondi
+        const timeout7 = setTimeout(() => {
+          setSubmitStatus(null);
+        }, 5000);
+        timeoutsRef.current.push(timeout7);
       }
     }, 3000);
     timeoutsRef.current.push(timeout3);

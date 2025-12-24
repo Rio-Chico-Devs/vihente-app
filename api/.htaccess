@@ -1,0 +1,77 @@
+# API Security & Configuration
+# Per Hostinger shared hosting
+
+# Abilita PHP processing
+<FilesMatch "\.php$">
+    SetHandler application/x-httpd-php
+</FilesMatch>
+
+# Proteggi file sensibili
+<FilesMatch "(\.log|README\.md|\.htaccess)$">
+    Order Allow,Deny
+    Deny from all
+</FilesMatch>
+
+# Solo contact.php e view-logs.php sono accessibili
+<FilesMatch "^(contact|view-logs)\.php$">
+    Order Allow,Deny
+    Allow from all
+</FilesMatch>
+
+# Security headers
+<IfModule mod_headers.c>
+    # Previeni MIME type sniffing
+    Header set X-Content-Type-Options "nosniff"
+
+    # Previeni clickjacking
+    Header set X-Frame-Options "DENY"
+
+    # XSS Protection
+    Header set X-XSS-Protection "1; mode=block"
+
+    # Referrer Policy
+    Header set Referrer-Policy "strict-origin-when-cross-origin"
+</IfModule>
+
+# Disabilita directory listing
+Options -Indexes
+
+# Proteggi contro alcuni tipi di attacchi
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+
+    # Blocca accesso a file nascosti (. files)
+    RewriteRule "(^|/)\." - [F]
+
+    # Blocca tentativi SQL injection comuni
+    RewriteCond %{QUERY_STRING} [a-zA-Z0-9_]=http:// [OR]
+    RewriteCond %{QUERY_STRING} [a-zA-Z0-9_]=(\.\.//?)+ [OR]
+    RewriteCond %{QUERY_STRING} [a-zA-Z0-9_]=/([a-z0-9_.]//?)+ [NC,OR]
+    RewriteCond %{QUERY_STRING} \=PHP[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12} [NC,OR]
+    RewriteCond %{QUERY_STRING} (\.\./|\.\.) [OR]
+    RewriteCond %{QUERY_STRING} ftp\: [NC,OR]
+    RewriteCond %{QUERY_STRING} http\: [NC,OR]
+    RewriteCond %{QUERY_STRING} https\: [NC,OR]
+    RewriteCond %{QUERY_STRING} \=\|w\| [NC,OR]
+    RewriteCond %{QUERY_STRING} ^(.*)/self/(.*)$ [NC,OR]
+    RewriteCond %{QUERY_STRING} ^(.*)cPath=http://(.*)$ [NC,OR]
+    RewriteCond %{QUERY_STRING} (\<|%3C).*script.*(\>|%3E) [NC,OR]
+    RewriteCond %{QUERY_STRING} (<|%3C)([^s]*s)+cript.*(>|%3E) [NC,OR]
+    RewriteCond %{QUERY_STRING} (\<|%3C).*iframe.*(\>|%3E) [NC,OR]
+    RewriteCond %{QUERY_STRING} (<|%3C)([^i]*i)+frame.*(>|%3E) [NC,OR]
+    RewriteCond %{QUERY_STRING} base64_encode.*\(.*\) [NC,OR]
+    RewriteCond %{QUERY_STRING} base64_(en|de)code[^(]*\([^)]*\) [NC,OR]
+    RewriteCond %{QUERY_STRING} GLOBALS(=|\[|\%[0-9A-Z]{0,2}) [OR]
+    RewriteCond %{QUERY_STRING} _REQUEST(=|\[|\%[0-9A-Z]{0,2}) [OR]
+    RewriteCond %{QUERY_STRING} ^.*(\(|\)|<|>|%3c|%3e).* [NC,OR]
+    RewriteCond %{QUERY_STRING} ^.*(\\x00|\\x04|\\x08|\\x0d|\\x1b|\\x20|\\x3c|\\x3e|\\x7f).* [NC]
+    RewriteRule ^(.*)$ - [F,L]
+</IfModule>
+
+# Limite dimensione upload (se necessario in futuro)
+php_value upload_max_filesize 2M
+php_value post_max_size 2M
+
+# Timeout
+php_value max_execution_time 30
+php_value max_input_time 30
