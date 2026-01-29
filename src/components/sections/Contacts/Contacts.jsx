@@ -25,10 +25,8 @@ const Contacts = () => {
   const [canSubmit, setCanSubmit] = useState(true);
   const [showRateLimit, setShowRateLimit] = useState(false);
 
-  // 🔧 FIX MEMORY LEAK: Track all timeouts
   const timeoutsRef = useRef([]);
 
-  // 🔧 FIX MEMORY LEAK: Cleanup all timeouts on unmount
   useEffect(() => {
     return () => {
       timeoutsRef.current.forEach(timeout => clearTimeout(timeout));
@@ -44,7 +42,6 @@ const Contacts = () => {
       [name]: type === 'checkbox' ? checked : value
     });
 
-    // Clear error for this field when user starts typing/clicking
     if (errors[name]) {
       setErrors(prev => ({
         ...prev,
@@ -71,7 +68,6 @@ const Contacts = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Reset errors
     setErrors({ name: '', email: '', message: '', privacyConsent: '' });
 
     if (!canSubmit) {
@@ -81,13 +77,11 @@ const Contacts = () => {
       return;
     }
 
-    // ✅ VALIDAZIONE
     const validation = validateContactForm(formData);
 
     if (!validation.valid) {
       setErrors(validation.errors);
 
-      // Scroll to first error
       const firstErrorField = Object.keys(validation.errors)[0];
       const errorElement = document.querySelector(`[name="${firstErrorField}"]`);
       if (errorElement) {
@@ -97,7 +91,6 @@ const Contacts = () => {
       return;
     }
 
-    // ✅ VALIDAZIONE CONSENSO PRIVACY (OBBLIGATORIO GDPR)
     if (!formData.privacyConsent) {
       setErrors(prev => ({
         ...prev,
@@ -106,13 +99,13 @@ const Contacts = () => {
       return;
     }
 
-    // ✅ SANITIZE INPUT (fix errore ESLint: ora sanitizedData viene usato)
     const sanitizedData = {
       name: sanitizeInput(formData.name),
       email: sanitizeInput(formData.email),
       reason: sanitizeInput(formData.reason),
       service: sanitizeInput(formData.service),
-      message: sanitizeInput(formData.message)
+      message: sanitizeInput(formData.message),
+      privacyConsent: formData.privacyConsent
     };
 
     setIsAnimating(true);
@@ -124,18 +117,28 @@ const Contacts = () => {
     timeoutsRef.current.push(timeout2);
 
     const timeout3 = setTimeout(async () => {
-      // ✅ USO SANITIZED DATA per invio reale
       try {
-        // TODO: Sostituisci con tua API
-        console.log('Invio dati sanitizzati:', sanitizedData);
-        
-        // Simula API call
-        // const response = await fetch('/api/contact', {
-        //   method: 'POST',
-        //   headers: { 'Content-Type': 'application/json' },
-        //   body: JSON.stringify(sanitizedData)
-        // });
-        // if (!response.ok) throw new Error('Errore invio');
+        const response = await fetch('/api/contact.php', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+          },
+          body: JSON.stringify({
+            name: sanitizedData.name,
+            email: sanitizedData.email,
+            message: sanitizedData.message,
+            service: isQuoteMode ? sanitizedData.service : undefined,
+            reason: !isQuoteMode ? sanitizedData.reason : undefined,
+            privacyConsent: sanitizedData.privacyConsent
+          })
+        });
+
+        const result = await response.json();
+
+        if (!response.ok) {
+          throw new Error(result.message || 'Errore durante l\'invio');
+        }
 
         setIsAnimating(false);
         setSubmitStatus('success');
@@ -146,7 +149,8 @@ const Contacts = () => {
             email: '',
             reason: '',
             service: 'Consulenza',
-            message: ''
+            message: '',
+            privacyConsent: false
           });
         }, 100);
         timeoutsRef.current.push(timeout4);
@@ -159,13 +163,18 @@ const Contacts = () => {
 
         const timeout6 = setTimeout(() => {
           setSubmitStatus(null);
-        }, 4000);
+        }, 5000);
         timeoutsRef.current.push(timeout6);
 
       } catch (error) {
         console.error('Errore invio form:', error);
         setIsAnimating(false);
         setSubmitStatus('error');
+
+        const timeout7 = setTimeout(() => {
+          setSubmitStatus(null);
+        }, 5000);
+        timeoutsRef.current.push(timeout7);
       }
     }, 3000);
     timeoutsRef.current.push(timeout3);
@@ -362,7 +371,6 @@ const Contacts = () => {
                 )}
               </div>
 
-              {/* ✅ CHECKBOX CONSENSO PRIVACY (OBBLIGATORIO GDPR) */}
               <div className="form-group form-field-full privacy-consent-group">
                 <label className="privacy-consent-label">
                   <input
