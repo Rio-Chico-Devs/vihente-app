@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { useTheme } from '../../../contexts/theme';
+import './LandingPage.css';
 
 const LandingPageOldEye = ({ startTime }) => {
   const { theme } = useTheme();
@@ -579,7 +580,7 @@ const LandingPageOldEye = ({ startTime }) => {
           height: 480px;
         }
 
-        main {
+        .landing-page-main {
           padding: 0.75rem !important;
           min-height: 100vh !important;
           height: 100vh !important;
@@ -589,7 +590,7 @@ const LandingPageOldEye = ({ startTime }) => {
           overflow: hidden !important;
         }
 
-        main > div {
+        .landing-page-main > div {
           flex-direction: column-reverse !important;
           gap: 1.5rem !important;
           justify-content: center !important;
@@ -627,11 +628,11 @@ const LandingPageOldEye = ({ startTime }) => {
             height: 400px;
           }
 
-          main {
+          .landing-page-main {
             padding: 1rem !important;
           }
 
-          main > div {
+          .landing-page-main > div {
             gap: 2.5rem !important;
           }
 
@@ -652,11 +653,11 @@ const LandingPageOldEye = ({ startTime }) => {
             height: 500px;
           }
 
-          main {
+          .landing-page-main {
             padding: 2rem !important;
           }
 
-          main > div {
+          .landing-page-main > div {
             flex-direction: row !important;
             gap: 4rem !important;
           }
@@ -702,11 +703,11 @@ const LandingPageOldEye = ({ startTime }) => {
             max-width: 90%;
           }
 
-          main {
+          .landing-page-main {
             padding: 0.5rem 0.75rem !important;
           }
 
-          main > div {
+          .landing-page-main > div {
             gap: 0.5rem !important;
           }
         }
@@ -760,16 +761,10 @@ const LandingPageOldEye = ({ startTime }) => {
         </div>
       </div>
 
-      <main style={{
+      <div className="landing-page-main" style={{
         position: 'relative',
         zIndex: 1,
-        minHeight: '100vh',
-        height: '100vh',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        padding: '2rem',
-        overflow: 'hidden'
+        padding: '2rem'
       }}>
         <div style={{
           display: 'flex',
@@ -895,7 +890,7 @@ const LandingPageOldEye = ({ startTime }) => {
             </div>
           </div>
         </div>
-      </main>
+      </div>
     </div>
   );
 };
