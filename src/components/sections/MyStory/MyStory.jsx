@@ -103,7 +103,11 @@ const MyStory = () => {
         {/* Photo - Right */}
         <div className="mystory-photo-container">
           <div className="mystory-photo">
-            Foto
+            <img
+      src="/images/AVBPT.webp"
+      alt="Antonio - Consulente Digitale"
+      className="mystory-photo-img"
+    />
           </div>
         </div>
       </div>

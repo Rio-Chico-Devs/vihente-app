@@ -16,8 +16,8 @@ const Portfolio = () => {
   const startRotationRef = useRef(0);
 
   const categories = [
-    { id: 'grafiche', title: 'GRAFICHE' },
-    { id: 'sitiweb', title: 'SITI WEB' },
+    { id: 'grafiche', title: 'GRAFICHE', image: '/images/Chef.webp' },
+    { id: 'sitiweb', title: 'SITI WEB', image: '/images/webdesign.webp' },
     { id: 'componenti', title: 'COMPONENTI' }
   ];
 
@@ -190,7 +190,14 @@ const Portfolio = () => {
                 >
                   <div className="card-3d">
                     <div className="front face">
-                      <div className="front-image"></div>
+                      <div className="front-image">
+  <img
+    src={cat.image}
+    alt={cat.title}
+    className="front-image-img"
+    onError={(e) => { e.target.style.display = 'none'; }}
+  />
+</div>
                       <div className="front-title">
                         <h2>{cat.title}</h2>
                       </div>
