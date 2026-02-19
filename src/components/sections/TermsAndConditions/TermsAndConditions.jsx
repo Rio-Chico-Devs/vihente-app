@@ -240,9 +240,9 @@ const TermsAndConditions = () => {
             Per qualsiasi domanda relativa a questi Termini e Condizioni, puoi contattarci:
           </p>
           <div className="info-box">
-            <p><strong>Email:</strong> <a href="mailto:[TUA-EMAIL]">[TUA-EMAIL]</a></p>
-            <p><strong>PEC:</strong> [TUA-PEC]</p>
-            <p><strong>Indirizzo:</strong> [INDIRIZZO-COMPLETO]</p>
+            <p><strong>Email:</strong> <a href="mailto:vihenteweb@proton.me">[vihenteweb@proton.me]</a></p>
+            <p><strong>PEC:</strong> [antoniovicente@postecertifica.it]</p>
+            <p><strong>Indirizzo:</strong> [Via Sacile 3]</p>
           </div>
         </section>
 
