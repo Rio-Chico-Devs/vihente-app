@@ -192,7 +192,12 @@ const Portfolio = () => {
                   <div className="card-3d">
                     <div className="front face">
                       <div className="front-image">
-                        {cat.id === 'sitiweb' && <GoogleMockup />}
+                        <img
+                          src="/screenshots/VIejcO5.png"
+                          alt={cat.title}
+                          className="front-image-img"
+                          loading="eager"
+                        />
                       </div>
                       <div className="front-title">
                         <h2>{cat.title}</h2>

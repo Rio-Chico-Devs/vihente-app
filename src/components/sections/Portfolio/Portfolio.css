@@ -216,10 +216,14 @@
 .front-image-img {
   width: 100%;
   height: 100%;
-  object-fit: none;
+  object-fit: cover;
   object-position: center;
   display: block;
-  image-rendering: auto;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  transform: translateZ(0.1px);
+  image-rendering: -webkit-optimize-contrast;
+  -webkit-font-smoothing: subpixel-antialiased;
 }
 
 .card-deck.active:hover {
