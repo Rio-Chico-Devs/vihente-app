@@ -219,6 +219,12 @@
   object-fit: cover;
   object-position: center;
   display: block;
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: crisp-edges;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  transform: translateZ(1px);
+  -webkit-font-smoothing: subpixel-antialiased;
 }
 
 .card-deck.active:hover {
