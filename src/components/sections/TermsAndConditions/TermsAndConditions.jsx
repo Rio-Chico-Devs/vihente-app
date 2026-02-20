@@ -17,12 +17,12 @@ const TermsAndConditions = () => {
             In conformità con l'Art. 21 del D.Lgs. 70/2003 (Commercio Elettronico), il titolare del sito è:
           </p>
           <div className="info-box">
-            <p><strong>Nome/Ragione Sociale:</strong> [NOME-COMPLETO]</p>
-            <p><strong>Indirizzo:</strong> [INDIRIZZO-COMPLETO]</p>
-            <p><strong>Partita IVA / Codice Fiscale:</strong> [P.IVA-CF]</p>
-            <p><strong>Email:</strong> <a href="mailto:[TUA-EMAIL]">[TUA-EMAIL]</a></p>
-            <p><strong>PEC:</strong> [TUA-PEC]</p>
-            <p><strong>Sito web:</strong> vihente.dev</p>
+            <p><strong>Nome/Ragione Sociale:</strong> Antonio Vicente Bruno</p>
+            <p><strong>Indirizzo:</strong> Via Sacile 3</p>
+            <p><strong>Partita IVA / Codice Fiscale:</strong> In fase di ottenimento</p>
+            <p><strong>Email:</strong> <a href="mailto:vihenteweb@proton.me">vihenteweb@proton.me</a></p>
+            <p><strong>PEC:</strong> antoniovicente@postecertifica.it</p>
+            <p><strong>Sito web:</strong> vihente.it</p>
           </div>
           <p className="note">
             <em>Nota: Questi dati devono essere compilati prima della pubblicazione del sito per conformità legale.</em>
@@ -96,7 +96,7 @@ const TermsAndConditions = () => {
           <div className="info-box">
             <h3>Come esercitare il diritto di recesso:</h3>
             <p>
-              Invia comunicazione scritta tramite email a <a href="mailto:[TUA-EMAIL]">[TUA-EMAIL]</a> o PEC a [TUA-PEC]
+              Invia comunicazione scritta tramite email a <a href="mailto:vihenteweb@proton.me">vihenteweb@proton.me</a> o PEC a antoniovicente@postecertifica.it
               entro 14 giorni dalla data di accettazione del preventivo.
             </p>
             <p>
@@ -184,7 +184,7 @@ const TermsAndConditions = () => {
               </a>
             </p>
             <p>
-              Email per contatti ODR: <a href="mailto:[TUA-EMAIL]">[TUA-EMAIL]</a>
+              Email per contatti ODR: <a href="mailto:vihenteweb@proton.me">vihenteweb@proton.me</a>
             </p>
           </div>
           <p>
@@ -204,7 +204,7 @@ const TermsAndConditions = () => {
           </p>
           <p>
             <strong>Per professionisti/imprese:</strong> Per eventuali controversie derivanti dall'interpretazione o
-            esecuzione del presente contratto, è competente in via esclusiva il Foro di [CITTÀ-FORO-COMPETENTE].
+            esecuzione del presente contratto, è competente in via esclusiva il Foro di Pordenone.
           </p>
         </section>
 
@@ -240,9 +240,9 @@ const TermsAndConditions = () => {
             Per qualsiasi domanda relativa a questi Termini e Condizioni, puoi contattarci:
           </p>
           <div className="info-box">
-            <p><strong>Email:</strong> <a href="mailto:[TUA-EMAIL]">[TUA-EMAIL]</a></p>
-            <p><strong>PEC:</strong> [TUA-PEC]</p>
-            <p><strong>Indirizzo:</strong> [INDIRIZZO-COMPLETO]</p>
+            <p><strong>Email:</strong> <a href="mailto:vihenteweb@proton.me">vihenteweb@proton.me</a></p>
+            <p><strong>PEC:</strong> antoniovicente@postecertifica.it</p>
+            <p><strong>Indirizzo:</strong> Via Sacile 3</p>
           </div>
         </section>
 

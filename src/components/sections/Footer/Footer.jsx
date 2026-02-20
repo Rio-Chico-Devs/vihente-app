@@ -23,16 +23,16 @@ const Footer = () => {
           </div>
 
           <div className="footer-info">
-            <span className="footer-info-item">P.IVA: [P.IVA]</span>
+            <span className="footer-info-item">P.IVA: [In fase di ottenimento]</span>
             <span className="footer-divider">|</span>
-            <span className="footer-info-item">Email: <a href="mailto:[TUA-EMAIL]" className="footer-email">[EMAIL]</a></span>
+            <span className="footer-info-item">Email: <a href="mailto:vihenteweb@proton.me" className="footer-email">vihenteweb@proton.me</a></span>
           </div>
 
           <div className="footer-social">
-            <a 
-              href="https://instagram.com/[USERNAME]" 
-              target="_blank" 
-              rel="noopener noreferrer" 
+            <a
+              href="https://www.instagram.com/rio_chico_art/"
+              target="_blank"
+              rel="noopener noreferrer"
               className="footer-social-link"
               aria-label="Instagram"
             >
@@ -42,10 +42,10 @@ const Footer = () => {
                 <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/>
               </svg>
             </a>
-            <a 
-              href="https://linkedin.com/in/[USERNAME]" 
-              target="_blank" 
-              rel="noopener noreferrer" 
+            <a
+              href="https://www.linkedin.com/in/antonio-v-bruno-b2281a299"
+              target="_blank"
+              rel="noopener noreferrer"
               className="footer-social-link"
               aria-label="LinkedIn"
             >
@@ -55,10 +55,10 @@ const Footer = () => {
                 <circle cx="4" cy="4" r="2"/>
               </svg>
             </a>
-            <a 
-              href="https://facebook.com/[USERNAME]" 
-              target="_blank" 
-              rel="noopener noreferrer" 
+            <a
+              href="https://www.facebook.com/profile.php?id=61558035243746"
+              target="_blank"
+              rel="noopener noreferrer"
               className="footer-social-link"
               aria-label="Facebook"
             >
@@ -71,7 +71,7 @@ const Footer = () => {
 
         <div className="footer-bottom">
           <p className="footer-copyright">
-            © 2025 VIHENTE - Tutti i diritti riservati • PER ASPERA AD ASTRA
+            © 2026 VIHENTE - Tutti i diritti riservati • PER ASPERA AD ASTRA
           </p>
           <p className="footer-legal-small">
             Contenuti protetti da L. 633/1941
