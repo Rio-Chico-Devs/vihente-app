@@ -17,9 +17,21 @@ const Portfolio = () => {
   const startRotationRef = useRef(0);
 
   const categories = [
-    { id: 'grafiche', title: 'GRAFICHE' },
-    { id: 'sitiweb', title: 'SITI WEB' },
-    { id: 'componenti', title: 'COMPONENTI' }
+    {
+      id: 'grafiche',
+      title: 'GRAFICHE',
+      image: '/portfolio/grafiche-2x.webp' // 1400x1000px recommended
+    },
+    {
+      id: 'sitiweb',
+      title: 'SITI WEB',
+      image: '/portfolio/sitiweb-2x.webp' // 1400x1000px recommended
+    },
+    {
+      id: 'componenti',
+      title: 'COMPONENTI',
+      image: '/portfolio/componenti-2x.webp' // 1400x1000px recommended
+    }
   ];
 
   const primaryColor = theme === 'light' 
@@ -193,10 +205,11 @@ const Portfolio = () => {
                     <div className="front face">
                       <div className="front-image">
                         <img
-                          src="/screenshots/VIejcO5.png"
+                          src={cat.image}
                           alt={cat.title}
                           className="front-image-img"
                           loading="eager"
+                          decoding="sync"
                         />
                       </div>
                       <div className="front-title">
