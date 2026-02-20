@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTheme } from '../../../contexts/theme';
+import GoogleMockup from './GoogleMockup';
 import './Portfolio.css';
 
 const Portfolio = () => {
@@ -190,7 +191,9 @@ const Portfolio = () => {
                 >
                   <div className="card-3d">
                     <div className="front face">
-                      <div className="front-image"></div>
+                      <div className="front-image">
+                        {cat.id === 'sitiweb' && <GoogleMockup />}
+                      </div>
                       <div className="front-title">
                         <h2>{cat.title}</h2>
                       </div>
