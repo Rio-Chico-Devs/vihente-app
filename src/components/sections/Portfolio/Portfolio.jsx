@@ -1,7 +1,9 @@
 import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTheme } from '../../../contexts/theme';
+import GraficheCard from './GraficheCard';
 import GoogleMockup from './GoogleMockup';
+import ComponentiCard from './ComponentiCard';
 import './Portfolio.css';
 
 const Portfolio = () => {
@@ -17,21 +19,9 @@ const Portfolio = () => {
   const startRotationRef = useRef(0);
 
   const categories = [
-    {
-      id: 'grafiche',
-      title: 'GRAFICHE',
-      image: '/portfolio/grafiche-2x.webp' // 1400x1000px recommended
-    },
-    {
-      id: 'sitiweb',
-      title: 'SITI WEB',
-      image: '/portfolio/sitiweb-2x.webp' // 1400x1000px recommended
-    },
-    {
-      id: 'componenti',
-      title: 'COMPONENTI',
-      image: '/portfolio/componenti-2x.webp' // 1400x1000px recommended
-    }
+    { id: 'grafiche', title: 'GRAFICHE' },
+    { id: 'sitiweb', title: 'SITI WEB' },
+    { id: 'componenti', title: 'COMPONENTI' }
   ];
 
   const primaryColor = theme === 'light' 
@@ -204,13 +194,9 @@ const Portfolio = () => {
                   <div className="card-3d">
                     <div className="front face">
                       <div className="front-image">
-                        <img
-                          src={cat.image}
-                          alt={cat.title}
-                          className="front-image-img"
-                          loading="eager"
-                          decoding="sync"
-                        />
+                        {cat.id === 'grafiche' && <GraficheCard />}
+                        {cat.id === 'sitiweb' && <GoogleMockup />}
+                        {cat.id === 'componenti' && <ComponentiCard />}
                       </div>
                       <div className="front-title">
                         <h2>{cat.title}</h2>

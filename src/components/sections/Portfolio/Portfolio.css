@@ -203,7 +203,7 @@
   box-shadow: 0 0 0 rgba(0, 0, 0, 0.5);
 }
 
-/* Front Image Area - Optimized for 2x resolution images */
+/* Front Image Area - Code-based graphics container */
 .front-image {
   position: absolute;
   inset: 0;
@@ -211,33 +211,6 @@
   height: 100%;
   overflow: hidden;
   border-radius: 4px;
-  /* Force GPU layer for better quality */
-  transform: translateZ(0);
-  will-change: transform;
-}
-
-.front-image-img {
-  width: 100%;
-  height: 100%;
-  /* Cover ensures image fills card while maintaining aspect ratio */
-  object-fit: cover;
-  object-position: center;
-  display: block;
-
-  /* GPU acceleration and quality optimizations */
-  backface-visibility: hidden;
-  -webkit-backface-visibility: hidden;
-  transform: translate3d(0, 0, 0);
-  will-change: transform;
-
-  /* High quality rendering - optimized for 2x images (1400x1000px) */
-  image-rendering: -webkit-optimize-contrast;
-  image-rendering: crisp-edges;
-  -webkit-font-smoothing: subpixel-antialiased;
-
-  /* Prevent layout shifts */
-  min-width: 100%;
-  min-height: 100%;
 }
 
 .card-deck.active:hover {
