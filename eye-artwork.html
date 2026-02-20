@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VIHENTE - Eye Artwork</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      width: 842px;
+      height: 595px;
+      background: #000;
+      overflow: hidden;
+      position: relative;
+      font-family: 'Orbitron', 'Courier New', monospace;
+    }
+
+    /* Hexagonal grid background */
+    body::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="86.6" height="100" viewBox="0 0 86.6 100"><path d="M43.3 0 L86.6 25 L86.6 75 L43.3 100 L0 75 L0 25 Z" fill="none" stroke="rgba(0,255,255,0.08)" stroke-width="1"/></svg>');
+      background-size: 86.6px 100px;
+      opacity: 0.6;
+      animation: breathe 8s ease-in-out infinite;
+    }
+
+    /* Scanlines */
+    body::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 2px,
+        rgba(0, 255, 255, 0.03) 2px,
+        rgba(0, 255, 255, 0.03) 4px
+      );
+      pointer-events: none;
+    }
+
+    @keyframes breathe {
+      0%, 100% { opacity: 0.6; }
+      50% { opacity: 1; }
+    }
+
+    .container {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* Central eye - large */
+    .eye-central {
+      position: absolute;
+      width: 300px;
+      height: 300px;
+      filter: drop-shadow(0 0 40px rgba(0, 255, 255, 0.8));
+      animation: pulse 4s ease-in-out infinite;
+      z-index: 10;
+    }
+
+    /* Orbital eyes */
+    .eye-orbit {
+      position: absolute;
+      width: 120px;
+      height: 120px;
+      filter: drop-shadow(0 0 20px rgba(0, 255, 255, 0.6));
+    }
+
+    .orbit-container {
+      position: absolute;
+      width: 450px;
+      height: 450px;
+      animation: rotate 20s linear infinite;
+    }
+
+    .eye-orbit:nth-child(1) {
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      animation: eyePulse 3s ease-in-out infinite;
+    }
+
+    .eye-orbit:nth-child(2) {
+      top: 50%;
+      right: 0;
+      transform: translateY(-50%);
+      animation: eyePulse 3s ease-in-out infinite 0.5s;
+    }
+
+    .eye-orbit:nth-child(3) {
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      animation: eyePulse 3s ease-in-out infinite 1s;
+    }
+
+    .eye-orbit:nth-child(4) {
+      top: 50%;
+      left: 0;
+      transform: translateY(-50%);
+      animation: eyePulse 3s ease-in-out infinite 1.5s;
+    }
+
+    .eye-orbit:nth-child(5) {
+      top: 15%;
+      right: 15%;
+      animation: eyePulse 3s ease-in-out infinite 2s;
+    }
+
+    .eye-orbit:nth-child(6) {
+      bottom: 15%;
+      right: 15%;
+      animation: eyePulse 3s ease-in-out infinite 2.5s;
+    }
+
+    .eye-orbit:nth-child(7) {
+      bottom: 15%;
+      left: 15%;
+      animation: eyePulse 3s ease-in-out infinite 0.3s;
+    }
+
+    .eye-orbit:nth-child(8) {
+      top: 15%;
+      left: 15%;
+      animation: eyePulse 3s ease-in-out infinite 0.8s;
+    }
+
+    @keyframes rotate {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+    @keyframes pulse {
+      0%, 100% {
+        transform: scale(1);
+        filter: drop-shadow(0 0 40px rgba(0, 255, 255, 0.8));
+      }
+      50% {
+        transform: scale(1.1);
+        filter: drop-shadow(0 0 60px rgba(0, 255, 255, 1));
+      }
+    }
+
+    @keyframes eyePulse {
+      0%, 100% {
+        opacity: 0.7;
+        transform: scale(1);
+      }
+      50% {
+        opacity: 1;
+        transform: scale(1.15);
+      }
+    }
+
+    /* Geometric lines connecting eyes */
+    .geometric-lines {
+      position: absolute;
+      inset: 0;
+      z-index: 5;
+    }
+
+    .line {
+      position: absolute;
+      background: linear-gradient(90deg, transparent, rgba(0, 255, 255, 0.3), transparent);
+      height: 2px;
+      animation: lineGlow 4s ease-in-out infinite;
+    }
+
+    .line:nth-child(1) {
+      top: 50%;
+      left: 0;
+      right: 0;
+      transform: translateY(-50%);
+    }
+
+    .line:nth-child(2) {
+      top: 0;
+      bottom: 0;
+      left: 50%;
+      width: 2px;
+      height: auto;
+      background: linear-gradient(180deg, transparent, rgba(0, 255, 255, 0.3), transparent);
+      transform: translateX(-50%);
+    }
+
+    .line:nth-child(3) {
+      top: 0;
+      left: 0;
+      width: 141%;
+      height: 2px;
+      transform: rotate(45deg);
+      transform-origin: 0 0;
+    }
+
+    .line:nth-child(4) {
+      top: 0;
+      right: 0;
+      width: 141%;
+      height: 2px;
+      transform: rotate(-45deg);
+      transform-origin: 100% 0;
+    }
+
+    @keyframes lineGlow {
+      0%, 100% {
+        opacity: 0.3;
+      }
+      50% {
+        opacity: 0.8;
+      }
+    }
+
+    /* Corner decorations */
+    .corner {
+      position: absolute;
+      width: 60px;
+      height: 60px;
+      border: 2px solid rgba(0, 255, 255, 0.6);
+      z-index: 15;
+    }
+
+    .corner-tl {
+      top: 20px;
+      left: 20px;
+      border-right: none;
+      border-bottom: none;
+      box-shadow: -5px -5px 20px rgba(0, 255, 255, 0.4);
+    }
+
+    .corner-tr {
+      top: 20px;
+      right: 20px;
+      border-left: none;
+      border-bottom: none;
+      box-shadow: 5px -5px 20px rgba(0, 255, 255, 0.4);
+    }
+
+    .corner-bl {
+      bottom: 20px;
+      left: 20px;
+      border-right: none;
+      border-top: none;
+      box-shadow: -5px 5px 20px rgba(0, 255, 255, 0.4);
+    }
+
+    .corner-br {
+      bottom: 20px;
+      right: 20px;
+      border-left: none;
+      border-top: none;
+      box-shadow: 5px 5px 20px rgba(0, 255, 255, 0.4);
+    }
+
+    /* Title */
+    .title {
+      position: absolute;
+      top: 30px;
+      left: 50%;
+      transform: translateX(-50%);
+      color: #0ff;
+      font-size: 48px;
+      letter-spacing: 0.3em;
+      text-shadow:
+        0 0 10px rgba(0, 255, 255, 0.8),
+        0 0 20px rgba(0, 255, 255, 0.6),
+        0 0 30px rgba(0, 255, 255, 0.4);
+      font-weight: 700;
+      z-index: 20;
+      animation: titleGlow 3s ease-in-out infinite;
+    }
+
+    @keyframes titleGlow {
+      0%, 100% {
+        text-shadow:
+          0 0 10px rgba(0, 255, 255, 0.8),
+          0 0 20px rgba(0, 255, 255, 0.6),
+          0 0 30px rgba(0, 255, 255, 0.4);
+      }
+      50% {
+        text-shadow:
+          0 0 20px rgba(0, 255, 255, 1),
+          0 0 30px rgba(0, 255, 255, 0.8),
+          0 0 40px rgba(0, 255, 255, 0.6);
+      }
+    }
+
+    /* Subtitle */
+    .subtitle {
+      position: absolute;
+      bottom: 40px;
+      left: 50%;
+      transform: translateX(-50%);
+      color: #0ff;
+      font-size: 16px;
+      letter-spacing: 0.5em;
+      opacity: 0.7;
+      z-index: 20;
+    }
+
+    /* Particles */
+    .particle {
+      position: absolute;
+      width: 2px;
+      height: 2px;
+      background: #0ff;
+      border-radius: 50%;
+      box-shadow: 0 0 4px rgba(0, 255, 255, 0.8);
+      animation: float 6s ease-in-out infinite;
+    }
+
+    @keyframes float {
+      0%, 100% {
+        transform: translateY(0) translateX(0);
+        opacity: 0;
+      }
+      10% {
+        opacity: 1;
+      }
+      90% {
+        opacity: 1;
+      }
+      100% {
+        transform: translateY(-100px) translateX(50px);
+        opacity: 0;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Geometric lines -->
+    <div class="geometric-lines">
+      <div class="line"></div>
+      <div class="line"></div>
+      <div class="line"></div>
+      <div class="line"></div>
+    </div>
+
+    <!-- Corner decorations -->
+    <div class="corner corner-tl"></div>
+    <div class="corner corner-tr"></div>
+    <div class="corner corner-bl"></div>
+    <div class="corner corner-br"></div>
+
+    <!-- Title -->
+    <div class="title">VIHENTE</div>
+    <div class="subtitle">PER ASPERA AD ASTRA</div>
+
+    <!-- Orbital eyes -->
+    <div class="orbit-container">
+      <svg class="eye-orbit" viewBox="0 0 100 100">
+        <defs>
+          <filter id="glow1">
+            <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
+            <feMerge>
+              <feMergeNode in="coloredBlur"/>
+              <feMergeNode in="SourceGraphic"/>
+            </feMerge>
+          </filter>
+        </defs>
+        <path d="M 35 50 C 39 43, 44 40, 50 40 C 56 40, 61 43, 65 50 C 61 57, 56 60, 50 60 C 44 60, 39 57, 35 50 Z"
+              fill="none" stroke="#0ff" stroke-width="1.5" filter="url(#glow1)"/>
+        <circle cx="50" cy="50" r="8" fill="none" stroke="#0ff" stroke-width="1" filter="url(#glow1)"/>
+        <circle cx="50" cy="50" r="3.5" fill="none" stroke="#0ff" stroke-width="0.8" filter="url(#glow1)"/>
+      </svg>
+
+      <svg class="eye-orbit" viewBox="0 0 100 100">
+        <path d="M 35 50 C 39 43, 44 40, 50 40 C 56 40, 61 43, 65 50 C 61 57, 56 60, 50 60 C 44 60, 39 57, 35 50 Z"
+              fill="none" stroke="#0ff" stroke-width="1.5" filter="url(#glow1)"/>
+        <circle cx="50" cy="50" r="8" fill="none" stroke="#0ff" stroke-width="1" filter="url(#glow1)"/>
+        <circle cx="50" cy="50" r="3.5" fill="none" stroke="#0ff" stroke-width="0.8" filter="url(#glow1)"/>
+      </svg>
+
+      <svg class="eye-orbit" viewBox="0 0 100 100">
+        <path d="M 35 50 C 39 43, 44 40, 50 40 C 56 40, 61 43, 65 50 C 61 57, 56 60, 50 60 C 44 60, 39 57, 35 50 Z"
+              fill="none" stroke="#0ff" stroke-width="1.5" filter="url(#glow1)"/>
+        <circle cx="50" cy="50" r="8" fill="none" stroke="#0ff" stroke-width="1" filter="url(#glow1)"/>
+        <circle cx="50" cy="50" r="3.5" fill="none" stroke="#0ff" stroke-width="0.8" filter="url(#glow1)"/>
+      </svg>
+
+      <svg class="eye-orbit" viewBox="0 0 100 100">
+        <path d="M 35 50 C 39 43, 44 40, 50 40 C 56 40, 61 43, 65 50 C 61 57, 56 60, 50 60 C 44 60, 39 57, 35 50 Z"
+              fill="none" stroke="#0ff" stroke-width="1.5" filter="url(#glow1)"/>
+        <circle cx="50" cy="50" r="8" fill="none" stroke="#0ff" stroke-width="1" filter="url(#glow1)"/>
+        <circle cx="50" cy="50" r="3.5" fill="none" stroke="#0ff" stroke-width="0.8" filter="url(#glow1)"/>
+      </svg>
+
+      <svg class="eye-orbit" viewBox="0 0 100 100">
+        <path d="M 35 50 C 39 43, 44 40, 50 40 C 56 40, 61 43, 65 50 C 61 57, 56 60, 50 60 C 44 60, 39 57, 35 50 Z"
+              fill="none" stroke="#0ff" stroke-width="1.5" filter="url(#glow1)"/>
+        <circle cx="50" cy="50" r="8" fill="none" stroke="#0ff" stroke-width="1" filter="url(#glow1)"/>
+        <circle cx="50" cy="50" r="3.5" fill="none" stroke="#0ff" stroke-width="0.8" filter="url(#glow1)"/>
+      </svg>
+
+      <svg class="eye-orbit" viewBox="0 0 100 100">
+        <path d="M 35 50 C 39 43, 44 40, 50 40 C 56 40, 61 43, 65 50 C 61 57, 56 60, 50 60 C 44 60, 39 57, 35 50 Z"
+              fill="none" stroke="#0ff" stroke-width="1.5" filter="url(#glow1)"/>
+        <circle cx="50" cy="50" r="8" fill="none" stroke="#0ff" stroke-width="1" filter="url(#glow1)"/>
+        <circle cx="50" cy="50" r="3.5" fill="none" stroke="#0ff" stroke-width="0.8" filter="url(#glow1)"/>
+      </svg>
+
+      <svg class="eye-orbit" viewBox="0 0 100 100">
+        <path d="M 35 50 C 39 43, 44 40, 50 40 C 56 40, 61 43, 65 50 C 61 57, 56 60, 50 60 C 44 60, 39 57, 35 50 Z"
+              fill="none" stroke="#0ff" stroke-width="1.5" filter="url(#glow1)"/>
+        <circle cx="50" cy="50" r="8" fill="none" stroke="#0ff" stroke-width="1" filter="url(#glow1)"/>
+        <circle cx="50" cy="50" r="3.5" fill="none" stroke="#0ff" stroke-width="0.8" filter="url(#glow1)"/>
+      </svg>
+
+      <svg class="eye-orbit" viewBox="0 0 100 100">
+        <path d="M 35 50 C 39 43, 44 40, 50 40 C 56 40, 61 43, 65 50 C 61 57, 56 60, 50 60 C 44 60, 39 57, 35 50 Z"
+              fill="none" stroke="#0ff" stroke-width="1.5" filter="url(#glow1)"/>
+        <circle cx="50" cy="50" r="8" fill="none" stroke="#0ff" stroke-width="1" filter="url(#glow1)"/>
+        <circle cx="50" cy="50" r="3.5" fill="none" stroke="#0ff" stroke-width="0.8" filter="url(#glow1)"/>
+      </svg>
+    </div>
+
+    <!-- Central eye -->
+    <svg class="eye-central" viewBox="0 0 100 100">
+      <defs>
+        <filter id="glowCentral">
+          <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+          <feMerge>
+            <feMergeNode in="coloredBlur"/>
+            <feMergeNode in="SourceGraphic"/>
+          </feMerge>
+        </filter>
+      </defs>
+      <path d="M 35 50 C 39 43, 44 40, 50 40 C 56 40, 61 43, 65 50 C 61 57, 56 60, 50 60 C 44 60, 39 57, 35 50 Z"
+            fill="none" stroke="#0ff" stroke-width="2" filter="url(#glowCentral)"/>
+      <circle cx="50" cy="50" r="12" fill="none" stroke="#0ff" stroke-width="1.5" filter="url(#glowCentral)"/>
+      <circle cx="50" cy="50" r="6" fill="#0ff" opacity="0.3" filter="url(#glowCentral)"/>
+      <circle cx="50" cy="50" r="4" fill="none" stroke="#0ff" stroke-width="1.2" filter="url(#glowCentral)"/>
+    </svg>
+
+    <!-- Particles -->
+    <script>
+      // Generate floating particles
+      const container = document.querySelector('.container');
+      for (let i = 0; i < 30; i++) {
+        const particle = document.createElement('div');
+        particle.className = 'particle';
+        particle.style.left = Math.random() * 100 + '%';
+        particle.style.bottom = '0';
+        particle.style.animationDelay = Math.random() * 6 + 's';
+        particle.style.animationDuration = (4 + Math.random() * 4) + 's';
+        container.appendChild(particle);
+      }
+    </script>
+  </div>
+</body>
+</html>
