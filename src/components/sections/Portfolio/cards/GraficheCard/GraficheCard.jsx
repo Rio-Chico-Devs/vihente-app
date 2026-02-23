@@ -22,8 +22,8 @@ const GraficheCard = () => {
     const ctx = canvas.getContext('2d');
 
     // Parametri
-    const sphereCenterX = 300;
-    const sphereCenterY = 200;
+    const sphereCenterX = 320;
+    const sphereCenterY = 170;
     const sphereRadius = 170;
     const irideRadius = 60;
     const pupillaRadius = 28;
@@ -207,6 +207,34 @@ const GraficheCard = () => {
       drawCircleOnSphere(irideTheta, iridePhi, irideRadius, 'rgba(0, 150, 255, 0.95)', 3);
       drawCircleOnSphere(irideTheta, iridePhi, pupillaRadius, 'rgba(0, 200, 255, 1)', 2.5);
 
+      // Disegna label GRAFICHE
+      ctx.font = '700 18px "Share Tech Mono", monospace';
+      ctx.strokeStyle = 'rgba(255, 200, 0, 0.8)';
+      ctx.fillStyle = 'rgba(255, 200, 0, 0.9)';
+      ctx.lineWidth = 2;
+      ctx.letterSpacing = '0.1em';
+
+      const text = 'GRAFICHE';
+      const textX = 480;
+      const textY = 50;
+      const padding = 12;
+
+      // Misura testo
+      const metrics = ctx.measureText(text);
+      const textWidth = metrics.width;
+      const textHeight = 18;
+
+      // Disegna bordo
+      ctx.strokeRect(
+        textX - padding,
+        textY - textHeight - padding/2,
+        textWidth + padding * 2,
+        textHeight + padding * 1.5
+      );
+
+      // Disegna testo
+      ctx.fillText(text, textX, textY);
+
       animationRef.current = requestAnimationFrame(animate);
     };
 
@@ -222,7 +250,6 @@ const GraficheCard = () => {
   return (
     <div className="grafiche-card">
       <canvas ref={canvasRef} width="600" height="400" className="eye-canvas" />
-      <div className="category-label">GRAFICHE</div>
     </div>
   );
 };
