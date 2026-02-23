@@ -155,10 +155,12 @@ const Portfolio = () => {
                       <div className="card-image">
                         {renderCardContent(cat)}
                       </div>
-                      <div className="card-title">
-                        <h2>{cat.title}</h2>
-                        <p>{cat.description}</p>
-                      </div>
+                      {cat.id !== 'grafiche' && (
+                        <div className="card-title">
+                          <h2>{cat.title}</h2>
+                          <p>{cat.description}</p>
+                        </div>
+                      )}
                     </div>
                   </div>
 

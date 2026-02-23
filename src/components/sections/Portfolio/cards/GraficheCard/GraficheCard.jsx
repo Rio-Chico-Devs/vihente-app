@@ -22,8 +22,8 @@ const GraficheCard = () => {
     const ctx = canvas.getContext('2d');
 
     // Parametri
-    const sphereCenterX = 320;
-    const sphereCenterY = 170;
+    const sphereCenterX = 350;
+    const sphereCenterY = 260;
     const sphereRadius = 170;
     const irideRadius = 60;
     const pupillaRadius = 28;
@@ -207,33 +207,37 @@ const GraficheCard = () => {
       drawCircleOnSphere(irideTheta, iridePhi, irideRadius, 'rgba(0, 150, 255, 0.95)', 3);
       drawCircleOnSphere(irideTheta, iridePhi, pupillaRadius, 'rgba(0, 200, 255, 1)', 2.5);
 
-      // Disegna label GRAFICHE
+      // Disegna label GRAFICHE in alto a destra
       ctx.font = '700 18px "Share Tech Mono", monospace';
       ctx.strokeStyle = 'rgba(255, 200, 0, 0.8)';
       ctx.fillStyle = 'rgba(255, 200, 0, 0.9)';
       ctx.lineWidth = 2;
-      ctx.letterSpacing = '0.1em';
 
-      const text = 'GRAFICHE';
-      const textX = 480;
-      const textY = 50;
-      const padding = 12;
+      const labelText = 'GRAFICHE';
+      const labelX = 480;
+      const labelY = 50;
+      const labelPadding = 12;
 
-      // Misura testo
-      const metrics = ctx.measureText(text);
-      const textWidth = metrics.width;
-      const textHeight = 18;
+      const labelMetrics = ctx.measureText(labelText);
+      const labelWidth = labelMetrics.width;
+      const labelHeight = 18;
 
-      // Disegna bordo
       ctx.strokeRect(
-        textX - padding,
-        textY - textHeight - padding/2,
-        textWidth + padding * 2,
-        textHeight + padding * 1.5
+        labelX - labelPadding,
+        labelY - labelHeight - labelPadding/2,
+        labelWidth + labelPadding * 2,
+        labelHeight + labelPadding * 1.5
       );
+      ctx.fillText(labelText, labelX, labelY);
 
-      // Disegna testo
-      ctx.fillText(text, textX, textY);
+      // Disegna titolo e descrizione in basso a sinistra
+      ctx.font = '700 24px "Share Tech Mono", monospace';
+      ctx.fillStyle = 'rgba(0, 255, 255, 0.95)';
+      ctx.fillText('GRAFICHE', 30, 330);
+
+      ctx.font = '400 14px "Share Tech Mono", monospace';
+      ctx.fillStyle = 'rgba(0, 255, 255, 0.7)';
+      ctx.fillText('Design grafico e web identity', 30, 355);
 
       animationRef.current = requestAnimationFrame(animate);
     };
