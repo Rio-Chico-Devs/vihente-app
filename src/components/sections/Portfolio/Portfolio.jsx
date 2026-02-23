@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTheme } from '../../../contexts/theme';
-import GraficheCard from './GraficheCard';
+import GraficheCard from './cards/GraficheCard/GraficheCard';
 import GoogleMockup from './GoogleMockup';
 import ComponentiCard from './ComponentiCard';
 import './Portfolio.css';
