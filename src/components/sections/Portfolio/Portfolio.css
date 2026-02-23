@@ -211,6 +211,17 @@
   height: 100%;
   overflow: hidden;
   border-radius: 4px;
+
+  /* Force sharp rendering for HTML/CSS content */
+  transform: translateZ(0.1px);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  -webkit-font-smoothing: subpixel-antialiased;
+  font-smooth: always;
+  text-rendering: optimizeLegibility;
+
+  /* Scale up content internally for crisp rendering */
+  transform-origin: center center;
 }
 
 .card-deck.active:hover {

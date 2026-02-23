@@ -1,14 +1,20 @@
 .grafiche-card {
-  width: 100%;
-  height: 100%;
+  width: 300%;
+  height: 300%;
   background: #000;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 20px;
-  gap: 12px;
-  position: relative;
+  padding: 60px;
+  gap: 36px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin-left: -150%;
+  margin-top: -150%;
+  transform: scale(0.333333);
+  transform-origin: center center;
   overflow: hidden;
 }
 
@@ -26,7 +32,9 @@
 }
 
 .grafiche-eye {
-  filter: drop-shadow(0 0 10px rgba(0, 255, 255, 0.6));
+  width: 240px;
+  height: 240px;
+  filter: drop-shadow(0 0 30px rgba(0, 255, 255, 0.6));
   animation: graficheEyePulse 3s ease-in-out infinite;
   z-index: 1;
 }
@@ -44,42 +52,42 @@
 
 .grafiche-title {
   font-family: 'Orbitron', 'Share Tech Mono', monospace;
-  font-size: 28px;
+  font-size: 84px;
   font-weight: 700;
   color: #0ff;
   letter-spacing: 0.25em;
   margin: 0;
   text-shadow:
-    0 0 10px rgba(0, 255, 255, 0.8),
-    0 0 20px rgba(0, 255, 255, 0.4);
+    0 0 30px rgba(0, 255, 255, 0.8),
+    0 0 60px rgba(0, 255, 255, 0.4);
   z-index: 1;
 }
 
 .grafiche-subtitle {
   font-family: 'Share Tech Mono', monospace;
-  font-size: 10px;
+  font-size: 30px;
   font-weight: 400;
   color: rgba(0, 255, 255, 0.7);
   letter-spacing: 0.15em;
-  margin: -8px 0 0 0;
+  margin: -24px 0 0 0;
   z-index: 1;
 }
 
 .grafiche-palette {
   display: flex;
-  gap: 8px;
-  margin-top: 8px;
+  gap: 24px;
+  margin-top: 24px;
   z-index: 1;
 }
 
 .palette-color {
-  width: 28px;
-  height: 28px;
-  border-radius: 4px;
-  border: 2px solid rgba(0, 255, 255, 0.3);
+  width: 84px;
+  height: 84px;
+  border-radius: 12px;
+  border: 6px solid rgba(0, 255, 255, 0.3);
   box-shadow:
-    0 0 10px rgba(0, 255, 255, 0.3),
-    inset 0 0 10px rgba(0, 255, 255, 0.2);
+    0 0 30px rgba(0, 255, 255, 0.3),
+    inset 0 0 30px rgba(0, 255, 255, 0.2);
   transition: all 0.3s ease;
   cursor: default;
 }
@@ -87,116 +95,29 @@
 .palette-color:hover {
   border-color: #0ff;
   box-shadow:
-    0 0 15px rgba(0, 255, 255, 0.6),
-    inset 0 0 15px rgba(0, 255, 255, 0.4);
+    0 0 45px rgba(0, 255, 255, 0.6),
+    inset 0 0 45px rgba(0, 255, 255, 0.4);
   transform: scale(1.1);
 }
 
 .grafiche-tools {
   display: flex;
-  gap: 15px;
-  margin-top: 5px;
+  gap: 45px;
+  margin-top: 15px;
   z-index: 1;
 }
 
 .tool-icon {
-  filter: drop-shadow(0 0 5px rgba(0, 255, 255, 0.5));
+  width: 60px;
+  height: 60px;
+  filter: drop-shadow(0 0 15px rgba(0, 255, 255, 0.5));
   transition: all 0.3s ease;
   cursor: default;
 }
 
 .tool-icon:hover {
-  filter: drop-shadow(0 0 10px rgba(0, 255, 255, 0.8));
+  filter: drop-shadow(0 0 30px rgba(0, 255, 255, 0.8));
   transform: scale(1.15);
 }
 
-/* Responsive adjustments */
-@media (max-width: 1024px) {
-  .grafiche-title {
-    font-size: 24px;
-  }
-
-  .grafiche-subtitle {
-    font-size: 9px;
-  }
-
-  .grafiche-eye {
-    width: 70px;
-    height: 70px;
-  }
-
-  .palette-color {
-    width: 24px;
-    height: 24px;
-  }
-
-  .tool-icon {
-    width: 18px;
-    height: 18px;
-  }
-}
-
-@media (max-width: 768px) {
-  .grafiche-card {
-    gap: 8px;
-    padding: 15px;
-  }
-
-  .grafiche-title {
-    font-size: 18px;
-  }
-
-  .grafiche-subtitle {
-    font-size: 7px;
-  }
-
-  .grafiche-eye {
-    width: 50px;
-    height: 50px;
-  }
-
-  .palette-color {
-    width: 18px;
-    height: 18px;
-  }
-
-  .tool-icon {
-    width: 14px;
-    height: 14px;
-  }
-}
-
-@media (max-width: 480px) {
-  .grafiche-card {
-    gap: 6px;
-    padding: 10px;
-  }
-
-  .grafiche-title {
-    font-size: 14px;
-  }
-
-  .grafiche-subtitle {
-    font-size: 6px;
-  }
-
-  .grafiche-eye {
-    width: 35px;
-    height: 35px;
-  }
-
-  .palette-color {
-    width: 14px;
-    height: 14px;
-    gap: 6px;
-  }
-
-  .tool-icon {
-    width: 12px;
-    height: 12px;
-  }
-
-  .grafiche-tools {
-    gap: 10px;
-  }
-}
+/* Media queries removed - component now uses 3x scaling for crisp rendering */
