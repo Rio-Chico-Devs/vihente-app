@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <title>Portfolio Preview - VIHENTE</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      background: #000;
+      font-family: 'Share Tech Mono', monospace;
+      overflow: hidden;
+      color: #0ff;
+    }
+
+    .portfolio-page {
+      width: 100vw;
+      height: 100vh;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .portfolio-container {
+      width: 100%;
+      max-width: 1400px;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      padding: 0 80px;
+    }
+
+    .carousel-scene {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+
+    .carousel-cards {
+      position: relative;
+      width: 600px;
+      height: 500px;
+    }
+
+    .card-item {
+      position: absolute;
+      width: 600px;
+      height: 500px;
+      transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1),
+                  opacity 0.6s ease,
+                  filter 0.6s ease;
+      cursor: pointer;
+      will-change: transform;
+    }
+
+    /* Card states - pure 2D transforms */
+    .card-item.prev {
+      transform: translateX(-500px) scale(0.8);
+      opacity: 0.3;
+      filter: brightness(0.4);
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    .card-item.active {
+      transform: translateX(0) scale(1);
+      opacity: 1;
+      filter: brightness(1);
+      z-index: 10;
+    }
+
+    .card-item.next {
+      transform: translateX(500px) scale(0.8);
+      opacity: 0.3;
+      filter: brightness(0.4);
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    .card-item.hidden {
+      transform: translateX(0) scale(0.5);
+      opacity: 0;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .card-flip {
+      width: 100%;
+      height: 100%;
+      position: relative;
+      transform-style: preserve-3d;
+      transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .card-item.flipped .card-flip {
+      transform: rotateY(180deg);
+    }
+
+    .card-face {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      backface-visibility: hidden;
+      border-radius: 16px;
+      overflow: hidden;
+    }
+
+    .card-face.back {
+      transform: rotateY(180deg);
+      background: linear-gradient(135deg, rgba(0, 20, 40, 0.95), rgba(0, 40, 60, 0.95));
+      border: 2px solid rgba(0, 255, 255, 0.5);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .card-content {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      background: linear-gradient(135deg, rgba(0, 10, 20, 0.95), rgba(0, 20, 30, 0.95));
+      border: 2px solid rgba(0, 255, 255, 0.3);
+      border-radius: 16px;
+      overflow: hidden;
+    }
+
+    .card-image {
+      flex: 1;
+      width: 100%;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card-title {
+      padding: 20px;
+      background: rgba(0, 0, 0, 0.8);
+      border-top: 1px solid rgba(0, 255, 255, 0.3);
+    }
+
+    .card-title h2 {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 24px;
+      color: rgba(0, 255, 255, 0.95);
+      margin-bottom: 8px;
+      letter-spacing: 0.1em;
+    }
+
+    .card-title p {
+      font-size: 14px;
+      color: rgba(0, 255, 255, 0.7);
+      letter-spacing: 0.05em;
+    }
+
+    /* Navigation Arrows */
+    .nav-arrow {
+      position: absolute;
+      width: 60px;
+      height: 60px;
+      background: transparent;
+      border: 2px solid rgba(0, 255, 255, 0.4);
+      border-radius: 50%;
+      cursor: pointer;
+      z-index: 100;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .nav-arrow:hover {
+      background: rgba(0, 255, 255, 0.1);
+      border-color: rgba(0, 255, 255, 0.8);
+      transform: scale(1.1);
+    }
+
+    .nav-arrow.left {
+      left: 20px;
+    }
+
+    .nav-arrow.right {
+      right: 20px;
+    }
+
+    .nav-arrow svg {
+      width: 30px;
+      height: 30px;
+    }
+
+    .nav-arrow path {
+      fill: none;
+      stroke: rgba(0, 255, 255, 0.8);
+      stroke-width: 4;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    /* GraficheCard styles */
+    .grafiche-card {
+      width: 100%;
+      height: 100%;
+      position: relative;
+      background: #000;
+    }
+
+    .eye-canvas {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+
+    .category-label {
+      position: absolute;
+      bottom: 30px;
+      right: 30px;
+      padding: 12px 24px;
+      background: transparent;
+      border: 2px solid rgba(255, 200, 0, 0.8);
+      color: rgba(255, 200, 0, 0.9);
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 18px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      box-shadow: 0 0 10px rgba(255, 200, 0, 0.3);
+      pointer-events: none;
+    }
+
+    /* Placeholder cards */
+    .placeholder-card {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, rgba(0, 30, 40, 0.5), rgba(0, 50, 60, 0.5));
+      border: 2px solid rgba(0, 255, 255, 0.2);
+    }
+
+    .placeholder-text {
+      font-size: 32px;
+      color: rgba(0, 255, 255, 0.6);
+      font-family: 'Orbitron', sans-serif;
+      letter-spacing: 0.1em;
+    }
+  </style>
+</head>
+<body>
+  <div class="portfolio-page">
+    <div class="portfolio-container">
+      <!-- Left Arrow -->
+      <button class="nav-arrow left" id="prevBtn">
+        <svg viewBox="0 0 60 100">
+          <path d="M 50,10 L 10,50 L 50,90" />
+        </svg>
+      </button>
+
+      <!-- Carousel -->
+      <div class="carousel-scene">
+        <div class="carousel-cards">
+          <!-- Card 1: GRAFICHE -->
+          <div class="card-item active" data-index="0">
+            <div class="card-flip">
+              <div class="card-face front">
+                <div class="card-content">
+                  <div class="card-image">
+                    <div class="grafiche-card">
+                      <canvas id="eyeCanvas" width="600" height="400" class="eye-canvas"></canvas>
+                      <div class="category-label">GRAFICHE</div>
+                    </div>
+                  </div>
+                  <div class="card-title">
+                    <h2>GRAFICHE</h2>
+                    <p>Design grafico e visual identity</p>
+                  </div>
+                </div>
+              </div>
+              <div class="card-face back">
+                <div style="text-align: center;">
+                  <h3 style="color: rgba(0, 255, 255, 0.9); font-size: 32px; margin-bottom: 20px;">GRAFICHE</h3>
+                  <button style="padding: 12px 32px; background: rgba(0, 255, 255, 0.2); border: 2px solid rgba(0, 255, 255, 0.6); color: rgba(0, 255, 255, 0.9); font-size: 18px; cursor: pointer; border-radius: 8px;">Esplora</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Card 2: SITI WEB -->
+          <div class="card-item next" data-index="1">
+            <div class="card-flip">
+              <div class="card-face front">
+                <div class="card-content">
+                  <div class="card-image">
+                    <div class="placeholder-card">
+                      <div class="placeholder-text">SITI WEB</div>
+                    </div>
+                  </div>
+                  <div class="card-title">
+                    <h2>SITI WEB</h2>
+                    <p>Sviluppo web e applicazioni</p>
+                  </div>
+                </div>
+              </div>
+              <div class="card-face back">
+                <div style="text-align: center;">
+                  <h3 style="color: rgba(0, 255, 255, 0.9); font-size: 32px; margin-bottom: 20px;">SITI WEB</h3>
+                  <button style="padding: 12px 32px; background: rgba(0, 255, 255, 0.2); border: 2px solid rgba(0, 255, 255, 0.6); color: rgba(0, 255, 255, 0.9); font-size: 18px; cursor: pointer; border-radius: 8px;">Esplora</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Card 3: COMPONENTI -->
+          <div class="card-item hidden" data-index="2">
+            <div class="card-flip">
+              <div class="card-face front">
+                <div class="card-content">
+                  <div class="card-image">
+                    <div class="placeholder-card">
+                      <div class="placeholder-text">COMPONENTI</div>
+                    </div>
+                  </div>
+                  <div class="card-title">
+                    <h2>COMPONENTI</h2>
+                    <p>UI components e librerie React</p>
+                  </div>
+                </div>
+              </div>
+              <div class="card-face back">
+                <div style="text-align: center;">
+                  <h3 style="color: rgba(0, 255, 255, 0.9); font-size: 32px; margin-bottom: 20px;">COMPONENTI</h3>
+                  <button style="padding: 12px 32px; background: rgba(0, 255, 255, 0.2); border: 2px solid rgba(0, 255, 255, 0.6); color: rgba(0, 255, 255, 0.9); font-size: 18px; cursor: pointer; border-radius: 8px;">Esplora</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right Arrow -->
+      <button class="nav-arrow right" id="nextBtn">
+        <svg viewBox="0 0 60 100">
+          <path d="M 10,10 L 50,50 L 10,90" />
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <script>
+    // ===== CAROUSEL LOGIC =====
+    let selectedIndex = 0;
+    const totalCards = 3;
+    const cards = document.querySelectorAll('.card-item');
+
+    function getCardClass(index) {
+      if (index === selectedIndex) return 'active';
+      if (index === (selectedIndex - 1 + totalCards) % totalCards) return 'prev';
+      if (index === (selectedIndex + 1) % totalCards) return 'next';
+      return 'hidden';
+    }
+
+    function updateCards() {
+      cards.forEach((card, index) => {
+        card.className = 'card-item ' + getCardClass(index);
+      });
+    }
+
+    document.getElementById('prevBtn').addEventListener('click', () => {
+      selectedIndex = (selectedIndex - 1 + totalCards) % totalCards;
+      updateCards();
+    });
+
+    document.getElementById('nextBtn').addEventListener('click', () => {
+      selectedIndex = (selectedIndex + 1) % totalCards;
+      updateCards();
+    });
+
+    // ===== EYE ANIMATION LOGIC =====
+    const canvas = document.getElementById('eyeCanvas');
+    const ctx = canvas.getContext('2d');
+
+    // Parametri
+    const sphereCenterX = 200;
+    const sphereCenterY = 150;
+    const sphereRadius = 130;
+    const irideRadius = 45;
+    const pupillaRadius = 22;
+    const cameraAngleX = -0.6;
+    const cameraAngleY = -0.3;
+    const irideTheta = 0;
+    const iridePhi = Math.PI / 2;
+
+    // State
+    let currentRotX = 0.34;
+    let currentRotY = -1.01;
+    let targetRotX = 0.34;
+    let targetRotY = -1.01;
+    let time = 0;
+    let lastChangeTime = 0;
+    let currentState = 'idle';
+    let stateDuration = 1.5;
+
+    // Proiezione 3D -> 2D
+    function project(x, y, z) {
+      const scale = 300 / (300 + z);
+      return {
+        x: sphereCenterX + x * scale,
+        y: sphereCenterY - y * scale,
+        z: z
+      };
+    }
+
+    // Rotazione 3D
+    function rotate3D(x, y, z, rx, ry) {
+      let x1 = x * Math.cos(ry) - z * Math.sin(ry);
+      let z1 = x * Math.sin(ry) + z * Math.cos(ry);
+
+      let y1 = y * Math.cos(rx) - z1 * Math.sin(rx);
+      let z2 = y * Math.sin(rx) + z1 * Math.cos(rx);
+
+      let x2 = x1 * Math.cos(cameraAngleY) - z2 * Math.sin(cameraAngleY);
+      let z3 = x1 * Math.sin(cameraAngleY) + z2 * Math.cos(cameraAngleY);
+
+      let y2 = y1 * Math.cos(cameraAngleX) - z3 * Math.sin(cameraAngleX);
+      let z4 = y1 * Math.sin(cameraAngleX) + z3 * Math.cos(cameraAngleX);
+
+      return { x: x2, y: y2, z: z4 };
+    }
+
+    // Disegna cerchio 3D
+    function drawCircleOnSphere(centerTheta, centerPhi, radius, color, lineWidth) {
+      const segments = 32;
+      ctx.strokeStyle = color;
+      ctx.lineWidth = lineWidth;
+      ctx.beginPath();
+
+      let started = false;
+
+      for (let i = 0; i <= segments; i++) {
+        const angle = (i / segments) * Math.PI * 2;
+        const localX = Math.cos(angle) * radius;
+        const localY = Math.sin(angle) * radius;
+        const theta = centerTheta + (localX / sphereRadius);
+        const phi = centerPhi + (localY / sphereRadius);
+
+        const x = sphereRadius * Math.sin(phi) * Math.cos(theta);
+        const y = sphereRadius * Math.cos(phi);
+        const z = sphereRadius * Math.sin(phi) * Math.sin(theta);
+
+        const rotated = rotate3D(x, y, z, currentRotX, currentRotY);
+        const projected = project(rotated.x, rotated.y, rotated.z);
+
+        if (!started) {
+          ctx.moveTo(projected.x, projected.y);
+          started = true;
+        } else {
+          ctx.lineTo(projected.x, projected.y);
+        }
+      }
+
+      ctx.stroke();
+    }
+
+    // Disegna sfera wireframe
+    function drawSphere() {
+      const meridians = 16;
+      const parallels = 12;
+
+      for (let i = 0; i < meridians; i++) {
+        const theta = (i / meridians) * Math.PI * 2;
+        ctx.strokeStyle = 'rgba(0, 255, 255, 0.35)';
+        ctx.lineWidth = 0.8;
+        ctx.beginPath();
+
+        for (let j = 0; j <= 30; j++) {
+          const phi = (j / 30) * Math.PI;
+          const x = sphereRadius * Math.sin(phi) * Math.cos(theta);
+          const y = sphereRadius * Math.cos(phi);
+          const z = sphereRadius * Math.sin(phi) * Math.sin(theta);
+
+          const rotated = rotate3D(x, y, z, currentRotX, currentRotY);
+          const projected = project(rotated.x, rotated.y, rotated.z);
+
+          if (j === 0) {
+            ctx.moveTo(projected.x, projected.y);
+          } else {
+            ctx.lineTo(projected.x, projected.y);
+          }
+        }
+        ctx.stroke();
+      }
+
+      for (let i = 1; i < parallels; i++) {
+        const phi = (i / parallels) * Math.PI;
+        ctx.strokeStyle = 'rgba(0, 255, 255, 0.35)';
+        ctx.lineWidth = 0.8;
+        ctx.beginPath();
+
+        for (let j = 0; j <= 40; j++) {
+          const theta = (j / 40) * Math.PI * 2;
+          const x = sphereRadius * Math.sin(phi) * Math.cos(theta);
+          const y = sphereRadius * Math.cos(phi);
+          const z = sphereRadius * Math.sin(phi) * Math.sin(theta);
+
+          const rotated = rotate3D(x, y, z, currentRotX, currentRotY);
+          const projected = project(rotated.x, rotated.y, rotated.z);
+
+          if (j === 0) {
+            ctx.moveTo(projected.x, projected.y);
+          } else {
+            ctx.lineTo(projected.x, projected.y);
+          }
+        }
+        ctx.stroke();
+      }
+    }
+
+    // Gestione stati con sequenza specifica
+    function updateLookState(deltaTime) {
+      time += deltaTime;
+
+      if (time - lastChangeTime >= stateDuration) {
+        lastChangeTime = time;
+
+        if (currentState === 'idle') {
+          currentState = 'pos1';
+          stateDuration = 2.0;
+          targetRotX = 0.64;
+          targetRotY = -1.32;
+        } else if (currentState === 'pos1') {
+          currentState = 'pos2';
+          stateDuration = 2.0;
+          targetRotX = 0.84;
+          targetRotY = -1.00;
+        } else if (currentState === 'pos2') {
+          currentState = 'pos3';
+          stateDuration = 2.0;
+          targetRotX = 0.29;
+          targetRotY = -1.53;
+        } else if (currentState === 'pos3') {
+          currentState = 'random';
+          stateDuration = 2.0;
+          targetRotX = (Math.random() - 0.5) * 1.5 + 0.5;
+          targetRotY = (Math.random() - 0.5) * 1.5 - 1.2;
+        } else {
+          currentState = 'idle';
+          stateDuration = 1.5;
+          targetRotX = 0.34;
+          targetRotY = -1.01;
+        }
+      }
+
+      const smoothness = 0.08;
+      currentRotX += (targetRotX - currentRotX) * smoothness;
+      currentRotY += (targetRotY - currentRotY) * smoothness;
+    }
+
+    // Animate
+    let lastTime = performance.now();
+
+    function animate(currentTime) {
+      const deltaTime = (currentTime - lastTime) / 1000;
+      lastTime = currentTime;
+
+      ctx.clearRect(0, 0, 600, 400);
+
+      updateLookState(deltaTime);
+      drawSphere();
+      drawCircleOnSphere(irideTheta, iridePhi, irideRadius, 'rgba(0, 150, 255, 0.95)', 3);
+      drawCircleOnSphere(irideTheta, iridePhi, pupillaRadius, 'rgba(0, 200, 255, 1)', 2.5);
+
+      requestAnimationFrame(animate);
+    }
+
+    animate(performance.now());
+  </script>
+</body>
+</html>
