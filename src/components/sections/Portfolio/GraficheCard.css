@@ -1,20 +1,14 @@
 .grafiche-card {
-  width: 300%;
-  height: 300%;
+  width: 100%;
+  height: 100%;
   background: #000;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 60px;
-  gap: 36px;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  margin-left: -150%;
-  margin-top: -150%;
-  transform: scale(0.333333);
-  transform-origin: center center;
+  padding: 20px;
+  gap: 12px;
+  position: relative;
   overflow: hidden;
 }
 
@@ -32,9 +26,9 @@
 }
 
 .grafiche-eye {
-  width: 240px;
-  height: 240px;
-  filter: drop-shadow(0 0 30px rgba(0, 255, 255, 0.6));
+  width: 80px;
+  height: 80px;
+  filter: drop-shadow(0 0 10px rgba(0, 255, 255, 0.6));
   animation: graficheEyePulse 3s ease-in-out infinite;
   z-index: 1;
 }
@@ -52,42 +46,42 @@
 
 .grafiche-title {
   font-family: 'Orbitron', 'Share Tech Mono', monospace;
-  font-size: 84px;
+  font-size: 28px;
   font-weight: 700;
   color: #0ff;
   letter-spacing: 0.25em;
   margin: 0;
   text-shadow:
-    0 0 30px rgba(0, 255, 255, 0.8),
-    0 0 60px rgba(0, 255, 255, 0.4);
+    0 0 10px rgba(0, 255, 255, 0.8),
+    0 0 20px rgba(0, 255, 255, 0.4);
   z-index: 1;
 }
 
 .grafiche-subtitle {
   font-family: 'Share Tech Mono', monospace;
-  font-size: 30px;
+  font-size: 10px;
   font-weight: 400;
   color: rgba(0, 255, 255, 0.7);
   letter-spacing: 0.15em;
-  margin: -24px 0 0 0;
+  margin: -8px 0 0 0;
   z-index: 1;
 }
 
 .grafiche-palette {
   display: flex;
-  gap: 24px;
-  margin-top: 24px;
+  gap: 8px;
+  margin-top: 8px;
   z-index: 1;
 }
 
 .palette-color {
-  width: 84px;
-  height: 84px;
-  border-radius: 12px;
-  border: 6px solid rgba(0, 255, 255, 0.3);
+  width: 28px;
+  height: 28px;
+  border-radius: 4px;
+  border: 2px solid rgba(0, 255, 255, 0.3);
   box-shadow:
-    0 0 30px rgba(0, 255, 255, 0.3),
-    inset 0 0 30px rgba(0, 255, 255, 0.2);
+    0 0 10px rgba(0, 255, 255, 0.3),
+    inset 0 0 10px rgba(0, 255, 255, 0.2);
   transition: all 0.3s ease;
   cursor: default;
 }
@@ -95,28 +89,28 @@
 .palette-color:hover {
   border-color: #0ff;
   box-shadow:
-    0 0 45px rgba(0, 255, 255, 0.6),
-    inset 0 0 45px rgba(0, 255, 255, 0.4);
+    0 0 15px rgba(0, 255, 255, 0.6),
+    inset 0 0 15px rgba(0, 255, 255, 0.4);
   transform: scale(1.1);
 }
 
 .grafiche-tools {
   display: flex;
-  gap: 45px;
-  margin-top: 15px;
+  gap: 15px;
+  margin-top: 5px;
   z-index: 1;
 }
 
 .tool-icon {
-  width: 60px;
-  height: 60px;
-  filter: drop-shadow(0 0 15px rgba(0, 255, 255, 0.5));
+  width: 20px;
+  height: 20px;
+  filter: drop-shadow(0 0 5px rgba(0, 255, 255, 0.5));
   transition: all 0.3s ease;
   cursor: default;
 }
 
 .tool-icon:hover {
-  filter: drop-shadow(0 0 30px rgba(0, 255, 255, 0.8));
+  filter: drop-shadow(0 0 10px rgba(0, 255, 255, 0.8));
   transform: scale(1.15);
 }
 
