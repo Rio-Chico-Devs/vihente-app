@@ -206,26 +206,37 @@
       }
     }
 
-    // Gestione stati
+    // Gestione stati con sequenza specifica
     function updateLookState(deltaTime) {
       time += deltaTime;
 
       if (time - lastChangeTime >= stateDuration) {
         lastChangeTime = time;
 
+        // Sequenza posizioni
         if (currentState === 'idle') {
-          if (Math.random() > 0.5) {
-            currentState = 'lookAtViewer';
-            stateDuration = 2.0;
-            targetRotX = -0.4;
-            targetRotY = -0.7;
-          } else {
-            currentState = 'lookAway';
-            stateDuration = 2.0;
-            targetRotX = (Math.random() - 0.5) * 1.2;
-            targetRotY = -1.01 + (Math.random() - 0.5) * 1.0;
-          }
+          currentState = 'pos1';
+          stateDuration = 2.0;
+          targetRotX = 0.64;
+          targetRotY = -1.32;
+        } else if (currentState === 'pos1') {
+          currentState = 'pos2';
+          stateDuration = 2.0;
+          targetRotX = 0.84;
+          targetRotY = -1.00;
+        } else if (currentState === 'pos2') {
+          currentState = 'pos3';
+          stateDuration = 2.0;
+          targetRotX = 0.29;
+          targetRotY = -1.53;
+        } else if (currentState === 'pos3') {
+          currentState = 'random';
+          stateDuration = 2.0;
+          // Posizione random
+          targetRotX = (Math.random() - 0.5) * 1.5 + 0.5;
+          targetRotY = (Math.random() - 0.5) * 1.5 - 1.2;
         } else {
+          // Torna idle e ricomincia
           currentState = 'idle';
           stateDuration = 1.5;
           targetRotX = 0.34;

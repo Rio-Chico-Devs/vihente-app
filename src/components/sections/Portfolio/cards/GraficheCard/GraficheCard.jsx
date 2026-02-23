@@ -149,7 +149,7 @@ const GraficheCard = () => {
       }
     };
 
-    // Gestione stati
+    // Gestione stati con sequenza specifica
     const updateLookState = (deltaTime) => {
       const state = stateRef.current;
       state.time += deltaTime;
@@ -157,19 +157,30 @@ const GraficheCard = () => {
       if (state.time - state.lastChangeTime >= state.stateDuration) {
         state.lastChangeTime = state.time;
 
+        // Sequenza posizioni
         if (state.currentState === 'idle') {
-          if (Math.random() > 0.5) {
-            state.currentState = 'lookAtViewer';
-            state.stateDuration = 2.0;
-            state.targetRotX = -0.4;
-            state.targetRotY = -0.7;
-          } else {
-            state.currentState = 'lookAway';
-            state.stateDuration = 2.0;
-            state.targetRotX = (Math.random() - 0.5) * 1.2;
-            state.targetRotY = -1.01 + (Math.random() - 0.5) * 1.0;
-          }
+          state.currentState = 'pos1';
+          state.stateDuration = 2.0;
+          state.targetRotX = 0.64;
+          state.targetRotY = -1.32;
+        } else if (state.currentState === 'pos1') {
+          state.currentState = 'pos2';
+          state.stateDuration = 2.0;
+          state.targetRotX = 0.84;
+          state.targetRotY = -1.00;
+        } else if (state.currentState === 'pos2') {
+          state.currentState = 'pos3';
+          state.stateDuration = 2.0;
+          state.targetRotX = 0.29;
+          state.targetRotY = -1.53;
+        } else if (state.currentState === 'pos3') {
+          state.currentState = 'random';
+          state.stateDuration = 2.0;
+          // Posizione random
+          state.targetRotX = (Math.random() - 0.5) * 1.5 + 0.5;
+          state.targetRotY = (Math.random() - 0.5) * 1.5 - 1.2;
         } else {
+          // Torna idle e ricomincia
           state.currentState = 'idle';
           state.stateDuration = 1.5;
           state.targetRotX = 0.34;
