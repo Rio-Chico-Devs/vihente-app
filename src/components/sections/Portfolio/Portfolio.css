@@ -1,4 +1,5 @@
-/* Portfolio Component - Simple Double-Sided Cards */
+/* Portfolio Component - 2D Carousel for Perfect Image Quality */
+/* NO 3D transforms = NO blur/degradation */
 
 .portfolio-page {
   position: relative;
@@ -12,7 +13,7 @@
   padding-top: 120px;
 }
 
-/* Hexagonal grid overlay - matching Component Showcase */
+/* Hexagonal grid overlay */
 .portfolio-page::before {
   content: '';
   position: fixed;
@@ -56,9 +57,9 @@
   z-index: 10;
   display: flex;
   align-items: center;
-  gap: 2rem;
+  gap: 3rem;
   width: 100%;
-  max-width: 1200px;
+  max-width: 1400px;
   margin: 0 auto;
 }
 
@@ -101,383 +102,358 @@
   filter: drop-shadow(0 0 10px rgba(0, 255, 255, 0.8));
 }
 
-/* Carousel Scene */
+/* Carousel Container - 2D ONLY */
 .carousel-scene {
   position: relative;
-  width: 600px;
-  height: 400px;
-  perspective: 800px;
+  width: 100%;
+  max-width: 800px;
+  height: 450px;
   flex-shrink: 0;
   margin: 0 auto;
+  overflow: visible;
 }
 
-.carousel-3d {
-  position: absolute;
+/* Cards Wrapper */
+.carousel-cards {
+  position: relative;
   width: 100%;
   height: 100%;
-  transform-style: preserve-3d;
-  transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-/* Durante il drag: niente transition per seguire il dito */
-.carousel-3d.dragging {
-  transition: none;
-}
-
-/* Card Deck */
-.card-deck {
-  position: absolute;
-  width: 350px;
-  height: 250px;
-  left: 50%;
-  top: 50%;
-  cursor: pointer;
-  perspective: 1000px;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  will-change: transform;
-}
-
-.p-0 { 
-  transform: translate(-50%, -50%) rotateY(0deg) translateZ(350px);
-}
-.p-1 { 
-  transform: translate(-50%, -50%) rotateY(120deg) translateZ(350px);
-}
-.p-2 { 
-  transform: translate(-50%, -50%) rotateY(240deg) translateZ(350px);
-}
-
-.p-0 { --rotation: 0deg; }
-.p-1 { --rotation: 120deg; }
-.p-2 { --rotation: 240deg; }
-
-.card-deck.active {
-  z-index: 10;
-}
-
-.card-deck:not(.active) {
-  opacity: 1;
-  filter: brightness(0.4);
-  pointer-events: none;
-}
-
-/* Card 3D */
-.card-3d {
-  width: 100%;
-  height: 100%;
-  transform-style: preserve-3d;
-  transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-  border-radius: 4px;
-  transform: rotateY(0deg);
-}
-
-.card-deck:not(.active) .card-3d {
-  transform: rotateY(180deg);
-}
-
-/* Face */
-.face {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  backface-visibility: hidden;
-  -webkit-backface-visibility: hidden;
-  background: #000;
-  border: 2px solid rgba(0, 255, 255, 0.2);
-  border-radius: 4px;
-  box-shadow: 0 0 10px rgba(0, 255, 255, 0.15);
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.front {
-  z-index: 1;
-  box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.5);
-}
-
-.back {
   display: flex;
   align-items: center;
   justify-content: center;
-  transform: rotateY(180deg);
-  z-index: 0;
-  box-shadow: 0 0 0 rgba(0, 0, 0, 0.5);
 }
 
-/* Front Image Area - Code-based graphics container */
-.front-image {
+/* Individual Card - 2D positioning */
+.card-item {
   position: absolute;
-  inset: 0;
+  width: 600px;
+  height: 400px;
+  transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  cursor: pointer;
+  will-change: transform, opacity;
+}
+
+/* Card states - pure 2D transforms */
+.card-item.prev {
+  transform: translateX(-500px) scale(0.8);
+  opacity: 0.3;
+  filter: brightness(0.4);
+  pointer-events: none;
+  z-index: 1;
+}
+
+.card-item.active {
+  transform: translateX(0) scale(1);
+  opacity: 1;
+  filter: brightness(1);
+  z-index: 10;
+}
+
+.card-item.next {
+  transform: translateX(500px) scale(0.8);
+  opacity: 0.3;
+  filter: brightness(0.4);
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Hidden cards */
+.card-item.hidden {
+  opacity: 0;
+  pointer-events: none;
+  transform: scale(0.6);
+}
+
+/* Card flip container */
+.card-flip {
   width: 100%;
   height: 100%;
-  overflow: hidden;
-  border-radius: 4px;
-
-  /* Force sharp rendering for HTML/CSS content */
-  transform: translateZ(0.1px);
-  backface-visibility: hidden;
-  -webkit-backface-visibility: hidden;
-  -webkit-font-smoothing: subpixel-antialiased;
-  font-smooth: always;
-  text-rendering: optimizeLegibility;
-
-  /* Scale up content internally for crisp rendering */
-  transform-origin: center center;
+  position: relative;
+  transform-style: preserve-3d;
+  transition: transform 0.6s ease;
 }
 
-.card-deck.active:hover {
-  transform: translate(-50%, -50%) rotateY(var(--rotation)) translateZ(350px) scale(1.05);
+.card-item.active.flipped .card-flip {
+  transform: rotateY(180deg);
 }
 
-.card-deck.active:hover .face {
-  box-shadow: 0 0 20px rgba(0, 255, 255, 0.5);
-  border-color: rgba(0, 255, 255, 0.5);
-}
-
-/* Front Title */
-.front-title {
+/* Card faces */
+.card-face {
   position: absolute;
-  top: 20px;
-  left: 20px;
-  z-index: 100;
-  pointer-events: none;
-  isolation: isolate;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  background: #000;
+  border: 2px solid rgba(0, 255, 255, 0.3);
+  border-radius: 8px;
+  box-shadow: 0 8px 32px rgba(0, 255, 255, 0.2);
+  overflow: hidden;
 }
 
-.front-title h2 {
+.card-face.front {
+  display: flex;
+  flex-direction: column;
+}
+
+.card-face.back {
+  transform: rotateY(180deg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  padding: 40px;
+}
+
+/* Front card content */
+.card-content {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Image container - NO transforms for perfect quality */
+.card-image {
+  position: relative;
+  width: 100%;
+  flex: 1;
+  overflow: hidden;
+  background: #000;
+}
+
+/* Title section */
+.card-title {
+  padding: 25px 30px;
+  background: rgba(0, 0, 0, 0.95);
+  border-top: 2px solid rgba(0, 255, 255, 0.3);
+}
+
+.card-title h2 {
   font-family: 'Orbitron', 'Share Tech Mono', monospace;
-  font-size: 1rem;
-  font-weight: 600;
+  font-size: 28px;
+  font-weight: 700;
   color: #0ff;
-  text-transform: uppercase;
   letter-spacing: 0.2em;
-  margin: 0;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-rendering: optimizeLegibility;
-  filter: none;
-  text-shadow: none;
-  transform: translateZ(50px);
-  will-change: transform;
+  margin: 0 0 8px 0;
+  text-shadow: 0 0 10px rgba(0, 255, 255, 0.6);
 }
 
-/* Eye Logo nel Back */
+.card-title p {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 13px;
+  color: rgba(0, 255, 255, 0.7);
+  margin: 0;
+  letter-spacing: 0.1em;
+}
+
+/* Back face content */
+.card-back-content {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
 .eye-logo {
-  opacity: 0.9;
-  filter: drop-shadow(0 0 20px rgba(0, 255, 255, 0.5));
-  animation: eyePulse 4s ease-in-out infinite;
+  filter: drop-shadow(0 0 15px rgba(0, 255, 255, 0.6));
+  animation: eyePulse 3s ease-in-out infinite;
 }
 
 @keyframes eyePulse {
-  0%, 100% { 
+  0%, 100% {
     opacity: 0.9;
     transform: scale(1);
   }
-  50% { 
+  50% {
     opacity: 1;
     transform: scale(1.05);
   }
 }
 
-/* Active Card Border */
-.card-deck.active .face {
-  border-color: rgba(0, 255, 255, 0.5);
-  box-shadow: 
-    0 10px 30px rgba(0, 255, 255, 0.2),
-    0 0 10px rgba(0, 255, 255, 0.25);
+.card-back-title {
+  font-family: 'Orbitron', 'Share Tech Mono', monospace;
+  font-size: 32px;
+  font-weight: 700;
+  color: #0ff;
+  letter-spacing: 0.3em;
+  margin: 0;
+  text-shadow: 0 0 20px rgba(0, 255, 255, 0.8);
 }
 
-/* Effetto CLICK - Solo una volta */
-.card-deck.clicked {
-  transform: translate(-50%, -50%) rotateY(var(--rotation)) translateZ(370px) scale(1.08) !important;
-  transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
+.card-back-button {
+  margin-top: 20px;
+  padding: 15px 40px;
+  background: transparent;
+  border: 2px solid rgba(0, 255, 255, 0.5);
+  border-radius: 4px;
+  color: #0ff;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
 }
 
-.card-deck.clicked .face {
+.card-back-button:hover {
+  background: rgba(0, 255, 255, 0.1);
   border-color: #0ff;
-  animation: glowBorder 0.6s ease-in-out 1;
+  box-shadow: 0 0 20px rgba(0, 255, 255, 0.4);
+  transform: translateY(-2px);
 }
 
-@keyframes glowBorder {
-  0%, 100% {
-    box-shadow: 
-      0 0 10px rgba(0, 255, 255, 0.4),
-      0 0 20px rgba(0, 255, 255, 0.3),
-      inset 0 0 10px rgba(0, 255, 255, 0.2);
+/* Active card glow */
+.card-item.active .card-face {
+  border-color: rgba(0, 255, 255, 0.5);
+  box-shadow: 0 8px 32px rgba(0, 255, 255, 0.3);
+}
+
+/* Code background animation */
+.code-background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.code-line {
+  position: absolute;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 12px;
+  color: rgba(0, 255, 255, 0.15);
+  white-space: nowrap;
+  animation: fadeInOut 6s ease-in-out forwards;
+}
+
+@keyframes fadeInOut {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
   }
-  50% {
-    box-shadow: 
-      0 0 25px rgba(0, 255, 255, 0.9),
-      0 0 50px rgba(0, 255, 255, 0.7),
-      inset 0 0 25px rgba(0, 255, 255, 0.5);
+  10% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  90% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-20px);
   }
 }
 
-/* ====================================
-   RESPONSIVE - Stesso effetto scalato
-   ==================================== */
-
+/* Responsive */
 @media (max-width: 1024px) {
-  .portfolio-page {
-    padding-top: 100px;
-    padding-bottom: 100px;
-  }
-
   .portfolio-container {
-    gap: 1rem;
+    gap: 2rem;
   }
 
-  .nav-arrow {
-    width: 40px;
-    height: 60px;
+  .card-item {
+    width: 500px;
+    height: 350px;
+  }
+
+  .card-item.prev {
+    transform: translateX(-400px) scale(0.75);
+  }
+
+  .card-item.next {
+    transform: translateX(400px) scale(0.75);
   }
 
   .carousel-scene {
-    width: 450px;
-    height: 320px;
-    perspective: 600px;
-  }
-
-  .card-deck {
-    width: 280px;
-    height: 200px;
-  }
-
-  .p-0 { transform: translate(-50%, -50%) rotateY(0deg) translateZ(250px); --rotation: 0deg; }
-  .p-1 { transform: translate(-50%, -50%) rotateY(120deg) translateZ(250px); --rotation: 120deg; }
-  .p-2 { transform: translate(-50%, -50%) rotateY(240deg) translateZ(250px); --rotation: 240deg; }
-
-  .card-deck.active:hover {
-    transform: translate(-50%, -50%) rotateY(var(--rotation)) translateZ(250px) scale(1.05);
-  }
-
-  .card-deck.clicked {
-    transform: translate(-50%, -50%) rotateY(var(--rotation)) translateZ(270px) scale(1.08) !important;
-  }
-
-  .front-title h2 {
-    font-size: 0.9rem;
-  }
-
-  .eye-logo {
-    width: 150px;
-    height: 150px;
+    height: 400px;
   }
 }
 
 @media (max-width: 768px) {
-  .portfolio-page {
-    padding: 90px 0.5rem 100px 0.5rem;
-  }
-
   .portfolio-container {
-    gap: 0.5rem;
-  }
-
-  .nav-arrow {
-    width: 30px;
-    height: 50px;
+    gap: 1rem;
   }
 
   .carousel-scene {
-    width: 320px;
-    height: 240px;
-    perspective: 500px;
+    height: 350px;
+    max-width: 400px;
   }
 
-  .card-deck {
-    width: 200px;
-    height: 140px;
+  .card-item {
+    width: 380px;
+    height: 280px;
   }
 
-  .p-0 { transform: translate(-50%, -50%) rotateY(0deg) translateZ(180px); --rotation: 0deg; }
-  .p-1 { transform: translate(-50%, -50%) rotateY(120deg) translateZ(180px); --rotation: 120deg; }
-  .p-2 { transform: translate(-50%, -50%) rotateY(240deg) translateZ(180px); --rotation: 240deg; }
-
-  .card-deck.active:hover {
-    transform: translate(-50%, -50%) rotateY(var(--rotation)) translateZ(180px) scale(1.05);
+  /* Hide side cards on mobile */
+  .card-item.prev,
+  .card-item.next {
+    display: none;
   }
 
-  .card-deck.clicked {
-    transform: translate(-50%, -50%) rotateY(var(--rotation)) translateZ(195px) scale(1.06) !important;
+  .card-title h2 {
+    font-size: 22px;
   }
 
-  .front-title {
-    top: 12px;
-    left: 12px;
+  .card-title p {
+    font-size: 11px;
   }
 
-  .front-title h2 {
-    font-size: 0.75rem;
-    letter-spacing: 0.15em;
-  }
-
-  .eye-logo {
-    width: 100px;
-    height: 100px;
-  }
-
-  .face {
-    border-width: 2px;
+  .nav-arrow {
+    width: 45px;
+    height: 65px;
   }
 }
 
 @media (max-width: 480px) {
-  .portfolio-page {
-    padding: 90px 0.25rem 100px 0.25rem;
-  }
-
   .portfolio-container {
-    gap: 0.25rem;
-  }
-
-  .nav-arrow {
-    width: 24px;
-    height: 40px;
+    gap: 0.75rem;
   }
 
   .carousel-scene {
-    width: 260px;
-    height: 200px;
-    perspective: 400px;
+    height: 300px;
+    max-width: 320px;
   }
 
-  .card-deck {
-    width: 160px;
-    height: 115px;
+  .card-item {
+    width: 300px;
+    height: 240px;
   }
 
-  .p-0 { transform: translate(-50%, -50%) rotateY(0deg) translateZ(140px); --rotation: 0deg; }
-  .p-1 { transform: translate(-50%, -50%) rotateY(120deg) translateZ(140px); --rotation: 120deg; }
-  .p-2 { transform: translate(-50%, -50%) rotateY(240deg) translateZ(140px); --rotation: 240deg; }
-
-  .card-deck.active:hover {
-    transform: translate(-50%, -50%) rotateY(var(--rotation)) translateZ(140px) scale(1.05);
+  .card-title {
+    padding: 18px 20px;
   }
 
-  .card-deck.clicked {
-    transform: translate(-50%, -50%) rotateY(var(--rotation)) translateZ(150px) scale(1.05) !important;
+  .card-title h2 {
+    font-size: 18px;
+    margin-bottom: 6px;
   }
 
-  .front-title {
-    top: 8px;
-    left: 8px;
+  .card-title p {
+    font-size: 10px;
   }
 
-  .front-title h2 {
-    font-size: 0.65rem;
-    letter-spacing: 0.1em;
+  .nav-arrow {
+    width: 35px;
+    height: 55px;
+  }
+
+  .card-back-title {
+    font-size: 24px;
   }
 
   .eye-logo {
-    width: 70px;
-    height: 70px;
+    width: 120px;
+    height: 120px;
   }
 }
 
-/* ====================================
-   LIGHT MODE (NIGHT MODE) OVERRIDES
-   ==================================== */
-
+/* Light Mode */
 [data-theme="light"] .portfolio-page {
   background: var(--bg-black);
 }
@@ -506,46 +482,42 @@
   filter: drop-shadow(0 0 6px var(--color-primary-50));
 }
 
-[data-theme="light"] .face {
+[data-theme="light"] .card-face {
   background: var(--bg-black);
   border-color: var(--color-primary-20);
   box-shadow: 0 0 8px rgba(232, 160, 48, 0.12);
 }
 
-[data-theme="light"] .front-title h2 {
+[data-theme="light"] .card-title h2 {
   color: var(--color-primary);
+  text-shadow: 0 0 10px var(--color-primary-40);
+}
+
+[data-theme="light"] .card-title p {
+  color: var(--color-primary-60);
 }
 
 [data-theme="light"] .eye-logo {
   filter: drop-shadow(0 0 10px var(--color-primary-40));
 }
 
-[data-theme="light"] .card-deck.active .face {
+[data-theme="light"] .card-item.active .card-face {
   border-color: var(--color-primary-40);
-  box-shadow: 
-    0 8px 25px var(--color-primary-12),
-    0 0 8px var(--color-primary-18);
+  box-shadow: 0 8px 32px var(--color-primary-18);
 }
 
-[data-theme="light"] .card-deck.active:hover .face {
-  box-shadow: 0 0 20px var(--color-primary-50);
-  border-color: var(--color-primary-50);
+[data-theme="light"] .card-back-title {
+  color: var(--color-primary);
+  text-shadow: 0 0 20px var(--color-primary-60);
 }
 
-[data-theme="light"] .card-deck.clicked .face {
+[data-theme="light"] .card-back-button {
+  border-color: var(--color-primary-40);
+  color: var(--color-primary);
+}
+
+[data-theme="light"] .card-back-button:hover {
+  background: var(--color-primary-08);
   border-color: var(--color-primary);
-  animation: glowBorderLight 0.6s ease-in-out 1;
-}
-
-@keyframes glowBorderLight {
-  0%, 100% {
-    box-shadow: 
-      0 0 8px var(--color-primary-30),
-      0 0 15px var(--color-primary-20);
-  }
-  50% {
-    box-shadow: 
-      0 0 20px var(--color-primary-60),
-      0 0 40px var(--color-primary-40);
-  }
+  box-shadow: 0 0 20px var(--color-primary-30);
 }
