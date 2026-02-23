@@ -22,11 +22,11 @@ const GraficheCard = () => {
     const ctx = canvas.getContext('2d');
 
     // Parametri
-    const sphereCenterX = 350;
-    const sphereCenterY = 260;
-    const sphereRadius = 170;
-    const irideRadius = 60;
-    const pupillaRadius = 28;
+    const sphereCenterX = 250;
+    const sphereCenterY = 180;
+    const sphereRadius = 180;
+    const irideRadius = 63;
+    const pupillaRadius = 29;
     const cameraAngleX = -0.6;
     const cameraAngleY = -0.3;
     const irideTheta = 0;
@@ -207,37 +207,15 @@ const GraficheCard = () => {
       drawCircleOnSphere(irideTheta, iridePhi, irideRadius, 'rgba(0, 150, 255, 0.95)', 3);
       drawCircleOnSphere(irideTheta, iridePhi, pupillaRadius, 'rgba(0, 200, 255, 1)', 2.5);
 
-      // Disegna label GRAFICHE in alto a destra
-      ctx.font = '700 18px "Share Tech Mono", monospace';
-      ctx.strokeStyle = 'rgba(255, 200, 0, 0.8)';
-      ctx.fillStyle = 'rgba(255, 200, 0, 0.9)';
-      ctx.lineWidth = 2;
-
-      const labelText = 'GRAFICHE';
-      const labelX = 480;
-      const labelY = 50;
-      const labelPadding = 12;
-
-      const labelMetrics = ctx.measureText(labelText);
-      const labelWidth = labelMetrics.width;
-      const labelHeight = 18;
-
-      ctx.strokeRect(
-        labelX - labelPadding,
-        labelY - labelHeight - labelPadding/2,
-        labelWidth + labelPadding * 2,
-        labelHeight + labelPadding * 1.5
-      );
-      ctx.fillText(labelText, labelX, labelY);
-
-      // Disegna titolo e descrizione in basso a sinistra
+      // Disegna titolo e descrizione in basso a destra
+      ctx.textAlign = 'right';
       ctx.font = '700 24px "Share Tech Mono", monospace';
       ctx.fillStyle = 'rgba(0, 255, 255, 0.95)';
-      ctx.fillText('GRAFICHE', 30, 330);
+      ctx.fillText('GRAFICHE', 570, 340);
 
       ctx.font = '400 14px "Share Tech Mono", monospace';
       ctx.fillStyle = 'rgba(0, 255, 255, 0.7)';
-      ctx.fillText('Design grafico e web identity', 30, 355);
+      ctx.fillText('Design grafico e web identity', 570, 365);
 
       animationRef.current = requestAnimationFrame(animate);
     };
