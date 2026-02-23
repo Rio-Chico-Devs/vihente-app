@@ -22,8 +22,8 @@ const GraficheCard = () => {
     const ctx = canvas.getContext('2d');
 
     // Parametri
-    const sphereCenterX = 250;
-    const sphereCenterY = 180;
+    const sphereCenterX = 220;
+    const sphereCenterY = 150;
     const sphereRadius = 180;
     const irideRadius = 63;
     const pupillaRadius = 29;
