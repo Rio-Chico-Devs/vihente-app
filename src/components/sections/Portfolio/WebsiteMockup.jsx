@@ -38,20 +38,19 @@ const WebsiteMockup = () => {
 
     const state = stateRef.current;
 
-    // Easing functions
-    const easeInOutCubic = (t) => t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
-    const easeOutCubic = (t) => 1 - Math.pow(1 - t, 3);
+    // Easing functions - molto più smooth
+    const easeInOutQuart = (t) => t < 0.5 ? 8 * t * t * t * t : 1 - Math.pow(-2 * t + 2, 4) / 2;
+    const easeOutQuart = (t) => 1 - Math.pow(1 - t, 4);
+    const easeInOutSine = (t) => -(Math.cos(Math.PI * t) - 1) / 2;
 
-    // Disegna occhio logo (come nel sito)
+    // Disegna occhio logo (migliorato, più fedele all'originale)
     const drawEyeLogo = (centerX, centerY, scale, alpha) => {
-      const baseSize = 50 * scale;
-
       ctx.save();
       ctx.translate(centerX, centerY);
       ctx.scale(scale, scale);
       ctx.globalAlpha = alpha;
 
-      // Contorno occhio
+      // Contorno occhio - path preciso
       ctx.beginPath();
       ctx.moveTo(-15, 0);
       ctx.bezierCurveTo(-11, -7, -6, -10, 0, -10);
@@ -60,24 +59,28 @@ const WebsiteMockup = () => {
       ctx.bezierCurveTo(-6, 10, -11, 7, -15, 0);
       ctx.closePath();
 
-      ctx.strokeStyle = `rgba(0, 255, 255, ${0.7 * alpha})`;
-      ctx.lineWidth = 1.2;
-      ctx.shadowBlur = 4;
-      ctx.shadowColor = `rgba(0, 255, 255, ${0.3 * alpha})`;
+      ctx.strokeStyle = `rgba(0, 255, 255, ${0.6 * alpha})`;
+      ctx.lineWidth = 1.3;
+      ctx.lineCap = 'round';
+      ctx.lineJoin = 'round';
+      ctx.shadowBlur = 6 * alpha;
+      ctx.shadowColor = `rgba(0, 255, 255, ${0.25 * alpha})`;
       ctx.stroke();
 
       // Iride
       ctx.beginPath();
       ctx.arc(0, 0, 8, 0, Math.PI * 2);
-      ctx.strokeStyle = `rgba(0, 255, 255, ${0.7 * alpha})`;
+      ctx.strokeStyle = `rgba(0, 255, 255, ${0.6 * alpha})`;
       ctx.lineWidth = 1;
+      ctx.shadowBlur = 3 * alpha;
       ctx.stroke();
 
       // Pupilla
       ctx.beginPath();
       ctx.arc(0, 0, 3.5, 0, Math.PI * 2);
-      ctx.strokeStyle = `rgba(0, 255, 255, ${0.8 * alpha})`;
-      ctx.lineWidth = 0.8;
+      ctx.strokeStyle = `rgba(0, 255, 255, ${0.7 * alpha})`;
+      ctx.lineWidth = 0.9;
+      ctx.shadowBlur = 2 * alpha;
       ctx.stroke();
 
       ctx.shadowBlur = 0;
@@ -249,23 +252,25 @@ const WebsiteMockup = () => {
       ctx.stroke();
     };
 
-    // Update animation
+    // Update animation - timing zen migliorato
     const updateAnimation = (deltaTime) => {
       state.stateTime += deltaTime;
 
       if (state.animationState === 'search') {
-        // Fade in
-        state.fadeAlpha = Math.min(1, state.fadeAlpha + deltaTime * 1.5);
+        // Fade in molto smooth
+        const t = Math.min(1, state.stateTime / 1.2);
+        state.fadeAlpha = easeInOutSine(t);
 
-        if (state.stateTime >= 2.5) {
+        if (state.stateTime >= 3.0) {
           state.animationState = 'transition-to-results';
           state.stateTime = 0;
         }
       } else if (state.animationState === 'transition-to-results') {
-        // Fade out search, prepare results
-        state.fadeAlpha = Math.max(0, state.fadeAlpha - deltaTime * 2);
+        // Fade out search con easing
+        const t = Math.min(1, state.stateTime / 0.8);
+        state.fadeAlpha = 1 - easeInOutSine(t);
 
-        if (state.fadeAlpha <= 0) {
+        if (state.fadeAlpha <= 0.01) {
           state.animationState = 'results';
           state.stateTime = 0;
           state.fadeAlpha = 0;
@@ -275,43 +280,46 @@ const WebsiteMockup = () => {
           state.targetCursorY = 144;
         }
       } else if (state.animationState === 'results') {
-        // Fade in results
-        state.fadeAlpha = Math.min(1, state.fadeAlpha + deltaTime * 2);
+        // Fade in results smooth
+        const fadeT = Math.min(1, state.stateTime / 1.0);
+        state.fadeAlpha = easeInOutSine(fadeT);
 
-        // Move cursor smooth
-        const t = Math.min(1, state.stateTime / 1.5);
-        const eased = easeOutCubic(t);
+        // Move cursor ultra smooth
+        const cursorT = Math.min(1, state.stateTime / 2.0);
+        const eased = easeOutQuart(cursorT);
         state.cursorX = 500 + (state.targetCursorX - 500) * eased;
         state.cursorY = 50 + (state.targetCursorY - 50) * eased;
 
-        if (state.stateTime >= 2.5) {
+        if (state.stateTime >= 3.0) {
           state.animationState = 'hover';
           state.stateTime = 0;
         }
       } else if (state.animationState === 'hover') {
-        // Smooth hover fade in
-        state.hoverAlpha = Math.min(1, state.hoverAlpha + deltaTime * 3);
+        // Hover fade molto graduale
+        const t = Math.min(1, state.stateTime / 1.5);
+        state.hoverAlpha = easeInOutSine(t);
 
-        if (state.stateTime >= 1.2) {
+        if (state.stateTime >= 1.5) {
           state.animationState = 'click';
           state.stateTime = 0;
           state.clicking = true;
         }
       } else if (state.animationState === 'click') {
-        if (state.stateTime >= 0.4) {
+        if (state.stateTime >= 0.5) {
           state.clicking = false;
         }
-        if (state.stateTime >= 1.8) {
-          // Fade out tutto
+        if (state.stateTime >= 2.0) {
           state.animationState = 'transition-to-search';
           state.stateTime = 0;
         }
       } else if (state.animationState === 'transition-to-search') {
-        // Fade out
-        state.fadeAlpha = Math.max(0, state.fadeAlpha - deltaTime * 1.5);
-        state.hoverAlpha = Math.max(0, state.hoverAlpha - deltaTime * 3);
+        // Fade out tutto smooth
+        const t = Math.min(1, state.stateTime / 1.0);
+        const fadeOut = easeInOutSine(t);
+        state.fadeAlpha = 1 - fadeOut;
+        state.hoverAlpha = 1 - fadeOut;
 
-        if (state.fadeAlpha <= 0) {
+        if (state.fadeAlpha <= 0.01) {
           state.animationState = 'search';
           state.stateTime = 0;
           state.fadeAlpha = 0;
