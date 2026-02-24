@@ -17,17 +17,22 @@ const ComponentiCard = () => {
     const canvas = canvasRef.current;
     if (!canvas) return;
 
-    const ctx = canvas.getContext('2d');
+    const ctx = canvas.getContext('2d', { alpha: false });
 
-    // High DPI per qualità HD
-    const dpr = window.devicePixelRatio || 2;
-    canvas.width = 600 * dpr;
-    canvas.height = 400 * dpr;
+    // High DPI per qualità HD - usa sempre 3x per massima nitidezza
+    const dpr = 3;
+    const width = 600;
+    const height = 400;
+
+    canvas.width = width * dpr;
+    canvas.height = height * dpr;
+    canvas.style.width = width + 'px';
+    canvas.style.height = height + 'px';
     ctx.scale(dpr, dpr);
 
-    // Anti-aliasing
-    ctx.imageSmoothingEnabled = true;
-    ctx.imageSmoothingQuality = 'high';
+    // Text rendering ottimizzato
+    ctx.imageSmoothingEnabled = false; // Disabilita smoothing per testo più nitido
+    ctx.textRendering = 'optimizeLegibility';
 
     // Debug events sincronizzati
     const debugEvents = [
