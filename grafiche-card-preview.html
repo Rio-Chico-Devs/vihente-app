@@ -261,15 +261,27 @@
       drawCircleOnSphere(irideTheta, iridePhi, irideRadius, 'rgba(0, 150, 255, 0.95)', 3);
       drawCircleOnSphere(irideTheta, iridePhi, pupillaRadius, 'rgba(0, 200, 255, 1)', 2.5);
 
-      // Disegna titolo e descrizione in basso a destra
+      // Abilita anti-aliasing per i titoli (qualità come HTML/CSS)
+      ctx.imageSmoothingEnabled = true;
+      ctx.imageSmoothingQuality = 'high';
+
+      // Titolo con shadow per depth
       ctx.textAlign = 'right';
       ctx.font = '700 24px "Share Tech Mono", monospace';
       ctx.fillStyle = 'rgba(0, 255, 255, 0.95)';
+      ctx.shadowBlur = 8;
+      ctx.shadowColor = 'rgba(0, 255, 255, 0.4)';
       ctx.fillText('GRAFICHE', 570, 340);
 
+      // Descrizione
       ctx.font = '400 14px "Share Tech Mono", monospace';
       ctx.fillStyle = 'rgba(0, 255, 255, 0.7)';
+      ctx.shadowBlur = 4;
+      ctx.shadowColor = 'rgba(0, 255, 255, 0.2)';
       ctx.fillText('Design grafico e web identity', 570, 365);
+
+      // Reset shadow
+      ctx.shadowBlur = 0;
 
       requestAnimationFrame(animate);
     }

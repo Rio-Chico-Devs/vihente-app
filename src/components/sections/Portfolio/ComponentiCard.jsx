@@ -363,14 +363,28 @@ const ComponentiCard = () => {
       drawEditor();
       drawDebugPanel();
 
+      // Abilita anti-aliasing per i titoli (qualità come HTML/CSS)
+      ctx.imageSmoothingEnabled = true;
+      ctx.imageSmoothingQuality = 'high';
+
+      // Titolo con shadow per depth
       ctx.textAlign = 'right';
       ctx.font = '700 24px "Share Tech Mono", monospace';
       ctx.fillStyle = 'rgba(0, 255, 255, 0.95)';
+      ctx.shadowBlur = 8;
+      ctx.shadowColor = 'rgba(0, 255, 255, 0.4)';
       ctx.fillText('COMPONENTI', 570, 340);
 
+      // Descrizione
       ctx.font = '400 14px "Share Tech Mono", monospace';
       ctx.fillStyle = 'rgba(0, 255, 255, 0.7)';
+      ctx.shadowBlur = 4;
+      ctx.shadowColor = 'rgba(0, 255, 255, 0.2)';
       ctx.fillText('UI components e librerie React', 570, 365);
+
+      // Reset shadow e smoothing
+      ctx.shadowBlur = 0;
+      ctx.imageSmoothingEnabled = false;
 
       animationRef.current = requestAnimationFrame(animate);
     };
