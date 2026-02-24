@@ -155,12 +155,7 @@ const Portfolio = () => {
                       <div className="card-image">
                         {renderCardContent(cat)}
                       </div>
-                      {cat.id === 'sitiweb' && (
-                        <div className="card-title">
-                          <h2>{cat.title}</h2>
-                          <p>{cat.description}</p>
-                        </div>
-                      )}
+                      {/* Tutti i titoli sono integrati nel canvas */}
                     </div>
                   </div>
 
