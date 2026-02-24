@@ -89,40 +89,69 @@ const WebsiteMockup = () => {
 
     // Disegna search page
     const drawSearchPage = (alpha) => {
-      // Occhio logo al posto del logo
-      drawEyeLogo(300, 70, 2.5, alpha);
+      // Occhio logo - più realistico e centrato
+      drawEyeLogo(300, 90, 2.8, alpha);
 
-      // Search bar
-      const barX = 120;
-      const barY = 110;
-      const barWidth = 360;
-      const barHeight = 44;
+      // Search bar - proporzioni più realistiche
+      const barX = 100;
+      const barY = 150;
+      const barWidth = 400;
+      const barHeight = 46;
 
       ctx.globalAlpha = alpha;
+
+      // Shadow della search bar (più profonda)
+      ctx.shadowBlur = 4;
+      ctx.shadowColor = 'rgba(0, 0, 0, 0.15)';
       ctx.fillStyle = '#1a1a1a';
+      ctx.beginPath();
+      ctx.roundRect(barX, barY, barWidth, barHeight, 23);
+      ctx.fill();
+      ctx.shadowBlur = 0;
+
+      // Bordo sottile
+      ctx.strokeStyle = 'rgba(0, 255, 255, 0.2)';
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.roundRect(barX, barY, barWidth, barHeight, 23);
+      ctx.stroke();
+
+      // Search icon - più dettagliato
+      ctx.strokeStyle = 'rgba(0, 255, 255, 0.5)';
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.arc(120, 173, 8, 0, Math.PI * 2);
+      ctx.stroke();
+      ctx.beginPath();
+      ctx.moveTo(126, 179);
+      ctx.lineTo(131, 184);
+      ctx.stroke();
+
+      // Search text - posizionamento preciso
+      ctx.font = '400 16px "Share Tech Mono", monospace';
+      ctx.fillStyle = 'rgba(0, 255, 255, 0.7)';
+      ctx.textAlign = 'left';
+      ctx.fillText('web development services', 145, 176);
+
+      // Button cerca - più realistico
+      const btnX = 430;
+      const btnY = 158;
+      ctx.fillStyle = 'rgba(0, 255, 255, 0.08)';
+      ctx.beginPath();
+      ctx.roundRect(btnX, btnY, 55, 30, 4);
+      ctx.fill();
+
       ctx.strokeStyle = 'rgba(0, 255, 255, 0.25)';
       ctx.lineWidth = 1;
       ctx.beginPath();
-      ctx.roundRect(barX, barY, barWidth, barHeight, 22);
-      ctx.fill();
+      ctx.roundRect(btnX, btnY, 55, 30, 4);
       ctx.stroke();
 
-      // Search icon
-      ctx.strokeStyle = 'rgba(0, 255, 255, 0.45)';
-      ctx.lineWidth = 1.5;
-      ctx.beginPath();
-      ctx.arc(140, 132, 7, 0, Math.PI * 2);
-      ctx.stroke();
-      ctx.beginPath();
-      ctx.moveTo(145, 137);
-      ctx.lineTo(149, 141);
-      ctx.stroke();
+      ctx.font = '400 13px "Share Tech Mono", monospace';
+      ctx.fillStyle = 'rgba(0, 255, 255, 0.7)';
+      ctx.textAlign = 'center';
+      ctx.fillText('Search', 457.5, 176);
 
-      // Search text
-      ctx.font = '400 15px "Share Tech Mono", monospace';
-      ctx.fillStyle = 'rgba(0, 255, 255, 0.65)';
-      ctx.textAlign = 'left';
-      ctx.fillText('web development services', 165, 136);
       ctx.globalAlpha = 1;
     };
 
@@ -130,115 +159,169 @@ const WebsiteMockup = () => {
     const drawResultsPage = (alpha) => {
       ctx.globalAlpha = alpha;
 
-      // Mini search bar in alto
+      // Header con shadow
       ctx.fillStyle = '#0a0a0a';
-      ctx.fillRect(0, 0, 600, 70);
+      ctx.fillRect(0, 0, 600, 75);
 
-      // Occhio piccolo al posto del testo
-      drawEyeLogo(50, 30, 1.2, alpha);
+      // Shadow sotto header
+      const gradient = ctx.createLinearGradient(0, 75, 0, 82);
+      gradient.addColorStop(0, 'rgba(0, 0, 0, 0.15)');
+      gradient.addColorStop(1, 'rgba(0, 0, 0, 0)');
+      ctx.fillStyle = gradient;
+      ctx.fillRect(0, 75, 600, 7);
 
-      // Small search bar
+      // Occhio logo piccolo - meglio posizionato
+      drawEyeLogo(45, 32, 1.3, alpha);
+
+      // Small search bar - più definita
+      ctx.shadowBlur = 2;
+      ctx.shadowColor = 'rgba(0, 0, 0, 0.1)';
       ctx.fillStyle = '#1a1a1a';
-      ctx.strokeStyle = 'rgba(0, 255, 255, 0.2)';
-      ctx.lineWidth = 0.8;
       ctx.beginPath();
-      ctx.roundRect(140, 15, 280, 32, 16);
+      ctx.roundRect(130, 18, 300, 28, 14);
       ctx.fill();
+      ctx.shadowBlur = 0;
+
+      ctx.strokeStyle = 'rgba(0, 255, 255, 0.18)';
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.roundRect(130, 18, 300, 28, 14);
+      ctx.stroke();
+
+      // Search icon piccolo
+      ctx.strokeStyle = 'rgba(0, 255, 255, 0.45)';
+      ctx.lineWidth = 1.5;
+      ctx.beginPath();
+      ctx.arc(145, 32, 6, 0, Math.PI * 2);
       ctx.stroke();
 
       ctx.font = '400 12px "Share Tech Mono", monospace';
-      ctx.fillStyle = 'rgba(0, 255, 255, 0.5)';
+      ctx.fillStyle = 'rgba(0, 255, 255, 0.55)';
       ctx.fillText('web development services', 160, 35);
 
-      // Results info
+      // Tab "All" selezionato - dettaglio realistico
+      ctx.font = '500 13px "Share Tech Mono", monospace';
+      ctx.fillStyle = 'rgba(0, 255, 255, 0.7)';
+      ctx.fillText('All', 30, 65);
+
+      // Linea sotto tab attivo
+      ctx.fillStyle = 'rgba(0, 255, 255, 0.7)';
+      ctx.fillRect(30, 70, 22, 2);
+
+      // Altri tabs
+      ctx.font = '400 13px "Share Tech Mono", monospace';
+      ctx.fillStyle = 'rgba(0, 255, 255, 0.45)';
+      ctx.fillText('Images', 65, 65);
+      ctx.fillText('Videos', 120, 65);
+
+      // Results info - più realistico
       ctx.font = '400 11px "Share Tech Mono", monospace';
       ctx.fillStyle = 'rgba(0, 255, 255, 0.4)';
-      ctx.fillText('About 127,000 results (0.43 seconds)', 30, 90);
+      ctx.fillText('About 127,000,000 results (0.43 seconds)', 30, 100);
 
-      // Result 1 - VIHENTE.IT (highlighted on hover)
-      const result1Y = 120;
+      // Result 1 - VIHENTE.IT con dettagli realistici
+      const result1Y = 125;
       const hoverAlpha = state.hoverAlpha;
 
+      // Hover background con bordi arrotondati
       if (hoverAlpha > 0) {
-        ctx.fillStyle = `rgba(0, 255, 255, ${0.04 * hoverAlpha})`;
-        ctx.fillRect(20, result1Y - 25, 560, 85);
+        ctx.fillStyle = `rgba(0, 255, 255, ${0.03 * hoverAlpha})`;
+        ctx.beginPath();
+        ctx.roundRect(20, result1Y - 12, 560, 90, 6);
+        ctx.fill();
       }
 
-      // URL
-      ctx.font = '400 12px "Share Tech Mono", monospace';
-      ctx.fillStyle = 'rgba(0, 255, 255, 0.5)';
-      ctx.fillText('https://vihente.it', 30, result1Y);
+      // Breadcrumb / URL path
+      ctx.font = '400 11px "Share Tech Mono", monospace';
+      ctx.fillStyle = 'rgba(0, 255, 255, 0.45)';
+      ctx.fillText('https://vihente.it › home', 30, result1Y);
 
-      // Title (clickable)
-      ctx.font = '600 18px "Share Tech Mono", monospace';
-      const titleAlpha = 0.75 + (0.1 * hoverAlpha);
+      // Favicon simulato (punto colorato)
+      ctx.fillStyle = 'rgba(0, 255, 255, 0.6)';
+      ctx.beginPath();
+      ctx.arc(35, result1Y - 3, 2, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Title - più prominente
+      ctx.font = '600 19px "Share Tech Mono", monospace';
+      const titleAlpha = 0.75 + (0.15 * hoverAlpha);
       ctx.fillStyle = `rgba(0, 255, 255, ${titleAlpha})`;
       if (hoverAlpha > 0) {
-        ctx.shadowBlur = 5 * hoverAlpha;
-        ctx.shadowColor = `rgba(0, 255, 255, ${0.3 * hoverAlpha})`;
+        ctx.shadowBlur = 6 * hoverAlpha;
+        ctx.shadowColor = `rgba(0, 255, 255, ${0.25 * hoverAlpha})`;
       }
-      ctx.fillText('VIHENTE - Web Development & Digital Solutions', 30, result1Y + 24);
+      ctx.fillText('VIHENTE - Web Development & Digital Solutions', 30, result1Y + 22);
       ctx.shadowBlur = 0;
 
-      // Description
+      // Description con linee multiple
       ctx.font = '400 13px "Share Tech Mono", monospace';
       ctx.fillStyle = 'rgba(0, 255, 255, 0.5)';
-      const desc1 = 'Professional web development services. We build modern,';
-      const desc2 = 'responsive websites and digital solutions for your business.';
-      ctx.fillText(desc1, 30, result1Y + 46);
+      const desc1 = 'Professional web development services. We build modern, responsive';
+      const desc2 = 'websites and digital solutions. React, Node.js, cloud architecture.';
+      ctx.fillText(desc1, 30, result1Y + 45);
       ctx.fillText(desc2, 30, result1Y + 62);
 
-      // Result 2
-      const result2Y = 240;
-      ctx.font = '400 12px "Share Tech Mono", monospace';
-      ctx.fillStyle = 'rgba(0, 255, 255, 0.4)';
-      ctx.fillText('https://example.com/services', 30, result2Y);
+      // Meta info realistica (data)
+      ctx.font = '400 11px "Share Tech Mono", monospace';
+      ctx.fillStyle = 'rgba(0, 255, 255, 0.35)';
+      ctx.fillText('Updated 2 days ago', 30, result1Y + 78);
 
-      ctx.font = '600 16px "Share Tech Mono", monospace';
+      // Result 2 - più dettagliato
+      const result2Y = 250;
+
+      ctx.font = '400 11px "Share Tech Mono", monospace';
+      ctx.fillStyle = 'rgba(0, 255, 255, 0.4)';
+      ctx.fillText('https://example.com › services › web-dev', 30, result2Y);
+
+      ctx.fillStyle = 'rgba(0, 255, 255, 0.5)';
+      ctx.beginPath();
+      ctx.arc(35, result2Y - 3, 2, 0, Math.PI * 2);
+      ctx.fill();
+
+      ctx.font = '600 17px "Share Tech Mono", monospace';
       ctx.fillStyle = 'rgba(0, 255, 255, 0.55)';
-      ctx.fillText('Other Web Development Services', 30, result2Y + 22);
+      ctx.fillText('Web Development Services & Solutions', 30, result2Y + 20);
 
       ctx.font = '400 13px "Share Tech Mono", monospace';
       ctx.fillStyle = 'rgba(0, 255, 255, 0.4)';
-      ctx.fillText('Generic web development company offering various...', 30, result2Y + 44);
+      ctx.fillText('Generic web development company offering various services', 30, result2Y + 42);
 
       // Result 3
-      const result3Y = 310;
-      ctx.font = '400 12px "Share Tech Mono", monospace';
+      const result3Y = 330;
+
+      ctx.font = '400 11px "Share Tech Mono", monospace';
       ctx.fillStyle = 'rgba(0, 255, 255, 0.4)';
       ctx.fillText('https://anothersite.com', 30, result3Y);
 
-      ctx.font = '600 16px "Share Tech Mono", monospace';
+      ctx.fillStyle = 'rgba(0, 255, 255, 0.5)';
+      ctx.beginPath();
+      ctx.arc(35, result3Y - 3, 2, 0, Math.PI * 2);
+      ctx.fill();
+
+      ctx.font = '600 17px "Share Tech Mono", monospace';
       ctx.fillStyle = 'rgba(0, 255, 255, 0.55)';
-      ctx.fillText('Web Design Agency', 30, result3Y + 22);
+      ctx.fillText('Web Design & Development Agency', 30, result3Y + 20);
 
       ctx.globalAlpha = 1;
     };
 
-    // Disegna cursore
+    // Disegna cursore - più realistico
     const drawCursor = () => {
       if (state.animationState === 'search') return;
 
       const x = state.cursorX;
       const y = state.cursorY;
 
-      // Shadow
-      ctx.fillStyle = 'rgba(0, 0, 0, 0.3)';
-      ctx.beginPath();
-      ctx.moveTo(x + 2, y + 2);
-      ctx.lineTo(x + 2, y + 18);
-      ctx.lineTo(x + 7, y + 14);
-      ctx.lineTo(x + 10, y + 20);
-      ctx.lineTo(x + 13, y + 19);
-      ctx.lineTo(x + 10, y + 13);
-      ctx.lineTo(x + 16, y + 13);
-      ctx.closePath();
-      ctx.fill();
+      // Shadow più realistica
+      ctx.shadowBlur = 3;
+      ctx.shadowColor = 'rgba(0, 0, 0, 0.35)';
+      ctx.shadowOffsetX = 1;
+      ctx.shadowOffsetY = 2;
 
       // Cursor body
-      ctx.fillStyle = state.clicking ? 'rgba(0, 255, 255, 0.8)' : '#ffffff';
+      ctx.fillStyle = state.clicking ? 'rgba(0, 255, 255, 0.85)' : '#ffffff';
       ctx.strokeStyle = '#000';
-      ctx.lineWidth = 1;
+      ctx.lineWidth = 0.8;
       ctx.beginPath();
       ctx.moveTo(x, y);
       ctx.lineTo(x, y + 16);
@@ -250,6 +333,10 @@ const WebsiteMockup = () => {
       ctx.closePath();
       ctx.fill();
       ctx.stroke();
+
+      ctx.shadowBlur = 0;
+      ctx.shadowOffsetX = 0;
+      ctx.shadowOffsetY = 0;
     };
 
     // Update animation - timing zen migliorato
@@ -277,7 +364,7 @@ const WebsiteMockup = () => {
           state.cursorX = 500;
           state.cursorY = 50;
           state.targetCursorX = 300;
-          state.targetCursorY = 144;
+          state.targetCursorY = 159;
         }
       } else if (state.animationState === 'results') {
         // Fade in results smooth
