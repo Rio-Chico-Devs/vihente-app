@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTheme } from '../../../contexts/theme';
 import GraficheCard from './cards/GraficheCard/GraficheCard';
-import SitiWebCard from './cards/SitiWebCard/SitiWebCard';
 import GoogleMockup from './GoogleMockup';
 import ComponentiCard from './ComponentiCard';
 import './Portfolio.css';
@@ -118,7 +117,7 @@ const Portfolio = () => {
       case 'grafiche':
         return <GraficheCard />;
       case 'sitiweb':
-        return <SitiWebCard />;
+        return <GoogleMockup />;
       case 'componenti':
         return <ComponentiCard />;
       default:
@@ -156,7 +155,7 @@ const Portfolio = () => {
                       <div className="card-image">
                         {renderCardContent(cat)}
                       </div>
-                      {cat.id !== 'grafiche' && cat.id !== 'sitiweb' && (
+                      {cat.id === 'sitiweb' && (
                         <div className="card-title">
                           <h2>{cat.title}</h2>
                           <p>{cat.description}</p>
