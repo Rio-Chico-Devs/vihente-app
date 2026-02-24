@@ -11,7 +11,9 @@ const WebsiteMockup = () => {
     cursorY: 200,
     targetCursorX: 300,
     targetCursorY: 200,
-    clicking: false
+    clicking: false,
+    fadeAlpha: 0,
+    hoverAlpha: 0
   });
 
   useEffect(() => {
@@ -36,16 +38,56 @@ const WebsiteMockup = () => {
 
     const state = stateRef.current;
 
-    // Disegna search page
-    const drawSearchPage = () => {
-      // Logo Google-style
-      ctx.font = '700 32px "Share Tech Mono", monospace';
-      ctx.fillStyle = 'rgba(0, 255, 255, 0.7)';
-      ctx.textAlign = 'center';
-      ctx.shadowBlur = 6;
-      ctx.shadowColor = 'rgba(0, 255, 255, 0.2)';
-      ctx.fillText('VIHENTE', 300, 80);
+    // Easing functions
+    const easeInOutCubic = (t) => t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+    const easeOutCubic = (t) => 1 - Math.pow(1 - t, 3);
+
+    // Disegna occhio logo (come nel sito)
+    const drawEyeLogo = (centerX, centerY, scale, alpha) => {
+      const baseSize = 50 * scale;
+
+      ctx.save();
+      ctx.translate(centerX, centerY);
+      ctx.scale(scale, scale);
+      ctx.globalAlpha = alpha;
+
+      // Contorno occhio
+      ctx.beginPath();
+      ctx.moveTo(-15, 0);
+      ctx.bezierCurveTo(-11, -7, -6, -10, 0, -10);
+      ctx.bezierCurveTo(6, -10, 11, -7, 15, 0);
+      ctx.bezierCurveTo(11, 7, 6, 10, 0, 10);
+      ctx.bezierCurveTo(-6, 10, -11, 7, -15, 0);
+      ctx.closePath();
+
+      ctx.strokeStyle = `rgba(0, 255, 255, ${0.7 * alpha})`;
+      ctx.lineWidth = 1.2;
+      ctx.shadowBlur = 4;
+      ctx.shadowColor = `rgba(0, 255, 255, ${0.3 * alpha})`;
+      ctx.stroke();
+
+      // Iride
+      ctx.beginPath();
+      ctx.arc(0, 0, 8, 0, Math.PI * 2);
+      ctx.strokeStyle = `rgba(0, 255, 255, ${0.7 * alpha})`;
+      ctx.lineWidth = 1;
+      ctx.stroke();
+
+      // Pupilla
+      ctx.beginPath();
+      ctx.arc(0, 0, 3.5, 0, Math.PI * 2);
+      ctx.strokeStyle = `rgba(0, 255, 255, ${0.8 * alpha})`;
+      ctx.lineWidth = 0.8;
+      ctx.stroke();
+
       ctx.shadowBlur = 0;
+      ctx.restore();
+    };
+
+    // Disegna search page
+    const drawSearchPage = (alpha) => {
+      // Occhio logo al posto del logo
+      drawEyeLogo(300, 70, 2.5, alpha);
 
       // Search bar
       const barX = 120;
@@ -53,6 +95,7 @@ const WebsiteMockup = () => {
       const barWidth = 360;
       const barHeight = 44;
 
+      ctx.globalAlpha = alpha;
       ctx.fillStyle = '#1a1a1a';
       ctx.strokeStyle = 'rgba(0, 255, 255, 0.25)';
       ctx.lineWidth = 1;
@@ -77,18 +120,19 @@ const WebsiteMockup = () => {
       ctx.fillStyle = 'rgba(0, 255, 255, 0.65)';
       ctx.textAlign = 'left';
       ctx.fillText('web development services', 165, 136);
+      ctx.globalAlpha = 1;
     };
 
     // Disegna results page
-    const drawResultsPage = () => {
+    const drawResultsPage = (alpha) => {
+      ctx.globalAlpha = alpha;
+
       // Mini search bar in alto
       ctx.fillStyle = '#0a0a0a';
       ctx.fillRect(0, 0, 600, 70);
 
-      ctx.font = '700 18px "Share Tech Mono", monospace';
-      ctx.fillStyle = 'rgba(0, 255, 255, 0.7)';
-      ctx.textAlign = 'left';
-      ctx.fillText('VIHENTE', 30, 30);
+      // Occhio piccolo al posto del testo
+      drawEyeLogo(50, 30, 1.2, alpha);
 
       // Small search bar
       ctx.fillStyle = '#1a1a1a';
@@ -110,10 +154,10 @@ const WebsiteMockup = () => {
 
       // Result 1 - VIHENTE.IT (highlighted on hover)
       const result1Y = 120;
-      const isHovering = state.animationState === 'hover' || state.animationState === 'click';
+      const hoverAlpha = state.hoverAlpha;
 
-      if (isHovering) {
-        ctx.fillStyle = 'rgba(0, 255, 255, 0.04)';
+      if (hoverAlpha > 0) {
+        ctx.fillStyle = `rgba(0, 255, 255, ${0.04 * hoverAlpha})`;
         ctx.fillRect(20, result1Y - 25, 560, 85);
       }
 
@@ -124,10 +168,11 @@ const WebsiteMockup = () => {
 
       // Title (clickable)
       ctx.font = '600 18px "Share Tech Mono", monospace';
-      ctx.fillStyle = isHovering ? 'rgba(0, 255, 255, 0.85)' : 'rgba(0, 255, 255, 0.75)';
-      if (isHovering) {
-        ctx.shadowBlur = 5;
-        ctx.shadowColor = 'rgba(0, 255, 255, 0.3)';
+      const titleAlpha = 0.75 + (0.1 * hoverAlpha);
+      ctx.fillStyle = `rgba(0, 255, 255, ${titleAlpha})`;
+      if (hoverAlpha > 0) {
+        ctx.shadowBlur = 5 * hoverAlpha;
+        ctx.shadowColor = `rgba(0, 255, 255, ${0.3 * hoverAlpha})`;
       }
       ctx.fillText('VIHENTE - Web Development & Digital Solutions', 30, result1Y + 24);
       ctx.shadowBlur = 0;
@@ -163,6 +208,8 @@ const WebsiteMockup = () => {
       ctx.font = '600 16px "Share Tech Mono", monospace';
       ctx.fillStyle = 'rgba(0, 255, 255, 0.55)';
       ctx.fillText('Web Design Agency', 30, result3Y + 22);
+
+      ctx.globalAlpha = 1;
     };
 
     // Disegna cursore
@@ -207,38 +254,68 @@ const WebsiteMockup = () => {
       state.stateTime += deltaTime;
 
       if (state.animationState === 'search') {
-        if (state.stateTime >= 1.5) {
+        // Fade in
+        state.fadeAlpha = Math.min(1, state.fadeAlpha + deltaTime * 1.5);
+
+        if (state.stateTime >= 2.5) {
+          state.animationState = 'transition-to-results';
+          state.stateTime = 0;
+        }
+      } else if (state.animationState === 'transition-to-results') {
+        // Fade out search, prepare results
+        state.fadeAlpha = Math.max(0, state.fadeAlpha - deltaTime * 2);
+
+        if (state.fadeAlpha <= 0) {
           state.animationState = 'results';
           state.stateTime = 0;
+          state.fadeAlpha = 0;
           state.cursorX = 500;
           state.cursorY = 50;
           state.targetCursorX = 300;
           state.targetCursorY = 144;
         }
       } else if (state.animationState === 'results') {
-        // Move cursor to result
-        const speed = 3.5;
-        state.cursorX += (state.targetCursorX - state.cursorX) * speed * deltaTime;
-        state.cursorY += (state.targetCursorY - state.cursorY) * speed * deltaTime;
+        // Fade in results
+        state.fadeAlpha = Math.min(1, state.fadeAlpha + deltaTime * 2);
 
-        if (state.stateTime >= 2.0) {
+        // Move cursor smooth
+        const t = Math.min(1, state.stateTime / 1.5);
+        const eased = easeOutCubic(t);
+        state.cursorX = 500 + (state.targetCursorX - 500) * eased;
+        state.cursorY = 50 + (state.targetCursorY - 50) * eased;
+
+        if (state.stateTime >= 2.5) {
           state.animationState = 'hover';
           state.stateTime = 0;
         }
       } else if (state.animationState === 'hover') {
-        if (state.stateTime >= 0.8) {
+        // Smooth hover fade in
+        state.hoverAlpha = Math.min(1, state.hoverAlpha + deltaTime * 3);
+
+        if (state.stateTime >= 1.2) {
           state.animationState = 'click';
           state.stateTime = 0;
           state.clicking = true;
         }
       } else if (state.animationState === 'click') {
-        if (state.stateTime >= 0.3) {
+        if (state.stateTime >= 0.4) {
           state.clicking = false;
         }
-        if (state.stateTime >= 1.5) {
-          // Reset
+        if (state.stateTime >= 1.8) {
+          // Fade out tutto
+          state.animationState = 'transition-to-search';
+          state.stateTime = 0;
+        }
+      } else if (state.animationState === 'transition-to-search') {
+        // Fade out
+        state.fadeAlpha = Math.max(0, state.fadeAlpha - deltaTime * 1.5);
+        state.hoverAlpha = Math.max(0, state.hoverAlpha - deltaTime * 3);
+
+        if (state.fadeAlpha <= 0) {
           state.animationState = 'search';
           state.stateTime = 0;
+          state.fadeAlpha = 0;
+          state.hoverAlpha = 0;
         }
       }
     };
@@ -256,12 +333,17 @@ const WebsiteMockup = () => {
       ctx.fillStyle = '#000';
       ctx.fillRect(0, 0, 600, 400);
 
-      // Draw scene
-      if (state.animationState === 'search') {
-        drawSearchPage();
-      } else {
-        drawResultsPage();
-        drawCursor();
+      // Draw scene con fade
+      if (state.animationState === 'search' || state.animationState === 'transition-to-results') {
+        drawSearchPage(state.fadeAlpha);
+      }
+
+      if (state.animationState === 'results' || state.animationState === 'hover' ||
+          state.animationState === 'click' || state.animationState === 'transition-to-search') {
+        drawResultsPage(state.fadeAlpha);
+        if (state.fadeAlpha > 0.3) {
+          drawCursor();
+        }
       }
 
       // Labels sempre visibili
