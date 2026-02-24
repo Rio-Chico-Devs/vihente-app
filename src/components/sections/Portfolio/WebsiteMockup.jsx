@@ -1,46 +1,23 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>SitiWebCard - Search Results Preview</title>
-  <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
-  <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
+import { useEffect, useRef } from 'react';
+import './WebsiteMockup.css';
 
-    body {
-      background: #000;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      min-height: 100vh;
-      font-family: 'Share Tech Mono', monospace;
-    }
+const WebsiteMockup = () => {
+  const canvasRef = useRef(null);
+  const animationRef = useRef(null);
+  const stateRef = useRef({
+    animationState: 'search', // search, results, hover, click
+    stateTime: 0,
+    cursorX: 300,
+    cursorY: 200,
+    targetCursorX: 300,
+    targetCursorY: 200,
+    clicking: false
+  });
 
-    .portfolio-card {
-      width: 600px;
-      height: 400px;
-      position: relative;
-      background: #000;
-      border: 2px solid rgba(0, 255, 255, 0.3);
-      border-radius: 12px;
-      overflow: hidden;
-      box-shadow: 0 10px 40px rgba(0, 255, 255, 0.2);
-    }
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
 
-    .mockup-canvas {
-      width: 600px;
-      height: 400px;
-      display: block;
-    }
-  </style>
-</head>
-<body>
-  <div class="portfolio-card">
-    <canvas id="mockupCanvas" class="mockup-canvas"></canvas>
-  </div>
-
-  <script>
-    const canvas = document.getElementById('mockupCanvas');
     const ctx = canvas.getContext('2d', { alpha: false });
 
     // High DPI
@@ -57,17 +34,9 @@
     ctx.imageSmoothingEnabled = true;
     ctx.imageSmoothingQuality = 'high';
 
-    const state = {
-      animationState: 'search',
-      stateTime: 0,
-      cursorX: 300,
-      cursorY: 200,
-      targetCursorX: 300,
-      targetCursorY: 200,
-      clicking: false
-    };
+    const state = stateRef.current;
 
-    // Draw search page
+    // Disegna search page
     const drawSearchPage = () => {
       // Logo Google-style
       ctx.font = '700 32px "Share Tech Mono", monospace';
@@ -110,9 +79,9 @@
       ctx.fillText('web development services', 165, 136);
     };
 
-    // Draw results page
+    // Disegna results page
     const drawResultsPage = () => {
-      // Mini search bar in top
+      // Mini search bar in alto
       ctx.fillStyle = '#0a0a0a';
       ctx.fillRect(0, 0, 600, 70);
 
@@ -196,7 +165,7 @@
       ctx.fillText('Web Design Agency', 30, result3Y + 22);
     };
 
-    // Draw cursor
+    // Disegna cursore
     const drawCursor = () => {
       if (state.animationState === 'search') return;
 
@@ -295,7 +264,7 @@
         drawCursor();
       }
 
-      // Labels always visible
+      // Labels sempre visibili
       ctx.imageSmoothingEnabled = true;
       ctx.imageSmoothingQuality = 'high';
 
@@ -314,10 +283,23 @@
 
       ctx.shadowBlur = 0;
 
-      requestAnimationFrame(animate);
+      animationRef.current = requestAnimationFrame(animate);
     };
 
-    animate(performance.now());
-  </script>
-</body>
-</html>
+    animationRef.current = requestAnimationFrame(animate);
+
+    return () => {
+      if (animationRef.current) {
+        cancelAnimationFrame(animationRef.current);
+      }
+    };
+  }, []);
+
+  return (
+    <div className="website-mockup">
+      <canvas ref={canvasRef} width="600" height="400" className="mockup-canvas" />
+    </div>
+  );
+};
+
+export default WebsiteMockup;

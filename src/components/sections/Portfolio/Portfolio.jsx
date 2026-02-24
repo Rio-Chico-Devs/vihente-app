@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTheme } from '../../../contexts/theme';
 import GraficheCard from './cards/GraficheCard/GraficheCard';
-import GoogleMockup from './GoogleMockup';
+import WebsiteMockup from './WebsiteMockup';
 import ComponentiCard from './ComponentiCard';
 import './Portfolio.css';
 
@@ -117,7 +117,7 @@ const Portfolio = () => {
       case 'grafiche':
         return <GraficheCard />;
       case 'sitiweb':
-        return <GoogleMockup />;
+        return <WebsiteMockup />;
       case 'componenti':
         return <ComponentiCard />;
       default:
