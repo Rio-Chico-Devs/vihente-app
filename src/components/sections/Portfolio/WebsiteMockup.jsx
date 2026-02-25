@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react';
 import './WebsiteMockup.css';
 
-const WebsiteMockup = () => {
+const WebsiteMockup = ({ theme = 'dark' }) => {
   const canvasRef = useRef(null);
   const animationRef = useRef(null);
   const stateRef = useRef({
@@ -39,6 +39,16 @@ const WebsiteMockup = () => {
 
     const state = stateRef.current;
 
+    // Theme colors
+    const primaryColor = theme === 'light' ? 'rgb(232, 160, 48)' : 'rgb(0, 255, 255)';
+    const rgba = (alpha) => theme === 'light'
+      ? `rgba(232, 160, 48, ${alpha})`
+      : `rgba(0, 255, 255, ${alpha})`;
+    const bgColor = theme === 'light' ? '#ffffff' : '#000';
+    const searchBarBg = theme === 'light' ? '#f5f5f5' : '#1a1a1a';
+    const headerBg = theme === 'light' ? '#fafafa' : '#111';
+    const searchBarSmallBg = theme === 'light' ? '#eeeeee' : '#1e1e1e';
+
     // Easing functions - molto più smooth
     const easeInOutQuart = (t) => t < 0.5 ? 8 * t * t * t * t : 1 - Math.pow(-2 * t + 2, 4) / 2;
     const easeOutQuart = (t) => 1 - Math.pow(1 - t, 4);
@@ -59,7 +69,7 @@ const WebsiteMockup = () => {
       ctx.bezierCurveTo(-6, 10, -11, 7, -15, 0);
       ctx.closePath();
 
-      ctx.strokeStyle = `rgba(0, 255, 255, ${0.7 * alpha})`;
+      ctx.strokeStyle = rgba(0.7 * alpha);
       ctx.lineWidth = 1.5;
       ctx.lineCap = 'round';
       ctx.lineJoin = 'round';
@@ -89,19 +99,19 @@ const WebsiteMockup = () => {
       const barWidth = 350;
       const barHeight = 48;
 
-      ctx.fillStyle = '#1a1a1a';
+      ctx.fillStyle = searchBarBg;
       ctx.beginPath();
       ctx.roundRect(barX, barY, barWidth, barHeight, 24);
       ctx.fill();
 
-      ctx.strokeStyle = 'rgba(0, 255, 255, 0.35)';
+      ctx.strokeStyle = rgba(0.35);
       ctx.lineWidth = 1.5;
       ctx.beginPath();
       ctx.roundRect(barX, barY, barWidth, barHeight, 24);
       ctx.stroke();
 
       // Icona search
-      ctx.strokeStyle = 'rgba(0, 255, 255, 0.6)';
+      ctx.strokeStyle = rgba(0.6);
       ctx.lineWidth = 2;
       ctx.beginPath();
       ctx.arc(145, 209, 8, 0, Math.PI * 2);
@@ -113,13 +123,13 @@ const WebsiteMockup = () => {
 
       // Testo con typing animation
       ctx.font = '400 16px "Share Tech Mono", monospace';
-      ctx.fillStyle = 'rgba(0, 255, 255, 0.8)';
+      ctx.fillStyle = rgba(0.8);
       ctx.textAlign = 'left';
       ctx.fillText(state.typedText, 175, 212);
 
       // Cursore lampeggiante
       if (state.typedText.length < 24 && Math.floor(state.stateTime * 2) % 2 === 0) {
-        ctx.fillStyle = 'rgba(0, 255, 255, 0.8)';
+        ctx.fillStyle = rgba(0.8);
         ctx.fillRect(175 + ctx.measureText(state.typedText).width, 197, 2, 18);
       }
 
@@ -134,34 +144,34 @@ const WebsiteMockup = () => {
       ctx.globalAlpha = alpha;
 
       // Header
-      ctx.fillStyle = '#111';
+      ctx.fillStyle = headerBg;
       ctx.fillRect(0, 0, 600, 58);
       // Linea separatrice sottile
-      ctx.fillStyle = 'rgba(0, 255, 255, 0.12)';
+      ctx.fillStyle = rgba(0.12);
       ctx.fillRect(0, 57.5, 600, 1);
 
       // Occhio logo piccolo
       drawEyeLogo(38, 29, 1.0, alpha);
 
       // Search bar piccola
-      ctx.fillStyle = '#1e1e1e';
+      ctx.fillStyle = searchBarSmallBg;
       ctx.beginPath();
       ctx.roundRect(90, 17, 210, 24, 12);
       ctx.fill();
-      ctx.strokeStyle = 'rgba(0, 255, 255, 0.22)';
+      ctx.strokeStyle = rgba(0.22);
       ctx.lineWidth = 1;
       ctx.beginPath();
       ctx.roundRect(90, 17, 210, 24, 12);
       ctx.stroke();
 
       ctx.font = '400 12px "Share Tech Mono", monospace';
-      ctx.fillStyle = 'rgba(0, 255, 255, 0.65)';
+      ctx.fillStyle = rgba(0.65);
       ctx.textAlign = 'left';
       drawText('vihente.it', 110, 33);
 
       // Results info
       ctx.font = '400 11px "Share Tech Mono", monospace';
-      ctx.fillStyle = 'rgba(0, 255, 255, 0.38)';
+      ctx.fillStyle = rgba(0.38);
       drawText('About 4,320,000 results  (0.38 seconds)', 30, 82);
 
       // ── Result 1 - VIHENTE.IT ──────────────────────
@@ -169,51 +179,51 @@ const WebsiteMockup = () => {
       const hov = state.hoverAlpha;
 
       if (hov > 0) {
-        ctx.fillStyle = `rgba(0, 255, 255, ${0.06 * hov})`;
+        ctx.fillStyle = rgba(0.06 * hov);
         ctx.beginPath();
         ctx.roundRect(16, r1 - 6, 568, 82, 6);
         ctx.fill();
       }
 
       ctx.font = '400 11px "Share Tech Mono", monospace';
-      ctx.fillStyle = `rgba(0, 255, 255, ${0.45 + 0.1 * hov})`;
+      ctx.fillStyle = rgba(0.45 + 0.1 * hov);
       drawText('vihente.it', 30, r1 + 2);
 
       ctx.font = `600 17px "Share Tech Mono", monospace`;
-      ctx.fillStyle = `rgba(0, 255, 255, ${0.72 + 0.18 * hov})`;
+      ctx.fillStyle = rgba(0.72 + 0.18 * hov);
       drawText('Vihente — Web Development & Digital Solutions', 30, r1 + 22);
 
       ctx.font = '400 12px "Share Tech Mono", monospace';
-      ctx.fillStyle = `rgba(0, 255, 255, ${0.48 + 0.08 * hov})`;
+      ctx.fillStyle = rgba(0.48 + 0.08 * hov);
       drawText('Custom websites, React apps and digital products built for', 30, r1 + 42);
       drawText('performance and conversion. Based in Italy.', 30, r1 + 57);
 
       // ── Result 2 ───────────────────────────────────
       const r2 = 210;
       ctx.font = '400 11px "Share Tech Mono", monospace';
-      ctx.fillStyle = 'rgba(0, 255, 255, 0.35)';
+      ctx.fillStyle = rgba(0.35);
       drawText('webflow.com › enterprise', 30, r2);
 
       ctx.font = '600 15px "Share Tech Mono", monospace';
-      ctx.fillStyle = 'rgba(0, 255, 255, 0.48)';
+      ctx.fillStyle = rgba(0.48);
       drawText('Webflow — Build powerful websites without code', 30, r2 + 19);
 
       ctx.font = '400 12px "Share Tech Mono", monospace';
-      ctx.fillStyle = 'rgba(0, 255, 255, 0.36)';
+      ctx.fillStyle = rgba(0.36);
       drawText('The modern platform for professional web development.', 30, r2 + 37);
 
       // ── Result 3 ───────────────────────────────────
       const r3 = 286;
       ctx.font = '400 11px "Share Tech Mono", monospace';
-      ctx.fillStyle = 'rgba(0, 255, 255, 0.35)';
+      ctx.fillStyle = rgba(0.35);
       drawText('vercel.com › solutions', 30, r3);
 
       ctx.font = '600 15px "Share Tech Mono", monospace';
-      ctx.fillStyle = 'rgba(0, 255, 255, 0.48)';
+      ctx.fillStyle = rgba(0.48);
       drawText('Vercel — Deploy fast. Build at the speed of thought.', 30, r3 + 19);
 
       ctx.font = '400 12px "Share Tech Mono", monospace';
-      ctx.fillStyle = 'rgba(0, 255, 255, 0.36)';
+      ctx.fillStyle = rgba(0.36);
       drawText('Frontend cloud for web developers. Instant deployment.', 30, r3 + 37);
 
       ctx.globalAlpha = 1;
@@ -226,9 +236,9 @@ const WebsiteMockup = () => {
       const x = state.cursorX;
       const y = state.cursorY;
 
-      // Click effect: cerchio cyan quando clicca
+      // Click effect: cerchio colorato quando clicca
       if (state.clicking) {
-        ctx.fillStyle = 'rgba(0, 255, 255, 0.2)';
+        ctx.fillStyle = rgba(0.2);
         ctx.beginPath();
         ctx.arc(x + 7, y + 8, 20, 0, Math.PI * 2);
         ctx.fill();
@@ -336,7 +346,7 @@ const WebsiteMockup = () => {
       updateAnimation(deltaTime);
 
       // Clear
-      ctx.fillStyle = '#000';
+      ctx.fillStyle = bgColor;
       ctx.fillRect(0, 0, 600, 400);
 
       // Draw scene con fade
@@ -358,15 +368,15 @@ const WebsiteMockup = () => {
 
       ctx.textAlign = 'right';
       ctx.font = '700 24px "Share Tech Mono", monospace';
-      ctx.fillStyle = 'rgba(0, 255, 255, 0.95)';
+      ctx.fillStyle = rgba(0.95);
       ctx.shadowBlur = 8;
-      ctx.shadowColor = 'rgba(0, 255, 255, 0.4)';
+      ctx.shadowColor = rgba(0.4);
       ctx.fillText('SITI WEB', 570, 340);
 
       ctx.font = '400 14px "Share Tech Mono", monospace';
-      ctx.fillStyle = 'rgba(0, 255, 255, 0.7)';
+      ctx.fillStyle = rgba(0.7);
       ctx.shadowBlur = 4;
-      ctx.shadowColor = 'rgba(0, 255, 255, 0.2)';
+      ctx.shadowColor = rgba(0.2);
       ctx.fillText('Web development and applications', 570, 365);
 
       ctx.shadowBlur = 0;
@@ -381,7 +391,7 @@ const WebsiteMockup = () => {
         cancelAnimationFrame(animationRef.current);
       }
     };
-  }, []);
+  }, [theme]);
 
   return (
     <div className="website-mockup">

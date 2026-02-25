@@ -115,11 +115,11 @@ const Portfolio = () => {
   const renderCardContent = (category) => {
     switch (category.id) {
       case 'grafiche':
-        return <GraficheCard />;
+        return <GraficheCard theme={theme} />;
       case 'sitiweb':
-        return <WebsiteMockup />;
+        return <WebsiteMockup theme={theme} />;
       case 'componenti':
-        return <ComponentiCard />;
+        return <ComponentiCard theme={theme} />;
       default:
         return null;
     }

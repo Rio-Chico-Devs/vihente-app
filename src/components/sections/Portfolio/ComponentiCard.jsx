@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react';
 import './ComponentiCard.css';
 
-const ComponentiCard = () => {
+const ComponentiCard = ({ theme = 'dark' }) => {
   const canvasRef = useRef(null);
   const animationRef = useRef(null);
   const stateRef = useRef({
@@ -36,6 +36,17 @@ const ComponentiCard = () => {
     // Text rendering ottimizzato
     ctx.imageSmoothingEnabled = true;
     ctx.imageSmoothingQuality = 'high';
+
+    // Theme colors
+    const primaryColor = theme === 'light' ? 'rgb(232, 160, 48)' : 'rgb(0, 255, 255)';
+    const rgba = (alpha) => theme === 'light'
+      ? `rgba(232, 160, 48, ${alpha})`
+      : `rgba(0, 255, 255, ${alpha})`;
+    const bgColor = theme === 'light' ? '#ffffff' : '#000';
+    const editorBg = theme === 'light' ? '#f8f8f8' : '#0d1117';
+    const editorHeaderBg = theme === 'light' ? '#eeeeee' : '#161b22';
+    const lineNumBg = theme === 'light' ? '#e8e8e8' : '#010409';
+    const borderColor = theme === 'light' ? '#d0d0d0' : '#21262d';
 
     // Debug events sincronizzati
     const debugEvents = [
@@ -187,34 +198,34 @@ const ComponentiCard = () => {
       const editorWidth = width * 0.64; // ~385px on 600px
       const editorHeight = height * 0.7375; // ~295px on 400px
 
-      ctx.fillStyle = '#0d1117';
+      ctx.fillStyle = editorBg;
       ctx.fillRect(editorX, editorY, editorWidth, editorHeight);
 
-      ctx.strokeStyle = 'rgba(0, 255, 255, 0.4)';
+      ctx.strokeStyle = rgba(0.4);
       ctx.lineWidth = 1.5;
       ctx.strokeRect(editorX, editorY, editorWidth, editorHeight);
 
-      ctx.fillStyle = '#161b22';
+      ctx.fillStyle = editorHeaderBg;
       ctx.fillRect(editorX, editorY, editorWidth, height * 0.07);
 
-      ctx.fillStyle = '#0d1117';
+      ctx.fillStyle = editorBg;
       ctx.fillRect(editorX + 5, editorY + 3, width * 0.2, height * 0.0625);
 
-      ctx.fillStyle = '#ffd76b';
+      ctx.fillStyle = theme === 'light' ? '#d97706' : '#ffd76b';
       ctx.beginPath();
       ctx.arc(editorX + 15, editorY + 15, 3, 0, Math.PI * 2);
       ctx.fill();
 
       ctx.font = '500 12px "Share Tech Mono", monospace';
-      ctx.fillStyle = '#c9d1d9';
+      ctx.fillStyle = theme === 'light' ? '#333333' : '#c9d1d9';
       ctx.textAlign = 'left';
       ctx.fillText('ProjectGallery.jsx', editorX + 25, editorY + 20);
 
       const lineNumWidth = width * 0.067; // ~40px on 600px
-      ctx.fillStyle = '#010409';
+      ctx.fillStyle = lineNumBg;
       ctx.fillRect(editorX, editorY + 28, lineNumWidth, editorHeight - 28);
 
-      ctx.strokeStyle = '#21262d';
+      ctx.strokeStyle = borderColor;
       ctx.lineWidth = 1;
       ctx.beginPath();
       ctx.moveTo(editorX + lineNumWidth, editorY + 28);
@@ -234,7 +245,7 @@ const ComponentiCard = () => {
         const y = startY + index * lineHeight;
         if (y > maxY) return;
 
-        ctx.fillStyle = '#6e7681';
+        ctx.fillStyle = theme === 'light' ? '#999999' : '#6e7681';
         ctx.textAlign = 'right';
         ctx.fillText(String(index + 1).padStart(2, ' '), editorX + lineNumWidth - 8, y);
 
@@ -261,7 +272,7 @@ const ComponentiCard = () => {
 
           const cursorY = startY + lastLineIdx * lineHeight;
           if (cursorY <= maxY) {
-            ctx.fillStyle = '#58a6ff';
+            ctx.fillStyle = primaryColor;
             ctx.fillRect(cursorX, cursorY - 13, 2, 15);
           }
         }
@@ -275,27 +286,27 @@ const ComponentiCard = () => {
       const panelWidth = width * 0.275; // ~165px on 600px
       const panelHeight = height * 0.5625; // ~225px on 400px
 
-      ctx.fillStyle = '#0d1117';
+      ctx.fillStyle = editorBg;
       ctx.fillRect(panelX, panelY, panelWidth, panelHeight);
 
-      ctx.strokeStyle = 'rgba(0, 255, 255, 0.4)';
+      ctx.strokeStyle = rgba(0.4);
       ctx.lineWidth = 1.5;
       ctx.strokeRect(panelX, panelY, panelWidth, panelHeight);
 
-      ctx.fillStyle = '#161b22';
+      ctx.fillStyle = editorHeaderBg;
       ctx.fillRect(panelX, panelY, panelWidth, height * 0.07);
 
-      ctx.fillStyle = '#8b949e';
+      ctx.fillStyle = theme === 'light' ? '#777777' : '#8b949e';
       ctx.font = '500 11px "Share Tech Mono", monospace';
       ctx.textAlign = 'left';
       ctx.fillText('▶', panelX + 10, panelY + 17);
 
-      ctx.fillStyle = '#c9d1d9';
+      ctx.fillStyle = theme === 'light' ? '#333333' : '#c9d1d9';
       ctx.fillText('CONSOLE', panelX + 25, panelY + 17);
 
-      ctx.fillStyle = '#21262d';
+      ctx.fillStyle = theme === 'light' ? '#d0d0d0' : '#21262d';
       ctx.fillRect(panelX + panelWidth - 35, panelY + 5, 30, 18);
-      ctx.fillStyle = '#8b949e';
+      ctx.fillStyle = theme === 'light' ? '#777777' : '#8b949e';
       ctx.font = '400 10px "Share Tech Mono", monospace';
       ctx.textAlign = 'center';
       ctx.fillText('clear', panelX + panelWidth - 20, panelY + 17);
@@ -313,20 +324,20 @@ const ComponentiCard = () => {
         if (y > maxY) return;
 
         if (log.type === 'success') {
-          ctx.fillStyle = '#3fb950';
+          ctx.fillStyle = theme === 'light' ? '#16a34a' : '#3fb950';
           ctx.fillText('✓', panelX + 10, y);
         } else if (log.type === 'warn') {
-          ctx.fillStyle = '#d29922';
+          ctx.fillStyle = theme === 'light' ? '#ca8a04' : '#d29922';
           ctx.fillText('⚠', panelX + 10, y);
         } else if (log.type === 'log') {
-          ctx.fillStyle = '#58a6ff';
+          ctx.fillStyle = primaryColor;
           ctx.fillText('●', panelX + 10, y);
         } else {
-          ctx.fillStyle = '#8b949e';
+          ctx.fillStyle = theme === 'light' ? '#777777' : '#8b949e';
           ctx.fillText('›', panelX + 10, y);
         }
 
-        ctx.fillStyle = '#c9d1d9';
+        ctx.fillStyle = theme === 'light' ? '#333333' : '#c9d1d9';
         const maxLen = 18;
         const msg = log.msg.length > maxLen ? log.msg.substring(0, maxLen - 2) + '..' : log.msg;
         ctx.fillText(msg, panelX + 25, y);
@@ -376,7 +387,8 @@ const ComponentiCard = () => {
       const deltaTime = (currentTime - lastTime) / 1000;
       lastTime = currentTime;
 
-      ctx.clearRect(0, 0, width, height);
+      ctx.fillStyle = bgColor;
+      ctx.fillRect(0, 0, width, height);
 
       updateTyping(deltaTime);
       drawEditor();
@@ -389,16 +401,16 @@ const ComponentiCard = () => {
       // Titolo con shadow per depth - responsive position
       ctx.textAlign = 'right';
       ctx.font = '700 24px "Share Tech Mono", monospace';
-      ctx.fillStyle = 'rgba(0, 255, 255, 0.95)';
+      ctx.fillStyle = rgba(0.95);
       ctx.shadowBlur = 8;
-      ctx.shadowColor = 'rgba(0, 255, 255, 0.4)';
+      ctx.shadowColor = rgba(0.4);
       ctx.fillText('COMPONENTI', width * 0.95, height * 0.85);
 
       // Descrizione
       ctx.font = '400 14px "Share Tech Mono", monospace';
-      ctx.fillStyle = 'rgba(0, 255, 255, 0.7)';
+      ctx.fillStyle = rgba(0.7);
       ctx.shadowBlur = 4;
-      ctx.shadowColor = 'rgba(0, 255, 255, 0.2)';
+      ctx.shadowColor = rgba(0.2);
       ctx.fillText('UI components e librerie React', width * 0.95, height * 0.9125);
 
       // Reset shadow
@@ -414,7 +426,7 @@ const ComponentiCard = () => {
         cancelAnimationFrame(animationRef.current);
       }
     };
-  }, []);
+  }, [theme]);
 
   return (
     <div className="componenti-card">

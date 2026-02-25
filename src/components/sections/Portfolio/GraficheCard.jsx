@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react';
 import './GraficheCard.css';
 
-const GraficheCard = () => {
+const GraficheCard = ({ theme = 'dark' }) => {
   const canvasRef = useRef(null);
   const animationRef = useRef(null);
   const stateRef = useRef({
@@ -31,6 +31,16 @@ const GraficheCard = () => {
     ctx.scale(dpr, dpr);
 
     const state = stateRef.current;
+
+    // Theme colors
+    const primaryColor = theme === 'light' ? 'rgb(232, 160, 48)' : 'rgb(0, 255, 255)';
+    const rgba = (alpha) => theme === 'light'
+      ? `rgba(232, 160, 48, ${alpha})`
+      : `rgba(0, 255, 255, ${alpha})`;
+    const bgColor = theme === 'light' ? '#ffffff' : '#000';
+    const colors = theme === 'light'
+      ? ['#e8a030', '#f59e0b', '#d97706', '#ca8a04', '#a16207']
+      : ['#0ff', '#00ffaa', '#00aaff', '#0088ff', '#0066ff'];
 
     // 3D Eye wireframe mesh vertices
     const createEyeMesh = () => {
@@ -143,7 +153,7 @@ const GraficheCard = () => {
       const hexSize = 30;
       const hexHeight = hexSize * Math.sqrt(3);
 
-      ctx.strokeStyle = `rgba(0, 255, 255, ${0.06 + Math.sin(state.gridPhase) * 0.02})`;
+      ctx.strokeStyle = rgba(0.06 + Math.sin(state.gridPhase) * 0.02);
       ctx.lineWidth = 1;
 
       for (let row = -1; row < 15; row++) {
@@ -190,7 +200,7 @@ const GraficheCard = () => {
         const avgZ = (z1 + z2) / 2;
         const opacity = 0.3 + (avgZ / 200) * 0.7;
 
-        ctx.strokeStyle = `rgba(0, 255, 255, ${opacity})`;
+        ctx.strokeStyle = rgba(opacity);
         ctx.lineWidth = 1.5;
         ctx.beginPath();
         ctx.moveTo(x1, y1);
@@ -203,7 +213,7 @@ const GraficheCard = () => {
         const opacity = 0.4 + (z / 200) * 0.6;
         const size = 2 + (z / 200) * 2;
 
-        ctx.fillStyle = `rgba(0, 255, 255, ${opacity})`;
+        ctx.fillStyle = rgba(opacity);
         ctx.beginPath();
         ctx.arc(x, y, size, 0, Math.PI * 2);
         ctx.fill();
@@ -212,7 +222,6 @@ const GraficheCard = () => {
 
     // Draw animated color palette
     const drawColorPalette = () => {
-      const colors = ['#0ff', '#00ffaa', '#00aaff', '#0088ff', '#0066ff'];
       const paletteY = 280;
       const spacing = 45;
       const startX = 300 - (colors.length * spacing) / 2 + spacing / 2;
@@ -223,7 +232,7 @@ const GraficheCard = () => {
         const y = paletteY + wave;
 
         // Shadow
-        ctx.fillStyle = 'rgba(0, 255, 255, 0.15)';
+        ctx.fillStyle = rgba(0.15);
         ctx.fillRect(x - 16, y - 16 + 4, 32, 32);
 
         // Color box
@@ -232,7 +241,7 @@ const GraficheCard = () => {
 
         // Border
         const borderAlpha = 0.4 + Math.sin(state.palettePhase + i * 0.5) * 0.2;
-        ctx.strokeStyle = `rgba(0, 255, 255, ${borderAlpha})`;
+        ctx.strokeStyle = rgba(borderAlpha);
         ctx.lineWidth = 2;
         ctx.strokeRect(x - 15, y - 15, 30, 30);
 
@@ -251,7 +260,7 @@ const GraficheCard = () => {
       const startX = 300 - iconSpacing;
 
       // Pen tool
-      ctx.strokeStyle = 'rgba(0, 255, 255, 0.8)';
+      ctx.strokeStyle = rgba(0.8);
       ctx.lineWidth = 1.5;
       ctx.beginPath();
       ctx.moveTo(startX - 6, iconY + 6);
@@ -286,17 +295,17 @@ const GraficheCard = () => {
     const drawText = () => {
       // Title
       ctx.font = '700 32px "Share Tech Mono", monospace';
-      ctx.fillStyle = 'rgba(0, 255, 255, 0.95)';
+      ctx.fillStyle = rgba(0.95);
       ctx.textAlign = 'center';
       ctx.shadowBlur = 12;
-      ctx.shadowColor = 'rgba(0, 255, 255, 0.5)';
+      ctx.shadowColor = rgba(0.5);
       ctx.fillText('GRAFICHE', 300, 240);
 
       // Subtitle
       ctx.font = '400 13px "Share Tech Mono", monospace';
-      ctx.fillStyle = 'rgba(0, 255, 255, 0.7)';
+      ctx.fillStyle = rgba(0.7);
       ctx.shadowBlur = 6;
-      ctx.shadowColor = 'rgba(0, 255, 255, 0.3)';
+      ctx.shadowColor = rgba(0.3);
       ctx.fillText('Design grafico e visual identity', 300, 260);
 
       ctx.shadowBlur = 0;
@@ -323,7 +332,7 @@ const GraficheCard = () => {
       state.gridPhase += deltaTime * 0.8;
 
       // Clear and render
-      ctx.fillStyle = '#000';
+      ctx.fillStyle = bgColor;
       ctx.fillRect(0, 0, 600, 400);
 
       drawHexGrid();
@@ -342,7 +351,7 @@ const GraficheCard = () => {
         cancelAnimationFrame(animationRef.current);
       }
     };
-  }, []);
+  }, [theme]);
 
   return (
     <div className="grafiche-card">
