@@ -3,14 +3,108 @@
   height: 100%;
   background: #000;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
+  padding: 20px;
+  gap: 12px;
   position: relative;
   overflow: hidden;
 }
 
-.grafiche-canvas {
-  width: 100%;
-  height: 100%;
-  display: block;
+/* Hexagonal grid background */
+.grafiche-hex-grid {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="60" height="70" viewBox="0 0 60 70"><path d="M30 0 L60 17.5 L60 52.5 L30 70 L0 52.5 L0 17.5 Z" fill="none" stroke="rgba(0,255,255,0.08)" stroke-width="1"/></svg>');
+  background-size: 60px 70px;
+  opacity: 0.6;
+  z-index: 0;
+}
+
+.grafiche-eye {
+  width: 80px;
+  height: 80px;
+  filter: drop-shadow(0 0 10px rgba(0, 255, 255, 0.6));
+  animation: graficheEyePulse 3s ease-in-out infinite;
+  z-index: 1;
+}
+
+@keyframes graficheEyePulse {
+  0%, 100% {
+    opacity: 0.9;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.05);
+  }
+}
+
+.grafiche-title {
+  font-family: 'Orbitron', 'Share Tech Mono', monospace;
+  font-size: 28px;
+  font-weight: 700;
+  letter-spacing: 0.25em;
+  margin: 0;
+  z-index: 1;
+}
+
+.grafiche-subtitle {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 10px;
+  font-weight: 400;
+  letter-spacing: 0.15em;
+  margin: -8px 0 0 0;
+  z-index: 1;
+}
+
+.grafiche-palette {
+  display: flex;
+  gap: 8px;
+  margin-top: 8px;
+  z-index: 1;
+}
+
+.palette-color {
+  width: 28px;
+  height: 28px;
+  border-radius: 4px;
+  border: 2px solid rgba(0, 255, 255, 0.3);
+  box-shadow:
+    0 0 10px rgba(0, 255, 255, 0.3),
+    inset 0 0 10px rgba(0, 255, 255, 0.2);
+  transition: all 0.3s ease;
+  cursor: default;
+}
+
+.palette-color:hover {
+  border-color: #0ff;
+  box-shadow:
+    0 0 15px rgba(0, 255, 255, 0.6),
+    inset 0 0 15px rgba(0, 255, 255, 0.4);
+  transform: scale(1.1);
+}
+
+.grafiche-tools {
+  display: flex;
+  gap: 15px;
+  margin-top: 5px;
+  z-index: 1;
+}
+
+.tool-icon {
+  width: 20px;
+  height: 20px;
+  filter: drop-shadow(0 0 5px rgba(0, 255, 255, 0.5));
+  transition: all 0.3s ease;
+  cursor: default;
+}
+
+.tool-icon:hover {
+  filter: drop-shadow(0 0 10px rgba(0, 255, 255, 0.8));
+  transform: scale(1.15);
 }
