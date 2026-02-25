@@ -30,8 +30,8 @@ const WebsiteMockup = ({ theme = 'dark' }) => {
 
     canvas.width = width * dpr;
     canvas.height = height * dpr;
-    canvas.style.width = width + 'px';
-    canvas.style.height = height + 'px';
+    canvas.style.width = '100%';
+    canvas.style.height = '100%';
     ctx.scale(dpr, dpr);
 
     ctx.imageSmoothingEnabled = true;
