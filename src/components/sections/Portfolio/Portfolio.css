@@ -421,6 +421,17 @@
     display: none;
   }
 
+  /* Card trasparente su mobile per vedere il background */
+  .card-face.front {
+    background: transparent;
+    border-color: rgba(0, 255, 255, 0.4);
+  }
+
+  /* Back face mantiene background solido per leggibilità */
+  .card-face.back {
+    background: rgba(0, 0, 0, 0.95);
+  }
+
   /* Mostra testo mobile dentro la card */
   .card-text-mobile {
     display: flex;
@@ -657,4 +668,17 @@
 
 [data-theme="light"] .card-text-mobile p {
   color: var(--color-primary-70);
+}
+
+/* Card trasparente anche in light mode su mobile */
+@media (max-width: 768px) {
+  [data-theme="light"] .card-face.front {
+    background: transparent;
+    border-color: var(--color-primary-30);
+  }
+
+  [data-theme="light"] .card-face.back {
+    background: rgba(0, 0, 0, 0.95);
+    border-color: var(--color-primary-40);
+  }
 }
