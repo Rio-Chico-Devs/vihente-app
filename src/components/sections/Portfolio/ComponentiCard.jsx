@@ -37,16 +37,11 @@ const ComponentiCard = ({ theme = 'dark' }) => {
     ctx.imageSmoothingEnabled = true;
     ctx.imageSmoothingQuality = 'high';
 
-    // Theme colors
+    // Theme colors - SOLO il colore primario cambia
     const primaryColor = theme === 'light' ? 'rgb(232, 160, 48)' : 'rgb(0, 255, 255)';
     const rgba = (alpha) => theme === 'light'
       ? `rgba(232, 160, 48, ${alpha})`
       : `rgba(0, 255, 255, ${alpha})`;
-    const bgColor = theme === 'light' ? '#ffffff' : '#000';
-    const editorBg = theme === 'light' ? '#f8f8f8' : '#0d1117';
-    const editorHeaderBg = theme === 'light' ? '#eeeeee' : '#161b22';
-    const lineNumBg = theme === 'light' ? '#e8e8e8' : '#010409';
-    const borderColor = theme === 'light' ? '#d0d0d0' : '#21262d';
 
     // Debug events sincronizzati
     const debugEvents = [
@@ -198,34 +193,34 @@ const ComponentiCard = ({ theme = 'dark' }) => {
       const editorWidth = width * 0.64; // ~385px on 600px
       const editorHeight = height * 0.7375; // ~295px on 400px
 
-      ctx.fillStyle = editorBg;
+      ctx.fillStyle = '#0d1117';
       ctx.fillRect(editorX, editorY, editorWidth, editorHeight);
 
       ctx.strokeStyle = rgba(0.4);
       ctx.lineWidth = 1.5;
       ctx.strokeRect(editorX, editorY, editorWidth, editorHeight);
 
-      ctx.fillStyle = editorHeaderBg;
+      ctx.fillStyle = '#161b22';
       ctx.fillRect(editorX, editorY, editorWidth, height * 0.07);
 
-      ctx.fillStyle = editorBg;
+      ctx.fillStyle = '#0d1117';
       ctx.fillRect(editorX + 5, editorY + 3, width * 0.2, height * 0.0625);
 
-      ctx.fillStyle = theme === 'light' ? '#d97706' : '#ffd76b';
+      ctx.fillStyle = '#ffd76b';
       ctx.beginPath();
       ctx.arc(editorX + 15, editorY + 15, 3, 0, Math.PI * 2);
       ctx.fill();
 
       ctx.font = '500 12px "Share Tech Mono", monospace';
-      ctx.fillStyle = theme === 'light' ? '#333333' : '#c9d1d9';
+      ctx.fillStyle = '#c9d1d9';
       ctx.textAlign = 'left';
       ctx.fillText('ProjectGallery.jsx', editorX + 25, editorY + 20);
 
       const lineNumWidth = width * 0.067; // ~40px on 600px
-      ctx.fillStyle = lineNumBg;
+      ctx.fillStyle = '#010409';
       ctx.fillRect(editorX, editorY + 28, lineNumWidth, editorHeight - 28);
 
-      ctx.strokeStyle = borderColor;
+      ctx.strokeStyle = '#21262d';
       ctx.lineWidth = 1;
       ctx.beginPath();
       ctx.moveTo(editorX + lineNumWidth, editorY + 28);
@@ -245,7 +240,7 @@ const ComponentiCard = ({ theme = 'dark' }) => {
         const y = startY + index * lineHeight;
         if (y > maxY) return;
 
-        ctx.fillStyle = theme === 'light' ? '#999999' : '#6e7681';
+        ctx.fillStyle = '#6e7681';
         ctx.textAlign = 'right';
         ctx.fillText(String(index + 1).padStart(2, ' '), editorX + lineNumWidth - 8, y);
 
@@ -286,27 +281,27 @@ const ComponentiCard = ({ theme = 'dark' }) => {
       const panelWidth = width * 0.275; // ~165px on 600px
       const panelHeight = height * 0.5625; // ~225px on 400px
 
-      ctx.fillStyle = editorBg;
+      ctx.fillStyle = '#0d1117';
       ctx.fillRect(panelX, panelY, panelWidth, panelHeight);
 
       ctx.strokeStyle = rgba(0.4);
       ctx.lineWidth = 1.5;
       ctx.strokeRect(panelX, panelY, panelWidth, panelHeight);
 
-      ctx.fillStyle = editorHeaderBg;
+      ctx.fillStyle = '#161b22';
       ctx.fillRect(panelX, panelY, panelWidth, height * 0.07);
 
-      ctx.fillStyle = theme === 'light' ? '#777777' : '#8b949e';
+      ctx.fillStyle = '#8b949e';
       ctx.font = '500 11px "Share Tech Mono", monospace';
       ctx.textAlign = 'left';
       ctx.fillText('▶', panelX + 10, panelY + 17);
 
-      ctx.fillStyle = theme === 'light' ? '#333333' : '#c9d1d9';
+      ctx.fillStyle = '#c9d1d9';
       ctx.fillText('CONSOLE', panelX + 25, panelY + 17);
 
-      ctx.fillStyle = theme === 'light' ? '#d0d0d0' : '#21262d';
+      ctx.fillStyle = '#21262d';
       ctx.fillRect(panelX + panelWidth - 35, panelY + 5, 30, 18);
-      ctx.fillStyle = theme === 'light' ? '#777777' : '#8b949e';
+      ctx.fillStyle = '#8b949e';
       ctx.font = '400 10px "Share Tech Mono", monospace';
       ctx.textAlign = 'center';
       ctx.fillText('clear', panelX + panelWidth - 20, panelY + 17);
@@ -324,20 +319,20 @@ const ComponentiCard = ({ theme = 'dark' }) => {
         if (y > maxY) return;
 
         if (log.type === 'success') {
-          ctx.fillStyle = theme === 'light' ? '#16a34a' : '#3fb950';
+          ctx.fillStyle = '#3fb950';
           ctx.fillText('✓', panelX + 10, y);
         } else if (log.type === 'warn') {
-          ctx.fillStyle = theme === 'light' ? '#ca8a04' : '#d29922';
+          ctx.fillStyle = '#d29922';
           ctx.fillText('⚠', panelX + 10, y);
         } else if (log.type === 'log') {
           ctx.fillStyle = primaryColor;
           ctx.fillText('●', panelX + 10, y);
         } else {
-          ctx.fillStyle = theme === 'light' ? '#777777' : '#8b949e';
+          ctx.fillStyle = '#8b949e';
           ctx.fillText('›', panelX + 10, y);
         }
 
-        ctx.fillStyle = theme === 'light' ? '#333333' : '#c9d1d9';
+        ctx.fillStyle = '#c9d1d9';
         const maxLen = 18;
         const msg = log.msg.length > maxLen ? log.msg.substring(0, maxLen - 2) + '..' : log.msg;
         ctx.fillText(msg, panelX + 25, y);
@@ -387,7 +382,7 @@ const ComponentiCard = ({ theme = 'dark' }) => {
       const deltaTime = (currentTime - lastTime) / 1000;
       lastTime = currentTime;
 
-      ctx.fillStyle = bgColor;
+      ctx.fillStyle = '#000';
       ctx.fillRect(0, 0, width, height);
 
       updateTyping(deltaTime);

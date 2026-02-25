@@ -39,15 +39,10 @@ const WebsiteMockup = ({ theme = 'dark' }) => {
 
     const state = stateRef.current;
 
-    // Theme colors
-    const primaryColor = theme === 'light' ? 'rgb(232, 160, 48)' : 'rgb(0, 255, 255)';
+    // Theme colors - SOLO il colore primario cambia
     const rgba = (alpha) => theme === 'light'
       ? `rgba(232, 160, 48, ${alpha})`
       : `rgba(0, 255, 255, ${alpha})`;
-    const bgColor = theme === 'light' ? '#ffffff' : '#000';
-    const searchBarBg = theme === 'light' ? '#f5f5f5' : '#1a1a1a';
-    const headerBg = theme === 'light' ? '#fafafa' : '#111';
-    const searchBarSmallBg = theme === 'light' ? '#eeeeee' : '#1e1e1e';
 
     // Easing functions - molto più smooth
     const easeInOutQuart = (t) => t < 0.5 ? 8 * t * t * t * t : 1 - Math.pow(-2 * t + 2, 4) / 2;
@@ -99,7 +94,7 @@ const WebsiteMockup = ({ theme = 'dark' }) => {
       const barWidth = 350;
       const barHeight = 48;
 
-      ctx.fillStyle = searchBarBg;
+      ctx.fillStyle = '#1a1a1a';
       ctx.beginPath();
       ctx.roundRect(barX, barY, barWidth, barHeight, 24);
       ctx.fill();
@@ -144,7 +139,7 @@ const WebsiteMockup = ({ theme = 'dark' }) => {
       ctx.globalAlpha = alpha;
 
       // Header
-      ctx.fillStyle = headerBg;
+      ctx.fillStyle = '#111';
       ctx.fillRect(0, 0, 600, 58);
       // Linea separatrice sottile
       ctx.fillStyle = rgba(0.12);
@@ -154,7 +149,7 @@ const WebsiteMockup = ({ theme = 'dark' }) => {
       drawEyeLogo(38, 29, 1.0, alpha);
 
       // Search bar piccola
-      ctx.fillStyle = searchBarSmallBg;
+      ctx.fillStyle = '#1e1e1e';
       ctx.beginPath();
       ctx.roundRect(90, 17, 210, 24, 12);
       ctx.fill();
@@ -346,7 +341,7 @@ const WebsiteMockup = ({ theme = 'dark' }) => {
       updateAnimation(deltaTime);
 
       // Clear
-      ctx.fillStyle = bgColor;
+      ctx.fillStyle = '#000';
       ctx.fillRect(0, 0, 600, 400);
 
       // Draw scene con fade

@@ -32,12 +32,10 @@ const GraficheCard = ({ theme = 'dark' }) => {
 
     const state = stateRef.current;
 
-    // Theme colors
-    const primaryColor = theme === 'light' ? 'rgb(232, 160, 48)' : 'rgb(0, 255, 255)';
+    // Theme colors - SOLO il colore primario cambia
     const rgba = (alpha) => theme === 'light'
       ? `rgba(232, 160, 48, ${alpha})`
       : `rgba(0, 255, 255, ${alpha})`;
-    const bgColor = theme === 'light' ? '#ffffff' : '#000';
     const colors = theme === 'light'
       ? ['#e8a030', '#f59e0b', '#d97706', '#ca8a04', '#a16207']
       : ['#0ff', '#00ffaa', '#00aaff', '#0088ff', '#0066ff'];
@@ -332,7 +330,7 @@ const GraficheCard = ({ theme = 'dark' }) => {
       state.gridPhase += deltaTime * 0.8;
 
       // Clear and render
-      ctx.fillStyle = bgColor;
+      ctx.fillStyle = '#000';
       ctx.fillRect(0, 0, 600, 400);
 
       drawHexGrid();
