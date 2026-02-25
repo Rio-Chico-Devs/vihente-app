@@ -5,7 +5,7 @@ const WebsiteMockup = () => {
   const canvasRef = useRef(null);
   const animationRef = useRef(null);
   const stateRef = useRef({
-    animationState: 'search', // search, results, hover, click
+    animationState: 'search',
     stateTime: 0,
     cursorX: 300,
     cursorY: 200,
@@ -13,7 +13,8 @@ const WebsiteMockup = () => {
     targetCursorY: 200,
     clicking: false,
     fadeAlpha: 0,
-    hoverAlpha: 0
+    hoverAlpha: 0,
+    typedText: ''
   });
 
   useEffect(() => {
@@ -22,8 +23,8 @@ const WebsiteMockup = () => {
 
     const ctx = canvas.getContext('2d', { alpha: false });
 
-    // High DPI - sempre attivo per rendering smooth
-    const dpr = 3;
+    // High DPI per qualità massima
+    const dpr = window.devicePixelRatio || 3;
     const width = 600;
     const height = 400;
 
@@ -33,10 +34,8 @@ const WebsiteMockup = () => {
     canvas.style.height = height + 'px';
     ctx.scale(dpr, dpr);
 
-    // Anti-aliasing sempre attivo
     ctx.imageSmoothingEnabled = true;
     ctx.imageSmoothingQuality = 'high';
-    ctx.textRenderingOptimize = 'optimizeLegibility';
 
     const state = stateRef.current;
 
@@ -45,14 +44,13 @@ const WebsiteMockup = () => {
     const easeOutQuart = (t) => 1 - Math.pow(1 - t, 4);
     const easeInOutSine = (t) => -(Math.cos(Math.PI * t) - 1) / 2;
 
-    // Disegna occhio logo (migliorato, più fedele all'originale)
+    // Occhio logo semplice senza effetti
     const drawEyeLogo = (centerX, centerY, scale, alpha) => {
       ctx.save();
       ctx.translate(centerX, centerY);
       ctx.scale(scale, scale);
       ctx.globalAlpha = alpha;
 
-      // Contorno occhio - path preciso
       ctx.beginPath();
       ctx.moveTo(-15, 0);
       ctx.bezierCurveTo(-11, -7, -6, -10, 0, -10);
@@ -61,74 +59,69 @@ const WebsiteMockup = () => {
       ctx.bezierCurveTo(-6, 10, -11, 7, -15, 0);
       ctx.closePath();
 
-      ctx.strokeStyle = `rgba(0, 255, 255, ${0.6 * alpha})`;
-      ctx.lineWidth = 1.3;
+      ctx.strokeStyle = `rgba(0, 255, 255, ${0.7 * alpha})`;
+      ctx.lineWidth = 1.5;
       ctx.lineCap = 'round';
       ctx.lineJoin = 'round';
-      ctx.shadowBlur = 6 * alpha;
-      ctx.shadowColor = `rgba(0, 255, 255, ${0.25 * alpha})`;
       ctx.stroke();
 
-      // Iride
       ctx.beginPath();
       ctx.arc(0, 0, 8, 0, Math.PI * 2);
-      ctx.strokeStyle = `rgba(0, 255, 255, ${0.6 * alpha})`;
-      ctx.lineWidth = 1;
-      ctx.shadowBlur = 3 * alpha;
       ctx.stroke();
 
-      // Pupilla
       ctx.beginPath();
       ctx.arc(0, 0, 3.5, 0, Math.PI * 2);
-      ctx.strokeStyle = `rgba(0, 255, 255, ${0.7 * alpha})`;
-      ctx.lineWidth = 0.9;
-      ctx.shadowBlur = 2 * alpha;
       ctx.stroke();
 
-      ctx.shadowBlur = 0;
       ctx.restore();
     };
 
-    // Disegna search page - SEMPLICE E PULITA
+    // Search page con typing animation
     const drawSearchPage = (alpha) => {
       ctx.globalAlpha = alpha;
 
-      // Logo occhio semplice e pulito
-      drawEyeLogo(300, 80, 2.5, alpha);
+      // Occhio centrato
+      drawEyeLogo(300, 100, 2.8, alpha);
 
-      // Search bar - semplice
-      const barX = 150;
-      const barY = 170;
-      const barWidth = 300;
-      const barHeight = 44;
+      // Search bar centrata
+      const barX = 125;
+      const barY = 185;
+      const barWidth = 350;
+      const barHeight = 48;
 
-      ctx.fillStyle = 'rgba(30, 30, 30, 0.8)';
+      ctx.fillStyle = '#1a1a1a';
       ctx.beginPath();
-      ctx.roundRect(barX, barY, barWidth, barHeight, 22);
+      ctx.roundRect(barX, barY, barWidth, barHeight, 24);
       ctx.fill();
 
-      ctx.strokeStyle = 'rgba(0, 255, 255, 0.3)';
+      ctx.strokeStyle = 'rgba(0, 255, 255, 0.35)';
       ctx.lineWidth = 1.5;
       ctx.beginPath();
-      ctx.roundRect(barX, barY, barWidth, barHeight, 22);
+      ctx.roundRect(barX, barY, barWidth, barHeight, 24);
       ctx.stroke();
 
-      // Search icon
+      // Icona search
       ctx.strokeStyle = 'rgba(0, 255, 255, 0.6)';
       ctx.lineWidth = 2;
       ctx.beginPath();
-      ctx.arc(170, 192, 7, 0, Math.PI * 2);
+      ctx.arc(145, 209, 8, 0, Math.PI * 2);
       ctx.stroke();
       ctx.beginPath();
-      ctx.moveTo(175, 197);
-      ctx.lineTo(179, 201);
+      ctx.moveTo(151, 215);
+      ctx.lineTo(156, 220);
       ctx.stroke();
 
-      // Search text
-      ctx.font = '400 15px "Share Tech Mono", monospace';
-      ctx.fillStyle = 'rgba(0, 255, 255, 0.7)';
+      // Testo con typing animation
+      ctx.font = '400 16px "Share Tech Mono", monospace';
+      ctx.fillStyle = 'rgba(0, 255, 255, 0.8)';
       ctx.textAlign = 'left';
-      ctx.fillText('vihente.it', 195, 195);
+      ctx.fillText(state.typedText, 175, 212);
+
+      // Cursore lampeggiante
+      if (state.typedText.length < 24 && Math.floor(state.stateTime * 2) % 2 === 0) {
+        ctx.fillStyle = 'rgba(0, 255, 255, 0.8)';
+        ctx.fillRect(175 + ctx.measureText(state.typedText).width, 197, 2, 18);
+      }
 
       ctx.globalAlpha = 1;
     };
@@ -188,9 +181,7 @@ const WebsiteMockup = () => {
 
       ctx.font = `600 17px "Share Tech Mono", monospace`;
       ctx.fillStyle = `rgba(0, 255, 255, ${0.72 + 0.18 * hov})`;
-      if (hov > 0) { ctx.shadowBlur = 5 * hov; ctx.shadowColor = `rgba(0,255,255,${0.2*hov})`; }
       drawText('Vihente — Web Development & Digital Solutions', 30, r1 + 22);
-      ctx.shadowBlur = 0;
 
       ctx.font = '400 12px "Share Tech Mono", monospace';
       ctx.fillStyle = `rgba(0, 255, 255, ${0.48 + 0.08 * hov})`;
@@ -228,24 +219,33 @@ const WebsiteMockup = () => {
       ctx.globalAlpha = 1;
     };
 
-    // Disegna cursore - semplice
+    // Cursore realistico
     const drawCursor = () => {
       if (state.animationState === 'search') return;
 
       const x = state.cursorX;
       const y = state.cursorY;
 
-      ctx.fillStyle = state.clicking ? 'rgba(0, 255, 255, 0.9)' : '#ffffff';
+      // Click effect: cerchio cyan quando clicca
+      if (state.clicking) {
+        ctx.fillStyle = 'rgba(0, 255, 255, 0.2)';
+        ctx.beginPath();
+        ctx.arc(x + 7, y + 8, 20, 0, Math.PI * 2);
+        ctx.fill();
+      }
+
+      // Cursore
+      ctx.fillStyle = '#ffffff';
       ctx.strokeStyle = '#000';
-      ctx.lineWidth = 1;
+      ctx.lineWidth = 1.2;
       ctx.beginPath();
       ctx.moveTo(x, y);
-      ctx.lineTo(x, y + 16);
-      ctx.lineTo(x + 5, y + 12);
-      ctx.lineTo(x + 8, y + 18);
-      ctx.lineTo(x + 11, y + 17);
-      ctx.lineTo(x + 8, y + 11);
-      ctx.lineTo(x + 14, y + 11);
+      ctx.lineTo(x, y + 18);
+      ctx.lineTo(x + 6, y + 13);
+      ctx.lineTo(x + 9, y + 20);
+      ctx.lineTo(x + 12, y + 19);
+      ctx.lineTo(x + 9, y + 12);
+      ctx.lineTo(x + 16, y + 12);
       ctx.closePath();
       ctx.fill();
       ctx.stroke();
@@ -254,59 +254,64 @@ const WebsiteMockup = () => {
     const updateAnimation = (deltaTime) => {
       state.stateTime += deltaTime;
 
+      const fullText = "I need a custom website";
+
       if (state.animationState === 'search') {
-        const t = Math.min(1, state.stateTime / 0.7);
+        const t = Math.min(1, state.stateTime / 0.5);
         state.fadeAlpha = easeInOutSine(t);
 
-        if (state.stateTime >= 1.8) {
+        // Typing animation
+        const charsToShow = Math.floor(state.stateTime * 15); // 15 caratteri/secondo
+        state.typedText = fullText.substring(0, charsToShow);
+
+        if (state.stateTime >= 2.2) {
           state.animationState = 'transition-to-results';
           state.stateTime = 0;
         }
       } else if (state.animationState === 'transition-to-results') {
-        const t = Math.min(1, state.stateTime / 0.4);
+        const t = Math.min(1, state.stateTime / 0.3);
         state.fadeAlpha = 1 - easeInOutSine(t);
 
         if (state.fadeAlpha <= 0.01) {
           state.animationState = 'results';
           state.stateTime = 0;
           state.fadeAlpha = 0;
-          state.cursorX = 520;
-          state.cursorY = 40;
-          state.targetCursorX = 220;
-          state.targetCursorY = 122;
+          state.cursorX = 540;
+          state.cursorY = 30;
+          state.targetCursorX = 200;
+          state.targetCursorY = 126;
         }
       } else if (state.animationState === 'results') {
-        const fadeT = Math.min(1, state.stateTime / 0.6);
+        const fadeT = Math.min(1, state.stateTime / 0.4);
         state.fadeAlpha = easeInOutSine(fadeT);
 
-        // cursore si muove in modo naturale, decelera alla fine
-        const cursorT = Math.min(1, state.stateTime / 1.2);
+        const cursorT = Math.min(1, state.stateTime / 0.9);
         const eased = easeOutQuart(cursorT);
-        state.cursorX = 520 + (state.targetCursorX - 520) * eased;
-        state.cursorY = 40 + (state.targetCursorY - 40) * eased;
+        state.cursorX = 540 + (state.targetCursorX - 540) * eased;
+        state.cursorY = 30 + (state.targetCursorY - 30) * eased;
 
-        if (state.stateTime >= 1.8) {
+        if (state.stateTime >= 1.4) {
           state.animationState = 'hover';
           state.stateTime = 0;
         }
       } else if (state.animationState === 'hover') {
-        const t = Math.min(1, state.stateTime / 0.5);
+        const t = Math.min(1, state.stateTime / 0.4);
         state.hoverAlpha = easeInOutSine(t);
 
-        if (state.stateTime >= 0.7) {
+        if (state.stateTime >= 0.5) {
           state.animationState = 'click';
           state.stateTime = 0;
           state.clicking = true;
         }
       } else if (state.animationState === 'click') {
-        if (state.stateTime >= 0.25) state.clicking = false;
+        if (state.stateTime >= 0.2) state.clicking = false;
 
-        if (state.stateTime >= 1.0) {
+        if (state.stateTime >= 0.8) {
           state.animationState = 'transition-to-search';
           state.stateTime = 0;
         }
       } else if (state.animationState === 'transition-to-search') {
-        const t = Math.min(1, state.stateTime / 0.5);
+        const t = Math.min(1, state.stateTime / 0.4);
         const fadeOut = easeInOutSine(t);
         state.fadeAlpha = 1 - fadeOut;
         state.hoverAlpha = 1 - fadeOut;
@@ -316,6 +321,7 @@ const WebsiteMockup = () => {
           state.stateTime = 0;
           state.fadeAlpha = 0;
           state.hoverAlpha = 0;
+          state.typedText = '';
         }
       }
     };
