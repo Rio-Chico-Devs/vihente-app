@@ -22,7 +22,7 @@ const WebsiteMockup = () => {
 
     const ctx = canvas.getContext('2d', { alpha: false });
 
-    // High DPI
+    // High DPI - sempre attivo per rendering smooth
     const dpr = 3;
     const width = 600;
     const height = 400;
@@ -33,8 +33,10 @@ const WebsiteMockup = () => {
     canvas.style.height = height + 'px';
     ctx.scale(dpr, dpr);
 
+    // Anti-aliasing sempre attivo
     ctx.imageSmoothingEnabled = true;
     ctx.imageSmoothingQuality = 'high';
+    ctx.textRenderingOptimize = 'optimizeLegibility';
 
     const state = stateRef.current;
 
@@ -131,80 +133,97 @@ const WebsiteMockup = () => {
       ctx.globalAlpha = 1;
     };
 
-    // Disegna results page - SEMPLICE E PULITA
+    // helper: testo con subpixel hint per bordi puliti
+    const drawText = (text, x, y) => ctx.fillText(text, Math.round(x) + 0.5, Math.round(y) + 0.5);
+
+    // Disegna results page
     const drawResultsPage = (alpha) => {
       ctx.globalAlpha = alpha;
 
-      // Header semplice
-      ctx.fillStyle = 'rgba(20, 20, 20, 0.9)';
-      ctx.fillRect(0, 0, 600, 60);
+      // Header
+      ctx.fillStyle = '#111';
+      ctx.fillRect(0, 0, 600, 58);
+      // Linea separatrice sottile
+      ctx.fillStyle = 'rgba(0, 255, 255, 0.12)';
+      ctx.fillRect(0, 57.5, 600, 1);
 
       // Occhio logo piccolo
-      drawEyeLogo(40, 30, 1.0, alpha);
+      drawEyeLogo(38, 29, 1.0, alpha);
 
       // Search bar piccola
-      ctx.fillStyle = 'rgba(30, 30, 30, 0.8)';
+      ctx.fillStyle = '#1e1e1e';
       ctx.beginPath();
-      ctx.roundRect(100, 20, 200, 20, 10);
+      ctx.roundRect(90, 17, 210, 24, 12);
       ctx.fill();
-
-      ctx.strokeStyle = 'rgba(0, 255, 255, 0.3)';
+      ctx.strokeStyle = 'rgba(0, 255, 255, 0.22)';
       ctx.lineWidth = 1;
       ctx.beginPath();
-      ctx.roundRect(100, 20, 200, 20, 10);
+      ctx.roundRect(90, 17, 210, 24, 12);
       ctx.stroke();
 
-      ctx.font = '400 11px "Share Tech Mono", monospace';
-      ctx.fillStyle = 'rgba(0, 255, 255, 0.6)';
+      ctx.font = '400 12px "Share Tech Mono", monospace';
+      ctx.fillStyle = 'rgba(0, 255, 255, 0.65)';
       ctx.textAlign = 'left';
-      ctx.fillText('vihente.it', 115, 34);
+      drawText('vihente.it', 110, 33);
 
       // Results info
-      ctx.font = '400 12px "Share Tech Mono", monospace';
-      ctx.fillStyle = 'rgba(0, 255, 255, 0.5)';
-      ctx.fillText('3 results', 30, 90);
+      ctx.font = '400 11px "Share Tech Mono", monospace';
+      ctx.fillStyle = 'rgba(0, 255, 255, 0.38)';
+      drawText('About 4,320,000 results  (0.38 seconds)', 30, 82);
 
-      // Result 1 - VIHENTE (hover)
-      const result1Y = 120;
-      const hoverAlpha = state.hoverAlpha;
+      // ── Result 1 - VIHENTE.IT ──────────────────────
+      const r1 = 104;
+      const hov = state.hoverAlpha;
 
-      if (hoverAlpha > 0) {
-        ctx.fillStyle = `rgba(0, 255, 255, ${0.05 * hoverAlpha})`;
-        ctx.fillRect(20, result1Y - 10, 560, 70);
+      if (hov > 0) {
+        ctx.fillStyle = `rgba(0, 255, 255, ${0.06 * hov})`;
+        ctx.beginPath();
+        ctx.roundRect(16, r1 - 6, 568, 82, 6);
+        ctx.fill();
       }
 
+      ctx.font = '400 11px "Share Tech Mono", monospace';
+      ctx.fillStyle = `rgba(0, 255, 255, ${0.45 + 0.1 * hov})`;
+      drawText('vihente.it', 30, r1 + 2);
+
+      ctx.font = `600 17px "Share Tech Mono", monospace`;
+      ctx.fillStyle = `rgba(0, 255, 255, ${0.72 + 0.18 * hov})`;
+      if (hov > 0) { ctx.shadowBlur = 5 * hov; ctx.shadowColor = `rgba(0,255,255,${0.2*hov})`; }
+      drawText('Vihente — Web Development & Digital Solutions', 30, r1 + 22);
+      ctx.shadowBlur = 0;
+
       ctx.font = '400 12px "Share Tech Mono", monospace';
-      ctx.fillStyle = 'rgba(0, 255, 255, 0.5)';
-      ctx.fillText('vihente.it', 30, result1Y);
+      ctx.fillStyle = `rgba(0, 255, 255, ${0.48 + 0.08 * hov})`;
+      drawText('Custom websites, React apps and digital products built for', 30, r1 + 42);
+      drawText('performance and conversion. Based in Italy.', 30, r1 + 57);
 
-      ctx.font = '600 18px "Share Tech Mono", monospace';
-      const titleAlpha = 0.7 + (0.2 * hoverAlpha);
-      ctx.fillStyle = `rgba(0, 255, 255, ${titleAlpha})`;
-      ctx.fillText('VIHENTE', 30, result1Y + 25);
+      // ── Result 2 ───────────────────────────────────
+      const r2 = 210;
+      ctx.font = '400 11px "Share Tech Mono", monospace';
+      ctx.fillStyle = 'rgba(0, 255, 255, 0.35)';
+      drawText('webflow.com › enterprise', 30, r2);
 
-      ctx.font = '400 13px "Share Tech Mono", monospace';
-      ctx.fillStyle = 'rgba(0, 255, 255, 0.5)';
-      ctx.fillText('Web development & digital solutions', 30, result1Y + 45);
+      ctx.font = '600 15px "Share Tech Mono", monospace';
+      ctx.fillStyle = 'rgba(0, 255, 255, 0.48)';
+      drawText('Webflow — Build powerful websites without code', 30, r2 + 19);
 
-      // Result 2
-      const result2Y = 210;
       ctx.font = '400 12px "Share Tech Mono", monospace';
-      ctx.fillStyle = 'rgba(0, 255, 255, 0.4)';
-      ctx.fillText('example.com', 30, result2Y);
+      ctx.fillStyle = 'rgba(0, 255, 255, 0.36)';
+      drawText('The modern platform for professional web development.', 30, r2 + 37);
 
-      ctx.font = '600 16px "Share Tech Mono", monospace';
-      ctx.fillStyle = 'rgba(0, 255, 255, 0.5)';
-      ctx.fillText('Example Site', 30, result2Y + 22);
+      // ── Result 3 ───────────────────────────────────
+      const r3 = 286;
+      ctx.font = '400 11px "Share Tech Mono", monospace';
+      ctx.fillStyle = 'rgba(0, 255, 255, 0.35)';
+      drawText('vercel.com › solutions', 30, r3);
 
-      // Result 3
-      const result3Y = 270;
+      ctx.font = '600 15px "Share Tech Mono", monospace';
+      ctx.fillStyle = 'rgba(0, 255, 255, 0.48)';
+      drawText('Vercel — Deploy fast. Build at the speed of thought.', 30, r3 + 19);
+
       ctx.font = '400 12px "Share Tech Mono", monospace';
-      ctx.fillStyle = 'rgba(0, 255, 255, 0.4)';
-      ctx.fillText('another.com', 30, result3Y);
-
-      ctx.font = '600 16px "Share Tech Mono", monospace';
-      ctx.fillStyle = 'rgba(0, 255, 255, 0.5)';
-      ctx.fillText('Another Site', 30, result3Y + 22);
+      ctx.fillStyle = 'rgba(0, 255, 255, 0.36)';
+      drawText('Frontend cloud for web developers. Instant deployment.', 30, r3 + 37);
 
       ctx.globalAlpha = 1;
     };
@@ -232,69 +251,62 @@ const WebsiteMockup = () => {
       ctx.stroke();
     };
 
-    // Update animation - timing zen migliorato
     const updateAnimation = (deltaTime) => {
       state.stateTime += deltaTime;
 
       if (state.animationState === 'search') {
-        // Fade in molto smooth
-        const t = Math.min(1, state.stateTime / 1.2);
+        const t = Math.min(1, state.stateTime / 0.7);
         state.fadeAlpha = easeInOutSine(t);
 
-        if (state.stateTime >= 3.0) {
+        if (state.stateTime >= 1.8) {
           state.animationState = 'transition-to-results';
           state.stateTime = 0;
         }
       } else if (state.animationState === 'transition-to-results') {
-        // Fade out search con easing
-        const t = Math.min(1, state.stateTime / 0.8);
+        const t = Math.min(1, state.stateTime / 0.4);
         state.fadeAlpha = 1 - easeInOutSine(t);
 
         if (state.fadeAlpha <= 0.01) {
           state.animationState = 'results';
           state.stateTime = 0;
           state.fadeAlpha = 0;
-          state.cursorX = 500;
-          state.cursorY = 50;
-          state.targetCursorX = 300;
-          state.targetCursorY = 145;
+          state.cursorX = 520;
+          state.cursorY = 40;
+          state.targetCursorX = 220;
+          state.targetCursorY = 122;
         }
       } else if (state.animationState === 'results') {
-        // Fade in results smooth
-        const fadeT = Math.min(1, state.stateTime / 1.0);
+        const fadeT = Math.min(1, state.stateTime / 0.6);
         state.fadeAlpha = easeInOutSine(fadeT);
 
-        // Move cursor ultra smooth
-        const cursorT = Math.min(1, state.stateTime / 2.0);
+        // cursore si muove in modo naturale, decelera alla fine
+        const cursorT = Math.min(1, state.stateTime / 1.2);
         const eased = easeOutQuart(cursorT);
-        state.cursorX = 500 + (state.targetCursorX - 500) * eased;
-        state.cursorY = 50 + (state.targetCursorY - 50) * eased;
+        state.cursorX = 520 + (state.targetCursorX - 520) * eased;
+        state.cursorY = 40 + (state.targetCursorY - 40) * eased;
 
-        if (state.stateTime >= 3.0) {
+        if (state.stateTime >= 1.8) {
           state.animationState = 'hover';
           state.stateTime = 0;
         }
       } else if (state.animationState === 'hover') {
-        // Hover fade molto graduale
-        const t = Math.min(1, state.stateTime / 1.5);
+        const t = Math.min(1, state.stateTime / 0.5);
         state.hoverAlpha = easeInOutSine(t);
 
-        if (state.stateTime >= 1.5) {
+        if (state.stateTime >= 0.7) {
           state.animationState = 'click';
           state.stateTime = 0;
           state.clicking = true;
         }
       } else if (state.animationState === 'click') {
-        if (state.stateTime >= 0.5) {
-          state.clicking = false;
-        }
-        if (state.stateTime >= 2.0) {
+        if (state.stateTime >= 0.25) state.clicking = false;
+
+        if (state.stateTime >= 1.0) {
           state.animationState = 'transition-to-search';
           state.stateTime = 0;
         }
       } else if (state.animationState === 'transition-to-search') {
-        // Fade out tutto smooth
-        const t = Math.min(1, state.stateTime / 1.0);
+        const t = Math.min(1, state.stateTime / 0.5);
         const fadeOut = easeInOutSine(t);
         state.fadeAlpha = 1 - fadeOut;
         state.hoverAlpha = 1 - fadeOut;
