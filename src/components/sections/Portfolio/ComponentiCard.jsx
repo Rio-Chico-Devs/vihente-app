@@ -19,20 +19,23 @@ const ComponentiCard = () => {
 
     const ctx = canvas.getContext('2d', { alpha: false });
 
-    // High DPI per qualità HD - usa sempre 3x per massima nitidezza
-    const dpr = 3;
-    const width = 600;
-    const height = 400;
+    // Get container dimensions
+    const container = canvas.parentElement;
+    const width = container.clientWidth || 600;
+    const height = container.clientHeight || 400;
+
+    // High DPI per qualità HD - usa devicePixelRatio
+    const dpr = window.devicePixelRatio || 3;
 
     canvas.width = width * dpr;
     canvas.height = height * dpr;
-    canvas.style.width = width + 'px';
-    canvas.style.height = height + 'px';
+    canvas.style.width = '100%';
+    canvas.style.height = '100%';
     ctx.scale(dpr, dpr);
 
     // Text rendering ottimizzato
-    ctx.imageSmoothingEnabled = false; // Disabilita smoothing per testo più nitido
-    ctx.textRendering = 'optimizeLegibility';
+    ctx.imageSmoothingEnabled = true;
+    ctx.imageSmoothingQuality = 'high';
 
     // Debug events sincronizzati
     const debugEvents = [
@@ -178,53 +181,62 @@ const ComponentiCard = () => {
 
     // Disegna editor
     const drawEditor = () => {
+      // Responsive coordinates based on canvas size
+      const editorX = width * 0.033; // ~20px on 600px
+      const editorY = height * 0.0625; // ~25px on 400px
+      const editorWidth = width * 0.64; // ~385px on 600px
+      const editorHeight = height * 0.7375; // ~295px on 400px
+
       ctx.fillStyle = '#0d1117';
-      ctx.fillRect(20, 25, 385, 295);
+      ctx.fillRect(editorX, editorY, editorWidth, editorHeight);
 
       ctx.strokeStyle = 'rgba(0, 255, 255, 0.4)';
       ctx.lineWidth = 1.5;
-      ctx.strokeRect(20, 25, 385, 295);
+      ctx.strokeRect(editorX, editorY, editorWidth, editorHeight);
 
       ctx.fillStyle = '#161b22';
-      ctx.fillRect(20, 25, 385, 28);
+      ctx.fillRect(editorX, editorY, editorWidth, height * 0.07);
 
       ctx.fillStyle = '#0d1117';
-      ctx.fillRect(25, 28, 120, 25);
+      ctx.fillRect(editorX + 5, editorY + 3, width * 0.2, height * 0.0625);
 
       ctx.fillStyle = '#ffd76b';
       ctx.beginPath();
-      ctx.arc(35, 40, 3, 0, Math.PI * 2);
+      ctx.arc(editorX + 15, editorY + 15, 3, 0, Math.PI * 2);
       ctx.fill();
 
       ctx.font = '500 12px "Share Tech Mono", monospace';
       ctx.fillStyle = '#c9d1d9';
       ctx.textAlign = 'left';
-      ctx.fillText('ProjectGallery.jsx', 45, 45);
+      ctx.fillText('ProjectGallery.jsx', editorX + 25, editorY + 20);
 
+      const lineNumWidth = width * 0.067; // ~40px on 600px
       ctx.fillStyle = '#010409';
-      ctx.fillRect(20, 53, 40, 267);
+      ctx.fillRect(editorX, editorY + 28, lineNumWidth, editorHeight - 28);
 
       ctx.strokeStyle = '#21262d';
       ctx.lineWidth = 1;
       ctx.beginPath();
-      ctx.moveTo(60, 53);
-      ctx.lineTo(60, 320);
+      ctx.moveTo(editorX + lineNumWidth, editorY + 28);
+      ctx.lineTo(editorX + lineNumWidth, editorY + editorHeight);
       ctx.stroke();
 
       const lines = state.code.split('\n');
-      const lineHeight = 17;
-      const startY = 72;
-      const startX = 70;
+      const lineHeight = height * 0.0425; // ~17px on 400px
+      const startY = editorY + 47;
+      const startX = editorX + lineNumWidth + 10;
 
       ctx.font = '500 12px "Share Tech Mono", monospace';
 
+      const maxY = editorY + editorHeight - 10;
+
       lines.forEach((line, index) => {
         const y = startY + index * lineHeight;
-        if (y > 310) return;
+        if (y > maxY) return;
 
         ctx.fillStyle = '#6e7681';
         ctx.textAlign = 'right';
-        ctx.fillText(String(index + 1).padStart(2, ' '), 52, y);
+        ctx.fillText(String(index + 1).padStart(2, ' '), editorX + lineNumWidth - 8, y);
 
         if (line.trim()) {
           const tokens = parseCodeLine(line);
@@ -248,7 +260,7 @@ const ComponentiCard = () => {
           tokens.forEach(t => cursorX += ctx.measureText(t.text).width);
 
           const cursorY = startY + lastLineIdx * lineHeight;
-          if (cursorY <= 310) {
+          if (cursorY <= maxY) {
             ctx.fillStyle = '#58a6ff';
             ctx.fillRect(cursorX, cursorY - 13, 2, 15);
           }
@@ -258,59 +270,66 @@ const ComponentiCard = () => {
 
     // Disegna debug panel
     const drawDebugPanel = () => {
+      const panelX = width * 0.692; // ~415px on 600px
+      const panelY = height * 0.0625; // ~25px on 400px
+      const panelWidth = width * 0.275; // ~165px on 600px
+      const panelHeight = height * 0.5625; // ~225px on 400px
+
       ctx.fillStyle = '#0d1117';
-      ctx.fillRect(415, 25, 165, 225);
+      ctx.fillRect(panelX, panelY, panelWidth, panelHeight);
 
       ctx.strokeStyle = 'rgba(0, 255, 255, 0.4)';
       ctx.lineWidth = 1.5;
-      ctx.strokeRect(415, 25, 165, 225);
+      ctx.strokeRect(panelX, panelY, panelWidth, panelHeight);
 
       ctx.fillStyle = '#161b22';
-      ctx.fillRect(415, 25, 165, 28);
+      ctx.fillRect(panelX, panelY, panelWidth, height * 0.07);
 
       ctx.fillStyle = '#8b949e';
       ctx.font = '500 11px "Share Tech Mono", monospace';
       ctx.textAlign = 'left';
-      ctx.fillText('▶', 425, 42);
+      ctx.fillText('▶', panelX + 10, panelY + 17);
 
       ctx.fillStyle = '#c9d1d9';
-      ctx.fillText('CONSOLE', 440, 42);
+      ctx.fillText('CONSOLE', panelX + 25, panelY + 17);
 
       ctx.fillStyle = '#21262d';
-      ctx.fillRect(545, 30, 30, 18);
+      ctx.fillRect(panelX + panelWidth - 35, panelY + 5, 30, 18);
       ctx.fillStyle = '#8b949e';
       ctx.font = '400 10px "Share Tech Mono", monospace';
       ctx.textAlign = 'center';
-      ctx.fillText('clear', 560, 42);
+      ctx.fillText('clear', panelX + panelWidth - 20, panelY + 17);
 
-      const logHeight = 15;
-      const startY = 68;
+      const logHeight = height * 0.0375; // ~15px on 400px
+      const startY = panelY + 43;
 
       ctx.font = '400 10px "Share Tech Mono", monospace';
       ctx.textAlign = 'left';
 
+      const maxY = panelY + panelHeight - 10;
+
       state.activeDebugLogs.forEach((log, i) => {
         const y = startY + i * logHeight;
-        if (y > 240) return;
+        if (y > maxY) return;
 
         if (log.type === 'success') {
           ctx.fillStyle = '#3fb950';
-          ctx.fillText('✓', 425, y);
+          ctx.fillText('✓', panelX + 10, y);
         } else if (log.type === 'warn') {
           ctx.fillStyle = '#d29922';
-          ctx.fillText('⚠', 425, y);
+          ctx.fillText('⚠', panelX + 10, y);
         } else if (log.type === 'log') {
           ctx.fillStyle = '#58a6ff';
-          ctx.fillText('●', 425, y);
+          ctx.fillText('●', panelX + 10, y);
         } else {
           ctx.fillStyle = '#8b949e';
-          ctx.fillText('›', 425, y);
+          ctx.fillText('›', panelX + 10, y);
         }
 
         ctx.fillStyle = '#c9d1d9';
         const maxLen = 18;
         const msg = log.msg.length > maxLen ? log.msg.substring(0, maxLen - 2) + '..' : log.msg;
-        ctx.fillText(msg, 440, y);
+        ctx.fillText(msg, panelX + 25, y);
       });
     };
 
@@ -357,7 +376,7 @@ const ComponentiCard = () => {
       const deltaTime = (currentTime - lastTime) / 1000;
       lastTime = currentTime;
 
-      ctx.clearRect(0, 0, 600, 400);
+      ctx.clearRect(0, 0, width, height);
 
       updateTyping(deltaTime);
       drawEditor();
@@ -367,24 +386,23 @@ const ComponentiCard = () => {
       ctx.imageSmoothingEnabled = true;
       ctx.imageSmoothingQuality = 'high';
 
-      // Titolo con shadow per depth
+      // Titolo con shadow per depth - responsive position
       ctx.textAlign = 'right';
       ctx.font = '700 24px "Share Tech Mono", monospace';
       ctx.fillStyle = 'rgba(0, 255, 255, 0.95)';
       ctx.shadowBlur = 8;
       ctx.shadowColor = 'rgba(0, 255, 255, 0.4)';
-      ctx.fillText('COMPONENTI', 570, 340);
+      ctx.fillText('COMPONENTI', width * 0.95, height * 0.85);
 
       // Descrizione
       ctx.font = '400 14px "Share Tech Mono", monospace';
       ctx.fillStyle = 'rgba(0, 255, 255, 0.7)';
       ctx.shadowBlur = 4;
       ctx.shadowColor = 'rgba(0, 255, 255, 0.2)';
-      ctx.fillText('UI components e librerie React', 570, 365);
+      ctx.fillText('UI components e librerie React', width * 0.95, height * 0.9125);
 
-      // Reset shadow e smoothing
+      // Reset shadow
       ctx.shadowBlur = 0;
-      ctx.imageSmoothingEnabled = false;
 
       animationRef.current = requestAnimationFrame(animate);
     };
