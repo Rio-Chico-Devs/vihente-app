@@ -129,6 +129,19 @@ const Portfolio = () => {
     <div className="portfolio-page">
       <div className="code-background" id="codeBackground"></div>
 
+      {/* Canvas backgrounds per mobile - mostrano l'animazione della card attiva come sfondo */}
+      <div className="canvas-backgrounds">
+        <div className={`canvas-bg ${selectedIndex === 0 ? 'active' : ''}`}>
+          <GraficheCard theme={theme} />
+        </div>
+        <div className={`canvas-bg ${selectedIndex === 1 ? 'active' : ''}`}>
+          <WebsiteMockup theme={theme} />
+        </div>
+        <div className={`canvas-bg ${selectedIndex === 2 ? 'active' : ''}`}>
+          <ComponentiCard theme={theme} />
+        </div>
+      </div>
+
       <div className="portfolio-container">
         <button
           className="nav-arrow left"
@@ -155,7 +168,11 @@ const Portfolio = () => {
                       <div className="card-image">
                         {renderCardContent(cat)}
                       </div>
-                      {/* Tutti i titoli sono integrati nel canvas */}
+                      {/* Titolo e descrizione per mobile (quando canvas è background) */}
+                      <div className="card-text-mobile">
+                        <h2>{cat.title}</h2>
+                        <p>{cat.description}</p>
+                      </div>
                     </div>
                   </div>
 
