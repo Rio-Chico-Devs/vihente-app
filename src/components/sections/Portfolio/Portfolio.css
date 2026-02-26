@@ -523,7 +523,9 @@
     display: grid;
     grid-template-rows: 1fr 1fr 1fr; /* 3 righe ESATTAMENTE uguali - matematicamente perfetto */
     width: 100%;
-    height: 100vh;
+    /* Sottrae header (80px) e footer (60px) per evitare sovrapposizioni */
+    height: calc(100vh - var(--header-height, 80px) - var(--footer-height, 60px));
+    margin-top: var(--header-height, 80px); /* Sposta sotto l'header */
   }
 }
 
