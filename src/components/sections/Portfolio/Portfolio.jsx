@@ -129,20 +129,19 @@ const Portfolio = () => {
     <div className="portfolio-page">
       <div className="code-background" id="codeBackground"></div>
 
-      {/* Canvas backgrounds per mobile - mostrano l'animazione della card attiva come sfondo */}
-      <div className="canvas-backgrounds">
-        <div className={`canvas-bg ${selectedIndex === 0 ? 'active' : ''}`}>
-          <GraficheCard theme={theme} />
-        </div>
-        <div className={`canvas-bg ${selectedIndex === 1 ? 'active' : ''}`}>
-          <WebsiteMockup theme={theme} />
-        </div>
-        <div className={`canvas-bg ${selectedIndex === 2 ? 'active' : ''}`}>
-          <ComponentiCard theme={theme} />
-        </div>
-      </div>
-
       <div className="portfolio-container">
+        {/* Canvas backgrounds per mobile - dentro il container per stacking context corretto */}
+        <div className="canvas-backgrounds">
+          <div className={`canvas-bg ${selectedIndex === 0 ? 'active' : ''}`}>
+            <GraficheCard theme={theme} />
+          </div>
+          <div className={`canvas-bg ${selectedIndex === 1 ? 'active' : ''}`}>
+            <WebsiteMockup theme={theme} />
+          </div>
+          <div className={`canvas-bg ${selectedIndex === 2 ? 'active' : ''}`}>
+            <ComponentiCard theme={theme} />
+          </div>
+        </div>
         <button
           className="nav-arrow left"
           onClick={() => navigateCarousel('prev')}
