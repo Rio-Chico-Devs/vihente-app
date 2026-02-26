@@ -129,7 +129,7 @@ const Portfolio = () => {
     <div className="portfolio-page">
       <div className="code-background" id="codeBackground"></div>
 
-      {/* Mobile: 3 card statiche verticali */}
+      {/* Mobile: 3 sezioni fullscreen verticali */}
       <div className="portfolio-mobile">
         {categories.map((cat) => (
           <div
@@ -138,10 +138,10 @@ const Portfolio = () => {
             onClick={() => navigate(`/portfolio/${cat.id}`)}
           >
             <div className="mobile-card-icon">
-              <svg viewBox="0 0 100 100" width="60" height="60">
+              <svg viewBox="0 0 100 100" width="70" height="70">
                 <defs>
                   <filter id={`mobileGlow-${cat.id}`}>
-                    <feGaussianBlur stdDeviation="1.5" result="coloredBlur"/>
+                    <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
                     <feMerge>
                       <feMergeNode in="coloredBlur"/>
                       <feMergeNode in="SourceGraphic"/>
@@ -152,7 +152,7 @@ const Portfolio = () => {
                   d="M 35 50 C 39 43, 44 40, 50 40 C 56 40, 61 43, 65 50 C 61 57, 56 60, 50 60 C 44 60, 39 57, 35 50 Z"
                   fill="none"
                   stroke={primaryColor}
-                  strokeWidth="1.5"
+                  strokeWidth="2"
                   strokeLinecap="round"
                   strokeLinejoin="round"
                   filter={`url(#mobileGlow-${cat.id})`}
@@ -160,26 +160,24 @@ const Portfolio = () => {
                 <circle
                   cx="50"
                   cy="50"
-                  r="8"
+                  r="10"
                   fill="none"
                   stroke={primaryColor}
-                  strokeWidth="1.2"
+                  strokeWidth="1.5"
                   filter={`url(#mobileGlow-${cat.id})`}
                 />
                 <circle
                   cx="50"
                   cy="50"
-                  r="3.5"
+                  r="4"
                   fill="none"
                   stroke={primaryColor}
-                  strokeWidth="0.8"
+                  strokeWidth="1.2"
                   filter={`url(#mobileGlow-${cat.id})`}
                 />
               </svg>
             </div>
             <h3 className="mobile-card-title">{cat.title}</h3>
-            <p className="mobile-card-description">{cat.description}</p>
-            <div className="mobile-card-arrow">→</div>
           </div>
         ))}
       </div>
