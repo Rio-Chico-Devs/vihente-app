@@ -511,7 +511,7 @@
     min-height: 100vh;
     height: 100vh;
     overflow: hidden;
-    padding: 0; /* Nessun padding - usiamo absolute positioning */
+    padding: 0;
   }
 
   /* Nascondi desktop carousel */
@@ -521,13 +521,15 @@
 
   /* Mostra mobile layout fullscreen - CSS Grid per divisione geometrica perfetta */
   .portfolio-mobile {
-    position: absolute;
-    top: var(--header-height, 80px);    /* Posiziona sotto header */
-    bottom: var(--footer-height, 60px); /* Posiziona sopra footer */
+    position: fixed; /* Fixed rispetto al viewport, non al parent */
+    top: var(--header-height, 80px);
     left: 0;
     right: 0;
+    /* Altezza = viewport - header - footer */
+    height: calc(100vh - var(--header-height, 80px) - var(--footer-height, 60px));
     display: grid;
     grid-template-rows: 1fr 1fr 1fr; /* 3 righe ESATTAMENTE uguali - matematicamente perfetto */
+    z-index: 1; /* Sotto navbar (z-index: 1000) ma sopra altri contenuti */
   }
 
   /* Reset proprietà flexbox dalle card - grid gestisce tutto */
