@@ -175,7 +175,15 @@ const GraficheShowcase = () => {
 
   return (
     <div className="trophy-arena">
-      {/* PURE CSS STATE: Radio inputs nascosti */}
+      {/* PURE CSS STATE: Radio inputs nascosti + dummy per reset */}
+      <input
+        type="radio"
+        name="trophy-state"
+        id="trophy-none"
+        className="trophy-state"
+        defaultChecked={true}
+        style={{ display: 'none' }}
+      />
       {trophies.map((trophy, index) => (
         <input
           key={`state-${trophy.id}`}
@@ -183,7 +191,6 @@ const GraficheShowcase = () => {
           name="trophy-state"
           id={`trophy-${trophy.id}`}
           className="trophy-state"
-          defaultChecked={index === 0}
         />
       ))}
 
@@ -284,7 +291,7 @@ const GraficheShowcase = () => {
 
           <div className="modal-content">
             {/* Close button */}
-            <label htmlFor={`trophy-${trophies[0].id}`} className="modal-close">
+            <label htmlFor="trophy-none" className="modal-close">
               <svg viewBox="0 0 24 24">
                 <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
               </svg>

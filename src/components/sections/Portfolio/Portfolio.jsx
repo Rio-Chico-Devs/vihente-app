@@ -1,44 +1,40 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTheme } from '../../../contexts/theme';
+import GraficheCard from './GraficheCard';
+import WebsiteMockup from './WebsiteMockup';
+import ComponentiCard from './ComponentiCard';
 import './Portfolio.css';
 
 const Portfolio = () => {
   const navigate = useNavigate();
   const { theme } = useTheme();
-  const [selectedCategory, setSelectedCategory] = useState(0);
-  const [isExpanded, setIsExpanded] = useState(false);
-  const [isDragging, setIsDragging] = useState(false);
-  const [dragRotation, setDragRotation] = useState(0);
-  
-  const cardRef = useRef(null);
-  const touchStartXRef = useRef(null);
-  const startRotationRef = useRef(0);
+  const [selectedIndex, setSelectedIndex] = useState(0);
+  const [isFlipped, setIsFlipped] = useState(false);
 
   const categories = [
-    { id: 'grafiche', title: 'GRAFICHE', image: '/images/Chef.webp' },
-    { id: 'sitiweb', title: 'SITI WEB', image: '/images/webdesign.webp' },
-    { id: 'componenti', title: 'COMPONENTI' }
+    {
+      id: 'grafiche',
+      title: 'GRAFICHE',
+      description: 'Design grafico e visual identity'
+    },
+    {
+      id: 'sitiweb',
+      title: 'SITI WEB',
+      description: 'Sviluppo web e applicazioni'
+    },
+    {
+      id: 'componenti',
+      title: 'COMPONENTI',
+      description: 'UI components e librerie React'
+    }
   ];
 
-  const primaryColor = theme === 'light' 
-    ? 'rgba(232, 160, 48, 0.95)' 
+  const primaryColor = theme === 'light'
+    ? 'rgba(232, 160, 48, 0.95)'
     : 'rgba(0, 255, 255, 0.95)';
 
-  // Rotazione base dalla categoria selezionata
-  const baseRotation = -selectedCategory * 120;
-
-  useEffect(() => {
-    const handleClick = (e) => {
-      if (isExpanded && cardRef.current && !cardRef.current.contains(e.target)) {
-        setIsExpanded(false);
-      }
-    };
-    document.addEventListener('mousedown', handleClick);
-    return () => document.removeEventListener('mousedown', handleClick);
-  }, [isExpanded]);
-
-  // Typewriter code background effect
+  // Code background effect
   useEffect(() => {
     const codeSnippets = [
       'const portfolio = {',
@@ -53,23 +49,23 @@ const Portfolio = () => {
       const snippet = codeSnippets[Math.floor(Math.random() * codeSnippets.length)];
       const x = Math.random() * (window.innerWidth - 250);
       const y = Math.random() * (window.innerHeight - 30);
-      
+
       const codeLine = document.createElement('div');
       codeLine.className = 'code-line';
       codeLine.textContent = snippet;
       codeLine.style.cssText = `left:${x}px;top:${y}px`;
-      
+
       const codeBackground = document.getElementById('codeBackground');
       if (codeBackground) {
         codeBackground.appendChild(codeLine);
       }
-      
+
       const removeTimeout = setTimeout(() => {
         if (codeLine.parentNode) {
           codeLine.parentNode.removeChild(codeLine);
         }
       }, 6000);
-      
+
       activeTimeouts.push(removeTimeout);
     }
 
@@ -80,7 +76,7 @@ const Portfolio = () => {
       clearInterval(codeInterval);
       clearTimeout(codeTimeout);
       activeTimeouts.forEach(timeout => clearTimeout(timeout));
-      
+
       const codeBackground = document.getElementById('codeBackground');
       if (codeBackground) {
         while (codeBackground.firstChild) {
@@ -90,121 +86,83 @@ const Portfolio = () => {
     };
   }, []);
 
-  const navigateCarousel = (dir) => {
-    setIsExpanded(false);
-    if (dir === 'prev') {
-      setSelectedCategory(prev => prev - 1);
+  const navigateCarousel = (direction) => {
+    setIsFlipped(false);
+
+    if (direction === 'prev') {
+      setSelectedIndex(prev => (prev - 1 + categories.length) % categories.length);
     } else {
-      setSelectedCategory(prev => prev + 1);
+      setSelectedIndex(prev => (prev + 1) % categories.length);
     }
   };
 
-  // Touch Start - inizia il drag
-  const onTouchStart = (e) => {
-    touchStartXRef.current = e.targetTouches[0].clientX;
-    startRotationRef.current = baseRotation + dragRotation;
-    setIsDragging(true);
-  };
-
-  // Touch Move - controllo continuo della rotazione
-  const onTouchMove = (e) => {
-    if (!touchStartXRef.current) return;
-    
-    const currentX = e.targetTouches[0].clientX;
-    const diff = currentX - touchStartXRef.current;
-    
-    // Converti pixel in gradi (più sensibile = più controllo)
-    // 300px = 120 gradi (una card)
-    const rotationDelta = (diff / 300) * 120;
-    
-    setDragRotation(rotationDelta);
-  };
-
-  const onTouchEnd = () => {
-  if (!touchStartXRef.current) return;
-  
-  // Calcola la rotazione totale
-  const totalRotation = baseRotation + dragRotation;
-  
-  // Trova la card più vicina (ogni card è 120 gradi)
-  const nearestCard = Math.round(-totalRotation / 120);
-  
-  setSelectedCategory(nearestCard);
-  setDragRotation(0);
-  setIsDragging(false);
-  touchStartXRef.current = null;
-};
-  const handleClick = () => {
-    if (isDragging) return; // Ignora click durante drag
-    
-    if (!isExpanded) {
-      setIsExpanded(true);
+  const handleCardClick = () => {
+    if (!isFlipped) {
+      setIsFlipped(true);
     } else {
-      const normalizedIndex = ((selectedCategory % categories.length) + categories.length) % categories.length;
-      const category = categories[normalizedIndex];
-      
-      if (category.id === 'componenti') {
-        navigate('/portfolio/componenti');
-      } else if (category.id === 'grafiche') {
-        navigate('/portfolio/grafiche');
-      } else if (category.id === 'sitiweb') {
-        navigate('/portfolio/sitiweb');
-      }
+      const category = categories[selectedIndex];
+      navigate(`/portfolio/${category.id}`);
     }
   };
 
-  const normalizedIndex = ((selectedCategory % categories.length) + categories.length) % categories.length;
-  
-  // Rotazione finale: base + drag attivo
-  const currentRotation = baseRotation + dragRotation;
+  const getCardClass = (index) => {
+    if (index === selectedIndex) return 'active';
+    if (index === (selectedIndex - 1 + categories.length) % categories.length) return 'prev';
+    if (index === (selectedIndex + 1) % categories.length) return 'next';
+    return 'hidden';
+  };
+
+  const renderCardContent = (category) => {
+    switch (category.id) {
+      case 'grafiche':
+        return <GraficheCard theme={theme} />;
+      case 'sitiweb':
+        return <WebsiteMockup theme={theme} />;
+      case 'componenti':
+        return <ComponentiCard theme={theme} />;
+      default:
+        return null;
+    }
+  };
 
   return (
     <div className="portfolio-page">
       <div className="code-background" id="codeBackground"></div>
+
       <div className="portfolio-container">
-        <button className="nav-arrow left" onClick={() => navigateCarousel('prev')}>
+        <button
+          className="nav-arrow left"
+          onClick={() => navigateCarousel('prev')}
+          aria-label="Previous portfolio item"
+        >
           <svg viewBox="0 0 60 100">
             <path d="M 50,10 L 10,50 L 50,90" />
           </svg>
         </button>
 
-        <div 
-          className="carousel-scene"
-          onTouchStart={onTouchStart}
-          onTouchMove={onTouchMove}
-          onTouchEnd={onTouchEnd}
-        >
-          <div 
-            className={`carousel-3d ${isDragging ? 'dragging' : ''}`} 
-            style={{ transform: `rotateY(${currentRotation}deg)` }}
-          >
-            {categories.map((cat, idx) => {
-              const isActive = idx === normalizedIndex;
-              
-              return (
-                <div
-                  key={cat.id}
-                  ref={isActive ? cardRef : null}
-                  className={`card-deck p-${idx} ${isActive ? 'active' : ''} ${isActive && isExpanded ? 'clicked' : ''}`}
-                  onClick={() => isActive && handleClick()}
-                >
-                  <div className="card-3d">
-                    <div className="front face">
-                      <div className="front-image">
-  <img
-    src={cat.image}
-    alt={cat.title}
-    className="front-image-img"
-    onError={(e) => { e.target.style.display = 'none'; }}
-  />
-</div>
-                      <div className="front-title">
-                        <h2>{cat.title}</h2>
+        <div className="carousel-scene">
+          <div className="carousel-cards">
+            {categories.map((cat, idx) => (
+              <div
+                key={cat.id}
+                className={`card-item ${getCardClass(idx)} ${idx === selectedIndex && isFlipped ? 'flipped' : ''}`}
+                onClick={() => idx === selectedIndex && handleCardClick()}
+              >
+                <div className="card-flip">
+                  {/* Front Face */}
+                  <div className="card-face front">
+                    <div className="card-content">
+                      <div className="card-image">
+                        {renderCardContent(cat)}
                       </div>
+                      {/* Tutti i titoli sono integrati nel canvas */}
                     </div>
+                  </div>
 
-                    <div className="back face">
-                      <svg className="eye-logo" viewBox="0 0 100 100" width="200" height="200">
+                  {/* Back Face */}
+                  <div className="card-face back">
+                    <div className="card-back-content">
+                      <svg className="eye-logo" viewBox="0 0 100 100" width="180" height="180">
                         <defs>
                           <filter id={`eyeGlow-${idx}`}>
                             <feGaussianBlur stdDeviation="1.5" result="coloredBlur"/>
@@ -213,12 +171,12 @@ const Portfolio = () => {
                               <feMergeNode in="SourceGraphic"/>
                             </feMerge>
                           </filter>
-                          
+
                           <clipPath id={`eyeContourClip-${idx}`}>
                             <path d="M 35 50 C 39 43, 44 40, 50 40 C 56 40, 61 43, 65 50 C 61 57, 56 60, 50 60 C 44 60, 39 57, 35 50 Z"/>
                           </clipPath>
                         </defs>
-                        
+
                         <path
                           d="M 35 50 C 39 43, 44 40, 50 40 C 56 40, 61 43, 65 50 C 61 57, 56 60, 50 60 C 44 60, 39 57, 35 50 Z"
                           fill="none"
@@ -228,22 +186,22 @@ const Portfolio = () => {
                           strokeLinejoin="round"
                           filter={`url(#eyeGlow-${idx})`}
                         />
-                        
+
                         <g clipPath={`url(#eyeContourClip-${idx})`}>
-                          <circle 
-                            cx="50" 
-                            cy="50" 
-                            r="8" 
+                          <circle
+                            cx="50"
+                            cy="50"
+                            r="8"
                             fill="none"
                             stroke={primaryColor}
                             strokeWidth="1"
                             filter={`url(#eyeGlow-${idx})`}
                           />
-                          
-                          <circle 
-                            cx="50" 
-                            cy="50" 
-                            r="3.5" 
+
+                          <circle
+                            cx="50"
+                            cy="50"
+                            r="3.5"
                             fill="none"
                             stroke={primaryColor}
                             strokeWidth="0.8"
@@ -251,15 +209,25 @@ const Portfolio = () => {
                           />
                         </g>
                       </svg>
+
+                      <h3 className="card-back-title">{cat.title}</h3>
+
+                      <button className="card-back-button">
+                        Esplora
+                      </button>
                     </div>
                   </div>
                 </div>
-              );
-            })}
+              </div>
+            ))}
           </div>
         </div>
 
-        <button className="nav-arrow right" onClick={() => navigateCarousel('next')}>
+        <button
+          className="nav-arrow right"
+          onClick={() => navigateCarousel('next')}
+          aria-label="Next portfolio item"
+        >
           <svg viewBox="0 0 60 100">
             <path d="M 10,10 L 50,50 L 10,90" />
           </svg>
