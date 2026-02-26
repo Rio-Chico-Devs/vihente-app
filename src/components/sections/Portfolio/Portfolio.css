@@ -507,10 +507,13 @@
 /* Tablet & Mobile */
 @media (max-width: 768px) {
   .portfolio-page {
-    padding: 0;
+    padding: 90px 0 150px 0; /* Spazio per header (90px) e footer (150px) */
     min-height: 100vh;
     height: 100vh;
     overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 
   /* Nascondi desktop carousel */
@@ -523,7 +526,8 @@
     display: flex;
     flex-direction: column;
     width: 100%;
-    height: 100vh;
+    flex: 1;
+    max-height: 100%;
   }
 }
 
