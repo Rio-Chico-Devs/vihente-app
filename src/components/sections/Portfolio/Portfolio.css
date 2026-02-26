@@ -507,10 +507,12 @@
 /* Tablet & Mobile */
 @media (max-width: 768px) {
   .portfolio-page {
-    padding: 0;
+    /* Padding per header e footer invece di margin */
+    padding: var(--header-height, 80px) 0 var(--footer-height, 60px) 0;
     min-height: 100vh;
     height: 100vh;
     overflow: hidden;
+    box-sizing: border-box; /* Include padding in altezza */
   }
 
   /* Nascondi desktop carousel */
@@ -523,9 +525,7 @@
     display: grid;
     grid-template-rows: 1fr 1fr 1fr; /* 3 righe ESATTAMENTE uguali - matematicamente perfetto */
     width: 100%;
-    /* Sottrae header (80px) e footer (60px) per evitare sovrapposizioni */
-    height: calc(100vh - var(--header-height, 80px) - var(--footer-height, 60px));
-    margin-top: var(--header-height, 80px); /* Sposta sotto l'header */
+    height: 100%; /* 100% dello spazio disponibile dopo padding */
   }
 }
 
