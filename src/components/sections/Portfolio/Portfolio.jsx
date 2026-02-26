@@ -135,49 +135,15 @@ const Portfolio = () => {
           <div
             key={cat.id}
             className="portfolio-mobile-card"
-            onClick={() => navigate(`/portfolio/${cat.id}`)}
+            onClick={() => {
+              const card = document.querySelector(`[data-card="${cat.id}"]`);
+              card?.classList.add('navigating');
+              setTimeout(() => navigate(`/portfolio/${cat.id}`), 300);
+            }}
+            data-card={cat.id}
           >
-            <div className="mobile-card-icon">
-              <svg viewBox="0 0 100 100" width="70" height="70">
-                <defs>
-                  <filter id={`mobileGlow-${cat.id}`}>
-                    <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
-                    <feMerge>
-                      <feMergeNode in="coloredBlur"/>
-                      <feMergeNode in="SourceGraphic"/>
-                    </feMerge>
-                  </filter>
-                </defs>
-                <path
-                  d="M 35 50 C 39 43, 44 40, 50 40 C 56 40, 61 43, 65 50 C 61 57, 56 60, 50 60 C 44 60, 39 57, 35 50 Z"
-                  fill="none"
-                  stroke={primaryColor}
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  filter={`url(#mobileGlow-${cat.id})`}
-                />
-                <circle
-                  cx="50"
-                  cy="50"
-                  r="10"
-                  fill="none"
-                  stroke={primaryColor}
-                  strokeWidth="1.5"
-                  filter={`url(#mobileGlow-${cat.id})`}
-                />
-                <circle
-                  cx="50"
-                  cy="50"
-                  r="4"
-                  fill="none"
-                  stroke={primaryColor}
-                  strokeWidth="1.2"
-                  filter={`url(#mobileGlow-${cat.id})`}
-                />
-              </svg>
-            </div>
             <h3 className="mobile-card-title">{cat.title}</h3>
+            <div className="mobile-card-subtitle">{cat.description}</div>
           </div>
         ))}
       </div>
