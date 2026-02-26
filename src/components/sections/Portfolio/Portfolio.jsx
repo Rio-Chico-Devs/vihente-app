@@ -129,19 +129,63 @@ const Portfolio = () => {
     <div className="portfolio-page">
       <div className="code-background" id="codeBackground"></div>
 
+      {/* Mobile: 3 card statiche verticali */}
+      <div className="portfolio-mobile">
+        {categories.map((cat) => (
+          <div
+            key={cat.id}
+            className="portfolio-mobile-card"
+            onClick={() => navigate(`/portfolio/${cat.id}`)}
+          >
+            <div className="mobile-card-icon">
+              <svg viewBox="0 0 100 100" width="60" height="60">
+                <defs>
+                  <filter id={`mobileGlow-${cat.id}`}>
+                    <feGaussianBlur stdDeviation="1.5" result="coloredBlur"/>
+                    <feMerge>
+                      <feMergeNode in="coloredBlur"/>
+                      <feMergeNode in="SourceGraphic"/>
+                    </feMerge>
+                  </filter>
+                </defs>
+                <path
+                  d="M 35 50 C 39 43, 44 40, 50 40 C 56 40, 61 43, 65 50 C 61 57, 56 60, 50 60 C 44 60, 39 57, 35 50 Z"
+                  fill="none"
+                  stroke={primaryColor}
+                  strokeWidth="1.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  filter={`url(#mobileGlow-${cat.id})`}
+                />
+                <circle
+                  cx="50"
+                  cy="50"
+                  r="8"
+                  fill="none"
+                  stroke={primaryColor}
+                  strokeWidth="1.2"
+                  filter={`url(#mobileGlow-${cat.id})`}
+                />
+                <circle
+                  cx="50"
+                  cy="50"
+                  r="3.5"
+                  fill="none"
+                  stroke={primaryColor}
+                  strokeWidth="0.8"
+                  filter={`url(#mobileGlow-${cat.id})`}
+                />
+              </svg>
+            </div>
+            <h3 className="mobile-card-title">{cat.title}</h3>
+            <p className="mobile-card-description">{cat.description}</p>
+            <div className="mobile-card-arrow">→</div>
+          </div>
+        ))}
+      </div>
+
+      {/* Desktop: carousel con animazioni */}
       <div className="portfolio-container">
-        {/* Canvas backgrounds per mobile - dentro il container per stacking context corretto */}
-        <div className="canvas-backgrounds">
-          <div className={`canvas-bg ${selectedIndex === 0 ? 'active' : ''}`}>
-            <GraficheCard theme={theme} />
-          </div>
-          <div className={`canvas-bg ${selectedIndex === 1 ? 'active' : ''}`}>
-            <WebsiteMockup theme={theme} />
-          </div>
-          <div className={`canvas-bg ${selectedIndex === 2 ? 'active' : ''}`}>
-            <ComponentiCard theme={theme} />
-          </div>
-        </div>
         <button
           className="nav-arrow left"
           onClick={() => navigateCarousel('prev')}
@@ -166,11 +210,6 @@ const Portfolio = () => {
                     <div className="card-content">
                       <div className="card-image">
                         {renderCardContent(cat)}
-                      </div>
-                      {/* Titolo e descrizione per mobile (quando canvas è background) */}
-                      <div className="card-text-mobile">
-                        <h2>{cat.title}</h2>
-                        <p>{cat.description}</p>
                       </div>
                     </div>
                   </div>

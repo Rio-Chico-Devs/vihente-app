@@ -351,31 +351,86 @@
   }
 }
 
-/* Canvas backgrounds per mobile */
-.canvas-backgrounds {
+/* Mobile Layout: 3 card statiche verticali */
+.portfolio-mobile {
   display: none; /* Hidden su desktop */
 }
 
-.canvas-bg {
+.portfolio-mobile-card {
+  background: rgba(0, 0, 0, 0.8);
+  border: 2px solid rgba(0, 255, 255, 0.3);
+  border-radius: 12px;
+  padding: 32px 24px;
+  margin-bottom: 24px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.portfolio-mobile-card::before {
+  content: '';
   position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 100vw;
-  height: 100vh;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, rgba(0, 255, 255, 0.05) 0%, transparent 100%);
   opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.6s ease;
-  z-index: 1; /* Dietro le card ma dentro il container */
+  transition: opacity 0.3s ease;
 }
 
-.canvas-bg.active {
-  opacity: 0.4; /* Aumentata opacity per visibilità */
+.portfolio-mobile-card:hover::before,
+.portfolio-mobile-card:active::before {
+  opacity: 1;
 }
 
-/* Testo mobile dentro la card */
-.card-text-mobile {
-  display: none; /* Hidden su desktop */
+.portfolio-mobile-card:hover,
+.portfolio-mobile-card:active {
+  border-color: rgba(0, 255, 255, 0.6);
+  box-shadow: 0 8px 32px rgba(0, 255, 255, 0.2);
+  transform: translateY(-4px);
+}
+
+.mobile-card-icon {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+  filter: drop-shadow(0 0 10px rgba(0, 255, 255, 0.4));
+}
+
+.mobile-card-title {
+  font-family: 'Orbitron', 'Share Tech Mono', monospace;
+  font-size: 24px;
+  font-weight: 700;
+  color: rgba(0, 255, 255, 0.95);
+  letter-spacing: 0.2em;
+  text-align: center;
+  margin: 0 0 12px 0;
+  text-shadow: 0 0 15px rgba(0, 255, 255, 0.5);
+}
+
+.mobile-card-description {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 14px;
+  color: rgba(0, 255, 255, 0.7);
+  letter-spacing: 0.05em;
+  text-align: center;
+  margin: 0 0 16px 0;
+  line-height: 1.6;
+}
+
+.mobile-card-arrow {
+  font-size: 24px;
+  color: rgba(0, 255, 255, 0.6);
+  text-align: center;
+  transition: transform 0.3s ease;
+}
+
+.portfolio-mobile-card:hover .mobile-card-arrow,
+.portfolio-mobile-card:active .mobile-card-arrow {
+  transform: translateX(4px);
+  color: rgba(0, 255, 255, 0.95);
 }
 
 /* Responsive */
@@ -402,194 +457,85 @@
   }
 }
 
-/* Tablet */
+/* Tablet & Mobile */
 @media (max-width: 768px) {
   .portfolio-page {
-    padding: 80px 1rem 2rem;
+    padding: 100px 1.5rem 2rem;
   }
 
+  /* Nascondi desktop carousel */
   .portfolio-container {
-    gap: 1rem;
+    display: none;
   }
 
-  /* Mostra canvas come background su mobile */
-  .canvas-backgrounds {
+  /* Mostra mobile layout */
+  .portfolio-mobile {
     display: block;
-  }
-
-  /* Nascondi canvas dentro la card */
-  .card-image {
-    display: none;
-  }
-
-  /* Card trasparente su mobile per vedere il background */
-  .card-face.front {
-    background: transparent;
-    border-color: rgba(0, 255, 255, 0.4);
-  }
-
-  /* Back face mantiene background solido per leggibilità */
-  .card-face.back {
-    background: rgba(0, 0, 0, 0.95);
-  }
-
-  /* Mostra testo mobile dentro la card */
-  .card-text-mobile {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    padding: 40px 20px;
-    height: 100%;
-  }
-
-  .card-text-mobile h2 {
-    font-family: 'Orbitron', 'Share Tech Mono', monospace;
-    font-size: 32px;
-    font-weight: 700;
-    color: rgba(0, 255, 255, 0.95);
-    letter-spacing: 0.25em;
-    margin: 0 0 16px 0;
-    text-shadow: 0 0 20px rgba(0, 255, 255, 0.6);
-  }
-
-  .card-text-mobile p {
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 16px;
-    color: rgba(0, 255, 255, 0.75);
-    letter-spacing: 0.05em;
-    margin: 0;
-    line-height: 1.6;
-  }
-
-  /* Carousel adatta la larghezza disponibile mantenendo aspect ratio 3:2 */
-  .carousel-scene {
-    flex: 1;
-    min-width: 0;
-    height: auto;
-    aspect-ratio: 3 / 2;
-    max-width: none;
-    min-height: 200px;
-  }
-
-  .card-item {
     width: 100%;
-    height: 100%;
-  }
-
-  /* Hide side cards su tablet/mobile */
-  .card-item.prev,
-  .card-item.next {
-    display: none;
-  }
-
-  .nav-arrow {
-    width: 45px;
-    height: 65px;
-    flex-shrink: 0;
+    max-width: 500px;
+    margin: 0 auto;
   }
 }
 
-/* Mobile */
+/* Mobile piccolo */
 @media (max-width: 480px) {
   .portfolio-page {
-    padding: 70px 0.75rem 1.5rem;
+    padding: 90px 1rem 1.5rem;
   }
 
-  .portfolio-container {
-    gap: 0.25rem;
+  .portfolio-mobile {
+    max-width: 100%;
   }
 
-  .carousel-scene {
-    min-height: 160px;
+  .portfolio-mobile-card {
+    padding: 24px 20px;
+    margin-bottom: 20px;
   }
 
-  .nav-arrow {
-    width: 28px;
+  .mobile-card-icon svg {
+    width: 50px;
     height: 50px;
   }
 
-  /* Testo mobile più compatto */
-  .card-text-mobile {
-    padding: 24px 16px;
-  }
-
-  .card-text-mobile h2 {
-    font-size: 24px;
-    letter-spacing: 0.2em;
-    margin-bottom: 12px;
-  }
-
-  .card-text-mobile p {
-    font-size: 13px;
-  }
-
-  /* Back face compatta su mobile */
-  .card-face.back {
-    padding: 16px;
-  }
-
-  .card-back-content {
-    gap: 10px;
-  }
-
-  .eye-logo {
-    width: 80px;
-    height: 80px;
-  }
-
-  .card-back-title {
-    font-size: 18px;
+  .mobile-card-title {
+    font-size: 20px;
     letter-spacing: 0.15em;
   }
 
-  .card-back-button {
-    margin-top: 4px;
-    padding: 10px 24px;
-    font-size: 12px;
+  .mobile-card-description {
+    font-size: 13px;
   }
 }
 
 /* Schermi molto piccoli */
 @media (max-width: 360px) {
   .portfolio-page {
-    padding: 65px 0.5rem 1rem;
+    padding: 80px 0.75rem 1rem;
   }
 
-  .nav-arrow {
-    width: 22px;
-    height: 40px;
+  .portfolio-mobile-card {
+    padding: 20px 16px;
+    margin-bottom: 16px;
   }
 
-  /* Testo mobile ancora più compatto */
-  .card-text-mobile {
-    padding: 16px 12px;
+  .mobile-card-icon svg {
+    width: 45px;
+    height: 45px;
   }
 
-  .card-text-mobile h2 {
-    font-size: 20px;
-    letter-spacing: 0.15em;
+  .mobile-card-title {
+    font-size: 18px;
+    letter-spacing: 0.12em;
     margin-bottom: 8px;
   }
 
-  .card-text-mobile p {
+  .mobile-card-description {
     font-size: 12px;
+    margin-bottom: 12px;
   }
 
-  .eye-logo {
-    width: 64px;
-    height: 64px;
-  }
-
-  .card-back-title {
-    font-size: 14px;
-    letter-spacing: 0.1em;
-  }
-
-  .card-back-button {
-    padding: 8px 18px;
-    font-size: 11px;
+  .mobile-card-arrow {
+    font-size: 20px;
   }
 }
 
@@ -662,24 +608,40 @@
   box-shadow: 0 0 20px var(--color-primary-30);
 }
 
-[data-theme="light"] .card-text-mobile h2 {
-  color: var(--color-primary);
-  text-shadow: 0 0 20px var(--color-primary-40);
+/* Light mode mobile cards */
+[data-theme="light"] .portfolio-mobile-card {
+  background: rgba(0, 0, 0, 0.85);
+  border-color: var(--color-primary-20);
 }
 
-[data-theme="light"] .card-text-mobile p {
+[data-theme="light"] .portfolio-mobile-card::before {
+  background: linear-gradient(135deg, var(--color-primary-05) 0%, transparent 100%);
+}
+
+[data-theme="light"] .portfolio-mobile-card:hover,
+[data-theme="light"] .portfolio-mobile-card:active {
+  border-color: var(--color-primary-40);
+  box-shadow: 0 8px 32px var(--color-primary-20);
+}
+
+[data-theme="light"] .mobile-card-icon {
+  filter: drop-shadow(0 0 10px var(--color-primary-30));
+}
+
+[data-theme="light"] .mobile-card-title {
+  color: var(--color-primary);
+  text-shadow: 0 0 15px var(--color-primary-40);
+}
+
+[data-theme="light"] .mobile-card-description {
   color: var(--color-primary-70);
 }
 
-/* Card trasparente anche in light mode su mobile */
-@media (max-width: 768px) {
-  [data-theme="light"] .card-face.front {
-    background: transparent;
-    border-color: var(--color-primary-30);
-  }
+[data-theme="light"] .mobile-card-arrow {
+  color: var(--color-primary-60);
+}
 
-  [data-theme="light"] .card-face.back {
-    background: rgba(0, 0, 0, 0.95);
-    border-color: var(--color-primary-40);
-  }
+[data-theme="light"] .portfolio-mobile-card:hover .mobile-card-arrow,
+[data-theme="light"] .portfolio-mobile-card:active .mobile-card-arrow {
+  color: var(--color-primary);
 }
