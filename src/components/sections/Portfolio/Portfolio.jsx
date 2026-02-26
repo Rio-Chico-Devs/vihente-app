@@ -34,6 +34,38 @@ const Portfolio = () => {
     ? 'rgba(232, 160, 48, 0.95)'
     : 'rgba(0, 255, 255, 0.95)';
 
+  // Calcola altezze reali di navbar e footer per mobile
+  useEffect(() => {
+    const updateMobileHeight = () => {
+      if (window.innerWidth <= 768) {
+        const navbar = document.querySelector('.navbar');
+        const footer = document.querySelector('.footer');
+        const portfolioMobile = document.querySelector('.portfolio-mobile');
+
+        if (navbar && footer && portfolioMobile) {
+          const navbarHeight = navbar.offsetHeight;
+          const footerHeight = footer.offsetHeight;
+          const availableHeight = window.innerHeight - navbarHeight - footerHeight;
+
+          portfolioMobile.style.top = `${navbarHeight}px`;
+          portfolioMobile.style.height = `${availableHeight}px`;
+        }
+      }
+    };
+
+    // Esegui al mount e quando cambia la dimensione della finestra
+    updateMobileHeight();
+    window.addEventListener('resize', updateMobileHeight);
+
+    // Esegui anche dopo un breve delay per assicurarsi che navbar/footer siano renderizzati
+    const timer = setTimeout(updateMobileHeight, 100);
+
+    return () => {
+      window.removeEventListener('resize', updateMobileHeight);
+      clearTimeout(timer);
+    };
+  }, []);
+
   // Code background effect
   useEffect(() => {
     const codeSnippets = [
