@@ -132,27 +132,40 @@ const Navbar = () => {
   };
 
   const handleMobileItemClick = (item) => {
-    // Normalizza i path per il confronto
-    const currentPath = location.pathname.replace('/vihente-app', '') || '/';
+    // Normalizza i path per il confronto - FIX più robusto
+    const rawPath = location.pathname;
+    let currentPath = rawPath
+      .replace('/vihente-app', '')  // Rimuovi basename
+      .replace(/^\/+/, '/');         // Normalizza slash multipli
+
+    if (!currentPath || currentPath === '') {
+      currentPath = '/';
+    }
+
     const targetPath = item.path;
 
-    console.log('[MOBILE NAV] Click:', item.label, 'Current:', currentPath, 'Target:', targetPath);
+    console.log('[MOBILE NAV DEBUG]');
+    console.log('  Raw pathname:', rawPath);
+    console.log('  Normalized current:', currentPath);
+    console.log('  Target path:', targetPath);
+    console.log('  Are different?', currentPath !== targetPath);
+    console.log('  Click on:', item.label);
 
-    // NAVIGA IMMEDIATAMENTE - non aspettare!
+    // NAVIGA SEMPRE se paths sono diversi
     if (currentPath !== targetPath) {
-      console.log('[MOBILE NAV] Navigating NOW to:', targetPath);
+      console.log('[MOBILE NAV] ✅ NAVIGATING to:', targetPath);
 
       // Navigate FIRST
       navigate(targetPath);
       window.scrollTo({ top: 0, behavior: 'instant' });
 
-      // Then close menu (il menu si chiuderà dopo la navigazione)
+      // Then close menu
       requestAnimationFrame(() => {
         setMobileMenuOpen(false);
         setSelectedItem(null);
       });
     } else {
-      console.log('[MOBILE NAV] Already on target page, just close menu');
+      console.log('[MOBILE NAV] ⚠️ Already on target page, skip navigation');
       setMobileMenuOpen(false);
       setSelectedItem(null);
     }
