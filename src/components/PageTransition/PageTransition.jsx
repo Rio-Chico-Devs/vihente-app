@@ -12,19 +12,20 @@ const PageTransition = ({ children }) => {
   const [transitionStage, setTransitionStage] = useState('fadeIn');
 
   useEffect(() => {
-    if (location !== displayLocation) {
+    // FIX: Confronta pathname invece di oggetti location
+    if (location.pathname !== displayLocation.pathname) {
       // Fase 1: Fade out
       setTransitionStage('fadeOut');
 
-      // Fase 2: Cambia contenuto e fade in (dopo 200ms)
+      // Fase 2: Cambia contenuto e fade in (dopo 250ms)
       const timer = setTimeout(() => {
         setDisplayLocation(location);
         setTransitionStage('fadeIn');
-      }, 200);
+      }, 250);
 
       return () => clearTimeout(timer);
     }
-  }, [location, displayLocation]);
+  }, [location.pathname, displayLocation.pathname, location]);
 
   return (
     <div className={`page-transition ${transitionStage}`}>
