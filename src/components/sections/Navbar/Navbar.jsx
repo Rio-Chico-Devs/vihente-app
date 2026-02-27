@@ -136,14 +136,16 @@ const Navbar = () => {
     const currentPath = location.pathname.replace('/vihente-app', '') || '/';
     const targetPath = item.path;
 
-    // Naviga direttamente se non sei già sul path richiesto
-    if (currentPath !== targetPath) {
-      performTransition(item.path);
-    }
-
-    // Chiudi il menu e resetta la selezione
+    // Chiudi il menu PRIMA di navigare
     setMobileMenuOpen(false);
     setSelectedItem(null);
+
+    // Naviga dopo che il menu si è chiuso
+    if (currentPath !== targetPath) {
+      setTimeout(() => {
+        performTransition(item.path);
+      }, 300); // Aspetta che l'overlay scompaia (transition: 0.3s)
+    }
   };
 
   const closeMobileMenu = () => {
