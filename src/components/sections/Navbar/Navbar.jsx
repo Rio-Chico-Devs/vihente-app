@@ -132,20 +132,18 @@ const Navbar = () => {
   };
 
   const handleMobileItemClick = (item) => {
-    if (selectedItem === item.id) {
-      // Normalizza i path per il confronto
-      const currentPath = location.pathname.replace('/vihente-app', '') || '/';
-      const targetPath = item.path;
+    // Normalizza i path per il confronto
+    const currentPath = location.pathname.replace('/vihente-app', '') || '/';
+    const targetPath = item.path;
 
-      // Permetti la navigazione se non sei esattamente sul path richiesto
-      if (currentPath !== targetPath) {
-        performTransition(item.path);
-      }
-      setMobileMenuOpen(false);
-      setSelectedItem(null);
-    } else {
-      setSelectedItem(item.id);
+    // Naviga direttamente se non sei già sul path richiesto
+    if (currentPath !== targetPath) {
+      performTransition(item.path);
     }
+
+    // Chiudi il menu e resetta la selezione
+    setMobileMenuOpen(false);
+    setSelectedItem(null);
   };
 
   const closeMobileMenu = () => {
