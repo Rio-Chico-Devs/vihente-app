@@ -591,110 +591,6 @@
 }
 
 /* ============================================
-   PAGE TRANSITION
-   ============================================ */
-
-.page-transition-container {
-  position: fixed;
-  top: 90px;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  z-index: 9999;
-  pointer-events: none;
-  overflow: hidden;
-}
-
-.transition-overlay {
-  position: absolute;
-  inset: 0;
-  background: radial-gradient(
-    ellipse at center,
-    rgba(0, 0, 0, 0.95) 0%,
-    rgba(0, 10, 15, 0.98) 50%,
-    #000 100%
-  );
-  opacity: 0;
-  animation: overlayFade 0.8s ease-in-out forwards;
-}
-
-@keyframes overlayFade {
-  0% { opacity: 0; }
-  40% { opacity: 1; }
-  60% { opacity: 1; }
-  100% { opacity: 0; }
-}
-
-.transition-lines {
-  position: absolute;
-  inset: 0;
-  background: repeating-linear-gradient(
-    0deg,
-    transparent 0px,
-    transparent 3px,
-    var(--color-primary-15, rgba(0, 255, 255, 0.15)) 3px,
-    var(--color-primary-15, rgba(0, 255, 255, 0.15)) 4px,
-    transparent 4px,
-    transparent 8px
-  );
-  opacity: 0;
-  animation: linesFade 0.8s ease-in-out forwards;
-}
-
-@keyframes linesFade {
-  0%, 100% { opacity: 0; transform: translateY(0); }
-  30% { opacity: 0.6; transform: translateY(10px); }
-  70% { opacity: 0.6; transform: translateY(-10px); }
-}
-
-.transition-glitch {
-  position: absolute;
-  inset: 0;
-  opacity: 0;
-  animation: glitchFlash 0.8s ease-in-out forwards;
-}
-
-.transition-glitch::before,
-.transition-glitch::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(
-    90deg,
-    transparent 0%,
-    var(--color-primary-10, rgba(0, 255, 255, 0.1)) 20%,
-    transparent 40%,
-    transparent 60%,
-    var(--color-primary-10, rgba(0, 255, 255, 0.1)) 80%,
-    transparent 100%
-  );
-}
-
-.transition-glitch::before {
-  animation: glitchSlide1 0.8s ease-in-out forwards;
-}
-
-.transition-glitch::after {
-  animation: glitchSlide2 0.8s ease-in-out forwards;
-  animation-delay: 0.1s;
-}
-
-@keyframes glitchFlash {
-  0%, 100% { opacity: 0; }
-  40%, 60% { opacity: 1; }
-}
-
-@keyframes glitchSlide1 {
-  0%, 100% { transform: translateX(-100%); }
-  50% { transform: translateX(100%); }
-}
-
-@keyframes glitchSlide2 {
-  0%, 100% { transform: translateX(100%); }
-  50% { transform: translateX(-100%); }
-}
-
-/* ============================================
    RESPONSIVE - TABLET
    ============================================ */
 
@@ -784,10 +680,6 @@
   .navbar-logo.menu-open .logo-eye {
     width: 140px;
     height: 140px;
-  }
-
-  .page-transition-container {
-    top: 0;
   }
 }
 

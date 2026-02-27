@@ -1,0 +1,26 @@
+/*
+ * PageTransition - CSS minimalista
+ * Senza transizioni complesse per permettere a Suspense di funzionare
+ * Su mobile, Suspense mostrerà LoadingSpinner durante lazy loading
+ */
+
+.page-transition-wrapper {
+  /* Animazione semplice all'entrata */
+  animation: fadeIn 0.3s ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Riduce motion per utenti con preferenze accessibilità */
+@media (prefers-reduced-motion: reduce) {
+  .page-transition-wrapper {
+    animation: none;
+  }
+}

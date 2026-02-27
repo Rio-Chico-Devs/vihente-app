@@ -10,7 +10,7 @@ const Navbar = () => {
   const [isBlinking, setIsBlinking] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [selectedItem, setSelectedItem] = useState(null);
-  const [isTransitioning, setIsTransitioning] = useState(false);
+  const [isNavigating, setIsNavigating] = useState(false);
 
   // Get current page from location
   const currentPage = location.pathname.replace('/vihente-app', '').replace('/', '') || 'landing';
@@ -114,16 +114,9 @@ const Navbar = () => {
 
   // Improved transition with proper navigation timing
   const performTransition = (path) => {
-    setIsTransitioning(true);
-
-    setTimeout(() => {
-      navigate(path);
-      window.scrollTo({ top: 0, behavior: 'instant' });
-    }, 50);
-
-    setTimeout(() => {
-      setIsTransitioning(false);
-    }, 800);
+    // Navigazione diretta - transizione gestita da PageTransition globale
+    navigate(path);
+    window.scrollTo({ top: 0, behavior: 'instant' });
   };
 
   const handleDesktopNavClick = (e, path) => {
@@ -139,20 +132,63 @@ const Navbar = () => {
     }
   };
 
-  const handleMobileItemClick = (item) => {
-    if (selectedItem === item.id) {
-      // Normalizza i path per il confronto
-      const currentPath = location.pathname.replace('/vihente-app', '') || '/';
-      const targetPath = item.path;
+  const handleMobileItemClick = (e, item) => {
+    // PREVENT DOUBLE CLICK (touch + click on mobile)
+    e.preventDefault();
+    e.stopPropagation();
 
-      // Permetti la navigazione se non sei esattamente sul path richiesto
-      if (currentPath !== targetPath) {
-        performTransition(item.path);
-      }
+    // Prevent multiple rapid clicks
+    if (isNavigating) {
+      console.log('[MOBILE NAV] ⚠️ Navigation already in progress, ignoring click');
+      return;
+    }
+
+    // Normalizza i path per il confronto - FIX più robusto
+    const rawPath = location.pathname;
+    let currentPath = rawPath
+      .replace('/vihente-app', '')  // Rimuovi basename
+      .replace(/^\/+/, '/');         // Normalizza slash multipli
+
+    if (!currentPath || currentPath === '') {
+      currentPath = '/';
+    }
+
+    const targetPath = item.path;
+
+    console.log('[MOBILE NAV DEBUG]');
+    console.log('  Raw pathname:', rawPath);
+    console.log('  Normalized current:', currentPath);
+    console.log('  Target path:', targetPath);
+    console.log('  Are different?', currentPath !== targetPath);
+    console.log('  Click on:', item.label);
+
+    // NAVIGA SEMPRE se paths sono diversi
+    if (currentPath !== targetPath) {
+      console.log('[MOBILE NAV] ✅ NAVIGATING to:', targetPath);
+
+      // Set navigating flag
+      setIsNavigating(true);
+
+      // Chiudi menu PRIMA per evitare interferenze
       setMobileMenuOpen(false);
       setSelectedItem(null);
+
+      // Navigate IMMEDIATELY
+      navigate(targetPath, { replace: false });
+
+      // Force scroll dopo un frame
+      requestAnimationFrame(() => {
+        window.scrollTo({ top: 0, behavior: 'instant' });
+
+        // Reset flag dopo navigazione
+        setTimeout(() => {
+          setIsNavigating(false);
+        }, 500);
+      });
     } else {
-      setSelectedItem(item.id);
+      console.log('[MOBILE NAV] ⚠️ Already on target page, skip navigation');
+      setMobileMenuOpen(false);
+      setSelectedItem(null);
     }
   };
 
@@ -365,7 +401,7 @@ const Navbar = () => {
             return (
               <div
                 key={item.id}
-                onClick={() => handleMobileItemClick(item)}
+                onClick={(e) => handleMobileItemClick(e, item)}
                 className={`p4-menu-item ${isSelected ? 'selected' : ''} ${isCurrent ? 'current' : ''}`}
                 style={{ animationDelay: `${index * 0.08}s` }}
                 role="button"
@@ -388,15 +424,6 @@ const Navbar = () => {
           <div className="action-line" />
         </div>
       </div>
-
-      {/* TRANSIZIONE LEGGERA E SFUMATA - CYBER-TECH */}
-      {isTransitioning && (
-        <div className="page-transition-container">
-          <div className="transition-overlay"></div>
-          <div className="transition-lines"></div>
-          <div className="transition-glitch"></div>
-        </div>
-      )}
     </>
   );
 };
