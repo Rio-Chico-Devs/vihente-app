@@ -11,8 +11,16 @@ const PageTransition = ({ children }) => {
   const location = useLocation();
 
   useEffect(() => {
+    console.log(`🔄 [PageTransition] Location changed to: ${location.pathname}`);
+    const start = performance.now();
+
     // Scroll to top immediato su ogni cambio pagina
     window.scrollTo({ top: 0, behavior: 'instant' });
+
+    return () => {
+      const duration = performance.now() - start;
+      console.log(`🔄 [PageTransition] Unmounting after ${duration.toFixed(2)}ms`);
+    };
   }, [location.pathname]);
 
   // Renderizza direttamente children senza state intermedio

@@ -14,7 +14,15 @@ import PageTransition from './components/PageTransition/PageTransition';
 // 🚀 LAZY LOADING - Carica componenti solo quando necessario
 const LandingPage = lazy(() => import('./components/sections/LandingPage/LandingPage'));
 const MyStory = lazy(() => import('./components/sections/MyStory/MyStory'));
-const ServicesPage = lazy(() => import('./components/sections/ServicesPage/ServicesPage'));
+const ServicesPage = lazy(() => {
+  console.log('📦 [LAZY] Starting to load ServicesPage chunk...');
+  const start = performance.now();
+  return import('./components/sections/ServicesPage/ServicesPage').then(module => {
+    const duration = performance.now() - start;
+    console.log(`✅ [LAZY] ServicesPage chunk loaded in ${duration.toFixed(2)}ms`);
+    return module;
+  });
+});
 const ConsulenzePage = lazy(() => import('./components/sections/ConsulenzePage/ConsulenzePage'));
 const SitiWebPage = lazy(() => import('./components/sections/SitiWebPage/SitiWebPage'));
 const PresenzaOnlinePage = lazy(() => import('./components/sections/PresenzaOnline/PresenzaOnlinePage'));
@@ -38,8 +46,11 @@ const CookiePolicy = lazy(() => import('./components/sections/CookiePolicy/Cooki
 const TermsAndConditions = lazy(() => import('./components/sections/TermsAndConditions/TermsAndConditions'));
 
 // 🎨 Loading Spinner Component
-const LoadingSpinner = () => (
-  <div style={{
+const LoadingSpinner = () => {
+  console.log('⏳ [SUSPENSE] LoadingSpinner shown - Lazy loading in progress...');
+
+  return (
+    <div style={{
     minHeight: '100vh',
     display: 'flex',
     alignItems: 'center',
@@ -69,8 +80,8 @@ const LoadingSpinner = () => (
         }
       `}</style>
     </div>
-  </div>
-);
+  );
+};
 
 function App() {
   const [isBooting, setIsBooting] = useState(true);
