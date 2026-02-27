@@ -144,7 +144,7 @@ const Navbar = () => {
     if (currentPath !== targetPath) {
       setTimeout(() => {
         performTransition(item.path);
-      }, 300); // Aspetta che l'overlay scompaia (transition: 0.3s)
+      }, 400); // Aspetta che l'overlay scompaia completamente (0.3s transition + buffer mobile)
     }
   };
 
