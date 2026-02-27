@@ -10,6 +10,7 @@ const Navbar = () => {
   const [isBlinking, setIsBlinking] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [selectedItem, setSelectedItem] = useState(null);
+  const [isNavigating, setIsNavigating] = useState(false);
 
   // Get current page from location
   const currentPage = location.pathname.replace('/vihente-app', '').replace('/', '') || 'landing';
@@ -131,7 +132,17 @@ const Navbar = () => {
     }
   };
 
-  const handleMobileItemClick = (item) => {
+  const handleMobileItemClick = (e, item) => {
+    // PREVENT DOUBLE CLICK (touch + click on mobile)
+    e.preventDefault();
+    e.stopPropagation();
+
+    // Prevent multiple rapid clicks
+    if (isNavigating) {
+      console.log('[MOBILE NAV] ⚠️ Navigation already in progress, ignoring click');
+      return;
+    }
+
     // Normalizza i path per il confronto - FIX più robusto
     const rawPath = location.pathname;
     let currentPath = rawPath
@@ -155,14 +166,24 @@ const Navbar = () => {
     if (currentPath !== targetPath) {
       console.log('[MOBILE NAV] ✅ NAVIGATING to:', targetPath);
 
-      // Navigate FIRST
-      navigate(targetPath);
-      window.scrollTo({ top: 0, behavior: 'instant' });
+      // Set navigating flag
+      setIsNavigating(true);
 
-      // Then close menu
+      // Chiudi menu PRIMA per evitare interferenze
+      setMobileMenuOpen(false);
+      setSelectedItem(null);
+
+      // Navigate IMMEDIATELY
+      navigate(targetPath, { replace: false });
+
+      // Force scroll dopo un frame
       requestAnimationFrame(() => {
-        setMobileMenuOpen(false);
-        setSelectedItem(null);
+        window.scrollTo({ top: 0, behavior: 'instant' });
+
+        // Reset flag dopo navigazione
+        setTimeout(() => {
+          setIsNavigating(false);
+        }, 500);
       });
     } else {
       console.log('[MOBILE NAV] ⚠️ Already on target page, skip navigation');
@@ -380,7 +401,7 @@ const Navbar = () => {
             return (
               <div
                 key={item.id}
-                onClick={() => handleMobileItemClick(item)}
+                onClick={(e) => handleMobileItemClick(e, item)}
                 className={`p4-menu-item ${isSelected ? 'selected' : ''} ${isCurrent ? 'current' : ''}`}
                 style={{ animationDelay: `${index * 0.08}s` }}
                 role="button"
