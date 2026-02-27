@@ -22,6 +22,14 @@ const PageTransition = ({ children }) => {
         setDisplayChildren(children);
         setCurrentKey(location.pathname);
         setTransitionStage('fadeIn');
+
+        // FORCE REPAINT su mobile con requestAnimationFrame
+        requestAnimationFrame(() => {
+          requestAnimationFrame(() => {
+            // Doppio RAF per assicurare il repaint
+            window.scrollTo({ top: 0, behavior: 'instant' });
+          });
+        });
       }, 250);
 
       return () => clearTimeout(timer);
