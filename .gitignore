@@ -54,7 +54,6 @@ Thumbs.db
 .temp/
 .tmp/
 *.tmp
-*.zip
 
 # Optional npm cache directory
 .npm
