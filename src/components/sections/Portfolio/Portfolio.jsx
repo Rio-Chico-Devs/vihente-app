@@ -11,7 +11,6 @@ const Portfolio = () => {
   const { theme } = useTheme();
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [isFlipped, setIsFlipped] = useState(false);
-  const [isFadingOut, setIsFadingOut] = useState(false);
 
   const categories = [
     {
@@ -34,11 +33,6 @@ const Portfolio = () => {
   const primaryColor = theme === 'light'
     ? 'rgba(232, 160, 48, 0.95)'
     : 'rgba(0, 255, 255, 0.95)';
-
-  // Reset fade-out state quando il componente monta (fade-in della pagina)
-  useEffect(() => {
-    setIsFadingOut(false);
-  }, []);
 
   // Calcola altezze reali di navbar e footer per mobile
   useEffect(() => {
@@ -167,9 +161,6 @@ const Portfolio = () => {
     <div className="portfolio-page">
       <div className="code-background" id="codeBackground"></div>
 
-      {/* Fade to black overlay per transizioni */}
-      <div className={`fade-overlay ${isFadingOut ? 'active' : ''}`}></div>
-
       {/* Mobile: 3 sezioni fullscreen verticali */}
       <div className="portfolio-mobile">
         {categories.map((cat) => (
@@ -177,9 +168,11 @@ const Portfolio = () => {
             key={cat.id}
             className="portfolio-mobile-card"
             onClick={() => {
-              setIsFadingOut(true);
-              setTimeout(() => navigate(`/portfolio/${cat.id}`), 120);
+              const card = document.querySelector(`[data-card="${cat.id}"]`);
+              card?.classList.add('navigating');
+              setTimeout(() => navigate(`/portfolio/${cat.id}`), 250);
             }}
+            data-card={cat.id}
           >
             <h3 className="mobile-card-title">{cat.title}</h3>
             <div className="mobile-card-subtitle">{cat.description}</div>

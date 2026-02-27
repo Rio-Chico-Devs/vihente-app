@@ -9,6 +9,7 @@ import CustomCursor from './components/sections/Cursor/CustomCursor';
 import ThemeToggle from './components/ThemeToggle/ThemeToggle';
 import ScrollingHeader from './components/ScrollingHeader';
 import CookieConsentBanner from './components/global/CookieConsent/CookieConsent';
+import PageTransition from './components/PageTransition/PageTransition';
 
 // 🚀 LAZY LOADING - Carica componenti solo quando necessario
 const LandingPage = lazy(() => import('./components/sections/LandingPage/LandingPage'));
@@ -100,9 +101,10 @@ function App() {
               <main role="main" aria-label="Contenuto principale">
                 {/* 🚀 Suspense wrapper per lazy loading */}
                 <Suspense fallback={<LoadingSpinner />}>
-                  <Routes>
-                    {/* Landing Page */}
-                    <Route path="/" element={<LandingPage startTime={startTime} />} />
+                  <PageTransition>
+                    <Routes>
+                      {/* Landing Page */}
+                      <Route path="/" element={<LandingPage startTime={startTime} />} />
 
                     {/* La Mia Storia */}
                     <Route path="/storia" element={<MyStory />} />
@@ -137,10 +139,11 @@ function App() {
                     <Route path="/contatti" element={<Contacts />} />
 
                     {/* Privacy & Cookie Policy */}
-                    <Route path="/privacy-policy" element={<PrivacyPolicy />} />
-                    <Route path="/cookie-policy" element={<CookiePolicy />} />
-                    <Route path="/termini-e-condizioni" element={<TermsAndConditions />} />
-                  </Routes>
+                      <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+                      <Route path="/cookie-policy" element={<CookiePolicy />} />
+                      <Route path="/termini-e-condizioni" element={<TermsAndConditions />} />
+                    </Routes>
+                  </PageTransition>
                 </Suspense>
               </main>
 

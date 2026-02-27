@@ -1,0 +1,45 @@
+/*
+ * PageTransition - CSS ottimizzato per mobile
+ * Hardware-accelerated (transform + opacity)
+ */
+
+.page-transition {
+  /* Ottimizza performance su mobile */
+  will-change: transform, opacity;
+  transform: translateZ(0); /* Force GPU acceleration */
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+
+  /* Transizione fluida */
+  transition:
+    opacity 0.2s cubic-bezier(0.4, 0, 0.2, 1),
+    transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Fade In (pagina che entra) */
+.page-transition.fadeIn {
+  opacity: 1;
+  transform: scale(1) translateZ(0);
+}
+
+/* Fade Out (pagina che esce) */
+.page-transition.fadeOut {
+  opacity: 0;
+  transform: scale(0.98) translateZ(0);
+  pointer-events: none; /* Previene click durante transizione */
+}
+
+/* Mobile optimization - riduci transform per evitare lag */
+@media (max-width: 768px) {
+  .page-transition.fadeOut {
+    transform: scale(0.99) translateZ(0);
+  }
+}
+
+/* Riduce motion per utenti con preferenze accessibilità */
+@media (prefers-reduced-motion: reduce) {
+  .page-transition {
+    transition: opacity 0.1s ease;
+    transform: none !important;
+  }
+}
