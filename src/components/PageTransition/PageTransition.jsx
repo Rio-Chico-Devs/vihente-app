@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, cloneElement } from 'react';
 import { useLocation } from 'react-router-dom';
 import './PageTransition.css';
 
@@ -29,7 +29,7 @@ const PageTransition = ({ children }) => {
 
   return (
     <div className={`page-transition ${transitionStage}`}>
-      {children}
+      {cloneElement(children, { location: displayLocation })}
     </div>
   );
 };
