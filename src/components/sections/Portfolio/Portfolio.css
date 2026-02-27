@@ -427,32 +427,6 @@
   }
 }
 
-/* Ripple effect al tap */
-.portfolio-mobile-card::before {
-  content: '';
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 0;
-  height: 0;
-  border-radius: 50%;
-  background: rgba(0, 255, 255, 0.25);
-  transform: translate(-50%, -50%);
-  opacity: 0;
-  pointer-events: none;
-}
-
-.portfolio-mobile-card:active::before {
-  width: 400px;
-  height: 400px;
-  opacity: 1;
-  transition: width 0.2s ease-out, height 0.2s ease-out, opacity 0.15s ease-out;
-}
-
-.portfolio-mobile-card:active::after {
-  opacity: 0;
-}
-
 /* Gradient sottile per depth */
 .portfolio-mobile-card::after {
   content: '';
