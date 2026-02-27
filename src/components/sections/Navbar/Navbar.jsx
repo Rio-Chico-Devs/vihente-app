@@ -10,7 +10,6 @@ const Navbar = () => {
   const [isBlinking, setIsBlinking] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [selectedItem, setSelectedItem] = useState(null);
-  const [isTransitioning, setIsTransitioning] = useState(false);
 
   // Get current page from location
   const currentPage = location.pathname.replace('/vihente-app', '').replace('/', '') || 'landing';
@@ -114,16 +113,9 @@ const Navbar = () => {
 
   // Improved transition with proper navigation timing
   const performTransition = (path) => {
-    setIsTransitioning(true);
-
-    setTimeout(() => {
-      navigate(path);
-      window.scrollTo({ top: 0, behavior: 'instant' });
-    }, 50);
-
-    setTimeout(() => {
-      setIsTransitioning(false);
-    }, 800);
+    // Navigazione diretta - transizione gestita da PageTransition globale
+    navigate(path);
+    window.scrollTo({ top: 0, behavior: 'instant' });
   };
 
   const handleDesktopNavClick = (e, path) => {
@@ -388,15 +380,6 @@ const Navbar = () => {
           <div className="action-line" />
         </div>
       </div>
-
-      {/* TRANSIZIONE LEGGERA E SFUMATA - CYBER-TECH */}
-      {isTransitioning && (
-        <div className="page-transition-container">
-          <div className="transition-overlay"></div>
-          <div className="transition-lines"></div>
-          <div className="transition-glitch"></div>
-        </div>
-      )}
     </>
   );
 };
