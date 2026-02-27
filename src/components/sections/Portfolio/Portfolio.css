@@ -11,6 +11,16 @@
   padding: 2rem;
   overflow: hidden;
   padding-top: 120px;
+  animation: fadeInFromBlack 0.25s ease-out;
+}
+
+@keyframes fadeInFromBlack {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
 /* Hexagonal grid overlay */
@@ -351,30 +361,121 @@
   }
 }
 
-/* Canvas backgrounds per mobile */
-.canvas-backgrounds {
+/* Mobile Layout: 3 card fullscreen senza scroll */
+.portfolio-mobile {
   display: none; /* Hidden su desktop */
 }
 
-.canvas-bg {
+.portfolio-mobile-card {
+  position: relative;
+  flex: 1; /* Uguale spazio per tutte */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  background: rgba(0, 0, 0, 0.9);
+  border: none;
+  border-bottom: 1px solid rgba(0, 255, 255, 0.12);
+  cursor: pointer;
+  overflow: hidden;
+  transition: all 0.15s ease-out;
+  -webkit-tap-highlight-color: transparent;
+  will-change: transform, opacity;
+}
+
+.portfolio-mobile-card:last-child {
+  border-bottom: none;
+}
+
+/* Touch feedback immediato */
+.portfolio-mobile-card:active {
+  background: rgba(0, 255, 255, 0.08);
+}
+
+/* Fade to black overlay per transizioni cinematografiche */
+.fade-overlay {
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
+  background: #000;
   opacity: 0;
   pointer-events: none;
-  transition: opacity 0.6s ease;
-  z-index: 3;
+  z-index: 9999;
+  transition: opacity 0.25s ease-out;
 }
 
-.canvas-bg.active {
-  opacity: 0.25; /* Semi-trasparente per non sovrastare il contenuto */
+.fade-overlay.active {
+  opacity: 1;
 }
 
-/* Testo mobile dentro la card */
-.card-text-mobile {
-  display: none; /* Hidden su desktop */
+/* Card slide verso destra + fade out (CSS puro, più performante) */
+.portfolio-mobile-card:active {
+  animation: slideRightFade 0.25s ease-out forwards;
+}
+
+@keyframes slideRightFade {
+  0% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(100px);
+    opacity: 0;
+  }
+}
+
+/* Gradient sottile per depth */
+.portfolio-mobile-card::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, rgba(0, 255, 255, 0.04) 0%, transparent 60%);
+  opacity: 1;
+  transition: opacity 0.2s ease;
+  pointer-events: none;
+}
+
+.mobile-card-title {
+  font-family: 'Orbitron', 'Share Tech Mono', monospace;
+  font-size: 32px;
+  font-weight: 700;
+  color: rgba(0, 255, 255, 0.95);
+  letter-spacing: 0.35em;
+  text-align: center;
+  margin: 0;
+  text-shadow: 0 0 25px rgba(0, 255, 255, 0.6);
+  transform: translateY(0);
+  transition: all 0.2s ease;
+  will-change: transform;
+}
+
+.mobile-card-subtitle {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 13px;
+  font-weight: 400;
+  color: rgba(0, 255, 255, 0.6);
+  letter-spacing: 0.08em;
+  text-align: center;
+  margin: 0;
+  opacity: 0.8;
+  transition: all 0.2s ease;
+}
+
+.portfolio-mobile-card:active .mobile-card-title {
+  transform: translateY(-3px);
+  text-shadow: 0 0 35px rgba(0, 255, 255, 0.9);
+}
+
+.portfolio-mobile-card:active .mobile-card-subtitle {
+  transform: translateY(-2px);
+  opacity: 1;
+  color: rgba(0, 255, 255, 0.8);
 }
 
 /* Responsive */
@@ -401,193 +502,62 @@
   }
 }
 
-/* Tablet */
+/* Tablet & Mobile */
 @media (max-width: 768px) {
   .portfolio-page {
-    padding: 80px 1rem 2rem;
+    position: relative;
+    min-height: 100vh;
+    height: 100vh;
+    overflow: hidden;
+    padding: 0;
   }
 
+  /* Nascondi desktop carousel */
   .portfolio-container {
-    gap: 1rem;
-  }
-
-  /* Mostra canvas come background su mobile */
-  .canvas-backgrounds {
-    display: block;
-  }
-
-  /* Nascondi canvas dentro la card */
-  .card-image {
     display: none;
   }
 
-  /* Card trasparente su mobile per vedere il background */
-  .card-face.front {
-    background: transparent;
-    border-color: rgba(0, 255, 255, 0.4);
+  /* Mostra mobile layout fullscreen - CSS Grid per divisione geometrica perfetta */
+  .portfolio-mobile {
+    position: fixed; /* Fixed rispetto al viewport, non al parent */
+    top: var(--header-height, 80px);
+    left: 0;
+    right: 0;
+    /* Altezza = viewport - header - footer */
+    height: calc(100vh - var(--header-height, 80px) - var(--footer-height, 60px));
+    display: grid;
+    grid-template-rows: 1fr 1fr 1fr; /* 3 righe ESATTAMENTE uguali - matematicamente perfetto */
+    z-index: 1; /* Sotto navbar (z-index: 1000) ma sopra altri contenuti */
   }
 
-  /* Back face mantiene background solido per leggibilità */
-  .card-face.back {
-    background: rgba(0, 0, 0, 0.95);
-  }
-
-  /* Mostra testo mobile dentro la card */
-  .card-text-mobile {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    padding: 40px 20px;
-    height: 100%;
-  }
-
-  .card-text-mobile h2 {
-    font-family: 'Orbitron', 'Share Tech Mono', monospace;
-    font-size: 32px;
-    font-weight: 700;
-    color: rgba(0, 255, 255, 0.95);
-    letter-spacing: 0.25em;
-    margin: 0 0 16px 0;
-    text-shadow: 0 0 20px rgba(0, 255, 255, 0.6);
-  }
-
-  .card-text-mobile p {
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 16px;
-    color: rgba(0, 255, 255, 0.75);
-    letter-spacing: 0.05em;
-    margin: 0;
-    line-height: 1.6;
-  }
-
-  /* Carousel adatta la larghezza disponibile mantenendo aspect ratio 3:2 */
-  .carousel-scene {
-    flex: 1;
-    min-width: 0;
-    height: auto;
-    aspect-ratio: 3 / 2;
-    max-width: none;
-    min-height: 200px;
-  }
-
-  .card-item {
-    width: 100%;
-    height: 100%;
-  }
-
-  /* Hide side cards su tablet/mobile */
-  .card-item.prev,
-  .card-item.next {
-    display: none;
-  }
-
-  .nav-arrow {
-    width: 45px;
-    height: 65px;
-    flex-shrink: 0;
+  /* Reset proprietà flexbox dalle card - grid gestisce tutto */
+  .portfolio-mobile-card {
+    flex: none; /* Rimuove flex: 1 che interferisce con grid */
+    min-height: 0; /* Previene overflow su grid items */
+    height: 100%; /* Occupa tutto lo spazio assegnato dal grid */
   }
 }
 
-/* Mobile */
+/* Mobile piccolo */
 @media (max-width: 480px) {
-  .portfolio-page {
-    padding: 70px 0.75rem 1.5rem;
+  .mobile-card-title {
+    font-size: 26px;
+    letter-spacing: 0.28em;
   }
 
-  .portfolio-container {
-    gap: 0.25rem;
-  }
-
-  .carousel-scene {
-    min-height: 160px;
-  }
-
-  .nav-arrow {
-    width: 28px;
-    height: 50px;
-  }
-
-  /* Testo mobile più compatto */
-  .card-text-mobile {
-    padding: 24px 16px;
-  }
-
-  .card-text-mobile h2 {
-    font-size: 24px;
-    letter-spacing: 0.2em;
-    margin-bottom: 12px;
-  }
-
-  .card-text-mobile p {
-    font-size: 13px;
-  }
-
-  /* Back face compatta su mobile */
-  .card-face.back {
-    padding: 16px;
-  }
-
-  .card-back-content {
-    gap: 10px;
-  }
-
-  .eye-logo {
-    width: 80px;
-    height: 80px;
-  }
-
-  .card-back-title {
-    font-size: 18px;
-    letter-spacing: 0.15em;
-  }
-
-  .card-back-button {
-    margin-top: 4px;
-    padding: 10px 24px;
+  .mobile-card-subtitle {
     font-size: 12px;
   }
 }
 
 /* Schermi molto piccoli */
 @media (max-width: 360px) {
-  .portfolio-page {
-    padding: 65px 0.5rem 1rem;
+  .mobile-card-title {
+    font-size: 24px;
+    letter-spacing: 0.25em;
   }
 
-  .nav-arrow {
-    width: 22px;
-    height: 40px;
-  }
-
-  /* Testo mobile ancora più compatto */
-  .card-text-mobile {
-    padding: 16px 12px;
-  }
-
-  .card-text-mobile h2 {
-    font-size: 20px;
-    letter-spacing: 0.15em;
-    margin-bottom: 8px;
-  }
-
-  .card-text-mobile p {
-    font-size: 12px;
-  }
-
-  .eye-logo {
-    width: 64px;
-    height: 64px;
-  }
-
-  .card-back-title {
-    font-size: 14px;
-    letter-spacing: 0.1em;
-  }
-
-  .card-back-button {
-    padding: 8px 18px;
+  .mobile-card-subtitle {
     font-size: 11px;
   }
 }
@@ -661,24 +631,37 @@
   box-shadow: 0 0 20px var(--color-primary-30);
 }
 
-[data-theme="light"] .card-text-mobile h2 {
+/* Light mode mobile cards */
+[data-theme="light"] .portfolio-mobile-card {
+  background: rgba(0, 0, 0, 0.9);
+  border-bottom-color: var(--color-primary-10);
+}
+
+[data-theme="light"] .portfolio-mobile-card:active {
+  background: var(--color-primary-08);
+}
+
+[data-theme="light"] .portfolio-mobile-card::before {
+  background: var(--color-primary-40);
+}
+
+[data-theme="light"] .portfolio-mobile-card::after {
+  background: linear-gradient(135deg, var(--color-primary-04) 0%, transparent 60%);
+}
+
+[data-theme="light"] .mobile-card-title {
   color: var(--color-primary);
-  text-shadow: 0 0 20px var(--color-primary-40);
+  text-shadow: 0 0 25px var(--color-primary-50);
 }
 
-[data-theme="light"] .card-text-mobile p {
-  color: var(--color-primary-70);
+[data-theme="light"] .mobile-card-subtitle {
+  color: var(--color-primary-60);
 }
 
-/* Card trasparente anche in light mode su mobile */
-@media (max-width: 768px) {
-  [data-theme="light"] .card-face.front {
-    background: transparent;
-    border-color: var(--color-primary-30);
-  }
+[data-theme="light"] .portfolio-mobile-card:active .mobile-card-title {
+  text-shadow: 0 0 35px var(--color-primary-80);
+}
 
-  [data-theme="light"] .card-face.back {
-    background: rgba(0, 0, 0, 0.95);
-    border-color: var(--color-primary-40);
-  }
+[data-theme="light"] .portfolio-mobile-card:active .mobile-card-subtitle {
+  color: var(--color-primary-80);
 }

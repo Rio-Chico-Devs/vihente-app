@@ -11,6 +11,7 @@ const Portfolio = () => {
   const { theme } = useTheme();
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [isFlipped, setIsFlipped] = useState(false);
+  const [isFadingOut, setIsFadingOut] = useState(false);
 
   const categories = [
     {
@@ -33,6 +34,43 @@ const Portfolio = () => {
   const primaryColor = theme === 'light'
     ? 'rgba(232, 160, 48, 0.95)'
     : 'rgba(0, 255, 255, 0.95)';
+
+  // Reset fade-out state quando il componente monta (fade-in della pagina)
+  useEffect(() => {
+    setIsFadingOut(false);
+  }, []);
+
+  // Calcola altezze reali di navbar e footer per mobile
+  useEffect(() => {
+    const updateMobileHeight = () => {
+      if (window.innerWidth <= 768) {
+        const navbar = document.querySelector('.navbar');
+        const footer = document.querySelector('.footer');
+        const portfolioMobile = document.querySelector('.portfolio-mobile');
+
+        if (navbar && footer && portfolioMobile) {
+          const navbarHeight = navbar.offsetHeight;
+          const footerHeight = footer.offsetHeight;
+          const availableHeight = window.innerHeight - navbarHeight - footerHeight;
+
+          portfolioMobile.style.top = `${navbarHeight}px`;
+          portfolioMobile.style.height = `${availableHeight}px`;
+        }
+      }
+    };
+
+    // Esegui al mount e quando cambia la dimensione della finestra
+    updateMobileHeight();
+    window.addEventListener('resize', updateMobileHeight);
+
+    // Esegui anche dopo un breve delay per assicurarsi che navbar/footer siano renderizzati
+    const timer = setTimeout(updateMobileHeight, 100);
+
+    return () => {
+      window.removeEventListener('resize', updateMobileHeight);
+      clearTimeout(timer);
+    };
+  }, []);
 
   // Code background effect
   useEffect(() => {
@@ -129,6 +167,27 @@ const Portfolio = () => {
     <div className="portfolio-page">
       <div className="code-background" id="codeBackground"></div>
 
+      {/* Fade to black overlay per transizioni */}
+      <div className={`fade-overlay ${isFadingOut ? 'active' : ''}`}></div>
+
+      {/* Mobile: 3 sezioni fullscreen verticali */}
+      <div className="portfolio-mobile">
+        {categories.map((cat) => (
+          <div
+            key={cat.id}
+            className="portfolio-mobile-card"
+            onClick={() => {
+              setIsFadingOut(true);
+              setTimeout(() => navigate(`/portfolio/${cat.id}`), 120);
+            }}
+          >
+            <h3 className="mobile-card-title">{cat.title}</h3>
+            <div className="mobile-card-subtitle">{cat.description}</div>
+          </div>
+        ))}
+      </div>
+
+      {/* Desktop: carousel con animazioni */}
       <div className="portfolio-container">
         <button
           className="nav-arrow left"
@@ -155,7 +214,6 @@ const Portfolio = () => {
                       <div className="card-image">
                         {renderCardContent(cat)}
                       </div>
-                      {/* Tutti i titoli sono integrati nel canvas */}
                     </div>
                   </div>
 

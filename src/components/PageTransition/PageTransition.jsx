@@ -1,25 +1,24 @@
+import { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
-import { useEffect, useRef } from 'react';
+import './PageTransition.css';
 
+/**
+ * PageTransition - Wrapper semplice per transizioni
+ * NON usa displayChildren per permettere a Suspense di funzionare correttamente
+ * Suspense mostrerà LoadingSpinner durante lazy loading su mobile
+ */
 const PageTransition = ({ children }) => {
   const location = useLocation();
-  const containerRef = useRef(null);
 
   useEffect(() => {
-    const el = containerRef.current;
-    if (!el) return;
-    el.style.opacity = '0';
-    el.style.transform = 'translateY(8px)';
-    const raf = requestAnimationFrame(() => {
-      el.style.transition = 'opacity 0.25s ease, transform 0.25s ease';
-      el.style.opacity = '1';
-      el.style.transform = 'translateY(0)';
-    });
-    return () => cancelAnimationFrame(raf);
+    // Scroll to top immediato su ogni cambio pagina
+    window.scrollTo({ top: 0, behavior: 'instant' });
   }, [location.pathname]);
 
+  // Renderizza direttamente children senza state intermedio
+  // Questo permette a Suspense di intercettare e mostrare fallback
   return (
-    <div ref={containerRef}>
+    <div className="page-transition-wrapper" key={location.pathname}>
       {children}
     </div>
   );
