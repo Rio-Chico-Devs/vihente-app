@@ -170,7 +170,7 @@ const Portfolio = () => {
             onClick={() => {
               const card = document.querySelector(`[data-card="${cat.id}"]`);
               card?.classList.add('navigating');
-              setTimeout(() => navigate(`/portfolio/${cat.id}`), 300);
+              setTimeout(() => navigate(`/portfolio/${cat.id}`), 150);
             }}
             data-card={cat.id}
           >
