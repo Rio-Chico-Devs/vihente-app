@@ -171,6 +171,35 @@ const ServicesPage = () => {
     };
   }, []);
 
+  // Calcola altezze reali di navbar e footer per mobile
+  useEffect(() => {
+    const updateMobileHeight = () => {
+      if (window.innerWidth <= 768) {
+        const navbar = document.querySelector('.navbar');
+        const footer = document.querySelector('.footer');
+        const servicesMobile = document.querySelector('.services-mobile');
+
+        if (navbar && footer && servicesMobile) {
+          const navbarHeight = navbar.offsetHeight;
+          const footerHeight = footer.offsetHeight;
+          const availableHeight = window.innerHeight - navbarHeight - footerHeight;
+
+          servicesMobile.style.top = `${navbarHeight}px`;
+          servicesMobile.style.height = `${availableHeight}px`;
+        }
+      }
+    };
+
+    updateMobileHeight();
+    window.addEventListener('resize', updateMobileHeight);
+    const timer = setTimeout(updateMobileHeight, 100);
+
+    return () => {
+      window.removeEventListener('resize', updateMobileHeight);
+      clearTimeout(timer);
+    };
+  }, []);
+
   const handleServiceClick = (servicePath) => {
     if (effectsReady && window.triggerWaveEffect) {
       window.triggerWaveEffect();
@@ -185,6 +214,34 @@ const ServicesPage = () => {
     <div className="services-page-wrapper">
       <div className="code-background" id="codeBackground"></div>
       <div id="gridOverlay" className="grid-overlay"></div>
+
+      {/* Mobile: 4 sezioni fullscreen verticali */}
+      <div className="services-mobile">
+        {[
+          { path: '/services/consulenze', title: 'CONSULENZE DIGITALI', desc: 'Analisi e ottimizzazione della presenza digitale aziendale' },
+          { path: '/services/sitiweb', title: 'SITI WEB', desc: 'Sviluppo siti web con tecnologie moderne e design responsive' },
+          { path: '/services/presenza', title: 'SOCIAL MEDIA', desc: 'Gestione dei canali online e strategie di engagement' },
+          { path: '/services/multimedia', title: 'FILE MULTIMEDIALI', desc: 'Produzione file multimediali e grafiche digitali' },
+        ].map((service) => (
+          <div
+            key={service.path}
+            className="services-mobile-card"
+            onClick={() => handleServiceClick(service.path)}
+            role="button"
+            tabIndex={0}
+            aria-label={`Vai a ${service.title}`}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                handleServiceClick(service.path);
+              }
+            }}
+          >
+            <h3 className="service-mobile-title">{service.title}</h3>
+            <div className="service-mobile-subtitle">{service.desc}</div>
+          </div>
+        ))}
+      </div>
 
       <div className="services-container">
         <div
