@@ -11,6 +11,9 @@ const ServicesPage = () => {
   const timeoutsRef = useRef([]);
 
   useEffect(() => {
+    console.log('🚀 ServicesPage MOUNTING...');
+    const mountStart = performance.now();
+
     document.body.classList.add('services-page-body');
     
     gridRef.current = document.getElementById('gridOverlay');
@@ -147,18 +150,27 @@ const ServicesPage = () => {
     };
 
     let cleanup;
-    
+
+    const mountEnd = performance.now();
+    console.log(`✅ ServicesPage MOUNTED in ${(mountEnd - mountStart).toFixed(2)}ms`);
+
     if ('requestIdleCallback' in window) {
+      console.log('⏳ Waiting for requestIdleCallback (max 1000ms)...');
       requestIdleCallback(() => {
+        const effectsStart = performance.now();
+        console.log(`🎨 Starting effects after ${(effectsStart - mountStart).toFixed(2)}ms`);
         cleanup = initEffects();
       }, { timeout: 1000 });
     } else {
+      console.log('⏳ Using setTimeout fallback (500ms)...');
       setTimeout(() => {
+        console.log('🎨 Starting effects (setTimeout)');
         cleanup = initEffects();
       }, 500);
     }
 
     return () => {
+      console.log('🧹 ServicesPage UNMOUNTING');
       document.body.classList.remove('services-page-body');
       
       intervalsRef.current.forEach(interval => clearInterval(interval));
