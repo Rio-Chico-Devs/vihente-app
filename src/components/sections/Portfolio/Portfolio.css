@@ -411,8 +411,8 @@
   opacity: 1;
 }
 
-/* Card slide verso destra + fade out */
-.portfolio-mobile-card.navigating {
+/* Card slide verso destra + fade out (CSS puro, più performante) */
+.portfolio-mobile-card:active {
   animation: slideRightFade 0.25s ease-out forwards;
 }
 

@@ -177,13 +177,9 @@ const Portfolio = () => {
             key={cat.id}
             className="portfolio-mobile-card"
             onClick={() => {
-              const card = document.querySelector(`[data-card="${cat.id}"]`);
-              card?.classList.add('navigating');
               setIsFadingOut(true);
-              // Naviga a metà del fade (120ms) per transizione fluida
               setTimeout(() => navigate(`/portfolio/${cat.id}`), 120);
             }}
-            data-card={cat.id}
           >
             <h3 className="mobile-card-title">{cat.title}</h3>
             <div className="mobile-card-subtitle">{cat.description}</div>
