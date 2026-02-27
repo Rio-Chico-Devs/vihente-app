@@ -136,15 +136,31 @@ const Navbar = () => {
     const currentPath = location.pathname.replace('/vihente-app', '') || '/';
     const targetPath = item.path;
 
+    console.log('[MOBILE NAV] Click:', item.label, 'Current:', currentPath, 'Target:', targetPath);
+
     // Chiudi il menu PRIMA di navigare
     setMobileMenuOpen(false);
     setSelectedItem(null);
 
     // Naviga dopo che il menu si è chiuso
     if (currentPath !== targetPath) {
-      setTimeout(() => {
-        performTransition(item.path);
-      }, 400); // Aspetta che l'overlay scompaia completamente (0.3s transition + buffer mobile)
+      // FORCE navigation con requestAnimationFrame invece di setTimeout
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          console.log('[MOBILE NAV] Navigating to:', targetPath);
+          performTransition(item.path);
+
+          // FORCE re-render completo
+          setTimeout(() => {
+            console.log('[MOBILE NAV] Force repaint');
+            document.body.style.display = 'none';
+            document.body.offsetHeight; // Force reflow
+            document.body.style.display = '';
+          }, 50);
+        });
+      });
+    } else {
+      console.log('[MOBILE NAV] Already on target page');
     }
   };
 
