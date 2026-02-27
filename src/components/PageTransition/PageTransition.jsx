@@ -1,44 +1,25 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import './PageTransition.css';
 
 /**
- * PageTransition - Transizioni fluide tra pagine
- * Usa il pathname come chiave per forzare il re-render
+ * PageTransition - Wrapper semplice per transizioni
+ * NON usa displayChildren per permettere a Suspense di funzionare correttamente
+ * Suspense mostrerà LoadingSpinner durante lazy loading su mobile
  */
 const PageTransition = ({ children }) => {
   const location = useLocation();
-  const [transitionStage, setTransitionStage] = useState('fadeIn');
-  const [displayChildren, setDisplayChildren] = useState(children);
-  const [currentKey, setCurrentKey] = useState(location.pathname);
 
   useEffect(() => {
-    if (location.pathname !== currentKey) {
-      // Fade out
-      setTransitionStage('fadeOut');
+    // Scroll to top immediato su ogni cambio pagina
+    window.scrollTo({ top: 0, behavior: 'instant' });
+  }, [location.pathname]);
 
-      const timer = setTimeout(() => {
-        // Aggiorna contenuto e chiave
-        setDisplayChildren(children);
-        setCurrentKey(location.pathname);
-        setTransitionStage('fadeIn');
-
-        // FORCE REPAINT su mobile con requestAnimationFrame
-        requestAnimationFrame(() => {
-          requestAnimationFrame(() => {
-            // Doppio RAF per assicurare il repaint
-            window.scrollTo({ top: 0, behavior: 'instant' });
-          });
-        });
-      }, 250);
-
-      return () => clearTimeout(timer);
-    }
-  }, [location.pathname, currentKey, children]);
-
+  // Renderizza direttamente children senza state intermedio
+  // Questo permette a Suspense di intercettare e mostrare fallback
   return (
-    <div className={`page-transition ${transitionStage}`} key={currentKey}>
-      {displayChildren}
+    <div className="page-transition-wrapper" key={location.pathname}>
+      {children}
     </div>
   );
 };

@@ -1,31 +1,26 @@
 /*
- * PageTransition - CSS ottimizzato per mobile
- * Hardware-accelerated (solo opacity, no transform)
- * Più fluido e senza intoppi
+ * PageTransition - CSS minimalista
+ * Senza transizioni complesse per permettere a Suspense di funzionare
+ * Su mobile, Suspense mostrerà LoadingSpinner durante lazy loading
  */
 
-.page-transition {
-  /* Ottimizza performance su mobile */
-  will-change: opacity;
-
-  /* Transizione fluida - SOLO OPACITY */
-  transition: opacity 0.25s ease-out;
+.page-transition-wrapper {
+  /* Animazione semplice all'entrata */
+  animation: fadeIn 0.3s ease-out;
 }
 
-/* Fade In (pagina che entra) */
-.page-transition.fadeIn {
-  opacity: 1;
-}
-
-/* Fade Out (pagina che esce) */
-.page-transition.fadeOut {
-  opacity: 0;
-  pointer-events: none; /* Previene click durante transizione */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
 /* Riduce motion per utenti con preferenze accessibilità */
 @media (prefers-reduced-motion: reduce) {
-  .page-transition {
-    transition: opacity 0.15s ease;
+  .page-transition-wrapper {
+    animation: none;
   }
 }
