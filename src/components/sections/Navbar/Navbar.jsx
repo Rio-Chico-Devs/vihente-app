@@ -114,16 +114,11 @@ const Navbar = () => {
 
   // Improved transition with proper navigation timing
   const performTransition = (path) => {
+    if (isTransitioning) return;
     setIsTransitioning(true);
-
-    setTimeout(() => {
-      navigate(path);
-      window.scrollTo({ top: 0, behavior: 'instant' });
-    }, 50);
-
-    setTimeout(() => {
-      setIsTransitioning(false);
-    }, 800);
+    navigate(path);
+    window.scrollTo({ top: 0, behavior: 'instant' });
+    setTimeout(() => setIsTransitioning(false), 800);
   };
 
   const handleDesktopNavClick = (e, path) => {
@@ -141,16 +136,17 @@ const Navbar = () => {
 
   const handleMobileItemClick = (item) => {
     if (selectedItem === item.id) {
-      // Normalizza i path per il confronto
-      const currentPath = location.pathname.replace('/vihente-app', '') || '/';
-      const targetPath = item.path;
-
-      // Permetti la navigazione se non sei esattamente sul path richiesto
-      if (currentPath !== targetPath) {
-        performTransition(item.path);
-      }
+      // Close menu first so it's gone before the route re-renders
       setMobileMenuOpen(false);
       setSelectedItem(null);
+
+      // Normalizza i path per il confronto
+      const currentPath = location.pathname.replace('/vihente-app', '') || '/';
+
+      // Permetti la navigazione se non sei esattamente sul path richiesto
+      if (currentPath !== item.path) {
+        performTransition(item.path);
+      }
     } else {
       setSelectedItem(item.id);
     }
