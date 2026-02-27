@@ -138,29 +138,23 @@ const Navbar = () => {
 
     console.log('[MOBILE NAV] Click:', item.label, 'Current:', currentPath, 'Target:', targetPath);
 
-    // Chiudi il menu PRIMA di navigare
-    setMobileMenuOpen(false);
-    setSelectedItem(null);
-
-    // Naviga dopo che il menu si è chiuso
+    // NAVIGA IMMEDIATAMENTE - non aspettare!
     if (currentPath !== targetPath) {
-      // FORCE navigation con requestAnimationFrame invece di setTimeout
-      requestAnimationFrame(() => {
-        requestAnimationFrame(() => {
-          console.log('[MOBILE NAV] Navigating to:', targetPath);
-          performTransition(item.path);
+      console.log('[MOBILE NAV] Navigating NOW to:', targetPath);
 
-          // FORCE re-render completo
-          setTimeout(() => {
-            console.log('[MOBILE NAV] Force repaint');
-            document.body.style.display = 'none';
-            document.body.offsetHeight; // Force reflow
-            document.body.style.display = '';
-          }, 50);
-        });
+      // Navigate FIRST
+      navigate(targetPath);
+      window.scrollTo({ top: 0, behavior: 'instant' });
+
+      // Then close menu (il menu si chiuderà dopo la navigazione)
+      requestAnimationFrame(() => {
+        setMobileMenuOpen(false);
+        setSelectedItem(null);
       });
     } else {
-      console.log('[MOBILE NAV] Already on target page');
+      console.log('[MOBILE NAV] Already on target page, just close menu');
+      setMobileMenuOpen(false);
+      setSelectedItem(null);
     }
   };
 
