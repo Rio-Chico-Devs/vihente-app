@@ -79,7 +79,7 @@ const LoadingSpinner = () => {
           }
         `}</style>
       </div>
-    </div>   
+    </div>
   );
 };
 

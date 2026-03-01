@@ -241,12 +241,10 @@ const LandingPageOldEye = ({ startTime }) => {
 
     window.addEventListener('mousemove', handlePointerMove);
     window.addEventListener('touchmove', handlePointerMove, { passive: true });
-    window.addEventListener('touchstart', handlePointerMove, { passive: true });
 
     return () => {
       window.removeEventListener('mousemove', handlePointerMove);
       window.removeEventListener('touchmove', handlePointerMove);
-      window.removeEventListener('touchstart', handlePointerMove);
       const clickMessageTimeout = clickMessageTimeoutRef.current;
 
       if (clickMessageTimeout) {
@@ -732,7 +730,8 @@ const LandingPageOldEye = ({ startTime }) => {
           left: 0,
           width: '100%',
           height: '100%',
-          zIndex: 0
+          zIndex: 0,
+          pointerEvents: 'none'
         }}
       />
 
