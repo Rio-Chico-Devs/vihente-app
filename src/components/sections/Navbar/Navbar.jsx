@@ -1,10 +1,12 @@
 import { useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { useTheme } from '../../../contexts/theme';
 import './Navbar.css';
 
 const Navbar = () => {
   const location = useLocation();
   const navigate = useNavigate();
+  const { theme, toggleTheme } = useTheme();
   const [scrolled, setScrolled] = useState(false);
   const [pupilPosition, setPupilPosition] = useState({ x: 50, y: 50 });
   const [isBlinking, setIsBlinking] = useState(false);
@@ -239,7 +241,7 @@ const Navbar = () => {
             aria-label="Torna alla home"
             onClick={handleLogoClick}
           >
-            <svg className="logo-eye" viewBox="0 0 100 100" width="150">
+            <svg className="logo-eye" viewBox="24 36 52 28">
               <defs>
                 <filter id="eyeGlowNav">
                   <feGaussianBlur stdDeviation="1.5" result="coloredBlur"/>
@@ -361,17 +363,34 @@ const Navbar = () => {
             <span className="status-text">Disponibile</span>
           </div>
 
-          {/* Mobile Hamburger Button */}
-          <button
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="hamburger-button mobile-only"
-            aria-label={mobileMenuOpen ? 'Chiudi menu' : 'Apri menu'}
-            aria-expanded={mobileMenuOpen}
-          >
-            <span className={`hamburger-line ${mobileMenuOpen ? 'open' : ''}`} />
-            <span className={`hamburger-line ${mobileMenuOpen ? 'open' : ''}`} />
-            <span className={`hamburger-line ${mobileMenuOpen ? 'open' : ''}`} />
-          </button>
+          {/* Mobile Right Group: theme toggle + hamburger */}
+          <div className="mobile-right-group mobile-only">
+            <button
+              className="theme-toggle-compact"
+              onClick={toggleTheme}
+              aria-label={theme === 'dark' ? 'Attiva Night Mode' : 'Attiva Neon Mode'}
+            >
+              {theme === 'dark' ? (
+                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>
+                </svg>
+              ) : (
+                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+                </svg>
+              )}
+            </button>
+            <button
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              className="hamburger-button"
+              aria-label={mobileMenuOpen ? 'Chiudi menu' : 'Apri menu'}
+              aria-expanded={mobileMenuOpen}
+            >
+              <span className={`hamburger-line ${mobileMenuOpen ? 'open' : ''}`} />
+              <span className={`hamburger-line ${mobileMenuOpen ? 'open' : ''}`} />
+              <span className={`hamburger-line ${mobileMenuOpen ? 'open' : ''}`} />
+            </button>
+          </div>
         </div>
       </nav>
 

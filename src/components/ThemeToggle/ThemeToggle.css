@@ -98,22 +98,6 @@
 
 @media (max-width: 768px) {
   .theme-toggle {
-    bottom: var(--spacing-sm);
-    right: var(--spacing-sm);
-    padding: var(--spacing-xs);
-  }
-
-  .toggle-track {
-    width: 40px;
-    height: 40px;
-  }
-
-  .theme-icon {
-    width: 22px;
-    height: 22px;
-  }
-
-  .theme-label {
-    font-size: 0.65rem;
+    display: none;
   }
 }

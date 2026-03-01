@@ -52,6 +52,8 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+  width: 80px;
+  height: 45px;
 }
 
 .navbar-logo:hover .logo-eye {
@@ -241,7 +243,7 @@
    ============================================ */
 
 .hamburger-button {
-  display: none;
+  display: flex;
   flex-direction: column;
   justify-content: space-around;
   width: 30px;
@@ -251,6 +253,43 @@
   cursor: pointer;
   padding: 0;
   z-index: 1001;
+}
+
+/* ============================================
+   MOBILE RIGHT GROUP (theme toggle + hamburger)
+   ============================================ */
+
+.mobile-right-group {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  z-index: 1001;
+}
+
+.theme-toggle-compact {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  background: transparent;
+  border: 1px solid var(--color-primary-30, rgba(0, 255, 255, 0.3));
+  border-radius: 6px;
+  cursor: pointer;
+  padding: 0;
+  color: var(--color-primary-95, rgba(0, 255, 255, 0.95));
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+}
+
+.theme-toggle-compact:hover {
+  background: var(--color-primary-10, rgba(0, 255, 255, 0.1));
+  border-color: var(--color-primary-60, rgba(0, 255, 255, 0.6));
+  box-shadow: 0 0 8px var(--color-primary-30, rgba(0, 255, 255, 0.3));
+}
+
+.theme-toggle-compact svg {
+  filter: drop-shadow(0 0 3px var(--color-primary-50, rgba(0, 255, 255, 0.5)));
 }
 
 .hamburger-line {
@@ -621,8 +660,8 @@
   }
 
   .logo-eye {
-    width: 120px;
-    height: 120px;
+    width: 75px;
+    height: 43px;
   }
 }
 
@@ -649,12 +688,8 @@
   }
 
   .logo-eye {
-    width: 100px;
-    height: 100px;
-  }
-
-  .hamburger-button {
-    display: flex;
+    width: 65px;
+    height: 37px;
   }
 
   .navbar.mobile-menu-active {
@@ -678,8 +713,8 @@
   }
 
   .navbar-logo.menu-open .logo-eye {
-    width: 140px;
-    height: 140px;
+    width: 90px;
+    height: 51px;
   }
 }
 
@@ -716,8 +751,8 @@
   }
 
   .logo-eye {
-    width: 80px;
-    height: 80px;
+    width: 60px;
+    height: 34px;
   }
 
   .navbar-logo.menu-open {
@@ -726,8 +761,8 @@
   }
 
   .navbar-logo.menu-open .logo-eye {
-    width: 100px;
-    height: 100px;
+    width: 80px;
+    height: 46px;
   }
 }
 
@@ -737,13 +772,13 @@
   }
 
   .logo-eye {
-    width: 70px;
-    height: 70px;
+    width: 55px;
+    height: 31px;
   }
 
   .navbar-logo.menu-open .logo-eye {
-    width: 80px;
-    height: 80px;
+    width: 72px;
+    height: 41px;
   }
 
   .menu-header {
@@ -828,6 +863,10 @@
 }
 
 [data-theme="light"] .hamburger-line {
+  box-shadow: none;
+}
+
+[data-theme="light"] .theme-toggle-compact {
   box-shadow: none;
 }
 
