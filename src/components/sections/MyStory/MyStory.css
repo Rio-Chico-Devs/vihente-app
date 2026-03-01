@@ -421,70 +421,87 @@
     padding-top: 100px;
     padding-bottom: 100px;
   }
+
+  /* Row layout: [Photo | Skills] then [Chi Sono] then [Lingue] */
   .mystory-content {
-    flex-direction: column;
-    height: auto;
-    gap: 1.2rem;
-    max-width: 400px;
-    transform: translate(0%, -6%) scale(0.9);
-  }
-  .mystory-skills {
-    width: 100%;
     flex-direction: row;
     flex-wrap: wrap;
-    justify-content: center;
-    gap: 0.5rem;
-    padding: 0;
-    order: 3;
+    height: auto;
+    gap: 1rem;
+    max-width: 480px;
+  }
+
+  /* Photo — top-left, fixed width */
+  .mystory-photo-container {
+    width: 38%;
+    height: 260px;
+    flex-shrink: 0;
+    order: 1;
+    align-self: stretch;
+  }
+
+  /* Skills — top-right, vertical column filling remaining space */
+  .mystory-skills {
+    flex: 1;
+    min-width: 0;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    gap: 0.45rem;
+    padding: 0.3rem 0;
+    order: 2;
   }
   .mystory-skills-title {
     width: 100%;
-    text-align: center;
-    font-size: 0.9rem;
-    margin-bottom: 0.3rem;
+    text-align: left;
+    font-size: 0.85rem;
+    margin-bottom: 0.2rem;
   }
   .mystory-skill-item {
-    font-size: 0.7rem;
-    padding: 0.4rem 0.7rem;
-    border-left: none;
-    border-bottom: 2px solid var(--color-primary-50, rgba(0, 255, 255, 0.5));
+    font-size: 0.75rem;
+    padding: 0.45rem 0.75rem;
+    border-left: 3px solid var(--color-primary-50, rgba(0, 255, 255, 0.5));
+    border-bottom: none;
   }
   .mystory-skill-item:hover {
-    transform: none;
+    transform: translateX(4px);
   }
+
+  /* Center (Chi Sono + Lingue) — full width below the top row */
   .mystory-center {
+    width: 100%;
     max-width: 100%;
     gap: 1rem;
-    order: 2;
+    order: 3;
   }
-  .mystory-photo-container {
-    width: 180px;
-    height: 220px;
-    order: 1;
-    align-self: center;
-  }
+
+  /* Chi Sono — extended box, bigger font */
   .mystory-box {
-    padding: 1.2rem;
+    padding: 1.5rem;
   }
   .mystory-title {
-    font-size: 1.2rem;
-    margin-bottom: 0.8rem;
+    font-size: 1.5rem;
+    margin-bottom: 0.9rem;
   }
   .mystory-text {
-    font-size: 0.75rem;
-    line-height: 1.6;
+    font-size: 0.92rem;
+    line-height: 1.75;
   }
+
+  /* Lingue — extended, bigger font */
   .mystory-languages {
-    padding: 0.9rem 1.2rem;
+    padding: 1.2rem 1.5rem;
   }
   .mystory-languages-title {
-    font-size: 0.75rem;
-    margin-bottom: 0.4rem;
+    font-size: 0.95rem;
+    margin-bottom: 0.5rem;
   }
   .mystory-languages-text {
-    font-size: 0.7rem;
+    font-size: 0.88rem;
+    line-height: 1.6;
   }
 }
+
 @media (max-width: 480px) {
   .mystory-section {
     padding: 1rem;
@@ -492,37 +509,39 @@
     padding-bottom: 90px;
   }
   .mystory-content {
-    gap: 1rem;
+    gap: 0.8rem;
     max-width: 100%;
-    transform: translate(0%, 5%) scale(1.0);
   }
   .mystory-photo-container {
-    width: 150px;
-    height: 190px;
+    width: 36%;
+    height: 230px;
   }
-  .mystory-box {
-    padding: 1rem;
-  }
-  .mystory-title {
-    font-size: 1.1rem;
-    margin-bottom: 0.6rem;
-  }
-  .mystory-text {
-    font-size: 0.7rem;
-    line-height: 1.5;
-  }
-  .mystory-languages {
-    padding: 0.8rem 1rem;
-  }
-  .mystory-languages-title {
-    font-size: 0.7rem;
-  }
-  .mystory-languages-text {
-    font-size: 0.65rem;
+  .mystory-skills-title {
+    font-size: 0.8rem;
   }
   .mystory-skill-item {
-    font-size: 0.65rem;
-    padding: 0.35rem 0.6rem;
+    font-size: 0.7rem;
+    padding: 0.38rem 0.65rem;
+  }
+  .mystory-box {
+    padding: 1.2rem;
+  }
+  .mystory-title {
+    font-size: 1.3rem;
+    margin-bottom: 0.7rem;
+  }
+  .mystory-text {
+    font-size: 0.85rem;
+    line-height: 1.65;
+  }
+  .mystory-languages {
+    padding: 1rem 1.2rem;
+  }
+  .mystory-languages-title {
+    font-size: 0.88rem;
+  }
+  .mystory-languages-text {
+    font-size: 0.82rem;
   }
 }
 /* ============================================
