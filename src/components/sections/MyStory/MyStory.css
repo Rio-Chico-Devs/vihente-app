@@ -415,127 +415,165 @@
    RESPONSIVE - MOBILE
    ============================================ */
 @media (max-width: 900px) {
+  /* Occupa esattamente il viewport, zero scroll */
   .mystory-section {
-    min-height: auto;
-    padding: 1.5rem;
-    padding-top: 100px;
-    padding-bottom: 100px;
+    height: 100vh;
+    height: 100dvh;
+    min-height: 100dvh;
+    padding: 0.6rem;
+    padding-top: 70px;
+    padding-bottom: 0.6rem;
+    overflow: hidden;
+    align-items: stretch;
+    box-sizing: border-box;
   }
 
-  /* Row layout: [Photo | Skills] then [Chi Sono] then [Lingue] */
+  /*
+    CSS Grid:
+      colonna 1 (46%): FOTO
+      colonna 2 (resto): SKILLS
+      riga 1 (2fr): foto + skills affiancate
+      riga 2 (3fr): chi sono + lingue a piena larghezza
+  */
   .mystory-content {
-    flex-direction: row;
-    flex-wrap: wrap;
-    height: auto;
-    gap: 1rem;
-    max-width: 480px;
+    display: grid;
+    grid-template-columns: 46% 1fr;
+    grid-template-rows: 2fr 3fr;
+    grid-template-areas:
+      "photo skills"
+      "center center";
+    width: 100%;
+    height: 100%;
+    gap: 0.6rem;
+    max-width: 100%;
+    box-sizing: border-box;
   }
 
-  /* Photo — top-left, fixed width */
+  /* FOTO — sinistra, riga 1 */
   .mystory-photo-container {
-    width: 38%;
-    height: 260px;
-    flex-shrink: 0;
-    order: 1;
-    align-self: stretch;
+    grid-area: photo;
+    width: 100%;
+    height: 100%;
+    min-height: 0;
+  }
+  .mystory-photo {
+    width: 100%;
+    height: 100%;
+  }
+  .mystory-photo-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center top;
   }
 
-  /* Skills — top-right, vertical column filling remaining space */
+  /* SKILLS — destra, stessa altezza della foto */
   .mystory-skills {
-    flex: 1;
-    min-width: 0;
+    grid-area: skills;
+    display: flex;
     flex-direction: column;
-    flex-wrap: nowrap;
+    gap: 0.35rem;
+    padding: 0.2rem 0;
+    width: 100%;
+    height: 100%;
+    min-height: 0;
+    overflow: hidden;
     justify-content: flex-start;
-    gap: 0.45rem;
-    padding: 0.3rem 0;
-    order: 2;
   }
   .mystory-skills-title {
-    width: 100%;
-    text-align: left;
-    font-size: 0.85rem;
-    margin-bottom: 0.2rem;
+    font-size: 0.95rem;
+    margin-bottom: 0.25rem;
+    flex-shrink: 0;
+    letter-spacing: 0.05em;
   }
   .mystory-skill-item {
-    font-size: 0.75rem;
-    padding: 0.45rem 0.75rem;
+    flex: 1;
+    min-height: 0;
+    display: flex;
+    align-items: center;
+    font-size: 0.78rem;
+    padding: 0 0.7rem;
     border-left: 3px solid var(--color-primary-50, rgba(0, 255, 255, 0.5));
     border-bottom: none;
+    border-radius: 2px;
   }
   .mystory-skill-item:hover {
     transform: translateX(4px);
   }
 
-  /* Center (Chi Sono + Lingue) — full width below the top row */
+  /* CENTER (Chi Sono + Lingue) — piena larghezza, riga 2 */
   .mystory-center {
+    grid-area: center;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
     width: 100%;
+    height: 100%;
+    min-height: 0;
     max-width: 100%;
-    gap: 1rem;
-    order: 3;
   }
 
-  /* Chi Sono — extended box, bigger font */
+  /* Chi Sono — occupa lo spazio disponibile */
   .mystory-box {
-    padding: 1.5rem;
+    flex: 1;
+    min-height: 0;
+    padding: 1rem 1.2rem;
+    overflow: hidden;
   }
   .mystory-title {
-    font-size: 1.5rem;
-    margin-bottom: 0.9rem;
+    font-size: 1.45rem;
+    margin-bottom: 0.75rem;
   }
   .mystory-text {
-    font-size: 0.92rem;
-    line-height: 1.75;
+    font-size: 0.9rem;
+    line-height: 1.65;
   }
 
-  /* Lingue — extended, bigger font */
+  /* Lingue — compatto in fondo */
   .mystory-languages {
-    padding: 1.2rem 1.5rem;
+    flex: 0 0 auto;
+    padding: 0.85rem 1.2rem;
   }
   .mystory-languages-title {
     font-size: 0.95rem;
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.3rem;
   }
   .mystory-languages-text {
     font-size: 0.88rem;
-    line-height: 1.6;
+    line-height: 1.45;
   }
 }
 
 @media (max-width: 480px) {
   .mystory-section {
-    padding: 1rem;
-    padding-top: 90px;
-    padding-bottom: 90px;
+    padding: 0.5rem;
+    padding-top: 68px;
+    padding-bottom: 0.5rem;
   }
   .mystory-content {
-    gap: 0.8rem;
-    max-width: 100%;
-  }
-  .mystory-photo-container {
-    width: 36%;
-    height: 230px;
+    grid-template-columns: 44% 1fr;
+    gap: 0.5rem;
   }
   .mystory-skills-title {
-    font-size: 0.8rem;
+    font-size: 0.85rem;
   }
   .mystory-skill-item {
     font-size: 0.7rem;
-    padding: 0.38rem 0.65rem;
+    padding: 0 0.6rem;
   }
   .mystory-box {
-    padding: 1.2rem;
+    padding: 0.85rem 1rem;
   }
   .mystory-title {
-    font-size: 1.3rem;
-    margin-bottom: 0.7rem;
+    font-size: 1.25rem;
+    margin-bottom: 0.6rem;
   }
   .mystory-text {
-    font-size: 0.85rem;
-    line-height: 1.65;
+    font-size: 0.82rem;
+    line-height: 1.55;
   }
   .mystory-languages {
-    padding: 1rem 1.2rem;
+    padding: 0.7rem 1rem;
   }
   .mystory-languages-title {
     font-size: 0.88rem;
