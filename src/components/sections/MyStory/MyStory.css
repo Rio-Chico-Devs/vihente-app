@@ -420,7 +420,7 @@
     height: 100dvh;
     padding: 0.6rem;
     padding-top: 90px;
-    padding-bottom: 65px;
+    padding-bottom: 8px;
     overflow: hidden;
     align-items: stretch;
     box-sizing: border-box;
@@ -571,16 +571,16 @@
 /* ≤768px: scrolling header nascosto, solo navbar */
 @media (max-width: 768px) {
   .mystory-section {
-    padding-top: 85px;
-    padding-bottom: 65px;
+    padding-top: 90px;
+    padding-bottom: 8px;
   }
 }
 
 @media (max-width: 480px) {
   .mystory-section {
     padding: 0.5rem;
-    padding-top: 80px;
-    padding-bottom: 65px;
+    padding-top: 90px;
+    padding-bottom: 8px;
   }
   .mystory-content {
     grid-template-columns: 44% 1fr;
