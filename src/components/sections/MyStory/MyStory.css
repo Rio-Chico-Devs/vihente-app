@@ -4,17 +4,16 @@
 .mystory-section {
   background: var(--color-background, #000);
   color: var(--color-text, #fff);
-  height: 100vh;
-  box-sizing: border-box;
+  min-height: 100vh;
   position: relative;
   overflow: hidden;
   font-family: 'Share Tech Mono', monospace;
   display: flex;
-  align-items: stretch;
+  align-items: center;
   justify-content: center;
   padding: 2rem;
-  padding-top: 145px;
-  padding-bottom: 65px;
+  padding-top: 100px;
+  padding-bottom: 100px;
 }
 /* ============================================
    BACKGROUND EFFECTS
@@ -111,8 +110,7 @@
   justify-content: center;
   max-width: 1400px;
   width: 100%;
-  height: 100%;
-  min-height: 0;
+  height: 550px;
 }
 /* ============================================
    SKILLS COLUMN (LEFT)
@@ -390,7 +388,7 @@
 @media (max-width: 1200px) {
   .mystory-content {
     gap: 1.5rem;
-    height: 100%;
+    height: 500px;
   }
   .mystory-skills {
     width: 180px;
@@ -419,11 +417,9 @@
 @media (max-width: 900px) {
   /* Occupa esattamente il viewport, zero scroll */
   .mystory-section {
-    height: 100vh;
     height: 100dvh;
-    min-height: 100dvh;
     padding: 0.6rem;
-    padding-top: 145px;
+    padding-top: 90px;
     padding-bottom: 65px;
     overflow: hidden;
     align-items: stretch;
@@ -523,6 +519,9 @@
     min-height: 0;
     padding: 0.8rem 1.2rem;
     overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
     background: rgba(0, 0, 0, 0.5);
     border: none;
     border-bottom: 1px solid rgba(0, 255, 255, 0.18);
@@ -550,6 +549,9 @@
     flex: 1;
     min-height: 0;
     padding: 0.7rem 1.2rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
     background: rgba(0, 0, 0, 0.5);
     border: none;
     border-radius: 0;
@@ -569,7 +571,7 @@
 /* ≤768px: scrolling header nascosto, solo navbar */
 @media (max-width: 768px) {
   .mystory-section {
-    padding-top: 75px;
+    padding-top: 85px;
     padding-bottom: 65px;
   }
 }
@@ -577,7 +579,7 @@
 @media (max-width: 480px) {
   .mystory-section {
     padding: 0.5rem;
-    padding-top: 73px;
+    padding-top: 80px;
     padding-bottom: 65px;
   }
   .mystory-content {
