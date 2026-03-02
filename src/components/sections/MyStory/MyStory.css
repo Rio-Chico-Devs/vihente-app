@@ -519,7 +519,7 @@
 
   /* Chi Sono — stile sezione, linee orizzontali, niente bordi laterali */
   .mystory-box {
-    flex: 1;
+    flex: 2;
     min-height: 0;
     padding: 0.8rem 1.2rem;
     overflow: hidden;
@@ -547,7 +547,8 @@
 
   /* Lingue — stile sezione, solo linee orizzontali */
   .mystory-languages {
-    flex: 0 0 auto;
+    flex: 1;
+    min-height: 0;
     padding: 0.7rem 1.2rem;
     background: rgba(0, 0, 0, 0.5);
     border: none;
