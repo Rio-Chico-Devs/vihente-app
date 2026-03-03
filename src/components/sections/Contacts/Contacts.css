@@ -9,13 +9,16 @@
 .contacts-section {
   background: var(--bg-black);
   color: var(--text-primary);
-  min-height: 100vh;
+  min-height: 100dvh;
   position: relative;
-  overflow: hidden;
+  overflow-x: hidden;
   font-family: 'Share Tech Mono', monospace;
   display: flex;
   align-items: center;
   justify-content: center;
+  padding-top: 145px;
+  padding-bottom: 95px;
+  box-sizing: border-box;
 }
 
 * {
@@ -265,27 +268,18 @@
    ============================================ */
 
 .contacts-container {
-  position: fixed;
-  top: 140px;
-  bottom: 90px;
-  left: 50%;
-  transform: translateX(-50%);
+  position: relative;
   z-index: 10;
   width: 100%;
   max-width: 1100px;
   padding: 0 1rem;
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  overflow-y: auto;
-  overflow-x: visible;
 }
 
 /* Desktop: considera navbar + scrolling header + footer */
 @media (min-width: 769px) {
   .contacts-container {
-    top: 145px;
-    bottom: 95px;
     max-width: 1150px;
     padding: 0 1rem 0 2rem;
   }
@@ -622,9 +616,12 @@
    ============================================ */
 
 @media (max-width: 1024px) and (min-width: 769px) {
+  .contacts-section {
+    padding-top: 145px;
+    padding-bottom: 90px;
+  }
+
   .contacts-container {
-    top: 145px;
-    bottom: 90px;
     max-width: 950px;
   }
 
@@ -651,9 +648,12 @@
    ============================================ */
 
 @media (max-width: 768px) and (min-width: 481px) {
+  .contacts-section {
+    padding-top: 100px;
+    padding-bottom: 95px;
+  }
+
   .contacts-container {
-    top: 100px;
-    bottom: 95px;
     max-width: 550px;
   }
 
@@ -733,9 +733,12 @@
    ============================================ */
 
 @media (max-width: 480px) and (min-width: 381px) {
+  .contacts-section {
+    padding-top: 95px;
+    padding-bottom: 90px;
+  }
+
   .contacts-container {
-    top: 95px;
-    bottom: 90px;
     max-width: 420px;
     padding: 0 0.8rem;
   }
@@ -822,9 +825,12 @@
    ============================================ */
 
 @media (max-width: 380px) {
+  .contacts-section {
+    padding-top: 90px;
+    padding-bottom: 85px;
+  }
+
   .contacts-container {
-    top: 90px;
-    bottom: 85px;
     max-width: 370px;
     padding: 0 0.6rem;
   }
