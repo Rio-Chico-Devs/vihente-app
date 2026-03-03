@@ -652,8 +652,8 @@
 
 @media (max-width: 768px) and (min-width: 481px) {
   .contacts-container {
-    top: 75px;
-    bottom: 75px;
+    top: 100px;
+    bottom: 95px;
     max-width: 550px;
   }
 
@@ -734,8 +734,8 @@
 
 @media (max-width: 480px) and (min-width: 381px) {
   .contacts-container {
-    top: 75px;
-    bottom: 70px;
+    top: 95px;
+    bottom: 90px;
     max-width: 420px;
     padding: 0 0.8rem;
   }
@@ -823,8 +823,8 @@
 
 @media (max-width: 380px) {
   .contacts-container {
-    top: 75px;
-    bottom: 70px;
+    top: 90px;
+    bottom: 85px;
     max-width: 370px;
     padding: 0 0.6rem;
   }
