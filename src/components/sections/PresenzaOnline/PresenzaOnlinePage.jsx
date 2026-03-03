@@ -254,7 +254,7 @@ const PresenzaOnlinePage = () => {
         </div>
 
         <div className="packages-section">
-          <h2 className="section-title">Pacchetti Social</h2>
+          <h2 className="section-title">Scegli in base alle tue necessità</h2>
           <div className="packages-grid">
             <div className="package-card">
               <div className="package-header">
@@ -270,7 +270,6 @@ const PresenzaOnlinePage = () => {
             </div>
             
             <div className="package-card package-featured">
-              <div className="package-badge">Più Richiesto</div>
               <div className="package-header">
                 <h3 className="package-title">Professional</h3>
                 <p className="package-subtitle">Per business in crescita</p>
@@ -313,12 +312,11 @@ const PresenzaOnlinePage = () => {
           </p>
         </div>
 
-        <button 
+        <button
           className="detail-cta"
           onClick={() => navigate('/contatti')}
         >
-          <span className="cta-text">Richiedi Preventivo</span>
-          <span className="cta-arrow">→</span>
+          Contattami
         </button>
       </div>
     </div>
