@@ -233,10 +233,11 @@ const Contacts = () => {
           className={`form-container ${isAnimating ? 'cube-animation' : ''} ${submitStatus === 'success' && !isAnimating ? 'reappearing' : ''}`}
         >
           <div className="mode-toggle-container">
-            <button 
+            <button
               type="button"
               className="mode-toggle-button"
               onClick={toggleMode}
+              style={{ display: 'none' }}
             >
               <span className="mode-toggle-text">
                 {isQuoteMode ? '📧 Contatto Generale' : '💰 Richiedi un Preventivo'}
