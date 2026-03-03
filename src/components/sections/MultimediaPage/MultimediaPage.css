@@ -824,3 +824,297 @@ body.multimedia-page-body {
 [data-theme="light"] .work-cta-primary {
     background: rgba(232, 160, 48, 0.15);
 }
+
+/* ============================================
+   IMAGE SLIDER — Grafiche Digitali
+   ============================================ */
+.graphics-slider {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+}
+
+.slider-viewport {
+    position: relative;
+    width: 100%;
+    height: 360px;
+    background: var(--color-primary-05);
+    border: 2px solid var(--color-primary-30);
+    border-radius: 12px;
+    overflow: hidden;
+    cursor: pointer;
+    transition: border-color 0.3s ease;
+}
+
+.slider-viewport:hover {
+    border-color: var(--color-primary-60);
+}
+
+.slider-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.35s ease;
+}
+
+.slider-viewport:hover .slider-img {
+    transform: scale(1.04);
+}
+
+.slider-arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 40px;
+    height: 40px;
+    background: rgba(0, 0, 0, 0.65);
+    border: 2px solid var(--color-primary-50);
+    border-radius: 50%;
+    color: var(--color-primary);
+    font-size: 1.5rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+    z-index: 2;
+    line-height: 1;
+}
+
+.slider-arrow:hover {
+    background: var(--color-primary-20);
+    border-color: var(--color-primary);
+    box-shadow: 0 0 14px var(--color-primary-40);
+}
+
+.slider-prev { left: 10px; }
+.slider-next { right: 10px; }
+
+.slider-zoom-hint {
+    position: absolute;
+    bottom: 10px;
+    right: 12px;
+    font-size: 0.78rem;
+    color: var(--color-primary);
+    background: rgba(0, 0, 0, 0.65);
+    padding: 4px 10px;
+    border-radius: 4px;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.25s ease;
+}
+
+.slider-viewport:hover .slider-zoom-hint {
+    opacity: 1;
+}
+
+.slider-dots {
+    display: flex;
+    gap: 0.6rem;
+}
+
+.slider-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--color-primary-30);
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    transition: all 0.2s ease;
+}
+
+.slider-dot.active {
+    background: var(--color-primary);
+    box-shadow: 0 0 8px var(--color-primary-60);
+    transform: scale(1.3);
+}
+
+/* ============================================
+   ANIMATION PLAYER
+   ============================================ */
+.anim-frame-img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    display: block;
+}
+
+.anim-play-btn {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 72px;
+    height: 72px;
+    background: rgba(0, 0, 0, 0.65);
+    border: 3px solid var(--color-primary-60);
+    border-radius: 50%;
+    color: var(--color-primary);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: opacity 0.3s ease, background 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+    z-index: 3;
+}
+
+.anim-play-btn svg {
+    width: 32px;
+    height: 32px;
+}
+
+.anim-play-btn:hover {
+    background: rgba(0, 0, 0, 0.85);
+    border-color: var(--color-primary);
+    box-shadow: 0 0 20px var(--color-primary-50);
+    transform: translate(-50%, -50%) scale(1.1);
+}
+
+/* Nascondi il bottone quando è in play, ricompare al hover sul frame */
+.anim-play-btn.is-playing {
+    opacity: 0;
+}
+
+.animation-frame:hover .anim-play-btn.is-playing {
+    opacity: 1;
+}
+
+.anim-frame-counter {
+    position: absolute;
+    bottom: 12px;
+    right: 14px;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.82rem;
+    color: var(--color-primary-70);
+    background: rgba(0, 0, 0, 0.55);
+    padding: 3px 8px;
+    border-radius: 4px;
+    z-index: 2;
+    pointer-events: none;
+}
+
+/* ============================================
+   SHOWCASE IMAGES — Illustrazioni & Brand
+   ============================================ */
+.illustration-showcase,
+.brand-showcase {
+    overflow: hidden;
+}
+
+.showcase-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    display: block;
+}
+
+/* ============================================
+   IMAGE MODAL
+   ============================================ */
+.img-modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.88);
+    backdrop-filter: blur(6px);
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    animation: modalFadeIn 0.2s ease;
+}
+
+@keyframes modalFadeIn {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
+
+.img-modal {
+    position: relative;
+    background: rgba(0, 0, 0, 0.92);
+    border: 2px solid var(--color-primary-40);
+    border-radius: 16px;
+    padding: 2.5rem 2rem 2rem;
+    max-width: 900px;
+    max-height: 90vh;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+    overflow-y: auto;
+    animation: modalScaleIn 0.2s ease;
+    box-shadow: 0 0 60px var(--color-primary-20);
+}
+
+@keyframes modalScaleIn {
+    from { transform: scale(0.9); opacity: 0; }
+    to   { transform: scale(1);   opacity: 1; }
+}
+
+.modal-close {
+    position: absolute;
+    top: 14px;
+    right: 16px;
+    background: transparent;
+    border: 1px solid var(--color-primary-40);
+    color: var(--color-primary);
+    font-size: 1.2rem;
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+    transition: all 0.2s ease;
+}
+
+.modal-close:hover {
+    background: var(--color-primary-15);
+    border-color: var(--color-primary);
+    box-shadow: 0 0 10px var(--color-primary-30);
+}
+
+.modal-img {
+    max-width: 100%;
+    max-height: 65vh;
+    object-fit: contain;
+    border-radius: 8px;
+    display: block;
+    border: 1px solid var(--color-primary-20);
+}
+
+.modal-description {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 1rem;
+    color: var(--text-primary-85, rgba(255, 255, 255, 0.85));
+    text-align: center;
+    line-height: 1.7;
+    margin: 0;
+    padding: 1rem 1rem 0;
+    border-top: 1px solid var(--color-primary-20);
+    width: 100%;
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+    .slider-viewport { height: 260px; }
+    .anim-play-btn { width: 56px; height: 56px; }
+    .anim-play-btn svg { width: 24px; height: 24px; }
+    .img-modal { padding: 2.2rem 1.2rem 1.5rem; gap: 1.2rem; }
+    .modal-img { max-height: 55vh; }
+    .modal-description { font-size: 0.9rem; }
+}
+
+@media (max-width: 480px) {
+    .slider-viewport { height: 200px; }
+    .slider-arrow { width: 32px; height: 32px; font-size: 1.2rem; }
+    .modal-description { font-size: 0.85rem; }
+}
