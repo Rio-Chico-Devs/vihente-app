@@ -243,7 +243,7 @@ const Contacts = () => {
               </span>
             </button>
             <p className="section-subtitle">
-              {isQuoteMode ? '→ RICHIEDI UN PREVENTIVO' : ''}
+              {isQuoteMode ? 'RICHIEDI UN PREVENTIVO' : ''}
             </p>
           </div>
 
@@ -420,8 +420,8 @@ const Contacts = () => {
               >
                 <span className="submit-button-text">
                   {isQuoteMode
-                    ? '→ INVIA RICHIESTA PREVENTIVO'
-                    : '→ INVIA MESSAGGIO'}
+                    ? 'INVIA RICHIESTA PREVENTIVO'
+                    : 'INVIA MESSAGGIO'}
                 </span>
               </button>
 
