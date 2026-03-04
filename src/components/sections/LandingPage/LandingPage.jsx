@@ -49,8 +49,12 @@ const LandingPageOldEye = ({ startTime }) => {
   const [memory, setMemory] = useState('N/A');
   const [network, setNetwork] = useState('UNKNOWN');
   const [isEyeGlitching, setIsEyeGlitching] = useState(false);
-  const [pupilPosition, setPupilPosition] = useState({ x: 500, y: 500 });
-  const [isNearEye, setIsNearEye] = useState(false);
+  // Refs invece di state: aggiornamento diretto del DOM senza re-render React
+  // (React 19 + Router 7 usano startTransition per la navigazione — setState a 60fps
+  //  da rAF preemptava la transizione causando il blocco della navigazione)
+  const isNearEyeRef = useRef(false);
+  const pupilCircle1Ref = useRef(null);
+  const pupilCircle2Ref = useRef(null);
   const [clickCount, setClickCount] = useState(0);
   const [showClickMessage, setShowClickMessage] = useState(false);
   const [clickMessage, setClickMessage] = useState('');
@@ -111,7 +115,17 @@ const LandingPageOldEye = ({ startTime }) => {
         current.y += dy * smoothness;
       }
 
-      setPupilPosition({ x: current.x, y: current.y });
+      // Aggiornamento diretto del DOM — zero re-render React, navigazione non bloccata
+      const cx = current.x.toString();
+      const cy = current.y.toString();
+      if (pupilCircle1Ref.current) {
+        pupilCircle1Ref.current.setAttribute('cx', cx);
+        pupilCircle1Ref.current.setAttribute('cy', cy);
+      }
+      if (pupilCircle2Ref.current) {
+        pupilCircle2Ref.current.setAttribute('cx', cx);
+        pupilCircle2Ref.current.setAttribute('cy', cy);
+      }
       interpolationFrameRef.current = requestAnimationFrame(interpolate);
     }
 
@@ -143,7 +157,7 @@ const LandingPageOldEye = ({ startTime }) => {
 
       const now = Date.now();
 
-      if (distance < 300 && isNearEye) {
+      if (distance < 300 && isNearEyeRef.current) {
         const currentPos = { x: clientX, y: clientY };
 
         if (lastPositionRef.current) {
@@ -186,7 +200,7 @@ const LandingPageOldEye = ({ startTime }) => {
 
         lastPositionRef.current = currentPos;
       } else {
-        if (!isNearEye || distance >= 300) {
+        if (!isNearEyeRef.current || distance >= 300) {
           directionChangesRef.current = [];
           lastDirectionRef.current = null;
           lastPositionRef.current = null;
@@ -200,7 +214,7 @@ const LandingPageOldEye = ({ startTime }) => {
       }
 
       if (distance < activationRadius) {
-        setIsNearEye(true);
+        isNearEyeRef.current = true;
 
         const svgWidth = 1000;
         const svgHeight = 1000;
@@ -232,8 +246,8 @@ const LandingPageOldEye = ({ startTime }) => {
 
         targetPositionRef.current = { x: newX, y: newY };
       } else {
-        if (isNearEye) {
-          setIsNearEye(false);
+        if (isNearEyeRef.current) {
+          isNearEyeRef.current = false;
           targetPositionRef.current = { x: 500, y: 500 };
         }
       }
@@ -251,7 +265,7 @@ const LandingPageOldEye = ({ startTime }) => {
         clearTimeout(clickMessageTimeout);
       }
     };
-  }, [isNearEye]);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
     console.log('🎯 LandingPage mounted');
@@ -865,8 +879,9 @@ const LandingPageOldEye = ({ startTime }) => {
 
                   <g clipPath="url(#eyeContourClip)">
                     <circle
-                      cx={pupilPosition.x}
-                      cy={pupilPosition.y}
+                      ref={pupilCircle1Ref}
+                      cx="500"
+                      cy="500"
                       r="80"
                       fill="none"
                       stroke={colors.primary95}
@@ -875,8 +890,9 @@ const LandingPageOldEye = ({ startTime }) => {
                     />
 
                     <circle
-                      cx={pupilPosition.x}
-                      cy={pupilPosition.y}
+                      ref={pupilCircle2Ref}
+                      cx="500"
+                      cy="500"
                       r="35"
                       fill="none"
                       stroke={colors.primary95}

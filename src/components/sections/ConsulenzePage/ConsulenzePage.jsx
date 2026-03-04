@@ -181,9 +181,6 @@ const ConsulenzePage = () => {
         </div>
 
         <div className="highlight-box">
-          <div className="highlight-icon">
-            <GiftIcon />
-          </div>
           <h3 className="highlight-title">Sono a disposizione anche online!</h3>
           <p className="highlight-text">
             Se l'icona è su disponibile, sarò felice di aiutarti! Parliamo insieme dei tuoi obiettivi 
@@ -198,7 +195,6 @@ const ConsulenzePage = () => {
           
           
           <span className="cta-text"><br></br><br></br>Fissa un colloquio contattandomi.</span>
-          <span className="cta-arrow">→</span>
         </button>
       </div>
     </div>

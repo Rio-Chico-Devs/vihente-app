@@ -24,9 +24,7 @@
 
 .trophy-arena {
 
-  min-height: 100vh;
-
-  height: 100vh;
+  min-height: 100dvh;
 
   background: var(--bg-primary);
 
@@ -36,7 +34,7 @@
 
   overflow-x: hidden;
 
-  padding: calc(var(--header-height) + var(--spacing-lg)) var(--spacing-lg) var(--spacing-lg) var(--spacing-lg);
+  padding: 100px var(--spacing-lg) 95px var(--spacing-lg);
 
   box-sizing: border-box;
 
@@ -1506,7 +1504,7 @@
 
   .trophy-arena {
 
-    padding: var(--spacing-lg) var(--spacing-sm);
+    padding: 100px var(--spacing-sm) 95px;
 
   }
 

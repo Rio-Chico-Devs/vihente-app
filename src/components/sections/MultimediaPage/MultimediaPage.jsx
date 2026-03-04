@@ -1,31 +1,99 @@
-import { useEffect } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './MultimediaPage.css';
+
+/* ── Slot immagini grafiche digitali — sostituisci src con i tuoi URL ── */
+const GRAFICHE_SLIDES = [
+  { src: '', alt: 'Banner',       description: 'Banner digitale — aggiungi descrizione' },
+  { src: '', alt: 'Sfondo',       description: 'Sfondo digitale — aggiungi descrizione' },
+  { src: '', alt: 'Social Media', description: 'Grafica social media — aggiungi descrizione' },
+  { src: '', alt: 'Web Graphic',  description: 'Web grafica — aggiungi descrizione' },
+];
+
+/* ── Slot frame animazione — sostituisci src con i tuoi URL (8 frame) ── */
+const ANIM_FRAMES = [
+  { src: '', alt: 'Frame 1' },
+  { src: '', alt: 'Frame 2' },
+  { src: '', alt: 'Frame 3' },
+  { src: '', alt: 'Frame 4' },
+  { src: '', alt: 'Frame 5' },
+  { src: '', alt: 'Frame 6' },
+  { src: '', alt: 'Frame 7' },
+  { src: '', alt: 'Frame 8' },
+];
+
+const FRAME_MS = 120; // millisecondi per frame
 
 const MultimediaPage = () => {
   const navigate = useNavigate();
 
+  /* Grafiche: slider + modal */
+  const [slide, setSlide]   = useState(0);
+  const [modal, setModal]   = useState(null); // null | indice slide
+
+  /* Animazione: frame corrente + play/pause */
+  const [frame,   setFrame]   = useState(0);
+  const [playing, setPlaying] = useState(false);
+  const intervalRef = useRef(null);
+
+  /* Body class */
   useEffect(() => {
     document.body.classList.add('multimedia-page-body');
-    return () => {
-      document.body.classList.remove('multimedia-page-body');
-    };
+    return () => document.body.classList.remove('multimedia-page-body');
   }, []);
+
+  /* Loop animazione */
+  useEffect(() => {
+    if (playing) {
+      intervalRef.current = setInterval(
+        () => setFrame(f => (f + 1) % ANIM_FRAMES.length),
+        FRAME_MS
+      );
+    } else {
+      clearInterval(intervalRef.current);
+    }
+    return () => clearInterval(intervalRef.current);
+  }, [playing]);
+
+  /* Chiudi modal con Escape */
+  useEffect(() => {
+    if (modal === null) return;
+    const onKey = (e) => { if (e.key === 'Escape') setModal(null); };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [modal]);
+
+  const prevSlide = () => setSlide(s => (s - 1 + GRAFICHE_SLIDES.length) % GRAFICHE_SLIDES.length);
+  const nextSlide = () => setSlide(s => (s + 1) % GRAFICHE_SLIDES.length);
 
   return (
     <div className="multimedia-page-wrapper">
-      {/* Background grid overlay */}
       <div className="multimedia-grid-overlay"></div>
 
-      {/* Scrollable content */}
+      {/* ── Modal immagine grafiche ── */}
+      {modal !== null && (
+        <div className="img-modal-overlay" onClick={() => setModal(null)}>
+          <div className="img-modal" onClick={e => e.stopPropagation()}>
+            <button className="modal-close" onClick={() => setModal(null)}>✕</button>
+            <img
+              src={GRAFICHE_SLIDES[modal].src}
+              alt={GRAFICHE_SLIDES[modal].alt}
+              className="modal-img"
+            />
+            <p className="modal-description">{GRAFICHE_SLIDES[modal].description}</p>
+          </div>
+        </div>
+      )}
+
       <div className="multimedia-content">
-        {/* Hero section */}
+
+        {/* Hero */}
         <section className="multimedia-hero">
           <h1 className="multimedia-title">Creazione Multimedia</h1>
           <p className="multimedia-subtitle">Grafiche, Animazioni e Illustrazioni su Misura</p>
         </section>
 
-        {/* Introduction */}
+        {/* Intro */}
         <section className="multimedia-section intro-section">
           <div className="intro-box">
             <p className="intro-text">
@@ -40,7 +108,7 @@ const MultimediaPage = () => {
           </div>
         </section>
 
-        {/* Animazioni Section */}
+        {/* ── Animazioni ── */}
         <section className="multimedia-section work-section">
           <div className="work-container work-reverse">
             <div className="work-content">
@@ -49,29 +117,41 @@ const MultimediaPage = () => {
                 Creo e partecipo nella creazione di animazioni da quando sono giovane, illustrami il tuo progetto
                 e ti faccio sapere subito se sono disponibile ;)
               </p>
-              <button
-                className="work-cta"
-                onClick={() => navigate('/contatti')}
-              >
+              <button className="work-cta" onClick={() => navigate('/contatti')}>
                 Raccontami il Tuo Progetto
               </button>
             </div>
             <div className="work-showcase">
               <div className="animation-frame">
-                <div className="frame-placeholder">
-                  <svg className="frame-icon" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <circle cx="32" cy="32" r="26" stroke="currentColor" strokeWidth="3" fill="none"/>
-                    <path d="M26 20 L26 44 L44 32 Z" fill="currentColor"/>
-                  </svg>
-                  <p className="frame-text">Frame Animazione</p>
-                  <p className="frame-hint">Qui verranno inserite le immagini<br/>dell'animazione in sequenza</p>
-                </div>
+                {/* 8 frame — sostituisci src in ANIM_FRAMES */}
+                <img
+                  src={ANIM_FRAMES[frame].src}
+                  alt={ANIM_FRAMES[frame].alt}
+                  className="anim-frame-img"
+                />
+                <button
+                  className={`anim-play-btn${playing ? ' is-playing' : ''}`}
+                  onClick={() => setPlaying(p => !p)}
+                  aria-label={playing ? 'Pausa animazione' : 'Avvia animazione'}
+                >
+                  {playing ? (
+                    <svg viewBox="0 0 24 24" fill="currentColor">
+                      <rect x="6" y="4" width="4" height="16" rx="1"/>
+                      <rect x="14" y="4" width="4" height="16" rx="1"/>
+                    </svg>
+                  ) : (
+                    <svg viewBox="0 0 24 24" fill="currentColor">
+                      <path d="M8 5v14l11-7L8 5z"/>
+                    </svg>
+                  )}
+                </button>
+                <span className="anim-frame-counter">{frame + 1} / {ANIM_FRAMES.length}</span>
               </div>
             </div>
           </div>
         </section>
 
-        {/* Grafiche Digitali Section */}
+        {/* ── Grafiche Digitali — slider ── */}
         <section className="multimedia-section work-section">
           <div className="work-container">
             <div className="work-content">
@@ -80,55 +160,47 @@ const MultimediaPage = () => {
                 Creo banner, sfondi e immagini utilizzabili in vari tipi di progetti e piattaforme.
                 Contattami subito per creare le tue!
               </p>
-              <button
-                className="work-cta"
-                onClick={() => navigate('/contatti')}
-              >
+              <button className="work-cta" onClick={() => navigate('/contatti')}>
                 Inizia il Tuo Progetto
               </button>
             </div>
             <div className="work-showcase">
-              <div className="graphics-grid">
-                <div className="graphic-item">
-                  <svg className="graphic-icon" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <rect x="8" y="12" width="48" height="40" rx="3" stroke="currentColor" strokeWidth="3" fill="none"/>
-                    <path d="M48 12 L56 12 L56 20" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"/>
-                  </svg>
-                  <p>Banner</p>
+              {/* Slider — sostituisci src in GRAFICHE_SLIDES */}
+              <div className="graphics-slider">
+                <div className="slider-viewport" onClick={() => setModal(slide)}>
+                  <img
+                    src={GRAFICHE_SLIDES[slide].src}
+                    alt={GRAFICHE_SLIDES[slide].alt}
+                    className="slider-img"
+                  />
+                  <button
+                    className="slider-arrow slider-prev"
+                    onClick={e => { e.stopPropagation(); prevSlide(); }}
+                    aria-label="Precedente"
+                  >‹</button>
+                  <button
+                    className="slider-arrow slider-next"
+                    onClick={e => { e.stopPropagation(); nextSlide(); }}
+                    aria-label="Successivo"
+                  >›</button>
+                  <span className="slider-zoom-hint">🔍 Clicca per ingrandire</span>
                 </div>
-                <div className="graphic-item">
-                  <svg className="graphic-icon" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <circle cx="32" cy="32" r="24" stroke="currentColor" strokeWidth="3" fill="none"/>
-                    <circle cx="32" cy="32" r="16" stroke="currentColor" strokeWidth="3" fill="none"/>
-                    <circle cx="32" cy="32" r="8" stroke="currentColor" strokeWidth="3" fill="none"/>
-                  </svg>
-                  <p>Sfondi</p>
-                </div>
-                <div className="graphic-item">
-                  <svg className="graphic-icon" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <circle cx="32" cy="18" r="10" stroke="currentColor" strokeWidth="3" fill="none"/>
-                    <circle cx="18" cy="42" r="10" stroke="currentColor" strokeWidth="3" fill="none"/>
-                    <circle cx="46" cy="42" r="10" stroke="currentColor" strokeWidth="3" fill="none"/>
-                    <line x1="27" y1="25" x2="21" y2="35" stroke="currentColor" strokeWidth="3"/>
-                    <line x1="37" y1="25" x2="43" y2="35" stroke="currentColor" strokeWidth="3"/>
-                  </svg>
-                  <p>Social Media</p>
-                </div>
-                <div className="graphic-item">
-                  <svg className="graphic-icon" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <rect x="12" y="12" width="18" height="18" rx="2" stroke="currentColor" strokeWidth="3" fill="none"/>
-                    <rect x="34" y="12" width="18" height="18" rx="2" stroke="currentColor" strokeWidth="3" fill="none"/>
-                    <rect x="12" y="34" width="18" height="18" rx="2" stroke="currentColor" strokeWidth="3" fill="none"/>
-                    <rect x="34" y="34" width="18" height="18" rx="2" stroke="currentColor" strokeWidth="3" fill="none"/>
-                  </svg>
-                  <p>Web Graphics</p>
+                <div className="slider-dots">
+                  {GRAFICHE_SLIDES.map((_, i) => (
+                    <button
+                      key={i}
+                      className={`slider-dot${i === slide ? ' active' : ''}`}
+                      onClick={() => setSlide(i)}
+                      aria-label={`Slide ${i + 1}`}
+                    />
+                  ))}
                 </div>
               </div>
             </div>
           </div>
         </section>
 
-        {/* Illustrazioni Section */}
+        {/* ── Illustrazioni ── */}
         <section className="multimedia-section work-section">
           <div className="work-container work-reverse">
             <div className="work-content">
@@ -138,29 +210,24 @@ const MultimediaPage = () => {
                 insegnarti, aiutarti nei tuoi progetti o creare direttamente illustrazioni su commissione,
                 visita i miei canali social o consulta il mio portfolio per avere un'idea più precisa dei miei vari stili e tecniche!
               </p>
-              <button
-                className="work-cta"
-                onClick={() => navigate('/contatti')}
-              >
+              <button className="work-cta" onClick={() => navigate('/contatti')}>
                 Scopri i Miei Stili
               </button>
             </div>
             <div className="work-showcase">
               <div className="illustration-showcase">
-                <div className="illustration-placeholder">
-                  <svg className="illustration-icon" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M20 52 L16 8 L22 10 L44 52 L38 54 Z" stroke="currentColor" strokeWidth="3" fill="none" strokeLinecap="round" strokeLinejoin="round"/>
-                    <ellipse cx="41" cy="48" rx="4" ry="6" fill="currentColor" transform="rotate(-15 41 48)"/>
-                  </svg>
-                  <p className="illustration-text">Portfolio Illustrazioni</p>
-                  <p className="illustration-hint">Spazio per esempi<br/>di illustrazioni</p>
-                </div>
+                {/* Inserisci il tuo URL nell'attributo src */}
+                <img
+                  src=""
+                  alt="Illustrazione — aggiungi descrizione"
+                  className="showcase-img"
+                />
               </div>
             </div>
           </div>
         </section>
 
-        {/* Vari Contenuti Digitali Section */}
+        {/* ── Vari Contenuti Digitali (Brand Identity) ── */}
         <section className="multimedia-section work-section">
           <div className="work-container">
             <div className="work-content">
@@ -200,23 +267,18 @@ const MultimediaPage = () => {
                   <span>Icon Design</span>
                 </div>
               </div>
-              <button
-                className="work-cta work-cta-primary"
-                onClick={() => navigate('/contatti')}
-              >
+              <button className="work-cta work-cta-primary" onClick={() => navigate('/contatti')}>
                 Contattami Ora
               </button>
             </div>
             <div className="work-showcase">
               <div className="brand-showcase">
-                <div className="brand-placeholder">
-                  <svg className="brand-icon" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M32 8 L50 24 L50 40 L32 56 L14 40 L14 24 Z" stroke="currentColor" strokeWidth="3" fill="none" strokeLinejoin="round"/>
-                    <path d="M32 20 L42 28 L42 36 L32 44 L22 36 L22 28 Z" stroke="currentColor" strokeWidth="3" fill="none" strokeLinejoin="round"/>
-                  </svg>
-                  <p className="brand-text">Brand Identity</p>
-                  <p className="brand-hint">Esempi di loghi,<br/>palette e branding</p>
-                </div>
+                {/* Inserisci il tuo URL nell'attributo src */}
+                <img
+                  src=""
+                  alt="Brand Identity — aggiungi descrizione"
+                  className="showcase-img"
+                />
               </div>
             </div>
           </div>
@@ -228,13 +290,11 @@ const MultimediaPage = () => {
           <p className="cta-text">
             Sono pronto ad ascoltare il tuo progetto e trasformarlo in realtà
           </p>
-          <button
-            className="multimedia-cta-button"
-            onClick={() => navigate('/contatti')}
-          >
+          <button className="multimedia-cta-button" onClick={() => navigate('/contatti')}>
             Contattami
           </button>
         </section>
+
       </div>
     </div>
   );

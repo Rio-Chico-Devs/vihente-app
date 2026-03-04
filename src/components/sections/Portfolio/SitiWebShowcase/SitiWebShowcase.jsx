@@ -1,8 +1,25 @@
 import { useNavigate } from 'react-router-dom';
 import './SitiWebShowcase.css';
 
+// Imposta a false per riattivarla quando i permessi saranno ottenuti
+const COMING_SOON = true;
+
 const SitiWebShowcase = () => {
   const navigate = useNavigate();
+
+  if (COMING_SOON) {
+    return (
+      <div className="sitiweb-showcase sitiweb-coming-soon-page">
+        <div className="coming-soon-box">
+          <h1 className="coming-soon-title">COMING SOON</h1>
+          <p className="coming-soon-text">
+            Sto lavorando per ottenere i permessi per poter pubblicare i siti
+            creati da me in questa sezione. Scusate per il disagio :(
+          </p>
+        </div>
+      </div>
+    );
+  }
 
   const websites = [
     {

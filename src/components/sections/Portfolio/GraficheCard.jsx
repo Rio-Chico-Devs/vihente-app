@@ -43,7 +43,7 @@ const GraficheCard = ({ theme = 'dark' }) => {
     let time = 0;
     let lastChangeTime = 0;
     let currentState = 'idle';
-    let stateDuration = 1.5;
+    let stateDuration = 0.5;
 
     // Proiezione 3D -> 2D
     function project(x, y, z) {

@@ -111,6 +111,7 @@
   max-width: 1400px;
   width: 100%;
   height: 550px;
+  top: 25px;
 }
 /* ============================================
    SKILLS COLUMN (LEFT)
@@ -415,114 +416,204 @@
    RESPONSIVE - MOBILE
    ============================================ */
 @media (max-width: 900px) {
+  /* Occupa esattamente il viewport, zero scroll */
   .mystory-section {
-    min-height: auto;
-    padding: 1.5rem;
+    height: 100dvh;
+    padding: 0.6rem;
     padding-top: 100px;
-    padding-bottom: 100px;
+    padding-bottom: 95px;
+    overflow: hidden;
+    align-items: stretch;
+    box-sizing: border-box;
   }
+
+  /*
+    CSS Grid:
+      colonna 1 (46%): FOTO
+      colonna 2 (resto): SKILLS
+      riga 1 (2fr): foto + skills affiancate
+      riga 2 (3fr): chi sono + lingue a piena larghezza
+  */
   .mystory-content {
-    flex-direction: column;
-    height: auto;
-    gap: 1.2rem;
-    max-width: 400px;
-    transform: translate(0%, -6%) scale(0.9);
-  }
-  .mystory-skills {
+    display: grid;
+    grid-template-columns: 46% 1fr;
+    grid-template-rows: 2fr 3fr;
+    grid-template-areas:
+      "photo skills"
+      "center center";
     width: 100%;
-    flex-direction: row;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 0.5rem;
-    padding: 0;
-    order: 3;
+    height: 100%;
+    gap: 0.6rem;
+    max-width: 100%;
+    box-sizing: border-box;
+    top: 10px;
+  }
+
+  /* FOTO — sinistra, riga 1 */
+  .mystory-photo-container {
+    grid-area: photo;
+    width: 100%;
+    height: 100%;
+    min-height: 0;
+  }
+  .mystory-photo {
+    width: 100%;
+    height: 100%;
+  }
+  .mystory-photo-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center top;
+  }
+
+  /* SKILLS — destra, stessa altezza della foto */
+  .mystory-skills {
+    grid-area: skills;
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+    padding: 0.2rem 0;
+    width: 100%;
+    height: 100%;
+    min-height: 0;
+    overflow: hidden;
+    justify-content: flex-start;
   }
   .mystory-skills-title {
-    width: 100%;
-    text-align: center;
-    font-size: 0.9rem;
-    margin-bottom: 0.3rem;
+    font-size: 0.95rem;
+    margin-bottom: 0.25rem;
+    flex-shrink: 0;
+    letter-spacing: 0.05em;
   }
   .mystory-skill-item {
-    font-size: 0.7rem;
-    padding: 0.4rem 0.7rem;
-    border-left: none;
-    border-bottom: 2px solid var(--color-primary-50, rgba(0, 255, 255, 0.5));
+    flex: 1;
+    min-height: 0;
+    display: flex;
+    align-items: center;
+    font-size: 0.78rem;
+    padding: 0 0.7rem;
+    border-left: 3px solid var(--color-primary-50, rgba(0, 255, 255, 0.5));
+    border-bottom: none;
+    border-radius: 2px;
   }
   .mystory-skill-item:hover {
-    transform: none;
+    transform: translateX(4px);
   }
+
+  /* CENTER (Chi Sono + Lingue) — piena larghezza, riga 2 */
   .mystory-center {
+    grid-area: center;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    width: 100%;
+    height: 100%;
+    min-height: 0;
     max-width: 100%;
-    gap: 1rem;
-    order: 2;
+    border-top: 1px solid rgba(0, 255, 255, 0.18);
+    justify-content: flex-start;
   }
-  .mystory-photo-container {
-    width: 180px;
-    height: 220px;
-    order: 1;
-    align-self: center;
-  }
+
+  /* Chi Sono — stile sezione, linee orizzontali, niente bordi laterali */
   .mystory-box {
-    padding: 1.2rem;
+    flex: 2;
+    min-height: 0;
+    padding: 0.8rem 1.2rem;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    background: rgba(0, 0, 0, 0.5);
+    border: none;
+    border-bottom: 1px solid rgba(0, 255, 255, 0.18);
+    border-radius: 0;
+    box-shadow: none;
+    backdrop-filter: none;
+  }
+  .mystory-box:hover {
+    transform: none;
+    box-shadow: none;
+    border-color: rgba(0, 255, 255, 0.18);
+    background: rgba(0, 255, 255, 0.04);
   }
   .mystory-title {
     font-size: 1.2rem;
-    margin-bottom: 0.8rem;
-  }
-  .mystory-text {
-    font-size: 0.75rem;
-    line-height: 1.6;
-  }
-  .mystory-languages {
-    padding: 0.9rem 1.2rem;
-  }
-  .mystory-languages-title {
-    font-size: 0.75rem;
-    margin-bottom: 0.4rem;
-  }
-  .mystory-languages-text {
-    font-size: 0.7rem;
-  }
-}
-@media (max-width: 480px) {
-  .mystory-section {
-    padding: 1rem;
-    padding-top: 90px;
-    padding-bottom: 90px;
-  }
-  .mystory-content {
-    gap: 1rem;
-    max-width: 100%;
-    transform: translate(0%, 5%) scale(1.0);
-  }
-  .mystory-photo-container {
-    width: 150px;
-    height: 190px;
-  }
-  .mystory-box {
-    padding: 1rem;
-  }
-  .mystory-title {
-    font-size: 1.1rem;
     margin-bottom: 0.6rem;
   }
   .mystory-text {
+    font-size: 0.85rem;
+    line-height: 1.6;
+  }
+
+  /* Lingue — stile sezione, solo linee orizzontali */
+  .mystory-languages {
+    flex: 1;
+    min-height: 0;
+    padding: 0.7rem 1.2rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    background: rgba(0, 0, 0, 0.5);
+    border: none;
+    border-radius: 0;
+    box-shadow: none;
+    backdrop-filter: none;
+  }
+  .mystory-languages-title {
+    font-size: 0.9rem;
+    margin-bottom: 0.25rem;
+  }
+  .mystory-languages-text {
+    font-size: 0.85rem;
+    line-height: 1.45;
+  }
+}
+
+/* ≤768px: scrolling header nascosto, solo navbar */
+@media (max-width: 768px) {
+  .mystory-section {
+    padding-top: 100px;
+    padding-bottom: 95px;
+  }
+}
+
+@media (max-width: 480px) {
+  .mystory-section {
+    padding: 0.5rem;
+    padding-top: 95px;
+    padding-bottom: 90px;
+  }
+  .mystory-content {
+    grid-template-columns: 44% 1fr;
+    gap: 0.5rem;
+  }
+  .mystory-skills-title {
+    font-size: 0.85rem;
+  }
+  .mystory-skill-item {
     font-size: 0.7rem;
+    padding: 0 0.6rem;
+  }
+  .mystory-box {
+    padding: 0.6rem 1rem;
+  }
+  .mystory-title {
+    font-size: 1.1rem;
+    margin-bottom: 0.5rem;
+  }
+  .mystory-text {
+    font-size: 0.78rem;
     line-height: 1.5;
   }
   .mystory-languages {
-    padding: 0.8rem 1rem;
+    padding: 0.55rem 1rem;
   }
   .mystory-languages-title {
-    font-size: 0.7rem;
+    font-size: 0.88rem;
   }
   .mystory-languages-text {
-    font-size: 0.65rem;
-  }
-  .mystory-skill-item {
-    font-size: 0.65rem;
-    padding: 0.35rem 0.6rem;
+    font-size: 0.82rem;
   }
 }
 /* ============================================
