@@ -696,6 +696,7 @@
     background: transparent;
     backdrop-filter: none;
     border-bottom: none;
+    transition: none;
   }
 
   .navbar.mobile-menu-active .navbar-container > *:not(.navbar-logo) {
