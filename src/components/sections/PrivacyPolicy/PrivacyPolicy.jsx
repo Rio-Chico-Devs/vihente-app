@@ -18,11 +18,11 @@ const PrivacyPolicy = () => {
           </p>
           <div className="info-box">
             <p><strong>Antonio Vihente</strong></p>
-            <p>Email: <a href="mailto:[TUA-EMAIL]">[TUA-EMAIL]</a></p>
-            <p>Sito web: vihente.dev</p>
+            <p>Email: <a href="mailto:[vihenteweb@proton.me]">[vihenteweb@proton.me]</a></p>
+            <p>Sito web: vihente.it</p>
           </div>
           <p className="note">
-            <em>Nota: Al momento non dispongo di Partita IVA. Questo è un portfolio personale.</em>
+            <em>Nota: Al momento non dispongo di Partita IVA, è in fase di ottenimento. Questo è un portfolio personale.</em>
           </p>
         </section>
 
@@ -183,7 +183,7 @@ const PrivacyPolicy = () => {
             </div>
           </div>
           <p>
-            Per esercitare questi diritti, contattaci via email: <a href="mailto:[TUA-EMAIL]">[TUA-EMAIL]</a>
+            Per esercitare questi diritti, contattaci via email: <a href="mailto:[vihenteweb@proton.me]">[vihenteweb@proton.me]</a>
           </p>
           <p>
             Risponderemo alla tua richiesta entro 30 giorni (prorogabili di ulteriori 60 giorni in caso di complessità,
@@ -199,10 +199,6 @@ const PrivacyPolicy = () => {
           </p>
           <div className="info-box">
             <p><strong>Garante per la Protezione dei Dati Personali (Italia)</strong></p>
-            <p>Piazza di Monte Citorio n. 121, 00186 Roma</p>
-            <p>Tel: +39 06.696771</p>
-            <p>Email: <a href="mailto:garante@gpdp.it">garante@gpdp.it</a></p>
-            <p>PEC: <a href="mailto:protocollo@pec.gpdp.it">protocollo@pec.gpdp.it</a></p>
             <p>Sito: <a href="https://www.garanteprivacy.it" target="_blank" rel="noopener noreferrer">www.garanteprivacy.it</a></p>
           </div>
         </section>
@@ -226,7 +222,7 @@ const PrivacyPolicy = () => {
                 https://ec.europa.eu/consumers/odr
               </a>
             </p>
-            <p>Email per contatti ODR: <a href="mailto:[TUA-EMAIL]">[TUA-EMAIL]</a></p>
+            <p>Email per contatti ODR: <a href="mailto:[vihenteweb@proton.me]">[vihenteweb@proton.me]</a></p>
           </div>
           <p>
             La piattaforma ODR facilita la risoluzione extragiudiziale delle controversie tra consumatori e
@@ -257,7 +253,7 @@ const PrivacyPolicy = () => {
         <div className="privacy-footer">
           <p>
             Per qualsiasi domanda relativa al trattamento dei tuoi dati personali, contattaci via email:{' '}
-            <a href="mailto:[TUA-EMAIL]">[TUA-EMAIL]</a>
+            <a href="mailto:[vihenteweb@proton.me]">[vihenteweb@proton.me]</a>
           </p>
         </div>
       </div>

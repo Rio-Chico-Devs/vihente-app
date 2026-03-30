@@ -823,7 +823,7 @@ const LandingPageOldEye = ({ startTime }) => {
               lineHeight: 1.6,
               fontFamily: "'Share Tech Mono', monospace"
             }}>
-              Creo la tua presenza digitale da zero, o ti aiuto a migliorare quella che già hai. Insieme, oltre le stelle.
+              Creo la tua presenza digitale da zero, o ti aiuto a migliorare quella che già hai. Questo sito funge esclusivamente da portfolio, per collaborazioni, offerte di lavoro, assunzione contattatemi. Presto avrò anche una partita IVA. Insieme, oltre le stelle.
             </p>
           </div>
 

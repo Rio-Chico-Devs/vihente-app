@@ -433,58 +433,42 @@
    ==================================== */
 
 .sitiweb-cta-section {
-  margin-top: 5rem;
-  padding: 4rem 2rem;
   text-align: center;
-  background: linear-gradient(180deg, rgba(0, 255, 255, 0.05) 0%, transparent 100%);
-  border: 2px solid var(--color-primary-30, rgba(0, 255, 255, 0.3));
-  border-radius: 16px;
-  position: relative;
-  overflow: hidden;
-}
-
-.sitiweb-cta-section::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 200px;
-  height: 3px;
-  background: linear-gradient(90deg, transparent, var(--color-primary, #0ff), transparent);
+  padding: 5rem 2rem;
+  background: radial-gradient(circle at center, var(--color-primary-08) 0%, transparent 70%);
 }
 
 .cta-title {
   font-family: 'Orbitron', sans-serif;
-  font-size: 2.2rem;
-  font-weight: 800;
+  font-size: 2.8rem;
+  font-weight: 900;
   color: var(--color-primary, #0ff);
-  margin: 0 0 1rem;
   text-transform: uppercase;
   letter-spacing: 0.1em;
+  margin-bottom: 1.5rem;
   text-shadow: 0 0 20px var(--color-primary-50, rgba(0, 255, 255, 0.5));
 }
 
 .cta-text {
-  font-size: 1.1rem;
-  color: var(--color-text-70, rgba(255, 255, 255, 0.7));
-  margin: 0 0 2rem;
-  line-height: 1.6;
+  font-size: 1.3rem;
+  color: var(--text-secondary);
+  margin-bottom: 3rem;
 }
 
 .sitiweb-cta-button {
-  font-family: 'Orbitron', sans-serif;
-  font-size: 1rem;
-  font-weight: 700;
-  padding: 1rem 3rem;
-  background: transparent;
-  border: 2px solid var(--color-primary, #0ff);
+  padding: 1.5rem 4rem;
+  background: rgba(0, 0, 0, 0.4);
+  border: 1px solid var(--color-primary-20, rgba(0, 255, 255, 0.2));
   color: var(--color-primary, #0ff);
-  border-radius: 8px;
-  cursor: pointer;
+  font-family: 'Orbitron', sans-serif;
+  font-size: 1.3rem;
+  font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.15em;
+  cursor: pointer;
   transition: all 0.3s ease;
+  border-radius: 8px;
+  backdrop-filter: blur(10px);
   position: relative;
   overflow: hidden;
 }
@@ -492,20 +476,30 @@
 .sitiweb-cta-button::before {
   content: '';
   position: absolute;
-  inset: 0;
-  background: var(--color-primary, #0ff);
-  transform: translateX(-100%);
-  transition: transform 0.3s ease;
-  z-index: -1;
-}
-
-.sitiweb-cta-button:hover {
-  color: #000;
-  box-shadow: 0 0 30px var(--color-primary-50, rgba(0, 255, 255, 0.5));
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(
+    0deg,
+    transparent,
+    transparent 30%,
+    var(--color-primary-30, rgba(0, 255, 255, 0.3))
+  );
+  transform: rotate(-45deg);
+  transition: all 0.5s ease;
+  opacity: 0;
+  z-index: 0;
 }
 
 .sitiweb-cta-button:hover::before {
-  transform: translateX(0);
+  opacity: 1;
+  transform: rotate(-45deg) translateY(100%);
+}
+
+.sitiweb-cta-button:hover {
+  border-color: var(--color-primary-50, rgba(0, 255, 255, 0.5));
+  transform: scale(1.05);
 }
 
 /* Footer spacer */
@@ -525,9 +519,14 @@
 [data-theme="light"] .section-title,
 [data-theme="light"] .intro-title,
 [data-theme="light"] .offer-subtitle,
-[data-theme="light"] .product-name,
-[data-theme="light"] .cta-title {
+[data-theme="light"] .product-name {
   text-shadow: none;
+}
+
+[data-theme="light"] .cta-title {
+  text-shadow:
+    0 0 10px var(--color-primary-40),
+    0 0 20px var(--color-primary-20);
 }
 
 [data-theme="light"] .sitiweb-binary-digit {
@@ -542,8 +541,14 @@
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
 }
 
+[data-theme="light"] .sitiweb-cta-button {
+  background: rgba(255, 255, 255, 0.3);
+  border-color: var(--color-primary-20);
+}
+
 [data-theme="light"] .sitiweb-cta-button:hover {
-  box-shadow: 0 0 20px rgba(180, 120, 60, 0.3);
+  border-color: var(--color-primary-50);
+  box-shadow: 0 0 20px var(--color-primary-30);
 }
 
 /* ====================================
@@ -633,11 +638,16 @@
   }
 
   .cta-title {
-    font-size: 1.6rem;
+    font-size: 1.8rem;
   }
 
   .cta-text {
     font-size: 1rem;
+  }
+
+  .sitiweb-cta-button {
+    font-size: 1rem;
+    padding: 1.2rem 2.5rem;
   }
 }
 
@@ -726,7 +736,7 @@
   }
 
   .sitiweb-cta-button {
-    padding: 0.875rem 2rem;
+    padding: 1rem 2rem;
     font-size: 0.9rem;
   }
 }
