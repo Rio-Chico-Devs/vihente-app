@@ -474,53 +474,35 @@
 }
 
 @media (min-width: 768px) {
-  /* Lock entire page in viewport — no outer scroll */
   .bk-wrapper {
-    height: 100vh;
-    overflow: hidden;
-    padding-top: 140px; /* navbar 80px + news bar 60px */
-    box-sizing: border-box;
-  }
-
-  /* Flex column fills remaining height */
-  .bk-content {
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    gap: 0.7rem;
-    padding: 0.8rem 2rem 0.6rem;
+    min-height: 100vh;
     overflow: hidden;
   }
 
-  .bk-header  { margin-bottom: 0; flex-shrink: 0; }
-  .bk-stepper { margin-bottom: 0; flex-shrink: 0; }
+  .bk-content   { padding: 155px 2rem 3rem; }
+  .bk-header    { margin-bottom: 0.8rem; }
+  .bk-stepper   { margin-bottom: 0.8rem; }
 
-  /* Panel fills remaining height, scrolls internally only if needed */
-  .bk-panel {
-    flex: 1;
-    min-height: 0;
-    overflow-y: auto;
-  }
+  /* Panel tighter */
+  .bk-panel { padding: 1rem 1.4rem; }
 
-  /* Step content fills panel height on desktop */
-  .bk-step-content {
-    min-height: 100%;
-  }
+  /* Compact step gaps */
+  .bk-step-content { gap: 0.9rem; }
 
-  /* More compact service grid */
+  /* Services: 4 per row */
   .bk-services-grid { grid-template-columns: repeat(4, 1fr); }
+  .bk-service-card  { padding: 0.8rem 0.7rem; }
 
-  /* Compact calendar */
-  .bk-calendar { padding: 0.7rem; }
-  .bk-cal-header { margin-bottom: 0.5rem; }
+  /* Calendar compact */
+  .bk-calendar      { padding: 0.8rem; }
+  .bk-cal-header    { margin-bottom: 0.6rem; }
+  .bk-cal-grid      { gap: 0.25rem; }
 
-  /* Slots: more columns */
+  /* Slots: 5 per row */
   .bk-slots-grid { grid-template-columns: repeat(5, 1fr); }
-
-  .bk-footer-note { display: none; }
 }
 
 @media (min-width: 1024px) {
-  .bk-content { padding: 1rem 3rem 0.6rem; }
+  .bk-content { padding: 155px 3rem 3rem; }
   .bk-title   { font-size: 1.8rem; }
 }

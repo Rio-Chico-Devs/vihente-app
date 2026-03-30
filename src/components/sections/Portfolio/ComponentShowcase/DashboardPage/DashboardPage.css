@@ -431,73 +431,39 @@
 }
 
 @media (min-width: 768px) {
-  /* Lock entire page in viewport — no outer scroll */
   .dash-wrapper {
-    height: 100vh;
+    min-height: 100vh;
     overflow: hidden;
-    padding-top: 140px; /* navbar 80px + news bar 60px */
-    box-sizing: border-box;
   }
 
-  /* Flex column fills remaining height */
   .dash-content {
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    gap: 0.7rem;
-    padding: 0.8rem 2rem 0.6rem;
-    overflow: hidden;
+    padding: 155px 2rem 3rem;
     max-width: 1200px;
   }
 
-  .dash-header       { margin-bottom: 0; flex-shrink: 0; }
-  .dash-period-nav   { margin-bottom: 0; flex-shrink: 0; }
-  .dash-kpi-grid     { margin-bottom: 0; flex-shrink: 0; }
+  /* Compact KPI cards */
+  .dash-kpi-card    { padding: 0.6rem 0.8rem 0.5rem; }
+  .kpi-value        { font-size: 1.1rem; margin-bottom: 0.3rem; }
+  .dash-sparkline   { height: 22px; }
+  .dash-kpi-grid    { gap: 0.6rem; margin-bottom: 0.7rem; }
 
-  /* KPI cards more compact */
-  .dash-kpi-card     { padding: 0.6rem 0.8rem 0.5rem; }
-  .kpi-value         { font-size: 1.1rem; margin-bottom: 0.3rem; }
-  .dash-sparkline    { height: 24px; }
+  /* Period nav tighter */
+  .dash-period-nav  { margin-bottom: 0.8rem; }
+  .dash-header      { margin-bottom: 0.8rem; }
 
-  /* Bottom row: chart left, table right, fills remaining space */
-  .dash-bottom-row {
-    flex: 1;
-    min-height: 0;
-    display: flex;
-    flex-direction: row;
-    gap: 0.8rem;
-    overflow: hidden;
-  }
+  /* Chart more compact */
+  .dash-chart-card  { padding: 0.9rem 1rem; margin-bottom: 0.7rem; }
+  .chart-area       { height: 130px; }
 
-  /* Chart fills left side, table fills right side */
-  .dash-chart-card {
-    flex: 1.1;
-    display: flex;
-    flex-direction: column;
-    margin-bottom: 0;
-    overflow: hidden;
-  }
-  .chart-area {
-    flex: 1;
-    height: auto;
-  }
-
-  .dash-table-card {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    margin-bottom: 0;
-    overflow: hidden;
-  }
-
-  /* Table scrolls internally if rows overflow */
+  /* Table */
+  .dash-table-card  { padding: 0.9rem 1rem; margin-bottom: 0; }
+  .dash-mobile-list { display: none; }
   .dash-desktop-table {
-    display: flex;
-    flex-direction: column;
-    flex: 1;
-    min-height: 0;
+    display: block;
+    max-height: 190px;
     overflow-y: auto;
   }
+
   .dash-table {
     width: 100%;
     border-collapse: collapse;
@@ -515,10 +481,11 @@
     font-size: 0.68rem;
     position: sticky;
     top: 0;
-    background: var(--color-primary-05, rgba(0,255,255,0.05));
+    background: var(--color-bg, #000);
+    z-index: 1;
   }
   .dash-table td {
-    padding: 0.55rem 0.7rem;
+    padding: 0.5rem 0.7rem;
     border-bottom: 1px solid var(--color-primary-08, rgba(0,255,255,0.08));
     color: var(--color-text, #e0e0e0);
     transition: background 0.15s ease;
@@ -527,12 +494,11 @@
   .td-id      { color: var(--text-secondary, rgba(0,255,255,0.5)); }
   .td-service { color: var(--text-secondary, rgba(0,255,255,0.7)); }
   .td-amount  { font-family: 'Orbitron', sans-serif; color: var(--color-primary, #0ff); }
-
-  .dash-mobile-list  { display: none; }
-  .dash-footer-note  { display: none; }
 }
 
 @media (min-width: 1024px) {
-  .dash-content { padding: 1rem 3rem 0.6rem; }
+  .dash-content { padding: 155px 3rem 3rem; }
   .dash-title   { font-size: 1.8rem; }
+  .chart-area   { height: 160px; }
+  .dash-desktop-table { max-height: 220px; }
 }
