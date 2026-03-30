@@ -96,7 +96,7 @@ const SitiWebPage = () => {
 
             <div className="price-note">
               <p>
-                Principalmente uso <strong>React</strong> o <strong>CMS come Wordpress</strong>, ma scrivo anche codice per soluzioni più legacy.
+                Principalmente uso <strong>React</strong> o <strong>CMS come Wordpress nel caso si voglia optare per le suite a disposizione per generare statistiche o manipolare al meglio la SEO</strong>, ma scrivo anche codice per soluzioni più legacy.
               </p>
             </div>
           </div>
@@ -128,7 +128,7 @@ const SitiWebPage = () => {
                 <tr>
                   <td className="feature-name">C++</td>
                   <td className="feature-description">
-                    Il mio primo linguaggio con il quale ho iniziato a creare le mie prime creazioni senza grafica, sto ancora studiando per poter capire a pieno le operazioni più complesse.
+                    Il mio primo linguaggio con il quale ho iniziato a scrivere i miei primi programmi durante gli studi, sto ancora studiando per poter capire a pieno le operazioni più complesse.
                   </td>
                 </tr>
                 <tr>
@@ -140,19 +140,19 @@ const SitiWebPage = () => {
                 <tr>
                   <td className="feature-name">HTML</td>
                   <td className="feature-description">
-                    Sono anni che uso l'HTML, per creare pagine, fare modifiche, organizzare form o strutturare contenuti digitali essendo un markup language.
+                    Sono anni che uso l'HTML, per creare pagine, fare modifiche, organizzare form o strutturare contenuti digitali.
                   </td>
                 </tr>
                 <tr>
                   <td className="feature-name">CSS</td>
                   <td className="feature-description">
-                    Anche con il CSS la mia esperienza è abbastanza lunga, preferisco se possibile usare solo CSS per evitare di appesantire quel che creo.
+                    Anche con il CSS la mia esperienza è abbastanza lunga, preferisco se possibile usare solo CSS per evitare di appesantire quel che creo, l'utilizzo delle risorse dell'utente per me è fondamentale.
                   </td>
                 </tr>
                 <tr>
                   <td className="feature-name">Python</td>
                   <td className="feature-description">
-                    Ottimo per il backend e lo sviluppo di applicazioni semplici e veloci, sto ancora studiando per poter usarlo al meglio insieme al C per far fronte ai suoi limiti.
+                    Ottimo per il backend e lo sviluppo di applicazioni semplici e veloci, sto ancora studiando per poter usarlo al meglio integrando qualche script in C dove ancora fatica a livello di prestazioni.
                   </td>
                 </tr>
               </tbody>

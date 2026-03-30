@@ -1,8 +1,10 @@
 import { useState, useEffect, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useTheme } from '../../../contexts/theme';
 import './LandingPage.css';
 
 const LandingPageOldEye = ({ startTime }) => {
+  const navigate = useNavigate();
   const { theme } = useTheme();
 
   const colors = theme === 'light' ? {
@@ -823,7 +825,16 @@ const LandingPageOldEye = ({ startTime }) => {
               lineHeight: 1.6,
               fontFamily: "'Share Tech Mono', monospace"
             }}>
-              Creo la tua presenza digitale da zero, o ti aiuto a migliorare quella che già hai. Insieme, oltre le stelle.
+              Creo la tua presenza digitale da zero, o ti aiuto a migliorare quella che già hai. Questo sito funge esclusivamente da portfolio, per collaborazioni, offerte di lavoro, assunzione{' '}
+              <span
+                onClick={() => navigate('/contatti')}
+                style={{
+                  color: colors.primary,
+                  cursor: 'pointer',
+                  textDecoration: 'underline',
+                  textUnderlineOffset: '3px'
+                }}
+              >contattatemi</span>. Presto avrò anche una partita IVA. Insieme, oltre le stelle.
             </p>
           </div>
 

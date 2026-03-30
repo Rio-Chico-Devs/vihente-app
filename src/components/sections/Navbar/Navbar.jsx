@@ -438,9 +438,7 @@ const Navbar = () => {
 
         {/* Bottom Action Text */}
         <div className="p4-action-text">
-          <div className="action-line" />
           <p>{selectedItem ? 'TAP AGAIN TO CONFIRM' : 'SELECT YOUR DESTINATION'}</p>
-          <div className="action-line" />
         </div>
       </div>
     </>

@@ -315,7 +315,7 @@ const PresenzaOnlinePage = () => {
         <section className="presenza-cta-section">
           <h2 className="cta-title">Pronto a Costruire la Tua Presenza Online?</h2>
           <p className="cta-text">
-            Parliamo insieme della tua strategia social e trasformiamo le tue idee in realtà
+            Parliamo insieme della tua strategia social e trasformiamo le tue idee in realtà, presto sarò disponibile anche con partita IVA
           </p>
           <button className="presenza-cta-button" onClick={() => navigate('/contatti')}>
             Contattami
