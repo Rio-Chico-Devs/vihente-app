@@ -37,9 +37,9 @@ const Cubo3DPage = lazy(() => import('./components/sections/Portfolio/ComponentS
 const MusicPlayerPage = lazy(() => import('./components/sections/Portfolio/ComponentShowcase/MusicPlayerPage/MusicPlayerPage'));
 const CRUDSimulatorPage = lazy(() => import('./components/sections/Portfolio/ComponentShowcase/CRUDSimulatorPage/CRUDSimulatorPage'));
 const FemosBlackMarketPage = lazy(() => import('./components/sections/Portfolio/ComponentShowcase/FemosBlackMarketPage/FemosBlackMarketPage'));
-const QuizPage = lazy(() => import('./components/sections/Portfolio/ComponentShowcase/QuizPage/QuizPage'));
+const DashboardPage = lazy(() => import('./components/sections/Portfolio/ComponentShowcase/DashboardPage/DashboardPage'));
 const ImageCheckerPage = lazy(() => import('./components/sections/Portfolio/ComponentShowcase/ImageCheckerPage/ImageCheckerPage'));
-const PatternMatcherPage = lazy(() => import('./components/sections/Portfolio/ComponentShowcase/PatternMatcherPage/PatternMatcherPage'));
+const BookingPage = lazy(() => import('./components/sections/Portfolio/ComponentShowcase/BookingPage/BookingPage'));
 const Contacts = lazy(() => import('./components/sections/Contacts/Contacts'));
 const PrivacyPolicy = lazy(() => import('./components/sections/PrivacyPolicy/PrivacyPolicy'));
 const CookiePolicy = lazy(() => import('./components/sections/CookiePolicy/CookiePolicy'));
@@ -142,9 +142,9 @@ function App() {
                       <Route path="/portfolio/componenti/music-player" element={<MusicPlayerPage />} />
                       <Route path="/portfolio/componenti/crud-simulator" element={<CRUDSimulatorPage />} />
                       <Route path="/portfolio/componenti/black-market" element={<FemosBlackMarketPage />} />
-                      <Route path="/portfolio/componenti/quiz" element={<QuizPage />} />
+                      <Route path="/portfolio/componenti/dashboard" element={<DashboardPage />} />
                       <Route path="/portfolio/componenti/image-checker" element={<ImageCheckerPage />} />
-                      <Route path="/portfolio/componenti/pattern-matcher" element={<PatternMatcherPage />} />
+                      <Route path="/portfolio/componenti/booking" element={<BookingPage />} />
 
                       {/* Contacts */}
                       <Route path="/contatti" element={<Contacts />} />
