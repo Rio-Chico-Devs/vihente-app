@@ -284,6 +284,51 @@ const MultimediaPage = () => {
           </div>
         </section>
 
+        {/* ── Disclaimer: Come viene erogato il servizio ── */}
+        <section className="work-disclaimer-section">
+          <div className="disclaimer-header">
+            <span className="disclaimer-icon">ⓘ</span>
+            <h2 className="disclaimer-title">Come Viene Erogato il Servizio</h2>
+          </div>
+          <p className="disclaimer-note">
+            Questo sito è esclusivamente un <strong>portfolio</strong>: i servizi descritti rappresentano
+            ciò che so fare e lavori già svolti per aziende che mi hanno assunto. Attualmente non ho
+            partita IVA (sto lavorando per ottenerla), ma posso collaborare tramite{' '}
+            <strong>contratto a tempo determinato</strong>, <strong>contratto di collaborazione</strong>{' '}
+            o <strong>ritenuta d'acconto</strong>.
+          </p>
+          <div className="disclaimer-steps">
+            <div className="disclaimer-step">
+              <span className="disclaimer-step-num">01</span>
+              <div className="disclaimer-step-body">
+                <h3 className="disclaimer-step-title">Ci Conosciamo</h3>
+                <p className="disclaimer-step-desc">Parliamo del tuo progetto e delle tue esigenze. Zero impegno, massima trasparenza.</p>
+              </div>
+            </div>
+            <div className="disclaimer-step">
+              <span className="disclaimer-step-num">02</span>
+              <div className="disclaimer-step-body">
+                <h3 className="disclaimer-step-title">Ti Mostro i Lavori</h3>
+                <p className="disclaimer-step-desc">Posso mostrarti altri progetti e referenze oltre a quelle presenti in questo portfolio.</p>
+              </div>
+            </div>
+            <div className="disclaimer-step">
+              <span className="disclaimer-step-num">03</span>
+              <div className="disclaimer-step-body">
+                <h3 className="disclaimer-step-title">Definiamo i Termini</h3>
+                <p className="disclaimer-step-desc">Stabiliamo insieme la forma di collaborazione: contratto, co.co.co. o ritenuta d'acconto.</p>
+              </div>
+            </div>
+            <div className="disclaimer-step">
+              <span className="disclaimer-step-num">04</span>
+              <div className="disclaimer-step-body">
+                <h3 className="disclaimer-step-title">Si Comincia!</h3>
+                <p className="disclaimer-step-desc">Avviamo la collaborazione e trasformiamo le tue idee in realtà.</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
         {/* CTA Final */}
         <section className="multimedia-cta-section">
           <h2 className="cta-title">Dai Vita alle Tue Idee</h2>
