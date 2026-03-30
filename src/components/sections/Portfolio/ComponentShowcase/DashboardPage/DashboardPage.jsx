@@ -2,65 +2,116 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './DashboardPage.css';
 
-/* ── Mock data sets per periodo ── */
+/* ── ECG waveform data per metrica ── */
+const ECG_METRICS = [
+  {
+    id: 'fatturato',
+    label: 'Fatturato',
+    color: 'var(--color-primary, #0ff)',
+    speed: '9s',
+    values: [40,45,43,50,55,52,60,63,58,68,72,70,75,80,78,85,82,88,85,90,88,95,92,97],
+  },
+  {
+    id: 'utenti',
+    label: 'Nuovi Utenti',
+    color: 'rgba(0,200,255,0.95)',
+    speed: '7s',
+    values: [30,35,32,40,38,45,50,48,55,52,60,58,65,62,68,65,72,70,75,72,80,78,83,80],
+  },
+  {
+    id: 'conversioni',
+    label: 'Conversioni',
+    color: 'rgba(0,255,150,0.95)',
+    speed: '11s',
+    values: [55,58,53,60,62,58,65,68,63,70,72,68,75,78,73,80,77,82,80,85,82,87,84,88],
+  },
+  {
+    id: 'ordine',
+    label: 'Ordine Medio',
+    color: 'rgba(255,210,0,0.95)',
+    speed: '8s',
+    values: [35,40,38,45,48,44,52,55,50,58,62,58,65,68,63,72,70,75,72,78,75,82,78,85],
+  },
+];
+
+/* Genera punti polyline doppi per loop seamless (SVG viewBox 0 0 800 60) */
+const genPoints = (values) => {
+  const doubled = [...values, ...values];
+  const n = doubled.length - 1;
+  return doubled.map((v, i) => {
+    const x = ((i / n) * 800).toFixed(1);
+    const y = (55 - (v / 100) * 48).toFixed(1);
+    return `${x},${y}`;
+  }).join(' ');
+};
+
+/* ── Settori (dati simulati 2025) ── */
+const SECTORS = [
+  { name: 'AI / ML Tools',   pct: 45 },
+  { name: 'E-Commerce',      pct: 34 },
+  { name: 'SaaS Platform',   pct: 28 },
+  { name: 'Healthcare Tech', pct: 22 },
+  { name: 'Fintech',         pct: 19 },
+];
+
+/* ── Dati per periodo ── */
 const DATA = {
   '7d': {
-    kpi: [
-      { label: 'Fatturato',    value: '€ 4.820',  delta: '+12%',  up: true  },
-      { label: 'Nuovi Utenti', value: '1.247',     delta: '+8%',   up: true  },
-      { label: 'Conversioni',  value: '6,4%',      delta: '-1,2%', up: false },
-      { label: 'Ordine Medio', value: '€ 127',     delta: '+5%',   up: true  },
-    ],
-    bars: [35, 58, 42, 70, 61, 88, 95],
-    labels: ['Lun', 'Mar', 'Mer', 'Gio', 'Ven', 'Sab', 'Dom'],
+    kpi: { fatturato: '€ 4.820', utenti: '1.247', conversioni: '6,4%', ordine: '€ 127' },
+    bars:   [35, 58, 42, 70, 61, 88, 95],
+    labels: ['Lun','Mar','Mer','Gio','Ven','Sab','Dom'],
     transactions: [
-      { id: '#2041', client: 'Agenzia Neon', service: 'Web Dev',     amount: '€ 980', status: 'pagato'   },
-      { id: '#2040', client: 'Studio M',     service: 'Multimedia',  amount: '€ 450', status: 'pagato'   },
-      { id: '#2039', client: 'TechFlow Srl', service: 'Consulenza',  amount: '€ 320', status: 'in corso' },
-      { id: '#2038', client: 'Nova Brand',   service: 'Presenza',    amount: '€ 670', status: 'pagato'   },
-      { id: '#2037', client: 'Pixel & Co',   service: 'Web Dev',     amount: '€ 1.200', status: 'attesa' },
+      { id: '#2041', client: 'Agenzia Neon', service: 'Web Dev',    amount: '€ 980',   status: 'pagato'   },
+      { id: '#2040', client: 'Studio M',     service: 'Multimedia', amount: '€ 450',   status: 'pagato'   },
+      { id: '#2039', client: 'TechFlow Srl', service: 'Consulenza', amount: '€ 320',   status: 'in corso' },
+      { id: '#2038', client: 'Nova Brand',   service: 'Presenza',   amount: '€ 670',   status: 'pagato'   },
+      { id: '#2037', client: 'Pixel & Co',   service: 'Web Dev',    amount: '€ 1.200', status: 'attesa'   },
     ],
   },
   '30d': {
-    kpi: [
-      { label: 'Fatturato',    value: '€ 18.340', delta: '+22%',  up: true  },
-      { label: 'Nuovi Utenti', value: '5.890',    delta: '+15%',  up: true  },
-      { label: 'Conversioni',  value: '7,1%',     delta: '+0,9%', up: true  },
-      { label: 'Ordine Medio', value: '€ 143',    delta: '+11%',  up: true  },
-    ],
-    bars: [42, 55, 38, 72, 60, 80, 91, 65, 74, 88, 50, 67],
-    labels: ['Sett 1', 'Sett 2', 'Sett 3', 'Sett 4', '', '', '', '', '', '', '', ''],
+    kpi: { fatturato: '€ 18.340', utenti: '5.890', conversioni: '7,1%', ordine: '€ 143' },
+    bars:   [42,55,38,72,60,80,91,65,74,88,50,67],
+    labels: ['S1','S2','S3','S4','','','','','','','',''],
     transactions: [
-      { id: '#2041', client: 'Agenzia Neon', service: 'Web Dev',     amount: '€ 980',   status: 'pagato'   },
-      { id: '#2040', client: 'Studio M',     service: 'Multimedia',  amount: '€ 450',   status: 'pagato'   },
-      { id: '#2039', client: 'TechFlow Srl', service: 'Consulenza',  amount: '€ 320',   status: 'in corso' },
-      { id: '#2038', client: 'Nova Brand',   service: 'Presenza',    amount: '€ 670',   status: 'pagato'   },
-      { id: '#2036', client: 'MediaX',       service: 'Multimedia',  amount: '€ 890',   status: 'pagato'   },
-      { id: '#2035', client: 'StartupZone',  service: 'Web Dev',     amount: '€ 2.100', status: 'pagato'   },
+      { id: '#2041', client: 'Agenzia Neon', service: 'Web Dev',    amount: '€ 980',   status: 'pagato'   },
+      { id: '#2040', client: 'Studio M',     service: 'Multimedia', amount: '€ 450',   status: 'pagato'   },
+      { id: '#2039', client: 'TechFlow Srl', service: 'Consulenza', amount: '€ 320',   status: 'in corso' },
+      { id: '#2038', client: 'Nova Brand',   service: 'Presenza',   amount: '€ 670',   status: 'pagato'   },
+      { id: '#2036', client: 'MediaX',       service: 'Multimedia', amount: '€ 890',   status: 'pagato'   },
+      { id: '#2035', client: 'StartupZone',  service: 'Web Dev',    amount: '€ 2.100', status: 'pagato'   },
     ],
   },
   '90d': {
-    kpi: [
-      { label: 'Fatturato',    value: '€ 52.160', delta: '+31%',  up: true  },
-      { label: 'Nuovi Utenti', value: '16.420',   delta: '+24%',  up: true  },
-      { label: 'Conversioni',  value: '8,3%',     delta: '+2,1%', up: true  },
-      { label: 'Ordine Medio', value: '€ 158',    delta: '+18%',  up: true  },
-    ],
-    bars: [30, 45, 60, 55, 75, 80, 68, 90, 85, 78, 92, 88],
-    labels: ['Gen', 'Feb', 'Mar', '', '', '', '', '', '', '', '', ''],
+    kpi: { fatturato: '€ 52.160', utenti: '16.420', conversioni: '8,3%', ordine: '€ 158' },
+    bars:   [30,45,60,55,75,80,68,90,85,78,92,88],
+    labels: ['Gen','Feb','Mar','','','','','','','','',''],
     transactions: [
-      { id: '#2041', client: 'Agenzia Neon', service: 'Web Dev',     amount: '€ 980',   status: 'pagato'   },
-      { id: '#2038', client: 'Nova Brand',   service: 'Presenza',    amount: '€ 670',   status: 'pagato'   },
-      { id: '#2035', client: 'StartupZone',  service: 'Web Dev',     amount: '€ 2.100', status: 'pagato'   },
-      { id: '#2032', client: 'Industria 4',  service: 'Consulenza',  amount: '€ 1.500', status: 'pagato'   },
-      { id: '#2028', client: 'GreenTech',    service: 'Web Dev',     amount: '€ 3.400', status: 'pagato'   },
-      { id: '#2021', client: 'FashionLab',   service: 'Multimedia',  amount: '€ 720',   status: 'pagato'   },
+      { id: '#2041', client: 'Agenzia Neon', service: 'Web Dev',    amount: '€ 980',   status: 'pagato' },
+      { id: '#2038', client: 'Nova Brand',   service: 'Presenza',   amount: '€ 670',   status: 'pagato' },
+      { id: '#2035', client: 'StartupZone',  service: 'Web Dev',    amount: '€ 2.100', status: 'pagato' },
+      { id: '#2032', client: 'Industria 4',  service: 'Consulenza', amount: '€ 1.500', status: 'pagato' },
+      { id: '#2028', client: 'GreenTech',    service: 'Web Dev',    amount: '€ 3.400', status: 'pagato' },
+      { id: '#2021', client: 'FashionLab',   service: 'Multimedia', amount: '€ 720',   status: 'pagato' },
+    ],
+  },
+  '1y': {
+    kpi: { fatturato: '€ 198.400', utenti: '62.300', conversioni: '9,1%', ordine: '€ 172' },
+    bars:   [55,62,68,72,65,78,80,85,82,88,90,95],
+    labels: ['G','F','M','A','M','G','L','A','S','O','N','D'],
+    transactions: [
+      { id: '#2041', client: 'Agenzia Neon', service: 'Web Dev',    amount: '€ 980',   status: 'pagato' },
+      { id: '#2035', client: 'StartupZone',  service: 'Web Dev',    amount: '€ 2.100', status: 'pagato' },
+      { id: '#2028', client: 'GreenTech',    service: 'Web Dev',    amount: '€ 3.400', status: 'pagato' },
+      { id: '#2020', client: 'MegaCorp',     service: 'Consulenza', amount: '€ 5.200', status: 'pagato' },
+      { id: '#2015', client: 'Innovatech',   service: 'Web Dev',    amount: '€ 4.800', status: 'pagato' },
+      { id: '#2008', client: 'GlobalBrand',  service: 'Multimedia', amount: '€ 1.900', status: 'pagato' },
+      { id: '#2001', client: 'EduPlatform',  service: 'Presenza',   amount: '€ 2.300', status: 'pagato' },
     ],
   },
 };
 
-const PERIODS = ['7d', '30d', '90d'];
-const PERIOD_LABELS = { '7d': '7 Giorni', '30d': '30 Giorni', '90d': '90 Giorni' };
+const PERIODS = ['7d', '30d', '90d', '1y'];
+const PERIOD_LABELS = { '7d': '7 Giorni', '30d': '30 Giorni', '90d': '90 Giorni', '1y': 'Annuale' };
 
 const statusClass = (s) => {
   if (s === 'pagato')   return 'status-paid';
@@ -68,57 +119,40 @@ const statusClass = (s) => {
   return 'status-pending';
 };
 
-/* ── Sparkline mini linea ── */
-const Sparkline = ({ bars }) => {
-  const max = Math.max(...bars);
-  const pts = bars.map((v, i) => {
-    const x = (i / (bars.length - 1)) * 100;
-    const y = 100 - (v / max) * 100;
-    return `${x},${y}`;
-  }).join(' ');
-  return (
-    <svg className="dash-sparkline" viewBox="0 0 100 100" preserveAspectRatio="none">
-      <polyline points={pts} />
-    </svg>
-  );
-};
-
 const DashboardPage = () => {
   const navigate = useNavigate();
-  const [period, setPeriod]       = useState('7d');
-  const [displayed, setDisplayed] = useState('7d');
-  const [fading, setFading]       = useState(false);
-  const [expandedRow, setExpandedRow] = useState(null);
+  const [period, setPeriod] = useState('90d');
+  const [fading,  setFading]  = useState(false);
+  const [ecgPlaying, setEcgPlaying] = useState(
+    Object.fromEntries(ECG_METRICS.map(m => [m.id, true]))
+  );
 
-  /* smooth period switch */
   const switchPeriod = (p) => {
     if (p === period) return;
     setFading(true);
-    setTimeout(() => {
-      setPeriod(p);
-      setDisplayed(p);
-      setFading(false);
-      setExpandedRow(null);
-    }, 220);
+    setTimeout(() => { setPeriod(p); setFading(false); }, 220);
   };
 
-  const d = DATA[displayed];
+  const toggleEcg = (id) =>
+    setEcgPlaying(prev => ({ ...prev, [id]: !prev[id] }));
 
   useEffect(() => {
     document.body.classList.add('dashboard-page-body');
     return () => document.body.classList.remove('dashboard-page-body');
   }, []);
 
+  const d = DATA[period];
+
   return (
     <div className="dash-wrapper">
       <div className="dash-grid-overlay" />
 
-      <div className="dash-content">
+      <div className="dash-layout">
 
-        {/* Header */}
+        {/* ── Header ── */}
         <header className="dash-header">
           <button className="dash-back-btn" onClick={() => navigate('/portfolio/componenti')}>
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none">
               <path d="M19 12H5M5 12l7-7M5 12l7 7" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
             </svg>
             <span>Showcase</span>
@@ -132,88 +166,16 @@ const DashboardPage = () => {
           </div>
         </header>
 
-        {/* Period filter */}
-        <nav className="dash-period-nav" aria-label="Filtro periodo">
-          {PERIODS.map(p => (
-            <button
-              key={p}
-              className={`dash-period-btn${period === p ? ' active' : ''}`}
-              onClick={() => switchPeriod(p)}
-            >
-              {PERIOD_LABELS[p]}
-            </button>
-          ))}
-        </nav>
+        {/* ── Griglia principale 3 colonne ── */}
+        <div className={`dash-main-grid dash-fade${fading ? ' out' : ''}`}>
 
-        {/* KPI Cards */}
-        <div className={`dash-kpi-grid dash-fade${fading ? ' out' : ''}`}>
-          {d.kpi.map((k, i) => (
-            <div className="dash-kpi-card" key={i}>
-              <div className="kpi-top">
-                <span className="kpi-label">{k.label}</span>
-                <span className={`kpi-delta ${k.up ? 'up' : 'down'}`}>
-                  {k.up ? '▲' : '▼'} {k.delta}
-                </span>
-              </div>
-              <div className="kpi-value">{k.value}</div>
-              <Sparkline bars={d.bars} />
+          {/* ZONA 1 — Transazioni Recenti */}
+          <div className="dash-zone">
+            <div className="zone-hd">
+              <h2 className="zone-title">Transazioni Recenti</h2>
             </div>
-          ))}
-        </div>
-
-        {/* Bar Chart + Transactions — grouped for desktop side-by-side layout */}
-        <div className={`dash-bottom-row dash-fade${fading ? ' out' : ''}`}>
-          {/* Bar Chart */}
-          <div className="dash-chart-card">
-            <div className="chart-header">
-              <h2 className="chart-title">Andamento Fatturato</h2>
-              <span className="chart-unit">migliaia €</span>
-            </div>
-            <div className="chart-area">
-              {d.bars.map((v, i) => (
-                <div className="chart-col" key={i}>
-                  <div
-                    className="chart-bar"
-                    style={{ '--bar-h': `${v}%` }}
-                    title={`${v}%`}
-                  />
-                  <span className="chart-label">{d.labels[i]}</span>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* Transactions */}
-          <div className="dash-table-card">
-            <h2 className="table-title">Transazioni Recenti</h2>
-
-            {/* Mobile: accordion list */}
-            <div className="dash-mobile-list">
-              {d.transactions.map((t, i) => (
-                <div
-                  className={`mobile-row${expandedRow === i ? ' expanded' : ''}`}
-                  key={i}
-                  onClick={() => setExpandedRow(expandedRow === i ? null : i)}
-                >
-                  <div className="mobile-row-head">
-                    <span className="mobile-row-id">{t.id}</span>
-                    <span className="mobile-row-amount">{t.amount}</span>
-                    <span className={`dash-status ${statusClass(t.status)}`}>{t.status}</span>
-                    <svg className="expand-icon" width="16" height="16" viewBox="0 0 24 24" fill="none">
-                      <path d="M6 9l6 6 6-6" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"/>
-                    </svg>
-                  </div>
-                  <div className="mobile-row-detail">
-                    <span><em>Cliente:</em> {t.client}</span>
-                    <span><em>Servizio:</em> {t.service}</span>
-                  </div>
-                </div>
-              ))}
-            </div>
-
-            {/* Desktop: table */}
-            <div className="dash-desktop-table">
-              <table className="dash-table">
+            <div className="zone-scroll">
+              <table className="txn-table">
                 <thead>
                   <tr>
                     <th>ID</th>
@@ -228,21 +190,134 @@ const DashboardPage = () => {
                     <tr key={i}>
                       <td className="td-id">{t.id}</td>
                       <td>{t.client}</td>
-                      <td className="td-service">{t.service}</td>
-                      <td className="td-amount">{t.amount}</td>
-                      <td><span className={`dash-status ${statusClass(t.status)}`}>{t.status}</span></td>
+                      <td className="td-svc">{t.service}</td>
+                      <td className="td-amt">{t.amount}</td>
+                      <td>
+                        <span className={`dash-status ${statusClass(t.status)}`}>
+                          {t.status}
+                        </span>
+                      </td>
                     </tr>
                   ))}
                 </tbody>
               </table>
             </div>
           </div>
-        </div>
 
-        {/* Footer note */}
-        <p className="dash-footer-note">
-          Dati simulati a scopo dimostrativo · Componente realizzato con React + CSS
-        </p>
+          {/* Colonna centrale: ZONA 2 + ZONA 4 */}
+          <div className="dash-center-col">
+
+            {/* ZONA 2 — Andamento Fatturato */}
+            <div className="dash-zone dash-zone-chart">
+              <div className="zone-hd">
+                <h2 className="zone-title">Andamento Fatturato</h2>
+                <span className="zone-unit">migliaia €</span>
+              </div>
+              <div className="chart-area">
+                {d.bars.map((v, i) => (
+                  <div className="chart-col" key={i}>
+                    <div className="chart-bar" style={{ '--bar-h': `${v}%` }} />
+                    <span className="chart-lbl">{d.labels[i]}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* ZONA 4 — Crescita Settori */}
+            <div className="dash-zone dash-zone-sectors">
+              <div className="zone-hd">
+                <h2 className="zone-title">Crescita Settori 2025</h2>
+                <span className="zone-unit">dati simulati</span>
+              </div>
+              <div className="sectors-list">
+                {SECTORS.map((s, i) => (
+                  <div className="sector-row" key={i}>
+                    <span className="sector-name">{s.name}</span>
+                    <div className="sector-track">
+                      <div className="sector-bar" style={{ '--s-pct': `${s.pct}%` }} />
+                    </div>
+                    <span className="sector-pct">+{s.pct}%</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+          </div>
+
+          {/* Colonna destra: ZONA 3 + ZONA 5 */}
+          <div className="dash-right-col">
+
+            {/* ZONA 3 — ECG Metriche */}
+            <div className="dash-zone dash-zone-ecg">
+              <div className="zone-hd">
+                <h2 className="zone-title">Metriche Attive</h2>
+              </div>
+              <div className="ecg-list">
+                {ECG_METRICS.map((m) => {
+                  const pts     = genPoints(m.values);
+                  const playing = ecgPlaying[m.id];
+                  return (
+                    <div className="ecg-metric" key={m.id}>
+                      <div className="ecg-top">
+                        <span className="ecg-label">{m.label}</span>
+                        <span className="ecg-value" style={{ color: m.color }}>
+                          {d.kpi[m.id]}
+                        </span>
+                        <button
+                          className={`ecg-btn${playing ? ' pause' : ' play'}`}
+                          onClick={() => toggleEcg(m.id)}
+                          aria-label={playing ? 'Pausa' : 'Avvia'}
+                        >
+                          {playing
+                            ? <svg width="9" height="9" viewBox="0 0 24 24" fill="currentColor"><rect x="5" y="3" width="4" height="18"/><rect x="15" y="3" width="4" height="18"/></svg>
+                            : <svg width="9" height="9" viewBox="0 0 24 24" fill="currentColor"><polygon points="5,3 19,12 5,21"/></svg>
+                          }
+                        </button>
+                      </div>
+                      <div className="ecg-canvas">
+                        <svg
+                          className="ecg-svg"
+                          viewBox="0 0 800 60"
+                          preserveAspectRatio="none"
+                          style={{
+                            animationDuration: m.speed,
+                            animationPlayState: playing ? 'running' : 'paused',
+                          }}
+                        >
+                          <polyline
+                            className="ecg-line"
+                            points={pts}
+                            style={{ stroke: m.color }}
+                          />
+                        </svg>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+
+            {/* ZONA 5 — Filtro Periodo */}
+            <div className="dash-zone dash-zone-period">
+              <div className="zone-hd">
+                <h2 className="zone-title">Periodo</h2>
+              </div>
+              <div className="period-grid">
+                {PERIODS.map(p => (
+                  <button
+                    key={p}
+                    className={`period-btn${period === p ? ' active' : ''}`}
+                    onClick={() => switchPeriod(p)}
+                  >
+                    {PERIOD_LABELS[p]}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+          </div>
+
+        </div>
       </div>
     </div>
   );
