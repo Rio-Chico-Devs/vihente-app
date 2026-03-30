@@ -161,78 +161,81 @@ const DashboardPage = () => {
           ))}
         </div>
 
-        {/* Bar Chart */}
-        <div className={`dash-chart-card dash-fade${fading ? ' out' : ''}`}>
-          <div className="chart-header">
-            <h2 className="chart-title">Andamento Fatturato</h2>
-            <span className="chart-unit">migliaia €</span>
+        {/* Bar Chart + Transactions — grouped for desktop side-by-side layout */}
+        <div className={`dash-bottom-row dash-fade${fading ? ' out' : ''}`}>
+          {/* Bar Chart */}
+          <div className="dash-chart-card">
+            <div className="chart-header">
+              <h2 className="chart-title">Andamento Fatturato</h2>
+              <span className="chart-unit">migliaia €</span>
+            </div>
+            <div className="chart-area">
+              {d.bars.map((v, i) => (
+                <div className="chart-col" key={i}>
+                  <div
+                    className="chart-bar"
+                    style={{ '--bar-h': `${v}%` }}
+                    title={`${v}%`}
+                  />
+                  <span className="chart-label">{d.labels[i]}</span>
+                </div>
+              ))}
+            </div>
           </div>
-          <div className="chart-area">
-            {d.bars.map((v, i) => (
-              <div className="chart-col" key={i}>
+
+          {/* Transactions */}
+          <div className="dash-table-card">
+            <h2 className="table-title">Transazioni Recenti</h2>
+
+            {/* Mobile: accordion list */}
+            <div className="dash-mobile-list">
+              {d.transactions.map((t, i) => (
                 <div
-                  className="chart-bar"
-                  style={{ '--bar-h': `${v}%` }}
-                  title={`${v}%`}
-                />
-                <span className="chart-label">{d.labels[i]}</span>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* Transactions */}
-        <div className={`dash-table-card dash-fade${fading ? ' out' : ''}`}>
-          <h2 className="table-title">Transazioni Recenti</h2>
-
-          {/* Mobile: accordion list */}
-          <div className="dash-mobile-list">
-            {d.transactions.map((t, i) => (
-              <div
-                className={`mobile-row${expandedRow === i ? ' expanded' : ''}`}
-                key={i}
-                onClick={() => setExpandedRow(expandedRow === i ? null : i)}
-              >
-                <div className="mobile-row-head">
-                  <span className="mobile-row-id">{t.id}</span>
-                  <span className="mobile-row-amount">{t.amount}</span>
-                  <span className={`dash-status ${statusClass(t.status)}`}>{t.status}</span>
-                  <svg className="expand-icon" width="16" height="16" viewBox="0 0 24 24" fill="none">
-                    <path d="M6 9l6 6 6-6" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"/>
-                  </svg>
+                  className={`mobile-row${expandedRow === i ? ' expanded' : ''}`}
+                  key={i}
+                  onClick={() => setExpandedRow(expandedRow === i ? null : i)}
+                >
+                  <div className="mobile-row-head">
+                    <span className="mobile-row-id">{t.id}</span>
+                    <span className="mobile-row-amount">{t.amount}</span>
+                    <span className={`dash-status ${statusClass(t.status)}`}>{t.status}</span>
+                    <svg className="expand-icon" width="16" height="16" viewBox="0 0 24 24" fill="none">
+                      <path d="M6 9l6 6 6-6" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"/>
+                    </svg>
+                  </div>
+                  <div className="mobile-row-detail">
+                    <span><em>Cliente:</em> {t.client}</span>
+                    <span><em>Servizio:</em> {t.service}</span>
+                  </div>
                 </div>
-                <div className="mobile-row-detail">
-                  <span><em>Cliente:</em> {t.client}</span>
-                  <span><em>Servizio:</em> {t.service}</span>
-                </div>
-              </div>
-            ))}
-          </div>
+              ))}
+            </div>
 
-          {/* Desktop: table */}
-          <div className="dash-desktop-table">
-            <table className="dash-table">
-              <thead>
-                <tr>
-                  <th>ID</th>
-                  <th>Cliente</th>
-                  <th>Servizio</th>
-                  <th>Importo</th>
-                  <th>Stato</th>
-                </tr>
-              </thead>
-              <tbody>
-                {d.transactions.map((t, i) => (
-                  <tr key={i}>
-                    <td className="td-id">{t.id}</td>
-                    <td>{t.client}</td>
-                    <td className="td-service">{t.service}</td>
-                    <td className="td-amount">{t.amount}</td>
-                    <td><span className={`dash-status ${statusClass(t.status)}`}>{t.status}</span></td>
+            {/* Desktop: table */}
+            <div className="dash-desktop-table">
+              <table className="dash-table">
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Cliente</th>
+                    <th>Servizio</th>
+                    <th>Importo</th>
+                    <th>Stato</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
+                </thead>
+                <tbody>
+                  {d.transactions.map((t, i) => (
+                    <tr key={i}>
+                      <td className="td-id">{t.id}</td>
+                      <td>{t.client}</td>
+                      <td className="td-service">{t.service}</td>
+                      <td className="td-amount">{t.amount}</td>
+                      <td><span className={`dash-status ${statusClass(t.status)}`}>{t.status}</span></td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
 
