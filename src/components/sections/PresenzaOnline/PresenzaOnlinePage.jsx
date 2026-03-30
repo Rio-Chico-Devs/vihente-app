@@ -312,12 +312,15 @@ const PresenzaOnlinePage = () => {
           </p>
         </div>
 
-        <button
-          className="detail-cta"
-          onClick={() => navigate('/contatti')}
-        >
-          Contattami
-        </button>
+        <section className="presenza-cta-section">
+          <h2 className="cta-title">Pronto a Costruire la Tua Presenza Online?</h2>
+          <p className="cta-text">
+            Parliamo insieme della tua strategia social e trasformiamo le tue idee in realtà
+          </p>
+          <button className="presenza-cta-button" onClick={() => navigate('/contatti')}>
+            Contattami
+          </button>
+        </section>
       </div>
     </div>
   );

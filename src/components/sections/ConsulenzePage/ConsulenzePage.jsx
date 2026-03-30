@@ -188,14 +188,15 @@ const ConsulenzePage = () => {
           </p>
         </div>
 
-        <button 
-          className="detail-cta"
-          onClick={() => navigate('/contatti')}
-        >
-          
-          
-          <span className="cta-text"><br></br><br></br>Fissa un colloquio contattandomi.</span>
-        </button>
+        <section className="consulenze-cta-section">
+          <h2 className="cta-title">Pronto a Fare il Primo Passo?</h2>
+          <p className="cta-text">
+            Fissa un colloquio e parliamo insieme del tuo progetto digitale
+          </p>
+          <button className="consulenze-cta-button" onClick={() => navigate('/contatti')}>
+            Contattami
+          </button>
+        </section>
       </div>
     </div>
   );
