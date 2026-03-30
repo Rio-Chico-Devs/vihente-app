@@ -312,11 +312,23 @@ const DashboardPage = () => {
                           />
                         </svg>
                       </div>
-                      {/* Asse date di riferimento */}
-                      <div className="ecg-dates">
-                        {ecgDates.map((label, i) => (
-                          <span key={i} className="ecg-date">{label}</span>
-                        ))}
+                      {/* Asse date scorrevole sincronizzato con il grafico */}
+                      <div className="ecg-axis-wrap">
+                        <div
+                          className="ecg-axis"
+                          style={{
+                            animationDuration: m.speed,
+                            animationPlayState: playing ? 'running' : 'paused',
+                          }}
+                        >
+                          {[0, 1].map(rep =>
+                            <div key={rep} className="ecg-axis-half">
+                              {ecgDates.map((label, i) => (
+                                <span key={i} className="ecg-date">{label}</span>
+                              ))}
+                            </div>
+                          )}
+                        </div>
                       </div>
                     </div>
                   );

@@ -475,34 +475,62 @@
 
 @media (min-width: 768px) {
   .bk-wrapper {
-    min-height: 100vh;
+    height: 100vh;
     overflow: hidden;
   }
 
-  .bk-content   { padding: 155px 2rem 3rem; }
-  .bk-header    { margin-bottom: 0.8rem; }
-  .bk-stepper   { margin-bottom: 0.8rem; }
+  /* Usa tutto lo spazio orizzontale disponibile */
+  .bk-content {
+    max-width: none;
+    height: 100%;
+    box-sizing: border-box;
+    padding: 140px 5rem 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.7rem;
+    overflow: hidden;
+  }
 
-  /* Panel tighter */
-  .bk-panel { padding: 1rem 1.4rem; }
+  .bk-header  { flex-shrink: 0; margin-bottom: 0; }
+  .bk-stepper { flex-shrink: 0; margin-bottom: 0; }
 
-  /* Compact step gaps */
-  .bk-step-content { gap: 0.9rem; }
+  /* Panel occupa lo spazio rimanente */
+  .bk-panel {
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+    padding: 1.5rem 2rem;
+  }
 
-  /* Services: 4 per row */
+  .bk-step-content { gap: 1rem; }
+
+  /* Servizi: 4 per riga */
   .bk-services-grid { grid-template-columns: repeat(4, 1fr); }
-  .bk-service-card  { padding: 0.8rem 0.7rem; }
+  .bk-service-card  { padding: 1rem 0.8rem; }
 
-  /* Calendar compact */
-  .bk-calendar      { padding: 0.8rem; }
-  .bk-cal-header    { margin-bottom: 0.6rem; }
-  .bk-cal-grid      { gap: 0.25rem; }
+  /* Calendario: usa tutto lo spazio, celle grandi */
+  .bk-calendar   { padding: 1.2rem 1.5rem; }
+  .bk-cal-header { margin-bottom: 0.8rem; }
+  .bk-cal-grid   { gap: 0.5rem; }
+  .bk-cal-day {
+    font-size: 0.95rem;
+    min-height: 42px;
+    border-radius: 8px;
+  }
+  .bk-cal-day-name { font-size: 0.75rem; padding: 0.3rem 0; }
+  .bk-cal-nav  { width: 40px; height: 40px; font-size: 1.4rem; }
+  .bk-cal-month { font-size: 1rem; }
 
-  /* Slots: 5 per row */
-  .bk-slots-grid { grid-template-columns: repeat(5, 1fr); }
+  /* Slots: 6 per riga */
+  .bk-slots-grid { grid-template-columns: repeat(6, 1fr); }
+  .bk-slot { font-size: 0.9rem; padding: 0.7rem 0.5rem; }
 }
 
 @media (min-width: 1024px) {
-  .bk-content { padding: 155px 3rem 3rem; }
+  .bk-content { padding: 140px 8rem 1.5rem; }
   .bk-title   { font-size: 1.8rem; }
+}
+
+@media (min-width: 1440px) {
+  .bk-content { padding: 140px 14rem 1.5rem; }
 }

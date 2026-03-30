@@ -206,16 +206,26 @@
 .status-progress { background: rgba(255,165,0,0.1); color: #fa0; border: 1px solid rgba(255,165,0,0.25); }
 .status-pending  { background: rgba(0,255,255,0.06); color: var(--color-primary,#0ff); border: 1px solid var(--color-primary-20,rgba(0,255,255,0.2)); }
 
-/* ── ECG date axis ── */
-.ecg-dates {
+/* ── ECG date axis scorrevole ── */
+.ecg-axis-wrap {
+  overflow: hidden;
+  width: 100%;
+}
+.ecg-axis {
+  display: flex;
+  width: 200%;
+  animation: ecgScroll linear infinite;
+}
+.ecg-axis-half {
+  width: 50%;
   display: flex;
   justify-content: space-between;
-  padding: 0 2px;
+  padding: 1px 2px 0;
 }
 .ecg-date {
   font-family: 'Share Tech Mono', monospace;
-  font-size: 0.58rem;
-  color: var(--text-secondary, rgba(0,255,255,0.3));
+  font-size: 0.56rem;
+  color: var(--text-secondary, rgba(0,255,255,0.35));
   white-space: nowrap;
 }
 
@@ -441,25 +451,30 @@
     margin-bottom: 0;
   }
 
-  /* Griglia 3 colonne: riempie lo spazio restante */
+  /* Griglia 3 colonne — riga unica che riempie lo spazio disponibile.
+     grid-template-rows:1fr + min-height:0 sui figli sono fondamentali
+     per impedire l'overflow oltre il wrapper. */
   .dash-main-grid {
     flex: 1;
     min-height: 0;
     display: grid;
     grid-template-columns: 1.1fr 2fr 1fr;
+    grid-template-rows: 1fr;
     gap: 0.6rem;
     overflow: hidden;
   }
+  /* Tutti i diretti figli del grid devono avere min-height:0 */
+  .dash-main-grid > * { min-height: 0; overflow: hidden; }
 
   /* Ogni zona e' una flex column */
   .dash-zone {
-    overflow: hidden;
     display: flex;
     flex-direction: column;
     min-height: 0;
+    overflow: hidden;
   }
 
-  /* Zona 1 (transazioni): scroll interno sulle righe */
+  /* Zona 1: scroll interno sulle righe */
   .zone-scroll {
     flex: 1;
     min-height: 0;
@@ -472,9 +487,8 @@
     flex-direction: column;
     gap: 0.6rem;
     min-height: 0;
-    overflow: hidden;
   }
-  .dash-zone-chart   { flex: 1.5; min-height: 0; }
+  .dash-zone-chart   { flex: 1.4; min-height: 0; }
   .dash-zone-sectors { flex: 1;   min-height: 0; }
   .chart-area        { height: auto; flex: 1; min-height: 0; }
   .sectors-list      { flex: 1; min-height: 0; justify-content: space-evenly; }
@@ -485,15 +499,21 @@
     flex-direction: column;
     gap: 0.6rem;
     min-height: 0;
-    overflow: hidden;
   }
   .dash-zone-ecg    { flex: 1; min-height: 0; }
   .dash-zone-period { flex-shrink: 0; }
-  .ecg-list { flex: 1; min-height: 0; overflow-y: auto; justify-content: space-evenly; }
+  .ecg-list {
+    flex: 1;
+    min-height: 0;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+  }
 
-  /* ECG compatto */
-  .ecg-canvas { height: 36px; }
-  .ecg-svg    { height: 36px; }
+  /* ECG compatto in desktop */
+  .ecg-canvas { height: 32px; }
+  .ecg-svg    { height: 32px; }
 }
 
 @media (min-width: 1024px) {
