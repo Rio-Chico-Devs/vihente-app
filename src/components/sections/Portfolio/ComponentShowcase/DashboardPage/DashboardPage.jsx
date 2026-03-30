@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './DashboardPage.css';
 
-/* ── ECG waveform data per metrica ── */
+/* ── ECG waveform data ── */
 const ECG_METRICS = [
   {
     id: 'fatturato',
@@ -34,7 +34,7 @@ const ECG_METRICS = [
   },
 ];
 
-/* Genera punti polyline doppi per loop seamless (SVG viewBox 0 0 800 60) */
+/* Genera polyline points doppi per loop seamless (viewBox 0 0 800 60) */
 const genPoints = (values) => {
   const doubled = [...values, ...values];
   const n = doubled.length - 1;
@@ -45,7 +45,22 @@ const genPoints = (values) => {
   }).join(' ');
 };
 
-/* ── Settori (dati simulati 2025) ── */
+/* Genera 5 etichette date distribuite nel periodo (riferimento ECG) */
+const getEcgDates = (period) => {
+  const today = new Date(2026, 2, 30); // 30 mar 2026
+  const totalDays = { '7d': 7, '30d': 30, '90d': 90, '1y': 365 }[period];
+  return [0, 1, 2, 3, 4].map(i => {
+    const daysAgo = Math.round(totalDays - (totalDays * i) / 4);
+    const d = new Date(today);
+    d.setDate(today.getDate() - daysAgo);
+    if (period === '1y') {
+      return d.toLocaleDateString('it-IT', { month: 'short', year: '2-digit' });
+    }
+    return `${d.getDate()}/${d.getMonth() + 1}`;
+  });
+};
+
+/* ── Settori ── */
 const SECTORS = [
   { name: 'AI / ML Tools',   pct: 45 },
   { name: 'E-Commerce',      pct: 34 },
@@ -54,11 +69,11 @@ const SECTORS = [
   { name: 'Fintech',         pct: 19 },
 ];
 
-/* ── Dati per periodo ── */
+/* ── Dati per periodo — barre corrispondono ESATTAMENTE al periodo ── */
 const DATA = {
   '7d': {
     kpi: { fatturato: '€ 4.820', utenti: '1.247', conversioni: '6,4%', ordine: '€ 127' },
-    bars:   [35, 58, 42, 70, 61, 88, 95],
+    bars: [62, 75, 58, 80, 70, 90, 95],
     labels: ['Lun','Mar','Mer','Gio','Ven','Sab','Dom'],
     transactions: [
       { id: '#2041', client: 'Agenzia Neon', service: 'Web Dev',    amount: '€ 980',   status: 'pagato'   },
@@ -70,8 +85,9 @@ const DATA = {
   },
   '30d': {
     kpi: { fatturato: '€ 18.340', utenti: '5.890', conversioni: '7,1%', ordine: '€ 143' },
-    bars:   [42,55,38,72,60,80,91,65,74,88,50,67],
-    labels: ['S1','S2','S3','S4','','','','','','','',''],
+    // 30 barre — una per giorno di marzo 2026
+    bars: [55,60,52,65,68,72,58,70,75,80,78,82,74,85,88,84,90,86,92,89,95,91,88,94,90,96,92,95,98,95],
+    labels: ['1','','','','5','','','','','10','','','','','15','','','','','20','','','','','25','','','','','30'],
     transactions: [
       { id: '#2041', client: 'Agenzia Neon', service: 'Web Dev',    amount: '€ 980',   status: 'pagato'   },
       { id: '#2040', client: 'Studio M',     service: 'Multimedia', amount: '€ 450',   status: 'pagato'   },
@@ -83,8 +99,9 @@ const DATA = {
   },
   '90d': {
     kpi: { fatturato: '€ 52.160', utenti: '16.420', conversioni: '8,3%', ordine: '€ 158' },
-    bars:   [30,45,60,55,75,80,68,90,85,78,92,88],
-    labels: ['Gen','Feb','Mar','','','','','','','','',''],
+    // 13 barre settimanali (Gen-Mar 2026)
+    bars: [38, 44, 50, 56, 52, 62, 58, 68, 65, 74, 70, 80, 85],
+    labels: ['S1','S2','S3','S4','S5','S6','S7','S8','S9','S10','S11','S12','S13'],
     transactions: [
       { id: '#2041', client: 'Agenzia Neon', service: 'Web Dev',    amount: '€ 980',   status: 'pagato' },
       { id: '#2038', client: 'Nova Brand',   service: 'Presenza',   amount: '€ 670',   status: 'pagato' },
@@ -96,8 +113,9 @@ const DATA = {
   },
   '1y': {
     kpi: { fatturato: '€ 198.400', utenti: '62.300', conversioni: '9,1%', ordine: '€ 172' },
-    bars:   [55,62,68,72,65,78,80,85,82,88,90,95],
-    labels: ['G','F','M','A','M','G','L','A','S','O','N','D'],
+    // 12 barre mensili Apr 2025 – Mar 2026
+    bars: [55, 60, 65, 62, 70, 75, 72, 80, 82, 88, 92, 95],
+    labels: ['Apr','Mag','Giu','Lug','Ago','Set','Ott','Nov','Dic','Gen','Feb','Mar'],
     transactions: [
       { id: '#2041', client: 'Agenzia Neon', service: 'Web Dev',    amount: '€ 980',   status: 'pagato' },
       { id: '#2035', client: 'StartupZone',  service: 'Web Dev',    amount: '€ 2.100', status: 'pagato' },
@@ -112,6 +130,7 @@ const DATA = {
 
 const PERIODS = ['7d', '30d', '90d', '1y'];
 const PERIOD_LABELS = { '7d': '7 Giorni', '30d': '30 Giorni', '90d': '90 Giorni', '1y': 'Annuale' };
+const PERIOD_DESC   = { '7d': 'Ultimi 7 giorni', '30d': 'Marzo 2026', '90d': 'Gen – Mar 2026', '1y': 'Apr 2025 – Mar 2026' };
 
 const statusClass = (s) => {
   if (s === 'pagato')   return 'status-paid';
@@ -121,8 +140,8 @@ const statusClass = (s) => {
 
 const DashboardPage = () => {
   const navigate = useNavigate();
-  const [period, setPeriod] = useState('90d');
-  const [fading,  setFading]  = useState(false);
+  const [period, setPeriod]   = useState('30d');
+  const [fading, setFading]   = useState(false);
   const [ecgPlaying, setEcgPlaying] = useState(
     Object.fromEntries(ECG_METRICS.map(m => [m.id, true]))
   );
@@ -142,6 +161,7 @@ const DashboardPage = () => {
   }, []);
 
   const d = DATA[period];
+  const ecgDates = getEcgDates(period);
 
   return (
     <div className="dash-wrapper">
@@ -149,7 +169,7 @@ const DashboardPage = () => {
 
       <div className="dash-layout">
 
-        {/* ── Header ── */}
+        {/* Header */}
         <header className="dash-header">
           <button className="dash-back-btn" onClick={() => navigate('/portfolio/componenti')}>
             <svg width="15" height="15" viewBox="0 0 24 24" fill="none">
@@ -159,14 +179,14 @@ const DashboardPage = () => {
           </button>
           <div className="dash-title-group">
             <h1 className="dash-title">Analytics Dashboard</h1>
-            <p className="dash-subtitle">Panoramica in tempo reale</p>
+            <p className="dash-subtitle">Panoramica in tempo reale · {PERIOD_DESC[period]}</p>
           </div>
           <div className="dash-live-badge">
             <span className="live-dot" />LIVE
           </div>
         </header>
 
-        {/* ── Griglia principale 3 colonne ── */}
+        {/* Griglia 3 colonne */}
         <div className={`dash-main-grid dash-fade${fading ? ' out' : ''}`}>
 
           {/* ZONA 1 — Transazioni Recenti */}
@@ -207,13 +227,13 @@ const DashboardPage = () => {
           {/* Colonna centrale: ZONA 2 + ZONA 4 */}
           <div className="dash-center-col">
 
-            {/* ZONA 2 — Andamento Fatturato */}
+            {/* ZONA 2 — Bar Chart */}
             <div className="dash-zone dash-zone-chart">
               <div className="zone-hd">
                 <h2 className="zone-title">Andamento Fatturato</h2>
-                <span className="zone-unit">migliaia €</span>
+                <span className="zone-unit">{PERIOD_DESC[period]} · migliaia €</span>
               </div>
-              <div className="chart-area">
+              <div className={`chart-area${period === '30d' ? ' chart-dense' : ''}`}>
                 {d.bars.map((v, i) => (
                   <div className="chart-col" key={i}>
                     <div className="chart-bar" style={{ '--bar-h': `${v}%` }} />
@@ -251,6 +271,7 @@ const DashboardPage = () => {
             <div className="dash-zone dash-zone-ecg">
               <div className="zone-hd">
                 <h2 className="zone-title">Metriche Attive</h2>
+                <span className="zone-unit">{PERIOD_DESC[period]}</span>
               </div>
               <div className="ecg-list">
                 {ECG_METRICS.map((m) => {
@@ -291,6 +312,12 @@ const DashboardPage = () => {
                           />
                         </svg>
                       </div>
+                      {/* Asse date di riferimento */}
+                      <div className="ecg-dates">
+                        {ecgDates.map((label, i) => (
+                          <span key={i} className="ecg-date">{label}</span>
+                        ))}
+                      </div>
                     </div>
                   );
                 })}
@@ -316,7 +343,6 @@ const DashboardPage = () => {
             </div>
 
           </div>
-
         </div>
       </div>
     </div>

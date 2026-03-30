@@ -206,6 +206,19 @@
 .status-progress { background: rgba(255,165,0,0.1); color: #fa0; border: 1px solid rgba(255,165,0,0.25); }
 .status-pending  { background: rgba(0,255,255,0.06); color: var(--color-primary,#0ff); border: 1px solid var(--color-primary-20,rgba(0,255,255,0.2)); }
 
+/* ── ECG date axis ── */
+.ecg-dates {
+  display: flex;
+  justify-content: space-between;
+  padding: 0 2px;
+}
+.ecg-date {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 0.58rem;
+  color: var(--text-secondary, rgba(0,255,255,0.3));
+  white-space: nowrap;
+}
+
 /* ── Bar Chart ── */
 .dash-zone-chart { display: flex; flex-direction: column; }
 .chart-area {
@@ -242,6 +255,11 @@
   transition: height 0.4s cubic-bezier(0.34,1.56,0.64,1);
   box-shadow: 0 -2px 6px var(--color-primary-25, rgba(0,255,255,0.25));
 }
+/* 30 barre: gap stretto, no label overflow */
+.chart-area.chart-dense { gap: 0.12rem; }
+.chart-area.chart-dense .chart-col { min-width: 0; }
+.chart-area.chart-dense .chart-bar { max-width: 100%; }
+
 .chart-bar:hover { filter: brightness(1.3); }
 .chart-lbl {
   font-family: 'Share Tech Mono', monospace;
@@ -399,89 +417,90 @@
 
 /* ═══════════════════════════════════════
    DESKTOP — griglia 3 colonne, no scroll
+   Catena flex rigorosa: ogni livello ha
+   height fissa o flex:1 + min-height:0
 ═══════════════════════════════════════ */
 @media (min-width: 768px) {
-  .dash-wrapper { overflow: hidden; }
-
-  .dash-layout {
+  /* Wrapper: altezza viewport esatta, nulla deborda */
+  .dash-wrapper {
     height: 100vh;
-    padding: 0;
-    padding-top: 140px; /* navbar 80px + news bar 60px */
+    overflow: hidden;
+  }
+
+  /* Layout: riempie il wrapper con padding per nav+newsbar */
+  .dash-layout {
+    height: 100%;
     box-sizing: border-box;
-    gap: 0;
+    padding: 140px 1.2rem 0.8rem;
+    gap: 0.5rem;
     overflow: hidden;
   }
 
   .dash-header {
     flex-shrink: 0;
-    padding: 0.6rem 1.2rem 0.5rem;
+    margin-bottom: 0;
   }
 
-  /* 3 colonne: transazioni | grafico+settori | ecg+periodo */
+  /* Griglia 3 colonne: riempie lo spazio restante */
   .dash-main-grid {
     flex: 1;
     min-height: 0;
     display: grid;
     grid-template-columns: 1.1fr 2fr 1fr;
-    gap: 0.7rem;
+    gap: 0.6rem;
     overflow: hidden;
-    padding: 0 1.2rem 0.8rem;
   }
 
-  /* Zona 1: transazioni — altezza piena, scroll interno */
+  /* Ogni zona e' una flex column */
   .dash-zone {
     overflow: hidden;
     display: flex;
     flex-direction: column;
+    min-height: 0;
   }
+
+  /* Zona 1 (transazioni): scroll interno sulle righe */
   .zone-scroll {
     flex: 1;
-    overflow-y: auto;
     min-height: 0;
+    overflow-y: auto;
   }
 
-  /* Colonna centrale: chart sopra, settori sotto */
+  /* Colonna centrale */
   .dash-center-col {
-    overflow: hidden;
-  }
-  .dash-zone-chart {
-    flex: 1.4;
-  }
-  .chart-area {
-    height: auto;
-  }
-  .dash-zone-sectors {
-    flex: 1;
-  }
-
-  /* Colonna destra: ecg prende spazio, periodo fisso sotto */
-  .dash-right-col {
-    overflow: hidden;
-  }
-  .dash-zone-ecg {
-    flex: 1;
-    overflow: hidden;
-  }
-  .ecg-list {
-    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
     min-height: 0;
+    overflow: hidden;
   }
-  .dash-zone-period {
-    flex-shrink: 0;
-  }
+  .dash-zone-chart   { flex: 1.5; min-height: 0; }
+  .dash-zone-sectors { flex: 1;   min-height: 0; }
+  .chart-area        { height: auto; flex: 1; min-height: 0; }
+  .sectors-list      { flex: 1; min-height: 0; justify-content: space-evenly; }
 
-  /* ECG un po' piu' compatto */
-  .ecg-canvas { height: 38px; }
-  .ecg-svg    { height: 38px; }
+  /* Colonna destra */
+  .dash-right-col {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+    min-height: 0;
+    overflow: hidden;
+  }
+  .dash-zone-ecg    { flex: 1; min-height: 0; }
+  .dash-zone-period { flex-shrink: 0; }
+  .ecg-list { flex: 1; min-height: 0; overflow-y: auto; justify-content: space-evenly; }
+
+  /* ECG compatto */
+  .ecg-canvas { height: 36px; }
+  .ecg-svg    { height: 36px; }
 }
 
 @media (min-width: 1024px) {
-  .dash-main-grid { padding: 0 1.8rem 1rem; }
-  .dash-header    { padding: 0.7rem 1.8rem 0.5rem; }
-  .dash-title     { font-size: 1.5rem; }
+  .dash-layout { padding: 140px 1.8rem 0.8rem; }
+  .dash-title  { font-size: 1.5rem; }
 }
 
 @media (min-width: 1440px) {
-  .dash-main-grid { padding: 0 2.5rem 1rem; }
-  .dash-header    { padding: 0.8rem 2.5rem 0.5rem; }
+  .dash-layout { padding: 140px 2.5rem 1rem; }
 }
