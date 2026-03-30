@@ -29,7 +29,8 @@
   z-index: 1;
   max-width: 680px;
   margin: 0 auto;
-  padding: 1.5rem 1rem 4rem;
+  /* mobile: only navbar is fixed (~80px) */
+  padding: 90px 1rem 5rem;
 }
 
 /* ── Header ── */
@@ -473,10 +474,11 @@
 }
 
 @media (min-width: 768px) {
-  .bk-content { padding: 2rem 2rem 5rem; }
+  /* navbar 80px + scrolling news bar 60px = 140px, plus buffer */
+  .bk-content { padding: 155px 2rem 5rem; }
 }
 
 @media (min-width: 1024px) {
-  .bk-content { padding: 2.5rem 3rem 5rem; }
+  .bk-content { padding: 155px 3rem 5rem; }
   .bk-title   { font-size: 2rem; }
 }

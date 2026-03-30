@@ -32,7 +32,8 @@
   z-index: 1;
   max-width: 1200px;
   margin: 0 auto;
-  padding: 1.5rem 1rem 4rem;
+  /* mobile: only navbar is fixed (~80px) */
+  padding: 90px 1rem 5rem;
 }
 
 /* ── Header ── */
@@ -424,7 +425,8 @@
 }
 
 @media (min-width: 768px) {
-  .dash-content { padding: 2rem 2rem 5rem; }
+  /* navbar 80px + scrolling news bar 60px = 140px, plus buffer */
+  .dash-content { padding: 155px 2rem 5rem; }
   .dash-mobile-list   { display: none; }
   .dash-desktop-table { display: block; }
 
@@ -458,7 +460,7 @@
 }
 
 @media (min-width: 1024px) {
-  .dash-content  { padding: 2.5rem 3rem 5rem; }
+  .dash-content  { padding: 155px 3rem 5rem; }
   .dash-title    { font-size: 2rem; }
   .chart-area    { height: 220px; }
 }
