@@ -241,7 +241,8 @@ const Navbar = () => {
             aria-label="Torna alla home"
             onClick={handleLogoClick}
           >
-            <svg className="logo-eye" viewBox="24 36 52 28">
+            {/* Desktop: plain eye */}
+            <svg className="logo-eye logo-eye-plain" viewBox="24 36 52 28">
               <defs>
                 <filter id="eyeGlowNav">
                   <feGaussianBlur stdDeviation="1.5" result="coloredBlur"/>
@@ -307,6 +308,92 @@ const Navbar = () => {
                   }}
                 />
               </g>
+            </svg>
+
+            {/* Mobile: Iris eye with fiocchetto */}
+            <svg className="logo-eye logo-eye-iris" viewBox="20 27 62 42" aria-hidden="true">
+              <defs>
+                <filter id="irisGlowNav">
+                  <feGaussianBlur stdDeviation="1.5" result="coloredBlur"/>
+                  <feMerge>
+                    <feMergeNode in="coloredBlur"/>
+                    <feMergeNode in="SourceGraphic"/>
+                  </feMerge>
+                </filter>
+                <clipPath id="irisClipNav">
+                  <path d="M 35 50 C 39 43, 44 40, 50 40 C 56 40, 61 43, 65 50 C 61 57, 56 60, 50 60 C 44 60, 39 57, 35 50 Z"/>
+                </clipPath>
+              </defs>
+
+              {/* Eye outline */}
+              <path
+                d="M 35 50 C 39 43, 44 40, 50 40 C 56 40, 61 43, 65 50 C 61 57, 56 60, 50 60 C 44 60, 39 57, 35 50 Z"
+                fill="none"
+                stroke="var(--color-primary-95, rgba(0, 255, 255, 0.95))"
+                strokeWidth="1.2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                filter="url(#irisGlowNav)"
+                style={{ opacity: isBlinking ? 0 : 1, transition: 'opacity 0.1s ease-in-out' }}
+              />
+
+              {/* Pupil */}
+              <g
+                clipPath="url(#irisClipNav)"
+                style={{ opacity: isBlinking ? 0 : 1, transition: 'opacity 0.1s ease-in-out' }}
+              >
+                <circle
+                  cx={pupilPosition.x} cy={pupilPosition.y} r="8"
+                  fill="none"
+                  stroke="var(--color-primary-95, rgba(0, 255, 255, 0.95))"
+                  strokeWidth="1"
+                  filter="url(#irisGlowNav)"
+                  style={{ transition: 'cx 0.3s ease-out, cy 0.3s ease-out' }}
+                />
+                <circle
+                  cx={pupilPosition.x} cy={pupilPosition.y} r="3.5"
+                  fill="none"
+                  stroke="var(--color-primary-95, rgba(0, 255, 255, 0.95))"
+                  strokeWidth="0.8"
+                  filter="url(#irisGlowNav)"
+                  style={{ transition: 'cx 0.3s ease-out, cy 0.3s ease-out' }}
+                />
+              </g>
+
+              {/* Fiocchetto — top-right */}
+              <g filter="url(#irisGlowNav)">
+                <path
+                  d="M 67,37 C 64,33 60,32 61,35 C 62,38 65,38 67,37"
+                  fill="var(--color-primary-15, rgba(0,255,255,0.15))"
+                  stroke="var(--color-primary-95, rgba(0,255,255,0.95))"
+                  strokeWidth="0.9" strokeLinecap="round" strokeLinejoin="round"
+                />
+                <path
+                  d="M 67,37 C 70,33 74,32 73,35 C 72,38 69,38 67,37"
+                  fill="var(--color-primary-15, rgba(0,255,255,0.15))"
+                  stroke="var(--color-primary-95, rgba(0,255,255,0.95))"
+                  strokeWidth="0.9" strokeLinecap="round" strokeLinejoin="round"
+                />
+                <path d="M 67,37 C 65,39 64,41 63,43" fill="none"
+                  stroke="var(--color-primary-95, rgba(0,255,255,0.95))"
+                  strokeWidth="0.8" strokeLinecap="round"
+                />
+                <path d="M 67,37 C 69,39 70,41 71,43" fill="none"
+                  stroke="var(--color-primary-95, rgba(0,255,255,0.95))"
+                  strokeWidth="0.8" strokeLinecap="round"
+                />
+                <circle cx="67" cy="37" r="1.8"
+                  fill="var(--color-primary, #0ff)"
+                  stroke="var(--color-primary-95, rgba(0,255,255,0.95))"
+                  strokeWidth="0.4"
+                />
+              </g>
+
+              {/* Neo */}
+              <circle cx="65" cy="63" r="1.5"
+                fill="var(--color-primary, #0ff)"
+                filter="url(#irisGlowNav)"
+              />
             </svg>
           </Link>
 

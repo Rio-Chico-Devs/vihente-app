@@ -56,6 +56,16 @@
   height: 45px;
 }
 
+/* Desktop: plain eye visible, Iris hidden */
+.logo-eye-iris { display: none; }
+.logo-eye-plain { display: block; }
+
+/* Mobile: Iris visible, plain eye hidden */
+@media (max-width: 768px) {
+  .logo-eye-iris  { display: block; width: 74px; height: 50px; }
+  .logo-eye-plain { display: none; }
+}
+
 .navbar-logo:hover .logo-eye {
   animation: glitchEye 0.4s ease-in-out infinite;
 }
