@@ -104,54 +104,36 @@ const Iris = () => {
           />
         </g>
 
-        {/* ── Fiocchetto — top-right ── */}
-        <g filter="url(#irisGlowD)">
+        {/* ── Fiocchetto — filled, inclinato -20deg, top-right ── */}
+        <g transform="translate(67,37) rotate(-20)" filter="url(#irisGlowD)">
           {/* Left wing */}
           <path
-            d="M 67,37 C 64,33 60,32 61,35 C 62,38 65,38 67,37"
-            fill="var(--color-primary-15, rgba(0,255,255,0.15))"
-            stroke="var(--color-primary-95, rgba(0,255,255,0.95))"
-            strokeWidth="0.9"
-            strokeLinecap="round"
-            strokeLinejoin="round"
+            d="M 0,0 C -1,-2 -5,-6.5 -9,-5 C -12,-4 -12,0 -9,2 C -7,3.5 -3,3.5 -1.5,2 C -0.5,1.5 0,0.5 0,0 Z"
+            fill="var(--color-primary, #0ff)"
           />
           {/* Right wing */}
           <path
-            d="M 67,37 C 70,33 74,32 73,35 C 72,38 69,38 67,37"
-            fill="var(--color-primary-15, rgba(0,255,255,0.15))"
-            stroke="var(--color-primary-95, rgba(0,255,255,0.95))"
-            strokeWidth="0.9"
-            strokeLinecap="round"
-            strokeLinejoin="round"
+            d="M 0,0 C 1,-2 5,-6.5 9,-5 C 12,-4 12,0 9,2 C 7,3.5 3,3.5 1.5,2 C 0.5,1.5 0,0.5 0,0 Z"
+            fill="var(--color-primary, #0ff)"
           />
           {/* Left tail */}
           <path
-            d="M 67,37 C 65,39 64,41 63,43"
-            fill="none"
-            stroke="var(--color-primary-95, rgba(0,255,255,0.95))"
-            strokeWidth="0.8"
-            strokeLinecap="round"
+            d="M -0.5,0.5 C -1.5,3 -4,6 -6,8 C -5,9 -4,8.5 -3,7 C -1.5,5 0,2.5 0.5,1 Z"
+            fill="var(--color-primary, #0ff)"
           />
           {/* Right tail */}
           <path
-            d="M 67,37 C 69,39 70,41 71,43"
-            fill="none"
-            stroke="var(--color-primary-95, rgba(0,255,255,0.95))"
-            strokeWidth="0.8"
-            strokeLinecap="round"
-          />
-          {/* Center knot */}
-          <circle
-            cx="67" cy="37" r="1.8"
+            d="M 0.5,0.5 C 1.5,3 4,6 6,8 C 7,8 6,9 5,8 C 3.5,6.5 2,4 -0.5,1 Z"
             fill="var(--color-primary, #0ff)"
-            stroke="var(--color-primary-95, rgba(0,255,255,0.95))"
-            strokeWidth="0.4"
           />
+          {/* Center knot: dark hole + cyan fill */}
+          <ellipse cx="0" cy="0" rx="2.2" ry="1.8" fill="var(--color-bg, #000)" />
+          <ellipse cx="0" cy="0" rx="1.4" ry="1.1" fill="var(--color-primary, #0ff)" />
         </g>
 
-        {/* ── Neo (beauty mark) ── */}
+        {/* ── Neo (beauty mark) — spostato leggermente su ── */}
         <circle
-          cx="65" cy="63" r="1.5"
+          cx="65" cy="61" r="1.5"
           fill="var(--color-primary, #0ff)"
           filter="url(#irisGlowD)"
         />
