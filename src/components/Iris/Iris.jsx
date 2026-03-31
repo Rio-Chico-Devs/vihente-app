@@ -104,31 +104,21 @@ const Iris = () => {
           />
         </g>
 
-        {/* ── Fiocchetto — filled, inclinato -20deg, top-right ── */}
-        <g transform="translate(67,37) rotate(-20)" filter="url(#irisGlowD)">
-          {/* Left wing */}
+        {/* ── Papillon — filled, inclinato -45deg, top-right ── */}
+        <g transform="translate(66,39) rotate(-45)" filter="url(#irisGlowD)">
+          {/* Left wing — larga fuori, stretta al centro */}
           <path
-            d="M 0,0 C -1,-2 -5,-6.5 -9,-5 C -12,-4 -12,0 -9,2 C -7,3.5 -3,3.5 -1.5,2 C -0.5,1.5 0,0.5 0,0 Z"
+            d="M -1.5,-1.2 C -2.5,-3 -4.5,-4.8 -7.5,-4.3 C -10,-3.8 -10.5,0 -7.5,4.3 C -4.5,4.8 -2.5,3 -1.5,1.2 C -1,0.5 -1,-0.5 -1.5,-1.2 Z"
             fill="var(--color-primary, #0ff)"
           />
-          {/* Right wing */}
+          {/* Right wing — mirror */}
           <path
-            d="M 0,0 C 1,-2 5,-6.5 9,-5 C 12,-4 12,0 9,2 C 7,3.5 3,3.5 1.5,2 C 0.5,1.5 0,0.5 0,0 Z"
+            d="M 1.5,-1.2 C 2.5,-3 4.5,-4.8 7.5,-4.3 C 10,-3.8 10.5,0 7.5,4.3 C 4.5,4.8 2.5,3 1.5,1.2 C 1,0.5 1,-0.5 1.5,-1.2 Z"
             fill="var(--color-primary, #0ff)"
           />
-          {/* Left tail */}
-          <path
-            d="M -0.5,0.5 C -1.5,3 -4,6 -6,8 C -5,9 -4,8.5 -3,7 C -1.5,5 0,2.5 0.5,1 Z"
-            fill="var(--color-primary, #0ff)"
-          />
-          {/* Right tail */}
-          <path
-            d="M 0.5,0.5 C 1.5,3 4,6 6,8 C 7,8 6,9 5,8 C 3.5,6.5 2,4 -0.5,1 Z"
-            fill="var(--color-primary, #0ff)"
-          />
-          {/* Center knot: dark hole + cyan fill */}
-          <ellipse cx="0" cy="0" rx="2.2" ry="1.8" fill="var(--color-bg, #000)" />
-          <ellipse cx="0" cy="0" rx="1.4" ry="1.1" fill="var(--color-primary, #0ff)" />
+          {/* Nodo centrale — gap scuro + quadratino cyan */}
+          <rect x="-2" y="-2" width="4" height="4" rx="0.8" fill="rgba(0,0,0,0.9)" />
+          <rect x="-1.2" y="-1.2" width="2.4" height="2.4" rx="0.5" fill="var(--color-primary, #0ff)" />
         </g>
 
         {/* ── Neo (beauty mark) — spostato leggermente su ── */}
