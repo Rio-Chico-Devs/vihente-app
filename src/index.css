@@ -547,3 +547,172 @@ body > .custom-cursor-dot {
   background: rgba(232, 160, 48, 0.3);
   color: #e8dcc8;
 }
+
+/* ============================================
+   WORK DISCLAIMER SECTION
+   Sezione "Come viene erogato il servizio"
+   Condivisa su tutte e 4 le pagine servizi
+   ============================================ */
+
+.work-disclaimer-section {
+  margin: 3.5rem 0;
+  padding: 1.5rem;
+  border: 1px solid var(--color-primary-20);
+  border-radius: 12px;
+  background: rgba(0, 255, 255, 0.02);
+  position: relative;
+  overflow: hidden;
+}
+
+.work-disclaimer-section::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--color-primary-40), transparent);
+}
+
+.disclaimer-header {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin-bottom: 1rem;
+}
+
+.disclaimer-icon {
+  font-size: 1.1rem;
+  color: var(--color-primary);
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+.disclaimer-title {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--color-primary);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin: 0;
+}
+
+.disclaimer-note {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  line-height: 1.75;
+  margin: 0 0 1.75rem;
+  padding-left: 1rem;
+  border-left: 2px solid var(--color-primary-30);
+}
+
+.disclaimer-note strong {
+  color: var(--color-primary);
+}
+
+/* Mobile first: 1 colonna */
+.disclaimer-steps {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.75rem;
+}
+
+.disclaimer-step {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.875rem;
+  padding: 0.875rem 1rem;
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 8px;
+  border: 1px solid var(--color-primary-10);
+  transition: border-color 0.2s ease;
+}
+
+.disclaimer-step:hover {
+  border-color: var(--color-primary-20);
+}
+
+.disclaimer-step-num {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 1.3rem;
+  font-weight: 900;
+  color: var(--color-primary-30);
+  line-height: 1;
+  flex-shrink: 0;
+  min-width: 2rem;
+  padding-top: 0.1rem;
+}
+
+.disclaimer-step-body {
+  flex: 1;
+}
+
+.disclaimer-step-title {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--color-primary);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin: 0 0 0.35rem;
+}
+
+.disclaimer-step-desc {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  line-height: 1.6;
+  margin: 0;
+}
+
+/* Tablet: 2 colonne */
+@media (min-width: 580px) {
+  .disclaimer-steps {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+/* Desktop: 4 colonne in linea */
+@media (min-width: 1024px) {
+  .work-disclaimer-section {
+    padding: 2rem 2.5rem;
+    margin: 4rem 0;
+  }
+
+  .disclaimer-steps {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  .disclaimer-title {
+    font-size: 1.05rem;
+  }
+}
+
+/* Light mode overrides */
+[data-theme="light"] .work-disclaimer-section {
+  background: rgba(232, 160, 48, 0.03);
+  border-color: var(--color-primary-20);
+}
+
+[data-theme="light"] .work-disclaimer-section::before {
+  background: linear-gradient(90deg, transparent, var(--color-primary-40), transparent);
+}
+
+[data-theme="light"] .disclaimer-step {
+  background: rgba(255, 255, 255, 0.25);
+  border-color: var(--color-primary-10);
+}
+
+[data-theme="light"] .disclaimer-step:hover {
+  border-color: var(--color-primary-30);
+}
+
+[data-theme="light"] .disclaimer-note {
+  border-left-color: var(--color-primary-30);
+}
+
+[data-theme="light"] .disclaimer-step-num {
+  color: var(--color-primary-40);
+}

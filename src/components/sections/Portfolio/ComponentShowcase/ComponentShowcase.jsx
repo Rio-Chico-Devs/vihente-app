@@ -137,22 +137,29 @@ const ComponentShowcase = () => {
       )
     },
     {
-      id: 'quiz',
-      title: 'Tech Quiz',
-      description: 'Quiz interattivo su informatica e grafica con domande randomiche',
-      path: '/portfolio/componenti/quiz',
+      id: 'dashboard',
+      title: 'Analytics Dashboard',
+      description: 'Pannello analytics con KPI, grafici e transazioni in tempo reale',
+      path: '/portfolio/componenti/dashboard',
       preview: (
-        <div className="mini-quiz">
-          <div className="mini-quiz-header">
-            <div className="mini-quiz-title">QUIZ</div>
-            <div className="mini-quiz-score">0/7</div>
+        <div className="mini-dashboard">
+          <div className="mini-dash-header">
+            <div className="mini-dash-title">ANALYTICS</div>
+            <div className="mini-dash-live"><span className="mini-live-dot"></span>LIVE</div>
           </div>
-          <div className="mini-quiz-question"></div>
-          <div className="mini-quiz-options">
-            <div className="mini-quiz-option">A</div>
-            <div className="mini-quiz-option">B</div>
-            <div className="mini-quiz-option">C</div>
-            <div className="mini-quiz-option">D</div>
+          <div className="mini-kpi-row">
+            <div className="mini-kpi">€4.8k<span className="mini-kpi-up">▲</span></div>
+            <div className="mini-kpi">1.2k<span className="mini-kpi-up">▲</span></div>
+            <div className="mini-kpi">6.4%<span className="mini-kpi-down">▼</span></div>
+          </div>
+          <div className="mini-bars">
+            <div className="mini-bar" style={{ height: '40%' }}></div>
+            <div className="mini-bar" style={{ height: '65%' }}></div>
+            <div className="mini-bar" style={{ height: '50%' }}></div>
+            <div className="mini-bar" style={{ height: '80%' }}></div>
+            <div className="mini-bar" style={{ height: '60%' }}></div>
+            <div className="mini-bar" style={{ height: '90%' }}></div>
+            <div className="mini-bar" style={{ height: '70%' }}></div>
           </div>
         </div>
       )
@@ -174,22 +181,30 @@ const ComponentShowcase = () => {
       )
     },
     {
-      id: 'pattern-matcher',
-      title: 'Pattern Matcher',
-      description: 'Gioco di logica: trova il pattern mancante nella sequenza',
-      path: '/portfolio/componenti/pattern-matcher',
+      id: 'booking',
+      title: 'Booking System',
+      description: 'Sistema di prenotazione con calendario, orari e conferma multi-step',
+      path: '/portfolio/componenti/booking',
       preview: (
-        <div className="mini-pattern-matcher">
-          <div className="mini-pattern-grid">
-            <div className="mini-pattern-cell"><div className="mini-pattern-shape circle-red"></div></div>
-            <div className="mini-pattern-cell"><div className="mini-pattern-shape square-blue"></div></div>
-            <div className="mini-pattern-cell"><div className="mini-pattern-shape triangle-green"></div></div>
-            <div className="mini-pattern-cell"><div className="mini-pattern-shape circle-red"></div></div>
-            <div className="mini-pattern-cell"><div className="mini-pattern-shape square-blue"></div></div>
-            <div className="mini-pattern-cell"><div className="mini-pattern-shape triangle-green"></div></div>
-            <div className="mini-pattern-cell"><div className="mini-pattern-shape circle-red"></div></div>
-            <div className="mini-pattern-cell"><div className="mini-pattern-shape square-blue"></div></div>
-            <div className="mini-pattern-cell missing">?</div>
+        <div className="mini-booking">
+          <div className="mini-bk-header">
+            <div className="mini-bk-title">BOOKING</div>
+            <div className="mini-bk-steps">
+              <div className="mini-bk-step done"></div>
+              <div className="mini-bk-step current"></div>
+              <div className="mini-bk-step"></div>
+              <div className="mini-bk-step"></div>
+            </div>
+          </div>
+          <div className="mini-bk-cal">
+            {[1,2,3,4,5,6,7,8,9,10,11,12,13,14].map(d => (
+              <div key={d} className={`mini-bk-day${d === 8 ? ' sel' : ''}${d === 3 ? ' today' : ''}`}>{d}</div>
+            ))}
+          </div>
+          <div className="mini-bk-slots">
+            <div className="mini-bk-slot">09:00</div>
+            <div className="mini-bk-slot sel">10:30</div>
+            <div className="mini-bk-slot busy"></div>
           </div>
         </div>
       )
