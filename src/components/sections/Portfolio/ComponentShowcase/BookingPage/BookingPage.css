@@ -527,10 +527,12 @@
 }
 
 @media (min-width: 1024px) {
-  .bk-content { padding: 140px 8rem 1.5rem; }
+  .bk-content { padding: 160px 15rem 10rem 15rem; }
+
   .bk-title   { font-size: 1.8rem; }
 }
 
 @media (min-width: 1440px) {
-  .bk-content { padding: 140px 14rem 1.5rem; }
+  .bk-content { padding: 160px 15rem 10rem 15rem; }
+
 }

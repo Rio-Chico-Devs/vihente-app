@@ -79,6 +79,74 @@
   margin: 0.1rem 0 0;
 }
 
+/* ── Header right: totale + live ── */
+.dash-header-right {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  flex-shrink: 0;
+}
+.dash-total-label {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 0.65rem;
+  color: var(--text-secondary, rgba(0,255,255,0.4));
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  display: none; /* mostrato solo su desktop */
+}
+.dash-total-value {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 0.95rem;
+  color: var(--color-primary, #0ff);
+  text-shadow: 0 0 12px var(--color-primary-40, rgba(0,255,255,0.4));
+  display: none;
+}
+
+/* ── Selettore periodo mobile ── */
+.period-bar-mobile {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  padding-bottom: 0.2rem;
+  -webkit-overflow-scrolling: touch;
+}
+.period-bar-mobile::-webkit-scrollbar { display: none; }
+
+/* ── KPI cards mobile ── */
+.kpi-mobile-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.6rem;
+}
+.kpi-mobile-card {
+  background: var(--color-primary-05, rgba(0,255,255,0.05));
+  border: 1px solid var(--color-primary-15, rgba(0,255,255,0.15));
+  border-radius: 10px;
+  padding: 0.8rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+.kpi-mobile-label {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 0.65rem;
+  color: var(--text-secondary, rgba(0,255,255,0.45));
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+.kpi-mobile-value {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 1.1rem;
+  font-weight: 700;
+}
+.kpi-mobile-trend {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 0.68rem;
+}
+.kpi-mobile-trend.up   { color: #0f0; }
+.kpi-mobile-trend.down { color: #f44; }
+
 .dash-live-badge {
   display: flex;
   align-items: center;
@@ -231,7 +299,7 @@
 
 /* ── Bar Chart ── */
 .dash-zone-chart { display: flex; flex-direction: column; }
-.chart-area {
+.chart-bar-area {
   display: flex;
   align-items: flex-end;
   gap: 0.3rem;
@@ -240,7 +308,7 @@
   position: relative;
   flex: 1;
 }
-.chart-area::after {
+.chart-bar-area::after {
   content: '';
   position: absolute;
   bottom: 1.4rem; left: 0; right: 0;
@@ -266,9 +334,24 @@
   box-shadow: 0 -2px 6px var(--color-primary-25, rgba(0,255,255,0.25));
 }
 /* 30 barre: gap stretto, no label overflow */
-.chart-area.chart-dense { gap: 0.12rem; }
-.chart-area.chart-dense .chart-col { min-width: 0; }
-.chart-area.chart-dense .chart-bar { max-width: 100%; }
+.chart-bar-area.chart-dense { gap: 0.12rem; }
+.chart-bar-area.chart-dense .chart-col { min-width: 0; }
+.chart-bar-area.chart-dense .chart-bar { max-width: 100%; }
+
+/* ── SVG Line Chart ── */
+.chart-svg-wrap {
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+  display: flex;
+  align-items: stretch;
+}
+.chart-svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+  min-height: 80px;
+}
 
 .chart-bar:hover { filter: brightness(1.3); }
 .chart-lbl {
@@ -361,6 +444,15 @@
   font-size: 0.78rem;
   font-weight: 700;
 }
+.ecg-trend {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 0.62rem;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.ecg-trend.up   { color: #0f0; }
+.ecg-trend.down { color: #f44; }
+
 .ecg-btn {
   width: 22px; height: 22px;
   border-radius: 4px;
@@ -435,15 +527,28 @@
   .dash-wrapper {
     height: 100vh;
     overflow: hidden;
+    display: flex;
+    flex-direction: column;
   }
+
+  /* Mostra totale nel header, nasconde mobile-only sections */
+  .dash-total-label { display: block; }
+  .dash-total-value { display: block; }
+  .period-bar-mobile { display: none; }
+  .kpi-mobile-grid   { display: none; }
 
   /* Layout: riempie il wrapper con padding per nav+newsbar */
   .dash-layout {
-    height: 100%;
+    flex: 1;
+    min-height: 0; /* Fondamentale per far schiacciare i figli */
     box-sizing: border-box;
-    padding: 140px 1.2rem 0.8rem;
+    /* PADDING: [Top per Navbar+Slider] [Destra] [Bottom per Footer] [Sinistra] */
+    /* Modifica 140px e 60px con le altezze reali dei tuoi elementi esterni */
+    padding: 180px 1.2rem 2px 1.2rem; 
+    display: flex;
+    flex-direction: column;
     gap: 0.5rem;
-    overflow: hidden;
+
   }
 
   .dash-header {
@@ -490,7 +595,8 @@
   }
   .dash-zone-chart   { flex: 1.4; min-height: 0; }
   .dash-zone-sectors { flex: 1;   min-height: 0; }
-  .chart-area        { height: auto; flex: 1; min-height: 0; }
+  .chart-bar-area    { height: auto; flex: 1; min-height: 0; }
+  .chart-svg-wrap    { flex: 1; min-height: 0; }
   .sectors-list      { flex: 1; min-height: 0; justify-content: space-evenly; }
 
   /* Colonna destra */
@@ -517,10 +623,12 @@
 }
 
 @media (min-width: 1024px) {
-  .dash-layout { padding: 140px 1.8rem 0.8rem; }
+  .dash-layout { padding: 200px 1.8rem 0.8rem; }
+
   .dash-title  { font-size: 1.5rem; }
 }
 
 @media (min-width: 1440px) {
-  .dash-layout { padding: 140px 2.5rem 1rem; }
+  .dash-layout { padding: 200px 2.5rem 1rem; }
+
 }
