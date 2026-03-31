@@ -105,7 +105,7 @@ const Iris = () => {
         </g>
 
         {/* ── Papillon — filled, inclinato -45deg, top-right ── */}
-        <g transform="translate(66,39) rotate(-45)" filter="url(#irisGlowD)">
+        <g transform="translate(67,36) rotate(45)" filter="url(#irisGlowD)">
           {/* Left wing — larga fuori, stretta al centro */}
           <path
             d="M -1.5,-1.2 C -2.5,-3 -4.5,-4.8 -7.5,-4.3 C -10,-3.8 -10.5,0 -7.5,4.3 C -4.5,4.8 -2.5,3 -1.5,1.2 C -1,0.5 -1,-0.5 -1.5,-1.2 Z"
