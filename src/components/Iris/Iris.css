@@ -1,0 +1,62 @@
+/* ============================================
+   IRIS — Guide widget, fixed bottom-left
+   Desktop only — mirrors ThemeToggle style
+   ============================================ */
+
+.iris-widget {
+  position: fixed;
+  bottom: var(--spacing-lg, 2rem);
+  left: var(--spacing-lg, 2rem);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg-dark, rgba(0, 0, 0, 0.85));
+  border: 1px solid var(--border-glow, rgba(0, 255, 255, 0.3));
+  padding: 0.6rem 0.7rem;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: all var(--transition-base, 0.3s ease);
+  box-shadow: var(--shadow-glow-md, 0 0 15px rgba(0, 255, 255, 0.2));
+}
+
+.iris-widget:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-glow-lg, 0 0 25px rgba(0, 255, 255, 0.35));
+  border-color: var(--color-primary, #0ff);
+}
+
+.iris-svg {
+  width: 74px;
+  height: 50px;
+  display: block;
+}
+
+/* Dark mode */
+[data-theme="dark"] .iris-widget {
+  backdrop-filter: blur(10px);
+}
+
+/* Light mode — same palette as ThemeToggle light */
+[data-theme="light"] .iris-widget {
+  background: rgba(10, 20, 32, 0.92);
+  border-color: rgba(0, 180, 255, 0.5);
+  backdrop-filter: blur(12px);
+  box-shadow: 0 0 15px rgba(0, 180, 255, 0.3),
+              0 0 30px rgba(0, 180, 255, 0.15),
+              inset 0 0 20px rgba(0, 180, 255, 0.05);
+}
+
+[data-theme="light"] .iris-widget:hover {
+  border-color: rgba(0, 180, 255, 0.8);
+  box-shadow: 0 0 20px rgba(0, 180, 255, 0.5),
+              0 0 40px rgba(0, 180, 255, 0.25),
+              inset 0 0 25px rgba(0, 180, 255, 0.08);
+}
+
+/* Hidden on mobile — Iris lives as navbar logo on mobile */
+@media (max-width: 768px) {
+  .iris-widget {
+    display: none;
+  }
+}

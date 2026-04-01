@@ -241,7 +241,8 @@ const Navbar = () => {
             aria-label="Torna alla home"
             onClick={handleLogoClick}
           >
-            <svg className="logo-eye" viewBox="24 36 52 28">
+            {/* Desktop: plain eye */}
+            <svg className="logo-eye logo-eye-plain" viewBox="24 36 52 28">
               <defs>
                 <filter id="eyeGlowNav">
                   <feGaussianBlur stdDeviation="1.5" result="coloredBlur"/>
@@ -307,6 +308,77 @@ const Navbar = () => {
                   }}
                 />
               </g>
+            </svg>
+
+            {/* Mobile: Iris eye with fiocchetto */}
+            <svg className="logo-eye logo-eye-iris" viewBox="20 27 62 42" aria-hidden="true">
+              <defs>
+                <filter id="irisGlowNav">
+                  <feGaussianBlur stdDeviation="1.5" result="coloredBlur"/>
+                  <feMerge>
+                    <feMergeNode in="coloredBlur"/>
+                    <feMergeNode in="SourceGraphic"/>
+                  </feMerge>
+                </filter>
+                <clipPath id="irisClipNav">
+                  <path d="M 35 50 C 39 43, 44 40, 50 40 C 56 40, 61 43, 65 50 C 61 57, 56 60, 50 60 C 44 60, 39 57, 35 50 Z"/>
+                </clipPath>
+              </defs>
+
+              {/* Eye outline */}
+              <path
+                d="M 35 50 C 39 43, 44 40, 50 40 C 56 40, 61 43, 65 50 C 61 57, 56 60, 50 60 C 44 60, 39 57, 35 50 Z"
+                fill="none"
+                stroke="var(--color-primary-95, rgba(0, 255, 255, 0.95))"
+                strokeWidth="1.2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                filter="url(#irisGlowNav)"
+                style={{ opacity: isBlinking ? 0 : 1, transition: 'opacity 0.1s ease-in-out' }}
+              />
+
+              {/* Pupil */}
+              <g
+                clipPath="url(#irisClipNav)"
+                style={{ opacity: isBlinking ? 0 : 1, transition: 'opacity 0.1s ease-in-out' }}
+              >
+                <circle
+                  cx={pupilPosition.x} cy={pupilPosition.y} r="8"
+                  fill="none"
+                  stroke="var(--color-primary-95, rgba(0, 255, 255, 0.95))"
+                  strokeWidth="1"
+                  filter="url(#irisGlowNav)"
+                  style={{ transition: 'cx 0.3s ease-out, cy 0.3s ease-out' }}
+                />
+                <circle
+                  cx={pupilPosition.x} cy={pupilPosition.y} r="3.5"
+                  fill="none"
+                  stroke="var(--color-primary-95, rgba(0, 255, 255, 0.95))"
+                  strokeWidth="0.8"
+                  filter="url(#irisGlowNav)"
+                  style={{ transition: 'cx 0.3s ease-out, cy 0.3s ease-out' }}
+                />
+              </g>
+
+              {/* Papillon — filled, inclinato -45deg, top-right */}
+              <g transform="translate(66,39) rotate(-45)" filter="url(#irisGlowNav)">
+                <path
+                  d="M -1.5,-1.2 C -2.5,-3 -4.5,-4.8 -7.5,-4.3 C -10,-3.8 -10.5,0 -7.5,4.3 C -4.5,4.8 -2.5,3 -1.5,1.2 C -1,0.5 -1,-0.5 -1.5,-1.2 Z"
+                  fill="var(--color-primary, #0ff)"
+                />
+                <path
+                  d="M 1.5,-1.2 C 2.5,-3 4.5,-4.8 7.5,-4.3 C 10,-3.8 10.5,0 7.5,4.3 C 4.5,4.8 2.5,3 1.5,1.2 C 1,0.5 1,-0.5 1.5,-1.2 Z"
+                  fill="var(--color-primary, #0ff)"
+                />
+                <rect x="-2" y="-2" width="4" height="4" rx="0.8" fill="rgba(0,0,0,0.9)" />
+                <rect x="-1.2" y="-1.2" width="2.4" height="2.4" rx="0.5" fill="var(--color-primary, #0ff)" />
+              </g>
+
+              {/* Neo */}
+              <circle cx="65" cy="61" r="1.5"
+                fill="var(--color-primary, #0ff)"
+                filter="url(#irisGlowNav)"
+              />
             </svg>
           </Link>
 
