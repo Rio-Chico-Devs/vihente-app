@@ -1,7 +1,9 @@
 import { useState, useEffect, useMemo, useCallback } from 'react';
 import './CRUDSimulatorPage.css';
+import { useGuide } from '../../../../../contexts/GuideContext';
 
 const CRUDSimulatorPage = () => {
+  const { setGuide, clearGuide } = useGuide();
   // Memory limit in bytes (500KB default)
   const MEMORY_LIMIT = useMemo(() => 500 * 1024, []);
   

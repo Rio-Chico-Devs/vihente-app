@@ -1,7 +1,9 @@
 import { useState, useEffect, useCallback } from 'react';
 import './Cubo3DPage.css';
+import { useGuide } from '../../../../../contexts/GuideContext';
 
 const Cubo3DPage = () => {
+  const { setGuide, clearGuide } = useGuide();
   const [rotation, setRotation] = useState({ x: 0, y: 0 });
   const [isDragging, setIsDragging] = useState(false);
   const [startPos, setStartPos] = useState({ x: 0, y: 0 });

@@ -1,7 +1,9 @@
 import { useEffect } from 'react';
+import { useGuide } from '../../../contexts/GuideContext';
 import './MyStory.css';
 
 const MyStory = () => {
+  const { setGuide, clearGuide } = useGuide();
   const skills = [
     'Sviluppatore Web',
     'Social Media',
@@ -101,7 +103,11 @@ const MyStory = () => {
         </div>
 
         {/* Photo - Right */}
-        <div className="mystory-photo-container">
+        <div
+          className="mystory-photo-container"
+          onMouseEnter={() => setGuide('Guarda un pò chi abbiamo qui, è la mia persona preferita <3')}
+          onMouseLeave={clearGuide}
+        >
           <div className="mystory-photo">
             <img
       src="/images/AVBPT.webp"

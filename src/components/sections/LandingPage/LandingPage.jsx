@@ -1,11 +1,13 @@
 import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTheme } from '../../../contexts/theme';
+import { useGuide } from '../../../contexts/GuideContext';
 import './LandingPage.css';
 
 const LandingPageOldEye = ({ startTime }) => {
   const navigate = useNavigate();
   const { theme } = useTheme();
+  const { setGuide, clearGuide } = useGuide();
 
   const colors = theme === 'light' ? {
     primary: 'rgba(232, 160, 48, 1)',
@@ -857,6 +859,8 @@ const LandingPageOldEye = ({ startTime }) => {
                 width="650"
                 height="650"
                 onClick={handleEyeClick}
+                onMouseEnter={() => setGuide('Non riesco a resistere al bisogno di cliccarci su! -\\-')}
+                onMouseLeave={clearGuide}
                 style={{
                   cursor: 'pointer',
                   position: 'relative',

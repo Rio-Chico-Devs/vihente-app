@@ -242,6 +242,8 @@ const Navbar = () => {
             className={`navbar-logo ${mobileMenuOpen ? 'menu-open' : ''}`}
             aria-label="Torna alla home"
             onClick={handleLogoClick}
+            onMouseEnter={() => setGuide('Psst... questo è Femo! Si irrita facilmente, quindi trattalo con rispetto.')}
+            onMouseLeave={clearGuide}
           >
             {/* Desktop: plain eye */}
             <svg className="logo-eye logo-eye-plain" viewBox="24 36 52 28">
@@ -431,7 +433,7 @@ const Navbar = () => {
               aria-label="Vai alla pagina Contatti"
               aria-current={isActive('/contatti') ? 'page' : undefined}
               onClick={(e) => handleDesktopNavClick(e, '/contatti')}
-              onMouseEnter={() => setGuide('Scrivimi! Sono disponibile per nuove collaborazioni e progetti.')}
+              onMouseEnter={() => setGuide('Scrivici! Siamo disponibili per nuove collaborazioni e progetti.')}
               onMouseLeave={clearGuide}
             >
               <span className="nav-link-text">Contatti</span>
@@ -443,7 +445,7 @@ const Navbar = () => {
           <div
             className="availability-badge desktop-only"
             aria-label="Stato disponibilità"
-            onMouseEnter={() => setGuide('Questo badge verde significa che sono aperta a nuove collaborazioni. Non esitare a contattarmi!')}
+            onMouseEnter={() => setGuide('Questo badge verde significa che siamo disponibili per nuove collaborazioni. Non esitare a contattarci!')}
             onMouseLeave={clearGuide}
           >
             <div className="status-dot" aria-hidden="true" />
