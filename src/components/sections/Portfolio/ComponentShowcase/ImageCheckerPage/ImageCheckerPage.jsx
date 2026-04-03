@@ -120,6 +120,8 @@ const ImageCheckerPage = () => {
           <button
             className={`lens-toggle-btn ${lensActive ? 'active' : ''}`}
             onClick={toggleLens}
+            onMouseEnter={() => setGuide('Attiva o disattiva la lente di ingrandimento — quando attiva segue il cursore sull\'immagine.')}
+            onMouseLeave={clearGuide}
           >
             <span className="lens-icon">🔍</span>
             {lensActive ? 'Disattiva Lente' : 'Attiva Lente'}
@@ -134,6 +136,8 @@ const ImageCheckerPage = () => {
           onTouchMove={handleTouchMove}
           onTouchEnd={handleTouchEnd}
           onTouchCancel={handleTouchEnd}
+          onMouseEnter={() => setGuide('Area immagine — carica una tua immagine o usa quella di default. Muovi il cursore per esplorare i dettagli con la lente.')}
+          onMouseLeave={clearGuide}
         >
           <img
             ref={imageRef}
@@ -165,7 +169,7 @@ const ImageCheckerPage = () => {
           )}
         </div>
 
-        <div className="checker-info">
+        <div className="checker-info" onMouseEnter={() => setGuide('Info lente — stato, zoom e dimensione della lente attiva.')} onMouseLeave={clearGuide}>
           <div className="info-item">
             <span className="info-label">Stato Lente</span>
             <span className={`info-value ${lensActive ? 'active' : 'inactive'}`}>

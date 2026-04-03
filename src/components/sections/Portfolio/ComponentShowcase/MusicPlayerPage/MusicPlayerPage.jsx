@@ -519,7 +519,7 @@ const MusicPlayerPage = () => {
             )}
 
             {!showMixer && showInfo && (
-              <div className="track-info-display">
+              <div className="track-info-display" onMouseEnter={() => setGuide('Info traccia — titolo, artista, album, anno e genere del brano selezionato.')} onMouseLeave={clearGuide}>
                 <div className="info-display-header">
                   <div className="info-display-icon">
                     <svg width="60" height="60" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -556,7 +556,7 @@ const MusicPlayerPage = () => {
             )}
 
             {showMixer && (
-              <div className="mixer-panel">
+              <div className="mixer-panel" onMouseEnter={() => setGuide('Equalizzatore — regola bass, mid e treble per personalizzare il suono.')} onMouseLeave={clearGuide}>
                 <h3 className="mixer-title">EQUALIZER</h3>
                 
                 <div className="mixer-control">
@@ -623,7 +623,7 @@ const MusicPlayerPage = () => {
               preload="none"
             />
 
-            <div className="track-selector" ref={dropdownRef}>
+            <div className="track-selector" ref={dropdownRef} onMouseEnter={() => setGuide('Playlist — seleziona un brano dalla lista per avviarne la riproduzione.')} onMouseLeave={clearGuide}>
               <button
                 className={`dropdown-btn ${showDropdown ? 'active' : ''}`}
                 onClick={() => setShowDropdown(!showDropdown)}
@@ -656,7 +656,7 @@ const MusicPlayerPage = () => {
               <p className="track-artist">{playlist[currentTrack].artist}</p>
             </div>
 
-            <div className="progress-container">
+            <div className="progress-container" onMouseEnter={() => setGuide('Barra di avanzamento — mostra il progresso del brano. Clicca per saltare a un punto preciso.')} onMouseLeave={clearGuide}>
               <div className="progress-bar" onClick={handleSeek}>
                 <div
                   className={`progress-fill ${isPlaying ? 'playing' : ''}`}

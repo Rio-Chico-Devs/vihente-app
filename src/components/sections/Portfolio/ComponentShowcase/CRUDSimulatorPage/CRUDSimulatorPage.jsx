@@ -270,7 +270,7 @@ const CRUDSimulatorPage = () => {
     <div className="crud-simulator-page">
       <div className="crud-container">
         {/* Sidebar Filters */}
-        <aside className="filters-sidebar">
+        <aside className="filters-sidebar" onMouseEnter={() => setGuide('Filtri — cerca per nome, filtra per magazzino e ordina i prodotti secondo le tue esigenze.')} onMouseLeave={clearGuide}>
           <div className="filters-header">
             <h3 className="filters-title">🔍 FILTRI</h3>
           </div>
@@ -366,7 +366,7 @@ const CRUDSimulatorPage = () => {
           )}
 
           {/* Memory Monitor */}
-          <div className="memory-monitor">
+          <div className="memory-monitor" onMouseEnter={() => setGuide('Monitor memoria — mostra quanta memoria simulata stanno occupando i dati del magazzino.')} onMouseLeave={clearGuide}>
             <div className="memory-header">
               <span className="memory-label">💾 Memoria Utilizzata</span>
               <span className="memory-value">
@@ -390,7 +390,7 @@ const CRUDSimulatorPage = () => {
 
           {/* Actions & Stats */}
           <div className="crud-actions">
-            <div className="stats">
+            <div className="stats" onMouseEnter={() => setGuide('Statistiche — panoramica del magazzino: prodotti totali, pezzi, valore e scorte in esaurimento.')} onMouseLeave={clearGuide}>
               <div className="stat-item">
                 <span className="stat-label">Prodotti</span>
                 <span className="stat-value">{stats.totalProducts}</span>
@@ -417,7 +417,7 @@ const CRUDSimulatorPage = () => {
 
           {/* Form */}
           {showForm && (
-            <div className="form-section">
+            <div className="form-section" onMouseEnter={() => setGuide('Form prodotto — aggiungi un nuovo articolo al magazzino inserendo nome, categoria, quantità e prezzo.')} onMouseLeave={clearGuide}>
               <h2 className="form-title">
                 {editingId ? '✏ Modifica Prodotto' : '+ Nuovo Prodotto'}
               </h2>
@@ -510,7 +510,7 @@ const CRUDSimulatorPage = () => {
           )}
 
           {/* Table */}
-          <div className="data-table">
+          <div className="data-table" onMouseEnter={() => setGuide('Tabella prodotti — visualizza, modifica o elimina ogni articolo del magazzino con le operazioni CRUD.')} onMouseLeave={clearGuide}>
             <div className="table-header">
               <div className="table-header-cell">ID</div>
               <div className="table-header-cell">Prodotto</div>

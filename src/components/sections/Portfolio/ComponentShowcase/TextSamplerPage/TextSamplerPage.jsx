@@ -116,11 +116,11 @@ const TextSamplerPage = () => {
 
       <div className="text-sampler-container">
         <div className="sampler-layout">
-          <div className="text-display">
+          <div className="text-display" onMouseEnter={() => setGuide('Anteprima live — mostra il testo con l\'effetto selezionato applicato in tempo reale.')} onMouseLeave={clearGuide}>
             {renderTextEffect()}
           </div>
 
-          <div className="control-panel">
+          <div className="control-panel" onMouseEnter={() => setGuide('Lista effetti — seleziona un effetto tipografico per vederlo applicato all\'anteprima. Sono tutti realizzati in CSS puro.')} onMouseLeave={clearGuide}>
             <h3 className="panel-title">Text Effects</h3>
             
             <div className="effects-list">

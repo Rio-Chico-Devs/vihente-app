@@ -107,11 +107,13 @@ const Cubo3DPage = () => {
         <h2 className="model3d-title">3D Interactive Model</h2>
         <p className="model3d-instruction">Trascina per ruotare • Touch e scorri su mobile</p>
         
-        <div 
+        <div
           className="model3d-viewport"
           onMouseDown={handleMouseDown}
           onTouchStart={handleTouchStart}
           style={{ cursor: isDragging ? 'grabbing' : 'grab' }}
+          onMouseEnter={() => setGuide('Viewport 3D — trascina per ruotare il cubo in tutte le direzioni. Zero librerie 3D: tutto in CSS puro con trasformazioni matriciali.')}
+          onMouseLeave={clearGuide}
         >
           <div 
             className="model3d-scene"
