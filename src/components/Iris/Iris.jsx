@@ -1,9 +1,11 @@
 import { useState, useEffect, useRef } from 'react';
+import { useGuide } from '../../contexts/GuideContext';
 import './Iris.css';
 
 const Iris = () => {
   const [pupilPos, setPupilPos] = useState({ x: 50, y: 50 });
   const [blinking, setBlinking] = useState(false);
+  const { text } = useGuide();
   const ref = useRef(null);
 
   // Cursor tracking — pupil follows mouse
@@ -50,84 +52,66 @@ const Iris = () => {
   const pTrans     = 'cx 0.3s ease-out, cy 0.3s ease-out';
 
   return (
-    <div className="iris-widget" ref={ref} aria-label="Iris">
-      <svg
-        className="iris-svg"
-        viewBox="20 27 62 42"
-        aria-hidden="true"
-      >
-        <defs>
-          <filter id="irisGlowD">
-            <feGaussianBlur stdDeviation="1.5" result="coloredBlur" />
-            <feMerge>
-              <feMergeNode in="coloredBlur" />
-              <feMergeNode in="SourceGraphic" />
-            </feMerge>
-          </filter>
-          <clipPath id="irisClipD">
-            <path d="M 35 50 C 39 43, 44 40, 50 40 C 56 40, 61 43, 65 50 C 61 57, 56 60, 50 60 C 44 60, 39 57, 35 50 Z" />
-          </clipPath>
-        </defs>
+    <div className="iris-container">
+      {/* ── Speech bubble ── */}
+      <div className={`iris-bubble${text ? ' iris-bubble--visible' : ''}`} role="status" aria-live="polite">
+        <span className="iris-bubble-text">{text}</span>
+      </div>
 
-        {/* ── Eye outline ── */}
-        <path
-          d="M 35 50 C 39 43, 44 40, 50 40 C 56 40, 61 43, 65 50 C 61 57, 56 60, 50 60 C 44 60, 39 57, 35 50 Z"
-          fill="none"
-          stroke="var(--color-primary-95, rgba(0,255,255,0.95))"
-          strokeWidth="1.2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          filter="url(#irisGlowD)"
-          style={{ opacity: eyeOpacity, transition: 'opacity 0.1s ease-in-out' }}
-        />
+      {/* ── Eye widget ── */}
+      <div className="iris-widget" ref={ref} aria-label="Iris">
+        <svg className="iris-svg" viewBox="20 27 62 42" aria-hidden="true">
+          <defs>
+            <filter id="irisGlowD">
+              <feGaussianBlur stdDeviation="1.5" result="coloredBlur" />
+              <feMerge>
+                <feMergeNode in="coloredBlur" />
+                <feMergeNode in="SourceGraphic" />
+              </feMerge>
+            </filter>
+            <clipPath id="irisClipD">
+              <path d="M 35 50 C 39 43, 44 40, 50 40 C 56 40, 61 43, 65 50 C 61 57, 56 60, 50 60 C 44 60, 39 57, 35 50 Z" />
+            </clipPath>
+          </defs>
 
-        {/* ── Pupil (clipped inside eye) ── */}
-        <g
-          clipPath="url(#irisClipD)"
-          style={{ opacity: eyeOpacity, transition: 'opacity 0.1s ease-in-out' }}
-        >
-          <circle
-            cx={pupilPos.x} cy={pupilPos.y} r="8"
+          {/* Eye outline */}
+          <path
+            d="M 35 50 C 39 43, 44 40, 50 40 C 56 40, 61 43, 65 50 C 61 57, 56 60, 50 60 C 44 60, 39 57, 35 50 Z"
             fill="none"
             stroke="var(--color-primary-95, rgba(0,255,255,0.95))"
-            strokeWidth="1"
+            strokeWidth="1.2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
             filter="url(#irisGlowD)"
-            style={{ transition: pTrans }}
+            style={{ opacity: eyeOpacity, transition: 'opacity 0.1s ease-in-out' }}
           />
-          <circle
-            cx={pupilPos.x} cy={pupilPos.y} r="3.5"
-            fill="none"
-            stroke="var(--color-primary-95, rgba(0,255,255,0.95))"
-            strokeWidth="0.8"
-            filter="url(#irisGlowD)"
-            style={{ transition: pTrans }}
-          />
-        </g>
 
-        {/* ── Papillon — filled, inclinato -45deg, top-right ── */}
-        <g transform="translate(67,36) rotate(45)" filter="url(#irisGlowD)">
-          {/* Left wing — larga fuori, stretta al centro */}
-          <path
-            d="M -1.5,-1.2 C -2.5,-3 -4.5,-4.8 -7.5,-4.3 C -10,-3.8 -10.5,0 -7.5,4.3 C -4.5,4.8 -2.5,3 -1.5,1.2 C -1,0.5 -1,-0.5 -1.5,-1.2 Z"
-            fill="var(--color-primary, #0ff)"
-          />
-          {/* Right wing — mirror */}
-          <path
-            d="M 1.5,-1.2 C 2.5,-3 4.5,-4.8 7.5,-4.3 C 10,-3.8 10.5,0 7.5,4.3 C 4.5,4.8 2.5,3 1.5,1.2 C 1,0.5 1,-0.5 1.5,-1.2 Z"
-            fill="var(--color-primary, #0ff)"
-          />
-          {/* Nodo centrale — gap scuro + quadratino cyan */}
-          <rect x="-2" y="-2" width="4" height="4" rx="0.8" fill="rgba(0,0,0,0.9)" />
-          <rect x="-1.2" y="-1.2" width="2.4" height="2.4" rx="0.5" fill="var(--color-primary, #0ff)" />
-        </g>
+          {/* Pupil */}
+          <g clipPath="url(#irisClipD)" style={{ opacity: eyeOpacity, transition: 'opacity 0.1s ease-in-out' }}>
+            <circle cx={pupilPos.x} cy={pupilPos.y} r="8"
+              fill="none" stroke="var(--color-primary-95, rgba(0,255,255,0.95))"
+              strokeWidth="1" filter="url(#irisGlowD)"
+              style={{ transition: pTrans }}
+            />
+            <circle cx={pupilPos.x} cy={pupilPos.y} r="3.5"
+              fill="none" stroke="var(--color-primary-95, rgba(0,255,255,0.95))"
+              strokeWidth="0.8" filter="url(#irisGlowD)"
+              style={{ transition: pTrans }}
+            />
+          </g>
 
-        {/* ── Neo (beauty mark) — spostato leggermente su ── */}
-        <circle
-          cx="65" cy="61" r="1.5"
-          fill="var(--color-primary, #0ff)"
-          filter="url(#irisGlowD)"
-        />
-      </svg>
+          {/* Papillon */}
+          <g transform="translate(67,36) rotate(45)" filter="url(#irisGlowD)">
+            <path d="M -1.5,-1.2 C -2.5,-3 -4.5,-4.8 -7.5,-4.3 C -10,-3.8 -10.5,0 -7.5,4.3 C -4.5,4.8 -2.5,3 -1.5,1.2 C -1,0.5 -1,-0.5 -1.5,-1.2 Z" fill="var(--color-primary, #0ff)" />
+            <path d="M 1.5,-1.2 C 2.5,-3 4.5,-4.8 7.5,-4.3 C 10,-3.8 10.5,0 7.5,4.3 C 4.5,4.8 2.5,3 1.5,1.2 C 1,0.5 1,-0.5 1.5,-1.2 Z" fill="var(--color-primary, #0ff)" />
+            <rect x="-2" y="-2" width="4" height="4" rx="0.8" fill="rgba(0,0,0,0.9)" />
+            <rect x="-1.2" y="-1.2" width="2.4" height="2.4" rx="0.5" fill="var(--color-primary, #0ff)" />
+          </g>
+
+          {/* Neo */}
+          <circle cx="65" cy="61" r="1.5" fill="var(--color-primary, #0ff)" filter="url(#irisGlowD)" />
+        </svg>
+      </div>
     </div>
   );
 };

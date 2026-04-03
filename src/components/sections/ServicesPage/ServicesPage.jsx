@@ -1,9 +1,11 @@
 import { useEffect, useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useGuide } from '../../../contexts/GuideContext';
 import './ServicesPage.css';
 
 const ServicesPage = () => {
   const navigate = useNavigate();
+  const { setGuide, clearGuide } = useGuide();
   const [effectsReady, setEffectsReady] = useState(false);
   const gridRef = useRef(null);
   
@@ -211,7 +213,11 @@ const ServicesPage = () => {
   };
 
   return (
-    <div className="services-page-wrapper">
+    <div
+      className="services-page-wrapper"
+      onMouseEnter={() => setGuide('Questa pagina spiega cosa so fare e cosa fa la mia figura professionale — dall\'ideazione alla realizzazione.')}
+      onMouseLeave={clearGuide}
+    >
       <div className="code-background" id="codeBackground"></div>
       <div id="gridOverlay" className="grid-overlay"></div>
 

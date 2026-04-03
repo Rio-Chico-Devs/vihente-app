@@ -1,12 +1,14 @@
 import { useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useTheme } from '../../../contexts/theme';
+import { useGuide } from '../../../contexts/GuideContext';
 import './Navbar.css';
 
 const Navbar = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const { theme, toggleTheme } = useTheme();
+  const { setGuide, clearGuide } = useGuide();
   const [scrolled, setScrolled] = useState(false);
   const [pupilPosition, setPupilPosition] = useState({ x: 50, y: 50 });
   const [isBlinking, setIsBlinking] = useState(false);
@@ -390,6 +392,8 @@ const Navbar = () => {
               aria-label="Vai alla pagina Servizi"
               aria-current={isActive('/services') ? 'page' : undefined}
               onClick={(e) => handleDesktopNavClick(e, '/services')}
+              onMouseEnter={() => setGuide('Scopri i miei servizi: web, grafica, multimedia e consulenze digitali.')}
+              onMouseLeave={clearGuide}
             >
               <span className="nav-link-text">Servizi</span>
               <div className="nav-link-underline" />
@@ -401,6 +405,8 @@ const Navbar = () => {
               aria-label="Vai alla pagina Portfolio"
               aria-current={isActive('/portfolio') ? 'page' : undefined}
               onClick={(e) => handleDesktopNavClick(e, '/portfolio')}
+              onMouseEnter={() => setGuide('Dai un\'occhiata ai miei lavori: componenti UI, siti web e grafiche.')}
+              onMouseLeave={clearGuide}
             >
               <span className="nav-link-text">Portfolio</span>
               <div className="nav-link-underline" />
@@ -412,6 +418,8 @@ const Navbar = () => {
               aria-label="Vai alla pagina La Mia Storia"
               aria-current={isActive('/storia') ? 'page' : undefined}
               onClick={(e) => handleDesktopNavClick(e, '/storia')}
+              onMouseEnter={() => setGuide('Chi sono, da dove vengo e dove sto andando — la storia di Bruno.')}
+              onMouseLeave={clearGuide}
             >
               <span className="nav-link-text">La Mia Storia</span>
               <div className="nav-link-underline" />
@@ -423,6 +431,8 @@ const Navbar = () => {
               aria-label="Vai alla pagina Contatti"
               aria-current={isActive('/contatti') ? 'page' : undefined}
               onClick={(e) => handleDesktopNavClick(e, '/contatti')}
+              onMouseEnter={() => setGuide('Scrivimi! Sono disponibile per nuove collaborazioni e progetti.')}
+              onMouseLeave={clearGuide}
             >
               <span className="nav-link-text">Contatti</span>
               <div className="nav-link-underline" />
@@ -430,7 +440,12 @@ const Navbar = () => {
           </div>
 
           {/* Availability Badge */}
-          <div className="availability-badge desktop-only" aria-label="Stato disponibilità">
+          <div
+            className="availability-badge desktop-only"
+            aria-label="Stato disponibilità"
+            onMouseEnter={() => setGuide('Questo badge verde significa che sono aperta a nuove collaborazioni. Non esitare a contattarmi!')}
+            onMouseLeave={clearGuide}
+          >
             <div className="status-dot" aria-hidden="true" />
             <span className="status-text">Disponibile</span>
           </div>
