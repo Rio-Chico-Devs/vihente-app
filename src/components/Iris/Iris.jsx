@@ -46,8 +46,8 @@ const Iris = () => {
   const [greeting,    setGreeting]    = useState(null);
   const [pupilPos,    setPupilPos]    = useState({ x: 50, y: 50 });
   const [blinking,    setBlinking]    = useState(false);
-  /* true on touch/mobile devices — page guide only shown there */
-  const isMobile = useRef(typeof window !== 'undefined' && window.matchMedia('(hover: none)').matches).current;
+  /* true on mobile — matches the ≤768px CSS breakpoint */
+  const isMobile = useRef(typeof window !== 'undefined' && window.innerWidth <= 768).current;
   const { text, clearGuide } = useGuide();
   const location         = useLocation();
   const ref              = useRef(null);
