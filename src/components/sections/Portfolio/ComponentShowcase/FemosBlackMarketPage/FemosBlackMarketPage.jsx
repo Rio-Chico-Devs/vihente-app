@@ -457,7 +457,11 @@ const FemosBlackMarketPage = () => {
                   onMouseEnter={() => {
                     const phrases = mascotPhrases[product.rarity];
                     setMascotMessage(phrases[Math.floor(Math.random() * phrases.length)]);
+                    if (product.rarity === 'mystery' || product.rarity === 'special') {
+                      setGuide('E quella roba chi l\'ha messa lì? o_o');
+                    }
                   }}
+                  onMouseLeave={clearGuide}
                 >
                   <span className="rarity-badge persona-badge" style={{ backgroundColor: getRarityColor(product.rarity), color: '#000', borderColor: getRarityColor(product.rarity) }}>
                     {getRarityLabel(product.rarity)}

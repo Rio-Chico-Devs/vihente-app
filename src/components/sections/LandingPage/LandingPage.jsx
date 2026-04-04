@@ -830,6 +830,8 @@ const LandingPageOldEye = ({ startTime }) => {
               Creo la tua presenza digitale da zero, o ti aiuto a migliorare quella che già hai. Questo sito funge esclusivamente da portfolio, per collaborazioni, offerte di lavoro, assunzione{' '}
               <span
                 onClick={() => navigate('/contatti')}
+                onMouseEnter={() => setGuide('Mi sembra un\'ottima idea e.e')}
+                onMouseLeave={clearGuide}
                 style={{
                   color: colors.primary,
                   cursor: 'pointer',

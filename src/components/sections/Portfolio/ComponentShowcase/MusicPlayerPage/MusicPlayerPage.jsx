@@ -408,7 +408,7 @@ const MusicPlayerPage = () => {
 
   return (
     <div className="music-player-page">
-      <div className="music-player-container">
+      <div className="music-player-container" onMouseEnter={() => setGuide('Ed eccoci alla mia sezione preferita, metti un pò di musica ;D')} onMouseLeave={clearGuide}>
         <div className="player-layout">
           <div className="visualizer-container" onMouseEnter={() => setGuide('Visualizzatore — l\'occhio reagisce al volume e al beat della musica in riproduzione.')} onMouseLeave={clearGuide}>
 

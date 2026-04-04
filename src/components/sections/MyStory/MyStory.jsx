@@ -5,13 +5,13 @@ import './MyStory.css';
 const MyStory = () => {
   const { setGuide, clearGuide } = useGuide();
   const skills = [
-    'Sviluppatore Web',
-    'Social Media',
-    'Creator Digitale',
-    'Illustratore',
-    'Coach',
-    'Intermediatore Linguistico',
-    'Traduttore'
+    { name: 'Sviluppatore Web',          guide: 'da 7 anni ormai.' },
+    { name: 'Social Media',              guide: 'Il suo record è 20k followers per ora!' },
+    { name: 'Creator Digitale',          guide: 'Penso che sia il suo lavoro preferito ^^' },
+    { name: 'Illustratore',              guide: 'Ha una matita in mano da quando è nato :V' },
+    { name: 'Coach',                     guide: 'Non si è mai arreso, ha allenato e vinto molte competizioni di E-sports ;)' },
+    { name: 'Intermediatore Linguistico',guide: 'Attualmente solo dove risiede.' },
+    { name: 'Traduttore',                guide: 'Con esperienza e alta formazione accademica.' },
   ];
 
   // Typewriter code background effect
@@ -76,8 +76,13 @@ const MyStory = () => {
         <div className="mystory-skills">
           <h3 className="mystory-skills-title">Skills</h3>
           {skills.map((skill, index) => (
-            <div key={index} className="mystory-skill-item">
-              {skill}
+            <div
+              key={index}
+              className="mystory-skill-item"
+              onMouseEnter={() => setGuide(skill.guide)}
+              onMouseLeave={clearGuide}
+            >
+              {skill.name}
             </div>
           ))}
         </div>

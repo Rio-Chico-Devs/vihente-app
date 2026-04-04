@@ -433,7 +433,7 @@ const Navbar = () => {
               aria-label="Vai alla pagina Contatti"
               aria-current={isActive('/contatti') ? 'page' : undefined}
               onClick={(e) => handleDesktopNavClick(e, '/contatti')}
-              onMouseEnter={() => setGuide('Scrivici! Siamo disponibili per nuove collaborazioni e progetti.')}
+              onMouseEnter={() => setGuide('Mi sembra un\'ottima idea e.e')}
               onMouseLeave={clearGuide}
             >
               <span className="nav-link-text">Contatti</span>

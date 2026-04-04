@@ -1,9 +1,11 @@
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useGuide } from '../../../contexts/GuideContext';
 import './PresenzaOnlinePage.css';
 
 const PresenzaOnlinePage = () => {
   const navigate = useNavigate();
+  const { setGuide, clearGuide } = useGuide();
 
   useEffect(() => {
     document.body.classList.add('presenza-detail-body');
@@ -362,7 +364,12 @@ const PresenzaOnlinePage = () => {
           <p className="cta-text">
             Parliamo insieme della tua strategia social e trasformiamo le tue idee in realtà, presto sarò disponibile anche con partita IVA
           </p>
-          <button className="presenza-cta-button" onClick={() => navigate('/contatti')}>
+          <button
+            className="presenza-cta-button"
+            onClick={() => navigate('/contatti')}
+            onMouseEnter={() => setGuide('Mi sembra un\'ottima idea e.e')}
+            onMouseLeave={clearGuide}
+          >
             Contattami
           </button>
         </section>

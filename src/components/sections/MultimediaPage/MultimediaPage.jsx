@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useGuide } from '../../../contexts/GuideContext';
 import './MultimediaPage.css';
 
 /* ── Slot immagini grafiche digitali — sostituisci src con i tuoi URL ── */
@@ -26,6 +27,7 @@ const FRAME_MS = 120; // millisecondi per frame
 
 const MultimediaPage = () => {
   const navigate = useNavigate();
+  const { setGuide, clearGuide } = useGuide();
 
   /* Grafiche: slider + modal */
   const [slide, setSlide]   = useState(0);
@@ -160,7 +162,12 @@ const MultimediaPage = () => {
                 Creo banner, sfondi e immagini utilizzabili in vari tipi di progetti e piattaforme.
                 Contattami subito per creare le tue!
               </p>
-              <button className="work-cta" onClick={() => navigate('/contatti')}>
+              <button
+                className="work-cta"
+                onClick={() => navigate('/contatti')}
+                onMouseEnter={() => setGuide('Mi sembra un\'ottima idea e.e')}
+                onMouseLeave={clearGuide}
+              >
                 Inizia il Tuo Progetto
               </button>
             </div>
@@ -267,7 +274,12 @@ const MultimediaPage = () => {
                   <span>Icon Design</span>
                 </div>
               </div>
-              <button className="work-cta work-cta-primary" onClick={() => navigate('/contatti')}>
+              <button
+                className="work-cta work-cta-primary"
+                onClick={() => navigate('/contatti')}
+                onMouseEnter={() => setGuide('Mi sembra un\'ottima idea e.e')}
+                onMouseLeave={clearGuide}
+              >
                 Contattami Ora
               </button>
             </div>
@@ -335,7 +347,12 @@ const MultimediaPage = () => {
           <p className="cta-text">
             Sono pronto ad ascoltare il tuo progetto e trasformarlo in realtà
           </p>
-          <button className="multimedia-cta-button" onClick={() => navigate('/contatti')}>
+          <button
+            className="multimedia-cta-button"
+            onClick={() => navigate('/contatti')}
+            onMouseEnter={() => setGuide('Mi sembra un\'ottima idea e.e')}
+            onMouseLeave={clearGuide}
+          >
             Contattami
           </button>
         </section>

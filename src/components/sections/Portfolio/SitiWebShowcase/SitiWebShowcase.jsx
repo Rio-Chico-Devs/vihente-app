@@ -93,6 +93,8 @@ const SitiWebShowcase = () => {
         <button
           className="cta-button"
           onClick={() => navigate('/contatti')}
+          onMouseEnter={() => setGuide('Mi sembra un\'ottima idea e.e')}
+          onMouseLeave={clearGuide}
         >
           Contattami
         </button>

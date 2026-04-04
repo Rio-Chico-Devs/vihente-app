@@ -1,9 +1,11 @@
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useGuide } from '../../../contexts/GuideContext';
 import './SitiWebPage.css';
 
 const SitiWebPage = () => {
   const navigate = useNavigate();
+  const { setGuide, clearGuide } = useGuide();
 
   useEffect(() => {
     document.body.classList.add('sitiweb-page-body');
@@ -214,6 +216,8 @@ const SitiWebPage = () => {
           <button
             className="sitiweb-cta-button"
             onClick={() => navigate('/contatti')}
+            onMouseEnter={() => setGuide('Mi sembra un\'ottima idea e.e')}
+            onMouseLeave={clearGuide}
           >
             Contattami
           </button>
