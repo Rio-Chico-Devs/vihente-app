@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
+import { useLocation } from 'react-router-dom';
 import { useGuide } from '../../contexts/GuideContext';
 import './Iris.css';
 
@@ -11,15 +12,49 @@ const GREETINGS = [
   'rrrr* zz* boop* Ca-Carica e P-Pronta!',
 ];
 
+/* ── Guide text per ogni pagina/sezione ── */
+const PAGE_GUIDES = {
+  '/':                                      'Home — panoramica del sito. Scorri per scoprire chi siamo e cosa facciamo.',
+  '/storia':                                'La mia storia — skills, lingue e background di Antonio.',
+  '/services':                              'Servizi — tutto quello che offriamo come consulenti digitali.',
+  '/services/consulenze':                   'Consulenza digitale — strategia, analisi e supporto personalizzato.',
+  '/services/sitiweb':                      'Siti web — dal design al deploy, realizziamo progetti web completi.',
+  '/services/presenza':                     'Presenza online — social media, SEO e visibilità digitale.',
+  '/services/multimedia':                   'Multimedia — illustrazioni, grafiche e content creation.',
+  '/portfolio':                             'Portfolio — una selezione dei lavori più significativi.',
+  '/portfolio/componenti':                  'Componenti UI — showcase di interfacce interattive realizzate da zero.',
+  '/portfolio/grafiche':                    'Grafiche — illustrazioni e visual design del portfolio.',
+  '/portfolio/sitiweb':                     'Siti web — esempi di progetti web realizzati.',
+  '/portfolio/componenti/black-market':     "Femo's Black Market — negozio cyberpunk con inventario casuale, carrello e checkout simulato.",
+  '/portfolio/componenti/dashboard':        'Analytics Dashboard — metriche, grafici e transazioni con dati simulati in tempo reale.',
+  '/portfolio/componenti/booking':          'Booking System — prenota sessioni scegliendo servizio, data e orario.',
+  '/portfolio/componenti/music-player':     'Music Player — riproduttore con equalizzatore, visualizzatore e playlist.',
+  '/portfolio/componenti/crud-simulator':   'Gestionale Logistico — magazzino completo con filtri, form CRUD e monitor memoria.',
+  '/portfolio/componenti/slider':           'Expanding Gallery — galleria con pannelli espandibili e lightbox.',
+  '/portfolio/componenti/text-sampler':     'Text Sampler — effetti tipografici in CSS puro, selezionabili in tempo reale.',
+  '/portfolio/componenti/cubo-3d':          '3D Model — cubo interattivo ruotabile in tutte le direzioni, zero librerie esterne.',
+  '/portfolio/componenti/image-checker':    "Image Checker — lente d'ingrandimento su immagini caricate dall'utente.",
+  '/contatti':                              'Contatti — scrivi un messaggio o richiedi un preventivo. Ti risponderemo presto!',
+  '/privacy-policy':                        'Privacy Policy — informazioni sul trattamento dei tuoi dati personali.',
+  '/cookie-policy':                         'Cookie Policy — come utilizziamo i cookie su questo sito.',
+  '/termini-e-condizioni':                  'Termini e Condizioni — le regole di utilizzo del sito.',
+};
+
 const Iris = () => {
   const [isActive,    setIsActive]    = useState(false);
   const [isGlitching, setIsGlitching] = useState(false);
   const [greeting,    setGreeting]    = useState(null);
   const [pupilPos,    setPupilPos]    = useState({ x: 50, y: 50 });
   const [blinking,    setBlinking]    = useState(false);
-  const { text } = useGuide();
+  const { text, clearGuide } = useGuide();
+  const location         = useLocation();
   const ref              = useRef(null);
   const greetingTimer    = useRef(null);
+
+  /* ── Clear hover guide on route change ── */
+  useEffect(() => {
+    clearGuide();
+  }, [location.pathname]); // eslint-disable-line react-hooks/exhaustive-deps
 
   /* ── Cursor tracking — only when active ── */
   useEffect(() => {
@@ -91,7 +126,9 @@ const Iris = () => {
 
   const eyeOpacity = blinking ? 0 : 1;
   const pTrans     = 'cx 0.3s ease-out, cy 0.3s ease-out';
-  const bubbleText = greeting || (isActive ? text : null);
+  const pageGuide  = PAGE_GUIDES[location.pathname] ?? null;
+  /* Priority: wake-up greeting > hover element > current page */
+  const bubbleText = greeting || (isActive ? (text || pageGuide) : null);
 
   const sleeping   = !isActive && !isGlitching;
   const glitching  = isGlitching;
