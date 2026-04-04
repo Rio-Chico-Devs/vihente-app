@@ -46,8 +46,6 @@ const Iris = () => {
   const [greeting,    setGreeting]    = useState(null);
   const [pupilPos,    setPupilPos]    = useState({ x: 50, y: 50 });
   const [blinking,    setBlinking]    = useState(false);
-  /* true on mobile — matches the ≤768px CSS breakpoint */
-  const isMobile = useRef(typeof window !== 'undefined' && window.innerWidth <= 768).current;
   const { text, clearGuide } = useGuide();
   const location         = useLocation();
   const ref              = useRef(null);
@@ -129,9 +127,10 @@ const Iris = () => {
   const eyeOpacity = blinking ? 0 : 1;
   const pTrans     = 'cx 0.3s ease-out, cy 0.3s ease-out';
   const pageGuide  = PAGE_GUIDES[location.pathname] ?? null;
-  /* Desktop: greeting > hover element (page guide unused — hover works fine)
-     Mobile:  greeting > hover element > current page (no hover available) */
-  const bubbleText = greeting || (isActive ? (text || (isMobile ? pageGuide : null)) : null);
+  /* greeting > hover element > current page
+     On desktop the page guide shows briefly between hovers — acceptable.
+     On mobile (no hover) it shows persistently while active. */
+  const bubbleText = greeting || (isActive ? (text || pageGuide) : null);
 
   const sleeping   = !isActive && !isGlitching;
   const glitching  = isGlitching;
