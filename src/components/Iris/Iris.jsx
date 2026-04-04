@@ -46,6 +46,8 @@ const Iris = () => {
   const [greeting,    setGreeting]    = useState(null);
   const [pupilPos,    setPupilPos]    = useState({ x: 50, y: 50 });
   const [blinking,    setBlinking]    = useState(false);
+  /* true on touch/mobile devices — page guide only shown there */
+  const isMobile = useRef(typeof window !== 'undefined' && window.matchMedia('(hover: none)').matches).current;
   const { text, clearGuide } = useGuide();
   const location         = useLocation();
   const ref              = useRef(null);
@@ -127,8 +129,9 @@ const Iris = () => {
   const eyeOpacity = blinking ? 0 : 1;
   const pTrans     = 'cx 0.3s ease-out, cy 0.3s ease-out';
   const pageGuide  = PAGE_GUIDES[location.pathname] ?? null;
-  /* Priority: wake-up greeting > hover element > current page */
-  const bubbleText = greeting || (isActive ? (text || pageGuide) : null);
+  /* Desktop: greeting > hover element (page guide unused — hover works fine)
+     Mobile:  greeting > hover element > current page (no hover available) */
+  const bubbleText = greeting || (isActive ? (text || (isMobile ? pageGuide : null)) : null);
 
   const sleeping   = !isActive && !isGlitching;
   const glitching  = isGlitching;
