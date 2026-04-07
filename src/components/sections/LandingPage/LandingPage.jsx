@@ -575,6 +575,13 @@ const LandingPageOldEye = ({ startTime }) => {
           font-family: 'Share Tech Mono', monospace;
         }
 
+        /* Su mobile nascondo le metrics: sovrapporrebbe il footer */
+        @media (max-width: 768px) {
+          .system-metrics {
+            display: none !important;
+          }
+        }
+
         .metric-item {
           display: flex;
           align-items: center;
@@ -710,13 +717,9 @@ const LandingPageOldEye = ({ startTime }) => {
         }
 
         @media (max-width: 767px) {
-          .system-metrics {
-            font-size: 0.65rem;
-            bottom: 0.75rem;
-            gap: 1rem;
-            flex-wrap: wrap;
-            justify-content: center;
-            max-width: 90%;
+          .eye-svg {
+            width: min(88vw, 350px);
+            height: min(88vw, 350px);
           }
 
           .landing-page-main {
@@ -730,8 +733,8 @@ const LandingPageOldEye = ({ startTime }) => {
 
         @media (max-width: 380px){
           .eye-svg {
-            width: 350px;
-            height: 350px;
+            width: 300px;
+            height: 300px;
           }
           .holographic-circle {
             width: 250px;
@@ -858,8 +861,6 @@ const LandingPageOldEye = ({ startTime }) => {
               <svg
                 className="eye-svg glitch-layer"
                 viewBox="0 0 1000 1000"
-                width="650"
-                height="650"
                 onClick={handleEyeClick}
                 onMouseEnter={() => setGuide('Non riesco a resistere al bisogno di cliccarci su! -\\-')}
                 onMouseLeave={clearGuide}

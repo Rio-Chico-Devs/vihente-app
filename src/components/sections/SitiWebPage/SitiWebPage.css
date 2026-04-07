@@ -498,9 +498,11 @@
   transform: rotate(-45deg) translateY(100%);
 }
 
-.sitiweb-cta-button:hover {
-  border-color: var(--color-primary-50, rgba(0, 255, 255, 0.5));
-  transform: scale(1.05);
+@media (hover: hover) {
+  .sitiweb-cta-button:hover {
+    border-color: var(--color-primary-50, rgba(0, 255, 255, 0.5));
+    transform: scale(1.05);
+  }
 }
 
 /* Footer spacer */
@@ -684,16 +686,17 @@
     font-size: 2.5rem;
   }
 
-  /* Tabella compatta per mobile */
+  /* Tabella scrollabile orizzontalmente su mobile */
   .pricing-table-container {
     border-radius: 8px;
-    overflow-x: hidden;
+    overflow-x: auto; /* era hidden: tagliava le colonne */
+    -webkit-overflow-scrolling: touch;
   }
 
   .pricing-table th,
   .pricing-table td {
     padding: 0.6rem 0.3rem;
-    font-size: 0.65rem;
+    font-size: 0.7rem; /* minimo leggibile su mobile */
   }
 
   .pricing-table th.feature-column {
@@ -711,13 +714,13 @@
   }
 
   .pricing-table td.feature-name {
-    font-size: 0.6rem;
+    font-size: 0.7rem; /* era 0.6rem = 9.6px, illeggibile */
     padding-left: 0.5rem;
     line-height: 1.3;
   }
 
   .pricing-table td.feature-description {
-    font-size: 0.6rem;
+    font-size: 0.7rem; /* era 0.6rem */
     padding-left: 0.75rem;
     padding-right: 0.5rem;
     line-height: 1.4;

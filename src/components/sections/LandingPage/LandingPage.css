@@ -38,8 +38,9 @@
 
 @media (min-width: 768px) {
   .holographic-circle {
-    width: 300px;
-    height: 300px;
+    /* Era 300px — più piccolo del mobile (350px). Fix: ora cresce progressivamente */
+    width: 380px;
+    height: 380px;
   }
 }
 
@@ -163,6 +164,7 @@
 }
 
 .eye-svg {
+  /* Desktop default — overridato da media queries */
   width: 480px;
   height: 480px;
 }
@@ -290,10 +292,19 @@
   }
 }
 
-@media (max-width: 380px){
+/* Mobile 381–767px: scala l'occhio proporzionalmente al viewport */
+@media (max-width: 767px) {
   .eye-svg {
-    width: 350px;
-    height: 350px;
+    width: min(88vw, 350px);
+    height: min(88vw, 350px);
+  }
+}
+
+/* Mobile piccolo ≤380px */
+@media (max-width: 380px) {
+  .eye-svg {
+    width: 300px;
+    height: 300px;
   }
   .holographic-circle {
     width: 250px;

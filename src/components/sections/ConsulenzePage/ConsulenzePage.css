@@ -284,9 +284,12 @@
   transform: rotate(-45deg) translateY(100%);
 }
 
-.service-card:hover {
-  border-color: var(--color-primary-50, rgba(0, 255, 255, 0.5));
-  transform: scale(1.05);
+/* Solo su dispositivi che supportano hover reale — su touch scale rimane sticky */
+@media (hover: hover) {
+  .service-card:hover {
+    border-color: var(--color-primary-50, rgba(0, 255, 255, 0.5));
+    transform: scale(1.05);
+  }
 }
 
 .service-card-icon {
@@ -464,9 +467,11 @@
   transform: rotate(-45deg) translateY(100%);
 }
 
-.consulenze-cta-button:hover {
-  border-color: var(--color-primary-50, rgba(0, 255, 255, 0.5));
-  transform: scale(1.05);
+@media (hover: hover) {
+  .consulenze-cta-button:hover {
+    border-color: var(--color-primary-50, rgba(0, 255, 255, 0.5));
+    transform: scale(1.05);
+  }
 }
 
 /* Footer */

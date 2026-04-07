@@ -634,9 +634,10 @@
 
   position: absolute;
 
-  top: -50px;
+  /* era top:-50px — fuori dalla modal, invisibile su mobile vicino al top */
+  top: 0.5rem;
 
-  right: 0;
+  right: 0.5rem;
 
   width: 45px;
 
@@ -1584,7 +1585,9 @@
 
   .trophy-modal .modal-close {
 
-    top: -45px;
+    top: 0.5rem;
+
+    right: 0.5rem;
 
     width: 40px;
 

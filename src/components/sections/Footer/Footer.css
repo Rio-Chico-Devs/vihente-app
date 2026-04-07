@@ -158,31 +158,28 @@
 
   .footer-top {
     flex-direction: row;
-    gap: 0.6rem;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
     margin-bottom: 0.4rem;
   }
 
-  .footer-links {
-    gap: 1rem;
-  }
-
-  .footer-link {
-    font-size: 0.7rem;
-  }
-
+  /* P.IVA + Email: nascosti su mobile, spazio insufficiente */
   .footer-info {
-    flex-direction: column;
-    gap: 0.3rem;
-    text-align: center;
-    font-size: 0.65rem;
-  }
-
-  .footer-divider {
     display: none;
   }
 
+  .footer-links {
+    gap: 0.8rem;
+  }
+
+  .footer-link {
+    font-size: 0.68rem;
+  }
+
   .footer-social {
-    gap: 1.2rem;
+    gap: 1rem;
+    flex-shrink: 0;
   }
 
   .footer-bottom {
@@ -197,25 +194,22 @@
   }
 
   .footer-legal-small {
-    font-size: 0.6rem;
+    font-size: 0.62rem;
+    text-align: center;
   }
 }
 
 @media (max-width: 480px) {
   .footer-container {
-    padding: 0 1rem;
+    padding: 0 0.75rem;
   }
 
   .footer-links {
-    gap: 0.8rem;
+    gap: 0.6rem;
   }
 
   .footer-link {
     font-size: 0.65rem;
-  }
-
-  .footer-info {
-    font-size: 0.6rem;
   }
 
   .footer-social-link svg {
@@ -223,13 +217,17 @@
     height: 16px;
   }
 
+  .footer-social {
+    gap: 0.8rem;
+  }
+
   .footer-copyright {
-    font-size: 0.6rem;
-    letter-spacing: 0.08em;
+    font-size: 0.62rem;
+    letter-spacing: 0.06em;
   }
 
   .footer-legal-small {
-    font-size: 0.55rem;
+    font-size: 0.6rem;
   }
 }
 
