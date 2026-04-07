@@ -5,6 +5,7 @@ import { GuideProvider } from './contexts/GuideContext';
 import ErrorBoundary from './components/ErrorBoundary/ErrorBoundary';
 import BootScreen from './components/sections/BootScreen/BootScreen';
 import Navbar from './components/sections/Navbar/Navbar';
+import Iris from './components/Iris/Iris';
 import Footer from './components/sections/Footer/Footer';
 import CustomCursor from './components/sections/Cursor/CustomCursor';
 import ThemeToggle from './components/ThemeToggle/ThemeToggle';
@@ -98,6 +99,7 @@ function App() {
       <GuideProvider>
         <BrowserRouter basename={import.meta.env.DEV ? '/' : '/vihente-app'}>
           <CustomCursor />
+          <Iris />
           <CookieConsentBanner isBooting={isBooting} />
           <ThemeToggle />
 

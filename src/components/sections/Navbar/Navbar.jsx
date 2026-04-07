@@ -1,16 +1,56 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useTheme } from '../../../contexts/theme';
 import { useGuide } from '../../../contexts/GuideContext';
-import Iris from '../../Iris/Iris';
 import './Navbar.css';
+
+const MOBILE_GREETINGS = [
+  ':D Eccomi! Mi hai chiamato?',
+  'Yawn... e.e Hola amigo mi ero addormentata.',
+  'Carica e operativa.',
+  'Cominciamo pure, sono Iris la tua guida.',
+  'rrrr* zz* boop* Ca-Carica e P-Pronta!',
+];
+
+const PAGE_GUIDES = {
+  '/':                                    'Home — panoramica del sito. Scorri per scoprire chi siamo.',
+  '/storia':                              'La mia storia — skills, lingue e background di Antonio.',
+  '/services':                            'Servizi — tutto quello che offriamo come consulenti digitali.',
+  '/services/consulenze':                 'Consulenza digitale — strategia, analisi e supporto personalizzato.',
+  '/services/sitiweb':                    'Siti web — dal design al deploy, progetti web completi.',
+  '/services/presenza':                   'Presenza online — social media, SEO e visibilità digitale.',
+  '/services/multimedia':                 'Multimedia — illustrazioni, grafiche e content creation.',
+  '/portfolio':                           'Portfolio — una selezione dei lavori più significativi.',
+  '/portfolio/componenti':                'Componenti UI — interfacce interattive realizzate da zero.',
+  '/portfolio/grafiche':                  'Grafiche — illustrazioni e visual design del portfolio.',
+  '/portfolio/sitiweb':                   'Siti web — esempi di progetti web realizzati.',
+  '/portfolio/componenti/black-market':   "Femo's Black Market — negozio cyberpunk con carrello simulato.",
+  '/portfolio/componenti/dashboard':      'Analytics Dashboard — metriche e grafici in tempo reale.',
+  '/portfolio/componenti/booking':        'Booking System — prenota sessioni scegliendo data e orario.',
+  '/portfolio/componenti/music-player':   'Music Player — riproduttore con equalizzatore e playlist.',
+  '/portfolio/componenti/crud-simulator': 'Gestionale Logistico — magazzino con form CRUD.',
+  '/portfolio/componenti/slider':         'Expanding Gallery — pannelli espandibili con lightbox.',
+  '/portfolio/componenti/text-sampler':   'Text Sampler — effetti tipografici in CSS puro.',
+  '/portfolio/componenti/cubo-3d':        '3D Model — cubo interattivo, zero librerie esterne.',
+  '/portfolio/componenti/image-checker':  "Image Checker — lente d'ingrandimento su immagini.",
+  '/contatti':                            'Contatti — scrivi un messaggio o richiedi un preventivo!',
+};
 
 const Navbar = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const { theme, toggleTheme } = useTheme();
-  const { setGuide, clearGuide } = useGuide();
+  const { text, setGuide, clearGuide } = useGuide();
   const [scrolled, setScrolled] = useState(false);
+  const [mobileIrisActive, setMobileIrisActive] = useState(false);
+  const [mobileGreeting,   setMobileGreeting]   = useState(null);
+  const mobileIrisTimer = useRef(null);
+
+  /* Cleanup timer on unmount */
+  useEffect(() => () => clearTimeout(mobileIrisTimer.current), []);
+
+  /* Reset greeting on route change */
+  useEffect(() => { setMobileGreeting(null); }, [location.pathname]);
   const [pupilPosition, setPupilPosition] = useState({ x: 50, y: 50 });
   const [isBlinking, setIsBlinking] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -216,6 +256,26 @@ const Navbar = () => {
     }
   };
 
+  /* Mobile iris toggle */
+  const handleMobileIrisToggle = () => {
+    if (mobileIrisActive) {
+      clearTimeout(mobileIrisTimer.current);
+      setMobileGreeting(null);
+      setMobileIrisActive(false);
+    } else {
+      setMobileIrisActive(true);
+      const msg = MOBILE_GREETINGS[Math.floor(Math.random() * MOBILE_GREETINGS.length)];
+      setMobileGreeting(msg);
+      mobileIrisTimer.current = setTimeout(() => setMobileGreeting(null), 4000);
+    }
+  };
+
+  const rawPath      = location.pathname.replace('/vihente-app', '') || '/';
+  const mobilePageGuide = PAGE_GUIDES[rawPath] ?? null;
+  const mobileGuideText = mobileIrisActive
+    ? (mobileGreeting || text || mobilePageGuide)
+    : null;
+
   // Helper to check if link is active (usato solo per lo styling)
   const isActive = (path) => {
     const currentPath = location.pathname.replace('/vihente-app', '') || '/';
@@ -237,8 +297,84 @@ const Navbar = () => {
         aria-label="Navigazione principale"
       >
         <div className="navbar-container">
-          {/* Iris guide — fixed bottom-left on desktop, inline in navbar on mobile */}
-          <Iris />
+          {/* Mobile-only: Iris eye button + guide text */}
+          <button
+            className="mobile-iris-btn"
+            onClick={handleMobileIrisToggle}
+            aria-label={mobileIrisActive ? 'Disattiva Iris' : 'Attiva Iris'}
+          >
+            <svg viewBox="20 27 62 42" className="mobile-iris-svg" aria-hidden="true">
+              <defs>
+                <filter id="irisGlowM">
+                  <feGaussianBlur stdDeviation="1.5" result="coloredBlur"/>
+                  <feMerge>
+                    <feMergeNode in="coloredBlur"/>
+                    <feMergeNode in="SourceGraphic"/>
+                  </feMerge>
+                </filter>
+                <clipPath id="irisClipM">
+                  <path d="M 35 50 C 39 43, 44 40, 50 40 C 56 40, 61 43, 65 50 C 61 57, 56 60, 50 60 C 44 60, 39 57, 35 50 Z"/>
+                </clipPath>
+              </defs>
+
+              {/* Sleeping eye (drooping arc) */}
+              {!mobileIrisActive && (
+                <>
+                  <path d="M 36 50 C 42 53.5, 58 53.5, 64 50"
+                    fill="none"
+                    stroke="var(--color-primary-95, rgba(0,255,255,0.95))"
+                    strokeWidth="1.2" strokeLinecap="round"
+                    filter="url(#irisGlowM)"
+                  />
+                  <path d="M 36 50 C 42 47, 58 47, 64 50"
+                    fill="none"
+                    stroke="var(--color-primary-40, rgba(0,255,255,0.4))"
+                    strokeWidth="0.8" strokeLinecap="round"
+                  />
+                </>
+              )}
+
+              {/* Awake eye */}
+              {mobileIrisActive && (
+                <>
+                  <path
+                    d="M 35 50 C 39 43, 44 40, 50 40 C 56 40, 61 43, 65 50 C 61 57, 56 60, 50 60 C 44 60, 39 57, 35 50 Z"
+                    fill="none"
+                    stroke="var(--color-primary-95, rgba(0,255,255,0.95))"
+                    strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"
+                    filter="url(#irisGlowM)"
+                  />
+                  <g clipPath="url(#irisClipM)">
+                    <circle cx="50" cy="50" r="8"
+                      fill="none" stroke="var(--color-primary-95, rgba(0,255,255,0.95))"
+                      strokeWidth="1" filter="url(#irisGlowM)"
+                    />
+                    <circle cx="50" cy="50" r="3.5"
+                      fill="none" stroke="var(--color-primary-95, rgba(0,255,255,0.95))"
+                      strokeWidth="0.8" filter="url(#irisGlowM)"
+                    />
+                  </g>
+                </>
+              )}
+
+              {/* Papillon — sempre visibile */}
+              <g transform="translate(65.5,37) rotate(45)" filter="url(#irisGlowM)">
+                <path d="M -1.5,-1.2 C -2.5,-3 -4.5,-4.8 -7.5,-4.3 C -10,-3.8 -10.5,0 -7.5,4.3 C -4.5,4.8 -2.5,3 -1.5,1.2 C -1,0.5 -1,-0.5 -1.5,-1.2 Z" fill="var(--color-primary, #0ff)"/>
+                <path d="M 1.5,-1.2 C 2.5,-3 4.5,-4.8 7.5,-4.3 C 10,-3.8 10.5,0 7.5,4.3 C 4.5,4.8 2.5,3 1.5,1.2 C 1,0.5 1,-0.5 1.5,-1.2 Z" fill="var(--color-primary, #0ff)"/>
+                <rect x="-2" y="-2" width="4" height="4" rx="0.8" fill="rgba(0,0,0,0.9)"/>
+                <rect x="-1.2" y="-1.2" width="2.4" height="2.4" rx="0.5" fill="var(--color-primary, #0ff)"/>
+              </g>
+              <circle cx="65" cy="61" r="1.5" fill="var(--color-primary, #0ff)" filter="url(#irisGlowM)"/>
+            </svg>
+          </button>
+
+          {/* Mobile guide text — between iris and theme toggle */}
+          <span
+            className={`mobile-guide-text${mobileGuideText ? ' mobile-guide-text--visible' : ''}`}
+            aria-live="polite"
+          >
+            {mobileGuideText}
+          </span>
 
           {/* Logo - Three Circles Eye with Tracking */}
           <Link

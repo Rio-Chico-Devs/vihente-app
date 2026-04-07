@@ -178,60 +178,12 @@
 }
 
 /* ═══════════════════════════
-   MOBILE — inline in navbar
-   Widget left, bubble fills
-   remaining navbar space
+   MOBILE — nascosta
+   La versione mobile è gestita
+   direttamente nella Navbar
    ═══════════════════════════ */
 @media (max-width: 768px) {
   .iris-container {
-    position: static;
-    bottom: auto;
-    left: auto;
-    z-index: auto;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    flex: 1;
-    gap: 0.6rem;
-    pointer-events: auto;
-  }
-
-  .iris-widget {
-    padding: 0.35rem 0.45rem;
-    flex-shrink: 0;
-  }
-
-  .iris-svg {
-    width: 52px;
-    height: 36px;
-  }
-
-  /* Bubble fills remaining navbar space */
-  .iris-bubble {
-    flex: 1;
-    max-width: none;
-    font-size: 0.68rem;
-    transform: translateX(-6px);
-    transition: opacity 0.25s ease, transform 0.25s ease;
-  }
-
-  .iris-bubble--visible {
-    transform: translateX(0);
-  }
-
-  /* Arrow points left toward the widget */
-  .iris-bubble::after {
-    left: -6px;
-    right: auto;
-    bottom: 0.7rem;
-    top: auto;
-    width: 6px;
-    height: 10px;
-    clip-path: polygon(100% 0, 100% 100%, 0 50%);
-  }
-
-  /* Float still works */
-  .iris-widget--sleeping:not(:hover) {
-    animation: iris-float 3s ease-in-out infinite;
+    display: none;
   }
 }
