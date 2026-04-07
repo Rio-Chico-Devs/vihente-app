@@ -22,7 +22,10 @@ const PrivacyPolicy = () => {
             <p>Sito web: vihente.it</p>
           </div>
           <p className="note">
-            <em>Nota: Al momento non dispongo di Partita IVA, è in fase di ottenimento. Questo è un portfolio personale.</em>
+            <em>
+              Questo è un sito portfolio personale. Non è attiva alcuna attività commerciale né Partita IVA.
+              {/* TODO P.IVA: aggiungere P.IVA e ragione sociale quando disponibili */}
+            </em>
           </p>
         </section>
 
@@ -203,6 +206,11 @@ const PrivacyPolicy = () => {
           </div>
         </section>
 
+        {/* ============================================================
+            TODO P.IVA: Ripristinare la sezione ODR quando il sito
+            offre servizi commerciali (obbligatoria per e-commerce
+            ai sensi del Reg. UE 524/2013).
+
         <section className="privacy-section">
           <h2>9. Risoluzione Controversie Online (ODR)</h2>
           <p>
@@ -210,31 +218,24 @@ const PrivacyPolicy = () => {
             o all'esecuzione del contratto, puoi utilizzare la piattaforma ODR (Online Dispute Resolution) della
             Commissione Europea per risolvere la questione in modo extragiudiziale.
           </p>
-          <div className="info-box" style={{ background: 'linear-gradient(135deg, var(--color-primary-10) 0%, var(--color-secondary-10) 100%)', border: '2px solid var(--color-primary)', boxShadow: '0 0 20px var(--color-primary-20)' }}>
+          <div className="info-box">
             <p><strong>Piattaforma ODR (Online Dispute Resolution)</strong></p>
             <p>
-              <a
-                href="https://ec.europa.eu/consumers/odr"
-                target="_blank"
-                rel="noopener noreferrer"
-                style={{ fontSize: '1.1rem', fontWeight: 600, color: 'var(--color-secondary)', wordBreak: 'break-all' }}
-              >
+              <a href="https://ec.europa.eu/consumers/odr" target="_blank" rel="noopener noreferrer">
                 https://ec.europa.eu/consumers/odr
               </a>
             </p>
-            <p>Email per contatti ODR: <a href="mailto:[vihenteweb@proton.me]">[vihenteweb@proton.me]</a></p>
+            <p>Email per contatti ODR: <a href="mailto:vihenteweb@proton.me">vihenteweb@proton.me</a></p>
           </div>
-          <p>
-            La piattaforma ODR facilita la risoluzione extragiudiziale delle controversie tra consumatori e
-            professionisti nell'UE, evitando il ricorso al tribunale.
-          </p>
           <p className="highlight">
             Conformità al Regolamento UE 524/2013 sulle controversie online.
           </p>
         </section>
 
+        ============================================================ */}
+
         <section className="privacy-section">
-          <h2>10. Modifiche alla Privacy Policy</h2>
+          <h2>9. Modifiche alla Privacy Policy</h2>
           <p>
             Questa Privacy Policy può essere aggiornata periodicamente. La versione più recente sarà sempre
             disponibile su questa pagina.
@@ -243,7 +244,7 @@ const PrivacyPolicy = () => {
         </section>
 
         <section className="privacy-section">
-          <h2>11. Cookie e Tecnologie di Tracciamento</h2>
+          <h2>10. Cookie e Tecnologie di Tracciamento</h2>
           <p>
             Per informazioni dettagliate sull'uso dei cookie, consulta la nostra{' '}
             <a href="/cookie-policy" className="internal-link">Cookie Policy</a>.

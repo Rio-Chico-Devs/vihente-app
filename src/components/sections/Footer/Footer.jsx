@@ -22,11 +22,13 @@ const Footer = () => {
             </Link>
           </div>
 
+          {/* TODO P.IVA: ripristinare quando la Partita IVA è attiva
           <div className="footer-info">
-            <span className="footer-info-item">P.IVA: [In fase di ottenimento]</span>
+            <span className="footer-info-item">P.IVA: [numero P.IVA]</span>
             <span className="footer-divider">|</span>
-            <span className="footer-info-item">Email: <a href="mailto:[TUA-EMAIL]" className="footer-email">[vihenteweb@proton.me]</a></span>
+            <span className="footer-info-item">Email: <a href="mailto:vihenteweb@proton.me" className="footer-email">vihenteweb@proton.me</a></span>
           </div>
+          */}
 
           <div className="footer-social">
             <a 
