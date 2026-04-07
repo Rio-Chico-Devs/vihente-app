@@ -270,7 +270,8 @@ a, button, [role="button"], input, textarea, select,
   }
 
   .custom-cursor,
-  .cursor-dot {
+  .cursor-dot,
+  .custom-cursor-dot {
     display: none !important;
   }
 }

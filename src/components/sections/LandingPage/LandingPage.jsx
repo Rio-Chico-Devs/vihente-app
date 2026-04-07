@@ -727,7 +727,7 @@ const LandingPageOldEye = ({ startTime }) => {
           }
 
           .landing-page-main > div {
-            gap: 0.5rem !important;
+            gap: 1.5rem !important;
           }
         }
 
