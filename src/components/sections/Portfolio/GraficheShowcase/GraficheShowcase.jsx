@@ -418,11 +418,6 @@ const GraficheShowcase = () => {
                   </div>
                 </div>
 
-                {/* Corner decorations */}
-                <div className="corner-deco corner-tl" />
-                <div className="corner-deco corner-tr" />
-                <div className="corner-deco corner-bl" />
-                <div className="corner-deco corner-br" />
               </div>
             </div>
           </div>

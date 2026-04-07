@@ -634,10 +634,11 @@
 
   position: absolute;
 
-  /* era top:-50px — fuori dalla modal, invisibile su mobile vicino al top */
   top: 0.5rem;
 
   right: 0.5rem;
+
+  z-index: 10;
 
   width: 45px;
 

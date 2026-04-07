@@ -28,7 +28,7 @@
 .dash-layout {
   position: relative;
   z-index: 1;
-  padding: 90px 1rem 2rem;
+  padding: 90px 1rem calc(var(--footer-height, 60px) + 1.5rem);
   display: flex;
   flex-direction: column;
   gap: 0.8rem;
@@ -304,9 +304,9 @@
   align-items: flex-end;
   gap: 0.3rem;
   height: 100px;
+  min-height: 100px;
   padding-bottom: 1.4rem;
   position: relative;
-  flex: 1;
 }
 .chart-bar-area::after {
   content: '';
