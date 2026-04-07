@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './BookingPage.css';
+import { useGuide } from '../../../../../contexts/GuideContext';
 
 /* ── Static data ── */
 const SERVICES = [
@@ -39,6 +40,7 @@ const DAY_NAMES = ['Lu','Ma','Me','Gi','Ve','Sa','Do'];
 const STEPS = ['Servizio', 'Data', 'Orario', 'Conferma'];
 
 const BookingPage = () => {
+  const { setGuide, clearGuide } = useGuide();
   const navigate = useNavigate();
 
   const today = new Date();
@@ -126,7 +128,7 @@ const BookingPage = () => {
 
         {/* Stepper */}
         {!confirmed && (
-          <div className="bk-stepper">
+          <div className="bk-stepper" onMouseEnter={() => setGuide('Indicatore di avanzamento — mostra in quale step della prenotazione ti trovi.')} onMouseLeave={clearGuide}>
             {STEPS.map((label, i) => (
               <div key={i} className={`bk-step${step === i ? ' current' : ''}${step > i ? ' done' : ''}`}>
                 <div className="bk-step-circle">
@@ -184,7 +186,7 @@ const BookingPage = () => {
           {!confirmed && step === 0 && (
             <div className="bk-step-content">
               <h2 className="bk-step-title">Scegli il Servizio</h2>
-              <div className="bk-services-grid">
+              <div className="bk-services-grid" onMouseEnter={() => setGuide('Scegli il servizio che ti interessa prenotare — ogni opzione ha durata e prezzo dedicati.')} onMouseLeave={clearGuide}>
                 {SERVICES.map(s => (
                   <button
                     key={s.id}
@@ -214,7 +216,7 @@ const BookingPage = () => {
           {!confirmed && step === 1 && (
             <div className="bk-step-content">
               <h2 className="bk-step-title">Scegli la Data</h2>
-              <div className="bk-calendar">
+              <div className="bk-calendar" onMouseEnter={() => setGuide('Calendario interattivo — seleziona il giorno disponibile per la tua prenotazione.')} onMouseLeave={clearGuide}>
                 <div className="bk-cal-header">
                   <button className="bk-cal-nav" onClick={prevMonth} aria-label="Mese precedente">‹</button>
                   <span className="bk-cal-month">{MONTH_NAMES[calMonth]} {calYear}</span>

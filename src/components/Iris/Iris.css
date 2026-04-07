@@ -1,13 +1,63 @@
 /* ============================================
-   IRIS — Guide widget, fixed bottom-left
-   Desktop only — mirrors ThemeToggle style
+   IRIS — Guide widget + speech bubble
+   Desktop only — fixed bottom-left
    ============================================ */
 
-.iris-widget {
+/* Container: holds bubble + widget, fixed at bottom-left */
+.iris-container {
   position: fixed;
   bottom: var(--spacing-lg, 2rem);
   left: var(--spacing-lg, 2rem);
   z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.5rem;
+  pointer-events: none;
+}
+
+/* ── Speech bubble ── */
+.iris-bubble {
+  background: var(--bg-dark, rgba(0, 0, 0, 0.88));
+  border: 1px solid var(--color-primary-40, rgba(0, 255, 255, 0.4));
+  border-radius: 10px;
+  padding: 0.65rem 0.9rem;
+  max-width: 230px;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 0.72rem;
+  line-height: 1.55;
+  color: var(--color-text, #d0d0d0);
+  box-shadow: 0 0 16px var(--color-primary-20, rgba(0, 255, 255, 0.2));
+  backdrop-filter: blur(8px);
+
+  opacity: 0;
+  transform: translateY(6px);
+  transition: opacity 0.25s ease, transform 0.25s ease;
+  pointer-events: none;
+}
+
+.iris-bubble::after {
+  content: '';
+  position: absolute;
+  bottom: -6px;
+  left: 1.8rem;
+  width: 10px;
+  height: 6px;
+  background: var(--color-primary-40, rgba(0, 255, 255, 0.4));
+  clip-path: polygon(0 0, 100% 0, 50% 100%);
+}
+
+.iris-bubble--visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.iris-bubble-text {
+  display: block;
+}
+
+/* ── Eye widget (base) ── */
+.iris-widget {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -16,11 +66,13 @@
   padding: 0.6rem 0.7rem;
   border-radius: 50px;
   cursor: pointer;
-  transition: all var(--transition-base, 0.3s ease);
+  pointer-events: all;
+  transition: box-shadow 0.3s ease, border-color 0.3s ease, transform 0.3s ease;
   box-shadow: var(--shadow-glow-md, 0 0 15px rgba(0, 255, 255, 0.2));
 }
 
-.iris-widget:hover {
+/* Hover — only when awake */
+.iris-widget:not(.iris-widget--sleeping):not(.iris-widget--glitching):hover {
   transform: translateY(-4px);
   box-shadow: var(--shadow-glow-lg, 0 0 25px rgba(0, 255, 255, 0.35));
   border-color: var(--color-primary, #0ff);
@@ -32,12 +84,79 @@
   display: block;
 }
 
-/* Dark mode */
+/* ═══════════════════════════
+   SLEEPING STATE
+   ═══════════════════════════ */
+
+@keyframes iris-float {
+  0%, 100% { transform: translateY(0px); }
+  50%       { transform: translateY(-9px); }
+}
+
+/* Float when not hovered — pause on hover to hint it can be clicked */
+.iris-widget--sleeping:not(:hover) {
+  animation: iris-float 3s ease-in-out infinite;
+}
+
+.iris-widget--sleeping {
+  border-color: var(--color-primary-40, rgba(0, 255, 255, 0.25));
+  box-shadow: 0 0 10px rgba(0, 255, 255, 0.12);
+}
+
+.iris-widget--sleeping:hover {
+  border-color: var(--color-primary, #0ff);
+  box-shadow: var(--shadow-glow-lg, 0 0 25px rgba(0, 255, 255, 0.35));
+}
+
+/* Zzz SVG text animation */
+@keyframes iris-zzz {
+  0%   { opacity: 0;   transform: translate(0, 0)    scale(0.5); }
+  20%  { opacity: 0.9; }
+  80%  { opacity: 0.7; }
+  100% { opacity: 0;   transform: translate(-2px, -7px) scale(1.1); }
+}
+
+.iris-zzz {
+  animation: iris-zzz 2.4s ease-in-out infinite;
+}
+.iris-zzz--1 { animation-delay: 0s;    }
+.iris-zzz--2 { animation-delay: 0.85s; }
+.iris-zzz--3 { animation-delay: 1.7s;  }
+
+/* ═══════════════════════════
+   GLITCH / ACTIVATION
+   ═══════════════════════════ */
+
+@keyframes iris-glitch {
+  0%   { transform: translate(0,     0);     filter: none;                              }
+  10%  { transform: translate(-5px,  2px);   filter: hue-rotate(90deg)  brightness(1.8);}
+  20%  { transform: translate(5px,  -3px);   filter: hue-rotate(180deg) brightness(0.6);}
+  30%  { transform: translate(-3px,  4px);   filter: hue-rotate(270deg) brightness(2);  }
+  40%  { transform: translate(4px,  -2px);   filter: none;                              }
+  50%  { transform: translate(-4px,  1px);   filter: hue-rotate(90deg)  brightness(1.5);}
+  60%  { transform: translate(5px,  -4px);   filter: brightness(2.2);                   }
+  70%  { transform: translate(-5px,  3px);   filter: hue-rotate(180deg);                }
+  80%  { transform: translate(3px,  -1px);   filter: none;                              }
+  90%  { transform: translate(-2px,  4px);   filter: brightness(1.8);                   }
+  100% { transform: translate(0,     0);     filter: none;                              }
+}
+
+.iris-widget--glitching {
+  animation: iris-glitch 0.65s steps(2) forwards;
+  cursor: wait;
+}
+
+/* ═══════════════════════════
+   THEME OVERRIDES
+   ═══════════════════════════ */
+
 [data-theme="dark"] .iris-widget {
   backdrop-filter: blur(10px);
 }
+[data-theme="dark"] .iris-bubble {
+  backdrop-filter: blur(10px);
+}
 
-/* Light mode — same palette as ThemeToggle light */
 [data-theme="light"] .iris-widget {
   background: rgba(10, 20, 32, 0.92);
   border-color: rgba(0, 180, 255, 0.5);
@@ -46,17 +165,25 @@
               0 0 30px rgba(0, 180, 255, 0.15),
               inset 0 0 20px rgba(0, 180, 255, 0.05);
 }
-
-[data-theme="light"] .iris-widget:hover {
+[data-theme="light"] .iris-widget:not(.iris-widget--sleeping):not(.iris-widget--glitching):hover {
   border-color: rgba(0, 180, 255, 0.8);
   box-shadow: 0 0 20px rgba(0, 180, 255, 0.5),
               0 0 40px rgba(0, 180, 255, 0.25),
               inset 0 0 25px rgba(0, 180, 255, 0.08);
 }
+[data-theme="light"] .iris-bubble {
+  background: rgba(10, 20, 32, 0.92);
+  border-color: rgba(0, 180, 255, 0.5);
+  backdrop-filter: blur(12px);
+}
 
-/* Hidden on mobile — Iris lives as navbar logo on mobile */
+/* ═══════════════════════════
+   MOBILE — nascosta
+   La versione mobile è gestita
+   direttamente nella Navbar
+   ═══════════════════════════ */
 @media (max-width: 768px) {
-  .iris-widget {
+  .iris-container {
     display: none;
   }
 }

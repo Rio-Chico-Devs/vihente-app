@@ -1,9 +1,23 @@
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useGuide } from '../../../../contexts/GuideContext';
 import './ComponentShowcase.css';
 
 const ComponentShowcase = () => {
   const navigate = useNavigate();
+  const { setGuide, clearGuide } = useGuide();
+
+  const componentGuide = {
+    'slider':          'Gallery/slider con animazioni, transizioni fluide e navigazione touch.',
+    'text-sampler':    'Anteprima live di tutti i font e stili tipografici usati nel sito.',
+    'cubo-3d':         'Cubo 3D interattivo con rotazione animata — CSS puro, zero librerie.',
+    'music-player':    'Player musicale con playlist, progress bar e visualizer grafico in tempo reale.',
+    'crud-simulator':  'Simulatore di magazzino con operazioni CRUD complete e inventario gestito in stato.',
+    'black-market':    'Shop cyberpunk con sistema di rarità, inventario randomico, carrello e checkout.',
+    'dashboard':       'Pannello analytics con grafici SVG, KPI, metriche ECG scrollanti e selezione periodo.',
+    'image-checker':   'Tool per caricare e analizzare immagini: dimensioni, colori dominanti e dettagli tecnici.',
+    'booking':         'Sistema di prenotazione con calendario interattivo e gestione disponibilità.',
+  };
 
   // Icona lente di ingrandimento SVG (stile consulenze)
   const MagnifyIcon = () => (
@@ -276,6 +290,8 @@ const ComponentShowcase = () => {
               key={component.id}
               className="preview-card"
               onClick={() => navigate(component.path)}
+              onMouseEnter={() => setGuide(componentGuide[component.id])}
+              onMouseLeave={clearGuide}
             >
               <div className="preview-content">
                 {component.preview}

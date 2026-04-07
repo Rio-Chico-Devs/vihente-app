@@ -1,7 +1,9 @@
 import { useState, useEffect, useRef } from 'react';
 import './SliderPage.css';
+import { useGuide } from '../../../../../contexts/GuideContext';
 
 const SliderPage = () => {
+  const { setGuide, clearGuide } = useGuide();
   const [hoveredIndex, setHoveredIndex] = useState(null);
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [isMobile, setIsMobile] = useState(false);
@@ -123,10 +125,12 @@ const SliderPage = () => {
     <div className="expanding-gallery">
       <h2 className="expanding-title">Expanding Gallery</h2>
       
-      <div 
+      <div
         className="expanding-container"
         ref={containerRef}
         onTouchMove={handleTouchMove}
+        onMouseEnter={() => setGuide('Galleria espandibile — clicca su un pannello per espanderlo. Hover per vedere l\'anteprima colorata.')}
+        onMouseLeave={clearGuide}
       >
         {images.map((image, index) => (
           <div
@@ -149,14 +153,14 @@ const SliderPage = () => {
         ))}
       </div>
 
-      <div className="image-description">
+      <div className="image-description" onMouseEnter={() => setGuide('Descrizione immagine — titolo e dettagli del pannello selezionato.')} onMouseLeave={clearGuide}>
         <h3 className="description-title">{images[selectedIndex].caption}</h3>
         <p className="description-text">{images[selectedIndex].description}</p>
       </div>
 
       {/* Lightbox */}
       {lightboxOpen && lightboxImage && (
-        <div className="lightbox-overlay" onClick={closeLightbox}>
+        <div className="lightbox-overlay" onClick={closeLightbox} onMouseEnter={() => setGuide('Lightbox — visualizzazione a schermo intero dell\'immagine selezionata. Clicca fuori per chiudere.')} onMouseLeave={clearGuide}>
           <button className="lightbox-close" onClick={closeLightbox}>×</button>
           <div className="lightbox-content" onClick={(e) => e.stopPropagation()}>
             <img 

@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './DashboardPage.css';
+import { useGuide } from '../../../../../contexts/GuideContext';
 
 /* ═══════════════════════════════════════════
    CHART COMPONENTS
@@ -236,6 +237,7 @@ const statusClass = (s) => {
    MAIN COMPONENT
 ═══════════════════════════════════════════ */
 const DashboardPage = () => {
+  const { setGuide, clearGuide } = useGuide();
   const navigate = useNavigate();
   const [period,     setPeriod]     = useState('30d');
   const [fading,     setFading]     = useState(false);
@@ -316,7 +318,7 @@ const DashboardPage = () => {
         <div className={`dash-main-grid dash-fade${fading ? ' out' : ''}`}>
 
           {/* ZONA 1 — Transazioni */}
-          <div className="dash-zone">
+          <div className="dash-zone" onMouseEnter={() => setGuide('Transazioni recenti — lista degli ultimi movimenti con importo, servizio e stato di pagamento.')} onMouseLeave={clearGuide}>
             <div className="zone-hd">
               <h2 className="zone-title">Transazioni Recenti</h2>
             </div>
@@ -346,7 +348,7 @@ const DashboardPage = () => {
           <div className="dash-center-col">
 
             {/* ZONA 2 — Grafico */}
-            <div className="dash-zone dash-zone-chart">
+            <div className="dash-zone dash-zone-chart" onMouseEnter={() => setGuide('Andamento fatturato — grafico a barre o lineare del fatturato nel periodo selezionato.')} onMouseLeave={clearGuide}>
               <div className="zone-hd">
                 <h2 className="zone-title">Andamento Fatturato</h2>
                 <span className="zone-unit">{d.chartNote}</span>
@@ -358,7 +360,7 @@ const DashboardPage = () => {
             </div>
 
             {/* ZONA 4 — Settori */}
-            <div className="dash-zone dash-zone-sectors">
+            <div className="dash-zone dash-zone-sectors" onMouseEnter={() => setGuide('Crescita settori — confronto visivo delle performance per area di business nel 2025.')} onMouseLeave={clearGuide}>
               <div className="zone-hd">
                 <h2 className="zone-title">Crescita Settori 2025</h2>
                 <span className="zone-unit">dati simulati</span>
@@ -381,7 +383,7 @@ const DashboardPage = () => {
           <div className="dash-right-col">
 
             {/* ZONA 3 — ECG */}
-            <div className="dash-zone dash-zone-ecg">
+            <div className="dash-zone dash-zone-ecg" onMouseEnter={() => setGuide('Metriche ECG — indicatori di salute del business con trend animati in tempo reale.')} onMouseLeave={clearGuide}>
               <div className="zone-hd">
                 <h2 className="zone-title">Metriche Attive</h2>
                 <span className="zone-unit">{d.chartNote.split('·')[0].trim()}</span>
@@ -437,7 +439,7 @@ const DashboardPage = () => {
             </div>
 
             {/* ZONA 5 — Periodo */}
-            <div className="dash-zone dash-zone-period">
+            <div className="dash-zone dash-zone-period" onMouseEnter={() => setGuide('Seleziona il periodo di analisi: 7 giorni, 30 giorni, 90 giorni o annuale.')} onMouseLeave={clearGuide}>
               <div className="zone-hd">
                 <h2 className="zone-title">Periodo</h2>
               </div>

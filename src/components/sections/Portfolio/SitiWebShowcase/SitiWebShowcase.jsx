@@ -1,4 +1,5 @@
 import { useNavigate } from 'react-router-dom';
+import { useGuide } from '../../../../contexts/GuideContext';
 import './SitiWebShowcase.css';
 
 // Imposta a false per riattivarla quando i permessi saranno ottenuti
@@ -6,10 +7,15 @@ const COMING_SOON = true;
 
 const SitiWebShowcase = () => {
   const navigate = useNavigate();
+  const { setGuide, clearGuide } = useGuide();
 
   if (COMING_SOON) {
     return (
-      <div className="sitiweb-showcase sitiweb-coming-soon-page">
+      <div
+        className="sitiweb-showcase sitiweb-coming-soon-page"
+        onMouseEnter={() => setGuide('Ci scusiamo per il momentaneo disagio — questa sezione è in aggiornamento e tornerà presto con i progetti!')}
+        onMouseLeave={clearGuide}
+      >
         <div className="coming-soon-box">
           <h1 className="coming-soon-title">COMING SOON</h1>
           <p className="coming-soon-text">
@@ -87,6 +93,8 @@ const SitiWebShowcase = () => {
         <button
           className="cta-button"
           onClick={() => navigate('/contatti')}
+          onMouseEnter={() => setGuide('Mi sembra un\'ottima idea e.e')}
+          onMouseLeave={clearGuide}
         >
           Contattami
         </button>

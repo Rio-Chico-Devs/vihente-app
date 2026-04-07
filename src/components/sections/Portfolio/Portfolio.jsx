@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTheme } from '../../../contexts/theme';
+import { useGuide } from '../../../contexts/GuideContext';
 import GraficheCard from './GraficheCard';
 import WebsiteMockup from './WebsiteMockup';
 import ComponentiCard from './ComponentiCard';
@@ -9,6 +10,13 @@ import './Portfolio.css';
 const Portfolio = () => {
   const navigate = useNavigate();
   const { theme } = useTheme();
+  const { setGuide, clearGuide } = useGuide();
+
+  const categoryGuide = {
+    grafiche:    'Loghi, illustrazioni e materiali grafici — visual identity e comunicazione digitale.',
+    sitiweb:     'Siti web professionali realizzati per clienti — design e sviluppo su misura.',
+    componenti:  'Componenti React interattivi realizzati da zero — slider, player, dashboard, shop e molto altro.',
+  };
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [isFlipped, setIsFlipped] = useState(false);
   const [isFadingOut, setIsFadingOut] = useState(false);
@@ -180,6 +188,8 @@ const Portfolio = () => {
               setIsFadingOut(true);
               setTimeout(() => navigate(`/portfolio/${cat.id}`), 120);
             }}
+            onMouseEnter={() => setGuide(categoryGuide[cat.id])}
+            onMouseLeave={clearGuide}
           >
             <h3 className="mobile-card-title">{cat.title}</h3>
             <div className="mobile-card-subtitle">{cat.description}</div>
@@ -206,6 +216,8 @@ const Portfolio = () => {
                 key={cat.id}
                 className={`card-item ${getCardClass(idx)} ${idx === selectedIndex && isFlipped ? 'flipped' : ''}`}
                 onClick={() => idx === selectedIndex && handleCardClick()}
+                onMouseEnter={() => setGuide(categoryGuide[cat.id])}
+                onMouseLeave={clearGuide}
               >
                 <div className="card-flip">
                   {/* Front Face */}

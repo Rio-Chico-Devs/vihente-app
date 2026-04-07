@@ -1,6 +1,7 @@
 import { useState, lazy, Suspense } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import ThemeProvider from './contexts/ThemeProvider';
+import { GuideProvider } from './contexts/GuideContext';
 import ErrorBoundary from './components/ErrorBoundary/ErrorBoundary';
 import BootScreen from './components/sections/BootScreen/BootScreen';
 import Navbar from './components/sections/Navbar/Navbar';
@@ -95,6 +96,7 @@ function App() {
   return (
     <ErrorBoundary>
       <ThemeProvider>
+      <GuideProvider>
         <BrowserRouter basename={import.meta.env.DEV ? '/' : '/vihente-app'}>
           <CustomCursor />
           <CookieConsentBanner isBooting={isBooting} />
@@ -164,6 +166,7 @@ function App() {
             </>
           )}
         </BrowserRouter>
+      </GuideProvider>
       </ThemeProvider>
     </ErrorBoundary>
   );

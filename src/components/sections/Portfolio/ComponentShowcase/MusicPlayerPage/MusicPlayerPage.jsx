@@ -1,7 +1,9 @@
 import { useState, useRef, useEffect, useCallback } from 'react';
 import './MusicPlayerPage.css';
+import { useGuide } from '../../../../../contexts/GuideContext';
 
 const MusicPlayerPage = () => {
+  const { setGuide, clearGuide } = useGuide();
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
@@ -406,10 +408,10 @@ const MusicPlayerPage = () => {
 
   return (
     <div className="music-player-page">
-      <div className="music-player-container">
+      <div className="music-player-container" onMouseEnter={() => setGuide('Ed eccoci alla mia sezione preferita, metti un pò di musica ;D')} onMouseLeave={clearGuide}>
         <div className="player-layout">
-          <div className="visualizer-container">
-            
+          <div className="visualizer-container" onMouseEnter={() => setGuide('Visualizzatore — l\'occhio reagisce al volume e al beat della musica in riproduzione.')} onMouseLeave={clearGuide}>
+
             <button className="gear-toggle" onClick={() => setShowMixer(!showMixer)}>
               <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" strokeWidth="2">
                 <path d="M12 3v3m0 12v3m9-9h-3M6 12H3m15.364 6.364l-2.121-2.121M7.757 7.757L5.636 5.636m12.728 0l-2.121 2.121M7.757 16.243l-2.121 2.121" strokeLinecap="round"/>
@@ -517,7 +519,7 @@ const MusicPlayerPage = () => {
             )}
 
             {!showMixer && showInfo && (
-              <div className="track-info-display">
+              <div className="track-info-display" onMouseEnter={() => setGuide('Info traccia — titolo, artista, album, anno e genere del brano selezionato.')} onMouseLeave={clearGuide}>
                 <div className="info-display-header">
                   <div className="info-display-icon">
                     <svg width="60" height="60" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -554,7 +556,7 @@ const MusicPlayerPage = () => {
             )}
 
             {showMixer && (
-              <div className="mixer-panel">
+              <div className="mixer-panel" onMouseEnter={() => setGuide('Equalizzatore — regola bass, mid e treble per personalizzare il suono.')} onMouseLeave={clearGuide}>
                 <h3 className="mixer-title">EQUALIZER</h3>
                 
                 <div className="mixer-control">
@@ -621,7 +623,7 @@ const MusicPlayerPage = () => {
               preload="none"
             />
 
-            <div className="track-selector" ref={dropdownRef}>
+            <div className="track-selector" ref={dropdownRef} onMouseEnter={() => setGuide('Playlist — seleziona un brano dalla lista per avviarne la riproduzione.')} onMouseLeave={clearGuide}>
               <button
                 className={`dropdown-btn ${showDropdown ? 'active' : ''}`}
                 onClick={() => setShowDropdown(!showDropdown)}
@@ -654,7 +656,7 @@ const MusicPlayerPage = () => {
               <p className="track-artist">{playlist[currentTrack].artist}</p>
             </div>
 
-            <div className="progress-container">
+            <div className="progress-container" onMouseEnter={() => setGuide('Barra di avanzamento — mostra il progresso del brano. Clicca per saltare a un punto preciso.')} onMouseLeave={clearGuide}>
               <div className="progress-bar" onClick={handleSeek}>
                 <div
                   className={`progress-fill ${isPlaying ? 'playing' : ''}`}

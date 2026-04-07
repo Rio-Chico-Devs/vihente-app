@@ -1,8 +1,10 @@
 import { useState, useEffect, useRef } from 'react';
 import { validateContactForm, sanitizeInput } from '../../../utils/validation';
+import { useGuide } from '../../../contexts/GuideContext';
 import './Contacts.css';
 
 const Contacts = () => {
+  const { setGuide, clearGuide } = useGuide();
   const [isQuoteMode, setIsQuoteMode] = useState(false);
   const [formData, setFormData] = useState({
     name: '',
@@ -277,6 +279,8 @@ const Contacts = () => {
                   aria-required="true"
                   aria-invalid={!!errors.name}
                   aria-describedby={errors.name ? "name-error" : undefined}
+                  onMouseEnter={() => setGuide('Il tuo nome o il nome della tua azienda. Es: "Mario Rossi" o "Acme S.r.l."')}
+                  onMouseLeave={clearGuide}
                 />
                 {errors.name && (
                   <span id="name-error" className="form-error" role="alert">
@@ -301,6 +305,8 @@ const Contacts = () => {
                   aria-required="true"
                   aria-invalid={!!errors.email}
                   aria-describedby={errors.email ? "email-error" : undefined}
+                  onMouseEnter={() => setGuide('La tua email: useremo questo indirizzo per risponderti. Es: "mario@gmail.com"')}
+                  onMouseLeave={clearGuide}
                 />
                 {errors.email && (
                   <span id="email-error" className="form-error" role="alert">
@@ -323,6 +329,8 @@ const Contacts = () => {
                     onChange={handleChange}
                     placeholder="Es: Informazioni generali, collaborazione, ecc."
                     required
+                    onMouseEnter={() => setGuide('Spiegaci brevemente il motivo del contatto. Es: "Vorrei una collaborazione" o "Ho bisogno di informazioni"')}
+                    onMouseLeave={clearGuide}
                   />
                 </div>
               ) : (
@@ -337,6 +345,8 @@ const Contacts = () => {
                     value={formData.service}
                     onChange={handleChange}
                     required
+                    onMouseEnter={() => setGuide('Seleziona il servizio di cui hai bisogno: consulenza, grafica, sito web, social media o content creation.')}
+                    onMouseLeave={clearGuide}
                   >
                     <option value="Consulenza">Consulenza</option>
                     <option value="Grafica">Grafica</option>
@@ -364,6 +374,10 @@ const Contacts = () => {
                   aria-required="true"
                   aria-invalid={!!errors.message}
                   aria-describedby={errors.message ? "message-error" : undefined}
+                  onMouseEnter={() => setGuide(isQuoteMode
+                    ? 'Descrivi il tuo progetto: obiettivi, tempi, budget e qualsiasi dettaglio utile per prepararti un preventivo preciso.'
+                    : 'Scrivi liberamente: presentati, racconta cosa cerchi e come possiamo aiutarti.')}
+                  onMouseLeave={clearGuide}
                 />
                 {errors.message && (
                   <span id="message-error" className="form-error" role="alert">
@@ -373,7 +387,11 @@ const Contacts = () => {
               </div>
 
               <div className="form-group form-field-full privacy-consent-group">
-                <label className="privacy-consent-label">
+                <label
+                  className="privacy-consent-label"
+                  onMouseEnter={() => setGuide('Accetta la Privacy Policy per inviare il modulo — i tuoi dati vengono usati solo per risponderti.')}
+                  onMouseLeave={clearGuide}
+                >
                   <input
                     type="checkbox"
                     name="privacyConsent"
@@ -418,6 +436,8 @@ const Contacts = () => {
                 type="submit"
                 className="submit-button"
                 disabled={isAnimating}
+                onMouseEnter={() => setGuide('Invia il modulo compilato — ti risponderemo il prima possibile!')}
+                onMouseLeave={clearGuide}
               >
                 <span className="submit-button-text">
                   {isQuoteMode

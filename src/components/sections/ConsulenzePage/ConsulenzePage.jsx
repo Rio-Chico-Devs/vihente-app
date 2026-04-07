@@ -1,9 +1,11 @@
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useGuide } from '../../../contexts/GuideContext';
 import './ConsulenzePage.css';
 
 const ConsulenzePage = () => {
   const navigate = useNavigate();
+  const { setGuide, clearGuide } = useGuide();
 
   useEffect(() => {
     document.body.classList.add('service-detail-body');
@@ -238,7 +240,12 @@ const ConsulenzePage = () => {
           <p className="cta-text">
             Fissa un colloquio e parliamo insieme del tuo progetto digitale
           </p>
-          <button className="consulenze-cta-button" onClick={() => navigate('/contatti')}>
+          <button
+            className="consulenze-cta-button"
+            onClick={() => navigate('/contatti')}
+            onMouseEnter={() => setGuide('Mi sembra un\'ottima idea e.e')}
+            onMouseLeave={clearGuide}
+          >
             Contattami
           </button>
         </section>

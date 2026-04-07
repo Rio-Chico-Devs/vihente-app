@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect, useCallback } from 'react';
 import './FemosBlackMarketPage.css';
+import { useGuide } from '../../../../../contexts/GuideContext';
 
 // Costanti e database fuori dal componente per evitare problemi di dipendenze
 const CART_MAX_ITEMS = 12;
@@ -68,6 +69,7 @@ const mascotPhrases = {
 };
 
 const FemosBlackMarketPage = () => {
+  const { setGuide, clearGuide } = useGuide();
   const [simulationActive, setSimulationActive] = useState(false);
   const [currentPage, setCurrentPage] = useState('shop');
   const [cart, setCart] = useState([]);
@@ -424,7 +426,7 @@ const FemosBlackMarketPage = () => {
           <div className="header-actions">
             {currentPage === 'shop' && (
               <>
-                <button className="btn persona-btn" onClick={randomizeShop}>🎲 RANDOMIZZA</button>
+                <button className="btn persona-btn" onClick={randomizeShop} onMouseEnter={() => setGuide('Rifornisce il negozio con nuovi prodotti casuali — ogni click cambia l\'inventario.')} onMouseLeave={clearGuide}>🎲 RANDOMIZZA</button>
                 <button className="btn cart-btn persona-btn" onClick={() => navigateToPage('cart')}>
                   🛒 CARRELLO
                   {cart.length > 0 && <span className="cart-count persona-cart-badge">{cart.length}</span>}
@@ -439,7 +441,7 @@ const FemosBlackMarketPage = () => {
 
         {currentPage === 'shop' && (
           <div className="products-section">
-            <div className="section-header">
+            <div className="section-header" onMouseEnter={() => setGuide('Inventario del mercato nero — ogni refresh cambia i prodotti disponibili con rarità casuali: common, rare, epic, legendary e mystery.')} onMouseLeave={clearGuide}>
               <h2 className="section-title persona-section-title">// INVENTARIO //</h2>
             </div>
             <div className="products-grid">
@@ -455,7 +457,11 @@ const FemosBlackMarketPage = () => {
                   onMouseEnter={() => {
                     const phrases = mascotPhrases[product.rarity];
                     setMascotMessage(phrases[Math.floor(Math.random() * phrases.length)]);
+                    if (product.rarity === 'mystery' || product.rarity === 'special') {
+                      setGuide('E quella roba chi l\'ha messa lì? o_o');
+                    }
                   }}
+                  onMouseLeave={clearGuide}
                 >
                   <span className="rarity-badge persona-badge" style={{ backgroundColor: getRarityColor(product.rarity), color: '#000', borderColor: getRarityColor(product.rarity) }}>
                     {getRarityLabel(product.rarity)}
@@ -479,7 +485,7 @@ const FemosBlackMarketPage = () => {
         )}
 
         {currentPage === 'cart' && (
-          <div className="cart-section">
+          <div className="cart-section" onMouseEnter={() => setGuide('Il tuo carrello — aggiungi prodotti, modifica le quantità e procedi al checkout cyberpunk.')} onMouseLeave={clearGuide}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem' }}>
               <h2 className="section-title persona-section-title">// INVENTARIO RUNNER //</h2>
               <div style={{ color: getTotalItems() >= CART_MAX_ITEMS ? '#ff0055' : '#0ff', fontSize: '1.1rem', fontWeight: '700' }}>
@@ -595,7 +601,7 @@ const FemosBlackMarketPage = () => {
           </div>
         )}
 
-        <div className="mascot-container">
+        <div className="mascot-container" onMouseEnter={() => setGuide('Questo è Femo — il mascotte del mercato. Commenta le tue azioni in tempo reale.')} onMouseLeave={clearGuide}>
           <div className="mascot-bubble persona-bubble">
             <p className="mascot-text">{mascotMessage}</p>
           </div>
