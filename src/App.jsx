@@ -8,7 +8,6 @@ import Navbar from './components/sections/Navbar/Navbar';
 import Footer from './components/sections/Footer/Footer';
 import CustomCursor from './components/sections/Cursor/CustomCursor';
 import ThemeToggle from './components/ThemeToggle/ThemeToggle';
-import Iris from './components/Iris/Iris';
 import ScrollingHeader from './components/ScrollingHeader';
 import CookieConsentBanner from './components/global/CookieConsent/CookieConsent';
 import PageTransition from './components/PageTransition/PageTransition';
@@ -101,7 +100,6 @@ function App() {
           <CustomCursor />
           <CookieConsentBanner isBooting={isBooting} />
           <ThemeToggle />
-          <Iris />
 
           {isBooting ? (
             <BootScreen onBootComplete={handleBootComplete} />

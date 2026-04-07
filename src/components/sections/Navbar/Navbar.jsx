@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useTheme } from '../../../contexts/theme';
 import { useGuide } from '../../../contexts/GuideContext';
+import Iris from '../../Iris/Iris';
 import './Navbar.css';
 
 const Navbar = () => {
@@ -236,6 +237,9 @@ const Navbar = () => {
         aria-label="Navigazione principale"
       >
         <div className="navbar-container">
+          {/* Iris guide — fixed bottom-left on desktop, inline in navbar on mobile */}
+          <Iris />
+
           {/* Logo - Three Circles Eye with Tracking */}
           <Link
             to="/"
