@@ -1217,6 +1217,12 @@
 
 /* Responsive */
 @media (max-width: 768px) {
+  /* Rimuovo preserve-3d su mobile: incompatibile con backdrop-filter su Safari iOS */
+  .form-container {
+    transform-style: flat;
+    perspective: none;
+  }
+
   .privacy-consent-group {
     padding: 0.8rem;
   }

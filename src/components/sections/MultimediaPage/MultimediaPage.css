@@ -208,9 +208,11 @@ body.multimedia-page-body {
     transform: rotate(-45deg) translateY(100%);
 }
 
-.work-cta:hover {
+@media (hover: hover) {
+  .work-cta:hover {
     border-color: var(--color-primary-50, rgba(0, 255, 255, 0.5));
     transform: scale(1.05);
+  }
 }
 
 .work-cta > * {
@@ -508,9 +510,11 @@ body.multimedia-page-body {
     transform: rotate(-45deg) translateY(100%);
 }
 
-.multimedia-cta-button:hover {
+@media (hover: hover) {
+  .multimedia-cta-button:hover {
     border-color: var(--color-primary-50, rgba(0, 255, 255, 0.5));
     transform: scale(1.05);
+  }
 }
 
 /* Content spacer */

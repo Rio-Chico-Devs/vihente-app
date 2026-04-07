@@ -261,13 +261,17 @@ a, button, [role="button"], input, textarea, select,
   }
 }
 
-@media (hover: none) or (pointer: coarse) {
-  body {
-    cursor: auto;
+/* Su dispositivi touch/coarse: ripristina cursor su tutti gli elementi.
+   La virgola separa le condizioni (supporto più ampio di 'or').
+   Il !important vince sul * { cursor: none !important } globale. */
+@media (hover: none), (pointer: coarse) {
+  * {
+    cursor: auto !important;
   }
 
   .custom-cursor,
-  .cursor-dot {
+  .cursor-dot,
+  .custom-cursor-dot {
     display: none !important;
   }
 }

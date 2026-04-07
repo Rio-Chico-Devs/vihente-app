@@ -307,9 +307,12 @@
   transform: rotate(-45deg) translateY(100%);
 }
 
-.platform-card:hover {
-  border-color: var(--color-primary-50, rgba(0, 255, 255, 0.5));
-  transform: scale(1.05);
+
+@media (hover: hover) {
+  .platform-card:hover {
+    border-color: var(--color-primary-50, rgba(0, 255, 255, 0.5));
+    transform: scale(1.05);
+  }
 }
 
 .platform-icon {
@@ -384,9 +387,11 @@
   transform: rotate(-45deg) translateY(100%);
 }
 
-.service-card:hover {
-  border-color: var(--color-primary-50, rgba(0, 255, 255, 0.5));
-  transform: scale(1.05);
+@media (hover: hover) {
+  .service-card:hover {
+    border-color: var(--color-primary-50, rgba(0, 255, 255, 0.5));
+    transform: scale(1.05);
+  }
 }
 
 .service-card-icon {
@@ -461,9 +466,11 @@
   transform: rotate(-45deg) translateY(100%);
 }
 
-.package-card:hover {
-  border-color: var(--color-primary-50, rgba(0, 255, 255, 0.5));
-  transform: scale(1.05);
+@media (hover: hover) {
+  .package-card:hover {
+    border-color: var(--color-primary-50, rgba(0, 255, 255, 0.5));
+    transform: scale(1.05);
+  }
 }
 
 .package-featured {
@@ -624,9 +631,11 @@
   transform: rotate(-45deg) translateY(100%);
 }
 
-.presenza-cta-button:hover {
-  border-color: var(--color-primary-50, rgba(0, 255, 255, 0.5));
-  transform: scale(1.05);
+@media (hover: hover) {
+  .presenza-cta-button:hover {
+    border-color: var(--color-primary-50, rgba(0, 255, 255, 0.5));
+    transform: scale(1.05);
+  }
 }
 
 /* Footer */

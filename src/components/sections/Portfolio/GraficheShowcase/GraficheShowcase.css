@@ -634,9 +634,11 @@
 
   position: absolute;
 
-  top: -50px;
+  top: 0.5rem;
 
-  right: 0;
+  right: 0.5rem;
+
+  z-index: 10;
 
   width: 45px;
 
@@ -1584,7 +1586,9 @@
 
   .trophy-modal .modal-close {
 
-    top: -45px;
+    top: 0.5rem;
+
+    right: 0.5rem;
 
     width: 40px;
 
