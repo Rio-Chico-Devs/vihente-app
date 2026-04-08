@@ -7,30 +7,55 @@ const TermsAndConditions = () => {
       <div className="terms-content">
         <h1 className="terms-title">Termini e Condizioni</h1>
         <p className="terms-intro">
-          I presenti Termini e Condizioni regolano l'utilizzo di questo sito web e i servizi offerti.
-          Utilizzando questo sito, accetti integralmente questi termini.
+          I presenti Termini e Condizioni regolano l'utilizzo di questo sito web.
+          Questo sito ha esclusivamente finalità di <strong>portfolio personale</strong> e non offre
+          servizi commerciali a pagamento.
         </p>
 
         <section className="terms-section">
-          <h2>1. Informazioni Generali e Impressum</h2>
+          <h2>1. Informazioni Generali</h2>
           <p>
-            In conformità con l'Art. 21 del D.Lgs. 70/2003 (Commercio Elettronico), il titolare del sito è:
+            Il titolare del sito è:
           </p>
           <div className="info-box">
-            <p><strong>Nome/Ragione Sociale:</strong> Antonio Vicente Bruno</p>
-            
-            <p><strong>Partita IVA / Codice Fiscale:</strong> [in fase di ottenimento]</p>
-            <p><strong>Email:</strong> <a href="mailto: vihenteweb@proton.me">vihenteweb@proton.me</a></p>
+            <p><strong>Nome:</strong> Antonio Vicente Bruno</p>
+            <p><strong>Email:</strong> <a href="mailto:vihenteweb@proton.me">vihenteweb@proton.me</a></p>
             <p><strong>PEC:</strong> antoniovicente@postacertifica.it</p>
             <p><strong>Sito web:</strong> vihente.it</p>
           </div>
           <p className="note">
-            <em>Nota: Questi dati devono essere compilati prima della pubblicazione del sito per conformità legale.</em>
+            <em>
+              Questo è un sito portfolio personale. Non è attiva alcuna attività commerciale
+              né partita IVA al momento. Il sito è rivolto esclusivamente a potenziali datori
+              di lavoro, collaboratori o chiunque voglia contattarmi per opportunità professionali.
+            </em>
           </p>
         </section>
 
         <section className="terms-section">
-          <h2>2. Oggetto del Servizio</h2>
+          <h2>2. Scopo del Sito</h2>
+          <p>
+            Il presente sito web è un <strong>portfolio personale</strong> con le seguenti finalità:
+          </p>
+          <ul>
+            <li><strong>Presentazione professionale:</strong> Competenze, progetti e lavori realizzati</li>
+            <li><strong>Contatto:</strong> Form per richieste di collaborazione, assunzione o contratti a ritenuta d'acconto</li>
+            <li><strong>Showcase tecnico:</strong> Dimostrazione delle capacità di sviluppo web e design</li>
+          </ul>
+          <p className="highlight">
+            Questo sito <strong>non vende servizi</strong>, non accetta pagamenti e non stipula contratti commerciali.
+            Qualsiasi collaborazione sarà concordata direttamente tramite contatto email.
+          </p>
+        </section>
+
+        {/* ============================================================
+            TODO P.IVA: Ripristinare quando la Partita IVA è attiva.
+            Sostituire la sezione 2 "Scopo del Sito" con la versione
+            commerciale qui sotto, e aggiornare i numeri delle sezioni.
+            ============================================================
+
+        <section className="terms-section">
+          <h2>X. Oggetto del Servizio</h2>
           <p>
             Il presente sito web offre:
           </p>
@@ -46,7 +71,7 @@ const TermsAndConditions = () => {
         </section>
 
         <section className="terms-section">
-          <h2>3. Conclusione del Contratto</h2>
+          <h2>X. Conclusione del Contratto</h2>
           <div className="step-box">
             <h3>Procedura di acquisto servizi:</h3>
             <ol>
@@ -63,32 +88,38 @@ const TermsAndConditions = () => {
           </p>
         </section>
 
+        ============================================================ */}
+
         <section className="terms-section">
-          <h2>4. Proprietà Intellettuale e Diritti d'Autore</h2>
+          <h2>3. Proprietà Intellettuale e Diritti d'Autore</h2>
           <p>
             Tutti i contenuti presenti su questo sito (testi, immagini, grafica, codice, loghi) sono protetti
-            da diritto d'autore (Legge 633/1941) e sono di proprietà di VIHENTE o dei rispettivi proprietari.
+            da diritto d'autore (Legge 633/1941) e sono di proprietà del titolare del sito o dei rispettivi proprietari.
           </p>
           <div className="rights-box">
             <h3>Cosa NON puoi fare:</h3>
             <ul>
               <li>Copiare, riprodurre, modificare o distribuire i contenuti senza autorizzazione scritta</li>
               <li>Utilizzare il codice sorgente o elementi grafici per progetti commerciali</li>
-              <li>Rivendere o cedere a terzi i lavori consegnati senza accordi specifici</li>
+              <li>Attribuire a sé stessi la paternità dei lavori presentati in questo portfolio</li>
             </ul>
           </div>
           <p>
-            <strong>Diritti sui lavori commissionati:</strong>
+            <strong>Portfolio e lavori mostrati:</strong>
           </p>
           <ul>
-            <li><strong>Diritti di utilizzo:</strong> Il cliente acquisisce i diritti di utilizzo del lavoro per le finalità concordate</li>
-            <li><strong>Diritti patrimoniali:</strong> Trasferimento completo solo se espressamente concordato </li>
-            <li><strong>Diritti morali:</strong> VIHENTE mantiene il diritto di citare il lavoro nel proprio portfolio</li>
+            <li><strong>Diritti morali:</strong> il titolare del sito mantiene la paternità di tutti i lavori presentati</li>
+            <li><strong>Diritti d'utilizzo:</strong> I lavori mostrati sono presentati a scopo dimostrativo</li>
           </ul>
         </section>
 
+        {/* ============================================================
+            TODO P.IVA: Ripristinare la sezione Garanzie e Responsabilità
+            per i servizi commerciali quando la P.IVA è attiva.
+            ============================================================
+
         <section className="terms-section">
-          <h2>5. Garanzie e Responsabilità</h2>
+          <h2>X. Garanzie e Responsabilità</h2>
           <p>
             VIHENTE garantisce:
           </p>
@@ -102,12 +133,20 @@ const TermsAndConditions = () => {
           <ul>
             <li>VIHENTE non è responsabile per malfunzionamenti causati da hosting, server o servizi di terze parti</li>
             <li>Il cliente è responsabile per il backup dei propri dati e contenuti</li>
-            <li>VIHENTE non garantisce risultati specifici per tool di terze parti o scelte personali del datore di lavoro(es. posizionamento SEO, vendite, traffico)</li>
+            <li>VIHENTE non garantisce risultati specifici per tool di terze parti o scelte personali del datore di lavoro</li>
           </ul>
         </section>
 
+        ============================================================ */}
+
+        {/* ============================================================
+            TODO P.IVA: Ripristinare la sezione ODR (Risoluzione
+            Controversie Online) obbligatoria per e-commerce/servizi
+            commerciali ai sensi del Reg. UE 524/2013.
+            ============================================================
+
         <section className="terms-section">
-          <h2>6. Risoluzione Controversie Online (ODR)</h2>
+          <h2>X. Risoluzione Controversie Online (ODR)</h2>
           <p>
             In conformità al Regolamento UE 524/2013, i consumatori europei possono risolvere eventuali controversie
             relative all'acquisto di servizi online attraverso la piattaforma ODR della Commissione Europea:
@@ -134,23 +173,21 @@ const TermsAndConditions = () => {
           </p>
         </section>
 
+        ============================================================ */}
+
         <section className="terms-section">
-          <h2>7. Legge Applicabile e Foro Competente</h2>
+          <h2>4. Legge Applicabile</h2>
           <p>
             I presenti Termini e Condizioni sono regolati dalla legge italiana.
           </p>
           <p>
-            <strong>Per consumatori:</strong> In caso di controversia, è competente il foro di residenza del consumatore
-            (Art. 63 Codice del Consumo).
-          </p>
-          <p>
-            <strong>Per professionisti/imprese:</strong> Per eventuali controversie derivanti dall'interpretazione o
-            esecuzione del presente contratto, è competente in via esclusiva il Foro di Pordenone.
+            Per eventuali controversie derivanti dall'utilizzo di questo sito, è competente il Foro di Pordenone,
+            salvo diversa disposizione inderogabile di legge.
           </p>
         </section>
 
         <section className="terms-section">
-          <h2>8. Trattamento Dati Personali</h2>
+          <h2>5. Trattamento Dati Personali</h2>
           <p>
             Il trattamento dei dati personali raccolti attraverso questo sito è disciplinato dalla nostra{' '}
             <a href="/privacy-policy" className="internal-link">Privacy Policy</a>, in conformità con il GDPR (Regolamento UE 2016/679).
@@ -162,13 +199,10 @@ const TermsAndConditions = () => {
         </section>
 
         <section className="terms-section">
-          <h2>9. Modifiche ai Termini e Condizioni</h2>
+          <h2>6. Modifiche ai Termini e Condizioni</h2>
           <p>
-            VIHENTE si riserva il diritto di modificare i presenti Termini e Condizioni in qualsiasi momento.
+            Il titolare del sito si riserva il diritto di modificare i presenti Termini e Condizioni in qualsiasi momento.
             Le modifiche saranno pubblicate su questa pagina e entreranno in vigore dalla data di pubblicazione.
-          </p>
-          <p>
-            Ti consigliamo di consultare regolarmente questa pagina per rimanere aggiornato.
           </p>
           <p>
             <strong>Ultimo aggiornamento:</strong> {new Date().toLocaleDateString('it-IT', { year: 'numeric', month: 'long', day: 'numeric' })}
@@ -176,22 +210,23 @@ const TermsAndConditions = () => {
         </section>
 
         <section className="terms-section">
-          <h2>10. Contatti</h2>
+          <h2>7. Contatti</h2>
           <p>
             Per qualsiasi domanda relativa a questi Termini e Condizioni, puoi contattarci:
           </p>
           <div className="info-box">
-            <p><strong>Email:</strong> <a href="mailto:vihenteweb@proton.me">[vihenteweb@proton.me]</a></p>
-            <p><strong>PEC:</strong> [antoniovicente@postecertifica.it]</p>
-            <p><strong>Indirizzo:</strong> [in fase di ottenimento]</p>
+            <p><strong>Email:</strong> <a href="mailto:vihenteweb@proton.me">vihenteweb@proton.me</a></p>
+            <p><strong>PEC:</strong> antoniovicente@postacertifica.it</p>
           </div>
         </section>
 
         <div className="terms-footer">
           <p>
-            Questi Termini e Condizioni sono conformi al D.Lgs. 70/2003 (Commercio Elettronico),
-            al Codice del Consumo (D.Lgs. 206/2005) e al GDPR (Regolamento UE 2016/679).
+            Questi Termini e Condizioni sono conformi alla normativa italiana applicabile ai siti portfolio
+            e al GDPR (Regolamento UE 2016/679) per il trattamento dei dati personali.
           </p>
+          {/* TODO P.IVA: quando attiva, aggiungere conformità a D.Lgs. 70/2003
+              (Commercio Elettronico) e D.Lgs. 206/2005 (Codice del Consumo) */}
         </div>
       </div>
     </div>

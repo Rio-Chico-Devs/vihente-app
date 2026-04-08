@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, useCallback } from 'react';
+import { createContext, useContext, useState, useCallback, useMemo } from 'react';
 
 const GuideContext = createContext(null);
 
@@ -8,8 +8,13 @@ export const GuideProvider = ({ children }) => {
   const setGuide   = useCallback((t) => setText(t), []);
   const clearGuide = useCallback(() => setText(null), []);
 
+  const value = useMemo(
+    () => ({ text, setGuide, clearGuide }),
+    [text, setGuide, clearGuide]
+  );
+
   return (
-    <GuideContext.Provider value={{ text, setGuide, clearGuide }}>
+    <GuideContext.Provider value={value}>
       {children}
     </GuideContext.Provider>
   );

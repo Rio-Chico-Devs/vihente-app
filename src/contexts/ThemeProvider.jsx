@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback, useMemo } from 'react';
 import ThemeContext from './theme';
 
 const ThemeProvider = ({ children }) => {
@@ -12,17 +12,20 @@ const ThemeProvider = ({ children }) => {
     localStorage.setItem('vihente-theme', theme);
   }, [theme]);
 
-  const toggleTheme = () => {
+  const toggleTheme = useCallback(() => {
     setTheme(prev => prev === 'dark' ? 'light' : 'dark');
-  };
+  }, []);
 
-  const value = {
-    theme,
-    setTheme,
-    toggleTheme,
-    isDark: theme === 'dark',
-    isLight: theme === 'light'
-  };
+  const value = useMemo(
+    () => ({
+      theme,
+      setTheme,
+      toggleTheme,
+      isDark: theme === 'dark',
+      isLight: theme === 'light'
+    }),
+    [theme, toggleTheme]
+  );
 
   return (
     <ThemeContext.Provider value={value}>

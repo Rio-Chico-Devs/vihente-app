@@ -168,6 +168,18 @@ const MusicPlayerPage = () => {
       if (animationRef.current) {
         cancelAnimationFrame(animationRef.current);
       }
+      if (sourceRef.current) {
+        try {
+          sourceRef.current.disconnect();
+        } catch (error) {
+          // ignore
+        }
+        sourceRef.current = null;
+      }
+      if (audioContextRef.current && audioContextRef.current.state !== 'closed') {
+        audioContextRef.current.close().catch(() => {});
+        audioContextRef.current = null;
+      }
     };
   }, []);
 

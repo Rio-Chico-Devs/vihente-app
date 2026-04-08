@@ -169,7 +169,9 @@ const Contacts = () => {
         timeoutsRef.current.push(timeout6);
 
       } catch (error) {
-        console.error('Errore invio form:', error);
+        if (import.meta.env.DEV) {
+          console.error('Errore invio form:', error);
+        }
         setIsAnimating(false);
         setSubmitStatus('error');
 
