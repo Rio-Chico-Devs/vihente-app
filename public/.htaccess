@@ -92,7 +92,7 @@
     Deny from all
 </FilesMatch>
 
-<FilesMatch "\.(env|json|log|md)$">
+<FilesMatch "\.(env|log)$">
     Order allow,deny
     Deny from all
 </FilesMatch>
