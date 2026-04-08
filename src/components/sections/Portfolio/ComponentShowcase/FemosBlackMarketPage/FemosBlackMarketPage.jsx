@@ -6,8 +6,9 @@ import { useGuide } from '../../../../../contexts/GuideContext';
 const CART_MAX_ITEMS = 12;
 
 const productsDatabase = [
-  // SPECIAL (1 solo tipo, max 1 generabile)
+  // SPECIAL (2 tipi, max 1 generabile)
   { id: 1, name: "Void Singularity", price: 9999, rarity: "special", image: "/shop/singularity.jpg", desc: "Un frammento di pura energia del vuoto. Distrugge la realtà stessa.", maxStock: 1, baseStock: 1 },
+  { id: 36, name: "Connessione Eterna", price: 9999, rarity: "special", image: "/shop/connessione-eterna.png", desc: "Collegati, per sempre.", maxStock: 1, baseStock: 1 },
   
   // ??? (1 solo tipo, max 1 generabile, ultra raro)
   { id: 2, name: "La Chiave", price: 99999, rarity: "mystery", image: "/shop/key.jpg", desc: "Nessuno sa cosa apra. Nessuno sa da dove viene. Ma tutti la vogliono.", maxStock: 1, baseStock: 1 },
