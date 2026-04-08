@@ -45,7 +45,7 @@ const Footer = () => {
               </svg>
             </a>
             <a 
-              href="www.linkedin.com/in/antonio-v-bruno-b2281a299" 
+              href="https://www.linkedin.com/in/antonio-v-bruno-b2281a299"
               target="_blank" 
               rel="noopener noreferrer" 
               className="footer-social-link"

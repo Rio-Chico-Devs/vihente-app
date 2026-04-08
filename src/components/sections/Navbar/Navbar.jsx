@@ -184,7 +184,6 @@ const Navbar = () => {
 
     // Prevent multiple rapid clicks
     if (isNavigating) {
-      console.log('[MOBILE NAV] ⚠️ Navigation already in progress, ignoring click');
       return;
     }
 
@@ -200,17 +199,8 @@ const Navbar = () => {
 
     const targetPath = item.path;
 
-    console.log('[MOBILE NAV DEBUG]');
-    console.log('  Raw pathname:', rawPath);
-    console.log('  Normalized current:', currentPath);
-    console.log('  Target path:', targetPath);
-    console.log('  Are different?', currentPath !== targetPath);
-    console.log('  Click on:', item.label);
-
     // NAVIGA SEMPRE se paths sono diversi
     if (currentPath !== targetPath) {
-      console.log('[MOBILE NAV] ✅ NAVIGATING to:', targetPath);
-
       // Set navigating flag
       setIsNavigating(true);
 
@@ -231,7 +221,6 @@ const Navbar = () => {
         }, 500);
       });
     } else {
-      console.log('[MOBILE NAV] ⚠️ Already on target page, skip navigation');
       setMobileMenuOpen(false);
       setSelectedItem(null);
     }
