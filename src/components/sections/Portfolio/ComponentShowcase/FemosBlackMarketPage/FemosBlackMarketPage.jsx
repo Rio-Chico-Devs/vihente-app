@@ -470,7 +470,15 @@ const FemosBlackMarketPage = () => {
                   <div className="stock-badge" style={{ border: `1px solid ${getRarityColor(product.rarity)}`, color: getRarityColor(product.rarity) }}>
                     STOCK: {productStock[product.id]}/{product.maxStock}
                   </div>
-                  <div className="product-image">📦</div>
+                  <div className="product-image">
+                    <img
+                      src={product.image}
+                      alt={product.name}
+                      style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: 'inherit' }}
+                      onError={(e) => { e.currentTarget.style.display = 'none'; e.currentTarget.nextSibling.style.display = 'flex'; }}
+                    />
+                    <span style={{ display: 'none', width: '100%', height: '100%', alignItems: 'center', justifyContent: 'center', fontSize: '2rem' }}>📦</span>
+                  </div>
                   <div className="product-info">
                     <h3 className="product-name">{product.name}</h3>
                     <p className="product-desc">{product.desc}</p>
@@ -509,7 +517,13 @@ const FemosBlackMarketPage = () => {
                   {cart.map((item, index) => (
                     <div key={item.id} className="cart-item persona-card" style={{ animationDelay: `${index * 0.05}s` }}>
                       <div className="cart-item-image">
-                        📦
+                        <img
+                          src={item.image}
+                          alt={item.name}
+                          style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: 'inherit' }}
+                          onError={(e) => { e.currentTarget.style.display = 'none'; e.currentTarget.nextSibling.style.display = 'block'; }}
+                        />
+                        <span style={{ display: 'none', fontSize: '1.5rem' }}>📦</span>
                         <div style={{
                           position: 'absolute', bottom: '-5px', right: '-5px', width: '20px', height: '20px',
                           background: getRarityColor(item.rarity), borderRadius: '50%', border: '2px solid #000'
