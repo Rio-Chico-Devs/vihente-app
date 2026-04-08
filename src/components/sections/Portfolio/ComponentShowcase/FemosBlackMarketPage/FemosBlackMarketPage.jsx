@@ -27,8 +27,8 @@ const productsDatabase = [
   { id: 12, name: "Phase Shifter", price: 1599, rarity: "epic", image: "/shop/phase.jpg", desc: "Attraversa pareti e proiettili. La materia è solo un suggerimento.", maxStock: 2, baseStock: 2 },
   
   // RARE (8 tipi diversi, max 3 generabili)
-  { id: 13, name: "Prigione dei sensi", price: 599, rarity: "rare", image: "/shop/prigione-sensi.png", desc: "Privati dei propri sensi non siamo altro che contenitori. Allontana le minacce. Forgiato con molte speranze. Aumenta la prospettiva.", maxStock: 3, baseStock: 3 },
-  { id: 14, name: "Nano Serum", price: 799, rarity: "rare", image: "/shop/serum.jpg", desc: "Rigenera tessuti danneggiati. HP al massimo in 10 secondi.", maxStock: 3, baseStock: 3 },
+  { id: 13, name: "Prigione dei sensi", price: 599, rarity: "rare", image: "/shop/prigione-sensi.png", desc: "Privati dei propri sensi non siamo altro che contenitori. Allontana le minacce.", maxStock: 3, baseStock: 3 },
+  { id: 14, name: "Cima della fragilità", price: 799, rarity: "rare", image: "/shop/cima-fragilita.png", desc: "Forgiato con molte speranze. Aumenta la prospettiva.", maxStock: 3, baseStock: 3 },
   { id: 15, name: "Energy Shield Portable", price: 1099, rarity: "rare", image: "/shop/shield.jpg", desc: "Barriera energetica. Resiste a proiettili, laser, esplosioni.", maxStock: 3, baseStock: 3 },
   { id: 16, name: "Turbo Booster X", price: 899, rarity: "rare", image: "/shop/booster.jpg", desc: "Velocità x7 per 45 secondi. Il mondo rallenta, tu acceleri.", maxStock: 3, baseStock: 3 },
   { id: 17, name: "Optical Camouflage Unit", price: 949, rarity: "rare", image: "/shop/optical.jpg", desc: "Invisibilità ottica. Non perfetta, ma abbastanza buona.", maxStock: 3, baseStock: 3 },
