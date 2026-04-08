@@ -247,9 +247,9 @@ const CookiePolicy = () => {
             puoi contattarci:
           </p>
           <div className="info-box">
-            <p><strong>Titolare del Trattamento:</strong> Antonio Vihente</p>
-            <p><strong>Email:</strong> <a href="mailto:[TUA-EMAIL]">[TUA-EMAIL]</a></p>
-            <p><strong>Sito web:</strong> vihente.dev</p>
+            <p><strong>Titolare del Trattamento:</strong> Antonio Vicente Bruno</p>
+            <p><strong>Email:</strong> <a href="mailto:vihenteweb@proton.me">vihenteweb@proton.me</a></p>
+            <p><strong>Sito web:</strong> vihente.it</p>
           </div>
           <p>
             Per informazioni più dettagliate sul trattamento dei dati personali, consulta la nostra{' '}

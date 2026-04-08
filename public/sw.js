@@ -6,9 +6,9 @@ const CACHE_NAME = `vihente-app-${CACHE_VERSION}`;
 
 // Asset critici da cachare immediatamente all'installazione
 const CRITICAL_ASSETS = [
-  '/vihente-app/',
-  '/vihente-app/index.html',
-  '/vihente-app/manifest.json'
+  '/',
+  '/index.html',
+  '/manifest.json'
 ];
 
 // Pattern per identificare asset da cachare
@@ -126,7 +126,7 @@ self.addEventListener('fetch', (event) => {
             .catch((error) => {
               console.error('[SW] Fetch failed:', error);
               // Ritorna una risposta offline di fallback se disponibile
-              return caches.match('/vihente-app/index.html');
+              return caches.match('/index.html');
             });
         })
     );
@@ -161,7 +161,7 @@ self.addEventListener('fetch', (event) => {
               return cachedResponse;
             }
             // Fallback finale: pagina offline
-            return caches.match('/vihente-app/index.html');
+            return caches.match('/index.html');
           });
       })
   );
