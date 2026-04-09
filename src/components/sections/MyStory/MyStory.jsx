@@ -5,13 +5,12 @@ import './MyStory.css';
 const MyStory = () => {
   const { setGuide, clearGuide } = useGuide();
   const skills = [
-    { name: 'Sviluppatore Web',          guide: 'da 7 anni ormai.' },
-    { name: 'Social Media',              guide: 'Il suo record è 20k followers per ora!' },
-    { name: 'Creator Digitale',          guide: 'Penso che sia il suo lavoro preferito ^^' },
-    { name: 'Illustratore',              guide: 'Ha una matita in mano da quando è nato :V' },
-    { name: 'Coach',                     guide: 'Non si è mai arreso, ha allenato e vinto molte competizioni di E-sports ;)' },
-    { name: 'Intermediatore Linguistico',guide: 'Attualmente solo dove risiede.' },
-    { name: 'Traduttore',                guide: 'Con esperienza e alta formazione accademica.' },
+    { name: 'Sviluppatore Web',  guide: 'React, Vite, JavaScript — da 7 anni nel settore.' },
+    { name: 'UI/UX Design',      guide: 'Interfacce che funzionano e che si vedono bene.' },
+    { name: 'Illustratore',      guide: 'Ha una matita in mano da quando è nato :V' },
+    { name: 'Creator Digitale',  guide: 'Contenuti digitali, video, grafica — il suo lavoro preferito ^^' },
+    { name: 'Social Media',      guide: 'Il suo record è 20k followers per ora!' },
+    { name: 'Traduttore',        guide: 'Con esperienza e alta formazione accademica.' },
   ];
 
   // Typewriter code background effect
@@ -92,10 +91,9 @@ const MyStory = () => {
           <div className="mystory-box">
             <h1 className="mystory-title">CHI SONO</h1>
             <p className="mystory-text">
-              Ciao, sono Antonio e sono un Consulente Digitale specializzato in grafiche e contenuti multimediali.
-              Sono nel settore delle illustrazioni, delle grafiche e del design da più di 10 anni.
-              Recentemente ho completato la mia formazione informatica evolutasi nel corso del tempo grazie ai vari lavori fatti sia per aziende informatiche che di altri settori.
-              Punto a creare soluzioni originali e moderne, se cerchi questo, sei nel posto giusto.
+              Ciao, sono Antonio — sviluppatore web con 7 anni di esperienza e un background nel design e nelle illustrazioni digitali che porto avanti da oltre 10 anni.
+              Ho lavorato con aziende di vari settori, costruendo interfacce moderne e soluzioni digitali complete.
+              Unisco competenze tecniche e visione creativa: se cerchi qualcuno che capisce sia il codice che l'estetica, sei nel posto giusto.
             </p>
           </div>
 
