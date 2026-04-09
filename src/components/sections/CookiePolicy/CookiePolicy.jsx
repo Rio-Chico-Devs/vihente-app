@@ -248,7 +248,7 @@ const CookiePolicy = () => {
           </p>
           <div className="info-box">
             <p><strong>Titolare del Trattamento:</strong> Antonio Vicente Bruno</p>
-            <p><strong>Email:</strong> <a href="mailto:[vihenteweb@proton.me]">[vihenteweb@proton.me]</a></p>
+            <p><strong>Email:</strong> <a href="mailto:vihenteweb@proton.me">vihenteweb@proton.me</a></p>
             <p><strong>Sito web:</strong> vihente.it</p>
           </div>
           <p>

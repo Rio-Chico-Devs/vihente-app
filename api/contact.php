@@ -7,15 +7,15 @@
 // ==================== CONFIGURA QUI LE TUE EMAIL ====================
 
 // Email dove RICEVERE i contatti (può essere Gmail, Outlook, etc.)
-define('ADMIN_EMAIL', 'TUA-EMAIL@ESEMPIO.COM');  // <- CAMBIA QUESTA
+define('ADMIN_EMAIL', 'vihenteweb@proton.me');
 
 // Email di INVIO (meglio se del tuo dominio per deliverability)
-define('FROM_EMAIL', 'noreply@TUODOMINIO.COM');   // <- CAMBIA QUESTA
+define('FROM_EMAIL', 'noreply@vihente.it');
 define('FROM_NAME', 'Portfolio Vihente');
 
 // Domini consentiti (CORS)
 $allowed_origins = [
-    'https://TUODOMINIO.COM',     // <- CAMBIA con il tuo dominio reale
+    'https://vihente.it',
     'http://localhost:5173',      // Per sviluppo locale Vite
     'http://localhost:4173'       // Per test preview
 ];

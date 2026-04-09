@@ -329,7 +329,7 @@ const Contacts = () => {
                     className="form-input"
                     value={formData.reason}
                     onChange={handleChange}
-                    placeholder="Es: Informazioni generali, collaborazione, ecc."
+                    placeholder="Es: Collaborazione, opportunità lavorativa, informazioni..."
                     required
                     onMouseEnter={() => setGuide('Spiegaci brevemente il motivo del contatto. Es: "Vorrei una collaborazione" o "Ho bisogno di informazioni"')}
                     onMouseLeave={clearGuide}

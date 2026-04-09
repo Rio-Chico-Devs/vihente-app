@@ -6,8 +6,9 @@ import { useGuide } from '../../../../../contexts/GuideContext';
 const CART_MAX_ITEMS = 12;
 
 const productsDatabase = [
-  // SPECIAL (1 solo tipo, max 1 generabile)
+  // SPECIAL (2 tipi, max 1 generabile)
   { id: 1, name: "Void Singularity", price: 9999, rarity: "special", image: "/shop/singularity.jpg", desc: "Un frammento di pura energia del vuoto. Distrugge la realtà stessa.", maxStock: 1, baseStock: 1 },
+  { id: 36, name: "Connessione Eterna", price: 9999, rarity: "special", image: "/shop/connessione-eterna.png", desc: "Collegati, per sempre.", maxStock: 1, baseStock: 1 },
   
   // ??? (1 solo tipo, max 1 generabile, ultra raro)
   { id: 2, name: "La Chiave", price: 99999, rarity: "mystery", image: "/shop/key.jpg", desc: "Nessuno sa cosa apra. Nessuno sa da dove viene. Ma tutti la vogliono.", maxStock: 1, baseStock: 1 },
@@ -19,7 +20,7 @@ const productsDatabase = [
   { id: 6, name: "Neural Override System", price: 3799, rarity: "legendary", image: "/shop/override.jpg", desc: "Controllo mentale diretto. Etica? Quella è per i deboli.", maxStock: 1, baseStock: 1 },
   
   // EPIC (6 tipi diversi, max 2 generabili)
-  { id: 7, name: "Neural Chip Pro", price: 1499, rarity: "epic", image: "/shop/chip.jpg", desc: "Potenzia le sinapsi del 400%. Effetti collaterali? Chi se ne importa.", maxStock: 2, baseStock: 2 },
+  { id: 7, name: "Profondo Blu", price: 1499, rarity: "epic", image: "/shop/profondo-blu.png", desc: "Molto, molto lontano, esistono tonalità di blu ancora più forti e ipnotiche. Dona un incredibile sollievo.", maxStock: 2, baseStock: 2 },
   { id: 8, name: "Plasma Gun Delta", price: 1899, rarity: "epic", image: "/shop/gun.jpg", desc: "Ionizza i nemici. Letteralmente. Niente più tracce.", maxStock: 2, baseStock: 2 },
   { id: 9, name: "Holographic Suit", price: 1699, rarity: "epic", image: "/shop/suit.jpg", desc: "Proietta false realtà. I nemici combattono fantasmi.", maxStock: 2, baseStock: 2 },
   { id: 10, name: "Cyber Katana Elite", price: 2199, rarity: "epic", image: "/shop/katana.jpg", desc: "Eleganza letale. Ogni taglio è una danza mortale.", maxStock: 2, baseStock: 2 },
@@ -27,8 +28,8 @@ const productsDatabase = [
   { id: 12, name: "Phase Shifter", price: 1599, rarity: "epic", image: "/shop/phase.jpg", desc: "Attraversa pareti e proiettili. La materia è solo un suggerimento.", maxStock: 2, baseStock: 2 },
   
   // RARE (8 tipi diversi, max 3 generabili)
-  { id: 13, name: "Data Shard Alpha", price: 599, rarity: "rare", image: "/shop/shard.jpg", desc: "Segreti del sistema. Password, backdoor, vulnerabilità.", maxStock: 3, baseStock: 3 },
-  { id: 14, name: "Nano Serum", price: 799, rarity: "rare", image: "/shop/serum.jpg", desc: "Rigenera tessuti danneggiati. HP al massimo in 10 secondi.", maxStock: 3, baseStock: 3 },
+  { id: 13, name: "Prigione dei sensi", price: 599, rarity: "rare", image: "/shop/prigione-sensi.png", desc: "Privati dei propri sensi non siamo altro che contenitori. Allontana le minacce.", maxStock: 3, baseStock: 3 },
+  { id: 14, name: "Cima della fragilità", price: 799, rarity: "rare", image: "/shop/cima-fragilita.png", desc: "Forgiato con molte speranze. Aumenta la prospettiva.", maxStock: 3, baseStock: 3 },
   { id: 15, name: "Energy Shield Portable", price: 1099, rarity: "rare", image: "/shop/shield.jpg", desc: "Barriera energetica. Resiste a proiettili, laser, esplosioni.", maxStock: 3, baseStock: 3 },
   { id: 16, name: "Turbo Booster X", price: 899, rarity: "rare", image: "/shop/booster.jpg", desc: "Velocità x7 per 45 secondi. Il mondo rallenta, tu acceleri.", maxStock: 3, baseStock: 3 },
   { id: 17, name: "Optical Camouflage Unit", price: 949, rarity: "rare", image: "/shop/optical.jpg", desc: "Invisibilità ottica. Non perfetta, ma abbastanza buona.", maxStock: 3, baseStock: 3 },
@@ -55,7 +56,7 @@ const productsDatabase = [
 ];
 
 const mascotPhrases = {
-  mystery: ["...Cosa? Come hai trovato QUELLA?", "La Chiave. Non dovrebbe essere qui. Non dovrebbe esistere.", "Se la compri... non so cosa succederà. Ma sarà irreversibile."],
+  mystery: ["...?", "èwì97 djw9<5 _swo", "..."],
   special: ["ATTENZIONE: Artefatto di classe SPECIAL. Pericolo estremo.", "Questo... non dovrebbe esistere. Ma eccolo qui.", "Solo per i più folli. O i più coraggiosi. Forse entrambi."],
   legendary: ["RARO. Molto raro. Forse troppo per te?", "Pezzo unico. Una volta venduto, sparisce per sempre.", "Potere leggendario. Gestiscilo con rispetto."],
   epic: ["Qualità superiore. Per operatori esperti.", "Stock limitato. Non ricapita spesso.", "Ottima scelta. Sopravviverai più a lungo."],
@@ -469,7 +470,15 @@ const FemosBlackMarketPage = () => {
                   <div className="stock-badge" style={{ border: `1px solid ${getRarityColor(product.rarity)}`, color: getRarityColor(product.rarity) }}>
                     STOCK: {productStock[product.id]}/{product.maxStock}
                   </div>
-                  <div className="product-image">📦</div>
+                  <div className="product-image">
+                    <img
+                      src={product.image}
+                      alt={product.name}
+                      style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: 'inherit' }}
+                      onError={(e) => { e.currentTarget.style.display = 'none'; e.currentTarget.nextSibling.style.display = 'flex'; }}
+                    />
+                    <span style={{ display: 'none', width: '100%', height: '100%', alignItems: 'center', justifyContent: 'center', fontSize: '2rem' }}>📦</span>
+                  </div>
                   <div className="product-info">
                     <h3 className="product-name">{product.name}</h3>
                     <p className="product-desc">{product.desc}</p>
@@ -508,7 +517,13 @@ const FemosBlackMarketPage = () => {
                   {cart.map((item, index) => (
                     <div key={item.id} className="cart-item persona-card" style={{ animationDelay: `${index * 0.05}s` }}>
                       <div className="cart-item-image">
-                        📦
+                        <img
+                          src={item.image}
+                          alt={item.name}
+                          style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: 'inherit' }}
+                          onError={(e) => { e.currentTarget.style.display = 'none'; e.currentTarget.nextSibling.style.display = 'block'; }}
+                        />
+                        <span style={{ display: 'none', fontSize: '1.5rem' }}>📦</span>
                         <div style={{
                           position: 'absolute', bottom: '-5px', right: '-5px', width: '20px', height: '20px',
                           background: getRarityColor(item.rarity), borderRadius: '50%', border: '2px solid #000'

@@ -841,7 +841,7 @@ const LandingPageOldEye = ({ startTime }) => {
                   textDecoration: 'underline',
                   textUnderlineOffset: '3px'
                 }}
-              >contattatemi</span>. Presto avrò anche una partita IVA. Insieme, oltre le stelle.
+              >contattatemi</span>. Insieme, oltre le stelle.
             </p>
           </div>
 
