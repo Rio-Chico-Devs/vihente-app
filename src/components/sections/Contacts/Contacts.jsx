@@ -329,9 +329,9 @@ const Contacts = () => {
                     className="form-input"
                     value={formData.reason}
                     onChange={handleChange}
-                    placeholder="Es: Collaborazione, opportunità lavorativa, informazioni..."
+                    placeholder="Es: Informazioni generali, collaborazione, ecc."
                     required
-                    onMouseEnter={() => setGuide('Spiegaci brevemente il motivo del contatto. Es: "Opportunità lavorativa", "Collaborazione", "Informazioni"')}
+                    onMouseEnter={() => setGuide('Spiegaci brevemente il motivo del contatto. Es: "Vorrei una collaborazione" o "Ho bisogno di informazioni"')}
                     onMouseLeave={clearGuide}
                   />
                 </div>
