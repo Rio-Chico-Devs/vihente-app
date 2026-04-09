@@ -3,7 +3,6 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import ThemeProvider from './contexts/ThemeProvider';
 import { GuideProvider } from './contexts/GuideContext';
 import ErrorBoundary from './components/ErrorBoundary/ErrorBoundary';
-import BootScreen from './components/sections/BootScreen/BootScreen';
 import Navbar from './components/sections/Navbar/Navbar';
 import Iris from './components/Iris/Iris';
 import Footer from './components/sections/Footer/Footer';
@@ -86,12 +85,7 @@ const LoadingSpinner = () => {
 };
 
 function App() {
-  const [isBooting, setIsBooting] = useState(true);
   const [startTime] = useState(Date.now());
-
-  const handleBootComplete = () => {
-    setIsBooting(false);
-  };
 
   return (
     <ErrorBoundary>
@@ -100,71 +94,51 @@ function App() {
         <BrowserRouter basename={import.meta.env.DEV ? '/' : '/vihente-app'}>
           <CustomCursor />
           <Iris />
-          <CookieConsentBanner isBooting={isBooting} />
+          <CookieConsentBanner isBooting={false} />
           <ThemeToggle />
 
-          {isBooting ? (
-            <BootScreen onBootComplete={handleBootComplete} />
-          ) : (
-            <>
-              <Navbar />
+          <>
+            <Navbar />
 
-              <ScrollingHeader
-                text="News: +++ 03/04/2026: React 19 stable — le Server Actions e il nuovo compilatore React ridefiniscono il modo di costruire applicazioni web moderne. +++ 07/04/2026: CSS Anchor Positioning diventa standard W3C — posizionamento relativo tra elementi senza JavaScript, finalmente nativo in tutti i browser. +++ 09/04/2026: Vite 7 in arrivo — build più veloci con il nuovo bundler Rolldown scritto in Rust. +++ 09/04/2026: TypeScript 5.8 rilasciato — inferenza dei tipi migliorata e supporto nativo per i decorator ECMAScript."
-              />
+            <ScrollingHeader
+              text="News: +++ 03/04/2026: React 19 stable — le Server Actions e il nuovo compilatore React ridefiniscono il modo di costruire applicazioni web moderne. +++ 07/04/2026: CSS Anchor Positioning diventa standard W3C — posizionamento relativo tra elementi senza JavaScript, finalmente nativo in tutti i browser. +++ 09/04/2026: Vite 7 in arrivo — build più veloci con il nuovo bundler Rolldown scritto in Rust. +++ 09/04/2026: TypeScript 5.8 rilasciato — inferenza dei tipi migliorata e supporto nativo per i decorator ECMAScript."
+            />
 
-              <main role="main" aria-label="Contenuto principale">
-                {/* 🚀 Suspense wrapper per lazy loading */}
-                <Suspense fallback={<LoadingSpinner />}>
-                  <PageTransition>
-                    <Routes>
-                      {/* Landing Page */}
-                      <Route path="/" element={<LandingPage startTime={startTime} />} />
+            <main role="main" aria-label="Contenuto principale">
+              <Suspense fallback={<LoadingSpinner />}>
+                <PageTransition>
+                  <Routes>
+                    <Route path="/" element={<LandingPage startTime={startTime} />} />
+                    <Route path="/storia" element={<MyStory />} />
+                    <Route path="/services" element={<ServicesPage />} />
+                    <Route path="/services/consulenze" element={<ConsulenzePage />} />
+                    <Route path="/services/sitiweb" element={<SitiWebPage />} />
+                    <Route path="/services/presenza" element={<PresenzaOnlinePage />} />
+                    <Route path="/services/multimedia" element={<MultimediaPage />} />
+                    <Route path="/portfolio" element={<Portfolio />} />
+                    <Route path="/portfolio/componenti" element={<ComponentShowcase />} />
+                    <Route path="/portfolio/grafiche" element={<GraficheShowcase />} />
+                    <Route path="/portfolio/sitiweb" element={<SitiWebShowcase />} />
+                    <Route path="/portfolio/componenti/slider" element={<SliderPage />} />
+                    <Route path="/portfolio/componenti/text-sampler" element={<TextSamplerPage />} />
+                    <Route path="/portfolio/componenti/cubo-3d" element={<Cubo3DPage />} />
+                    <Route path="/portfolio/componenti/music-player" element={<MusicPlayerPage />} />
+                    <Route path="/portfolio/componenti/crud-simulator" element={<CRUDSimulatorPage />} />
+                    <Route path="/portfolio/componenti/black-market" element={<FemosBlackMarketPage />} />
+                    <Route path="/portfolio/componenti/dashboard" element={<DashboardPage />} />
+                    <Route path="/portfolio/componenti/image-checker" element={<ImageCheckerPage />} />
+                    <Route path="/portfolio/componenti/booking" element={<BookingPage />} />
+                    <Route path="/contatti" element={<Contacts />} />
+                    <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+                    <Route path="/cookie-policy" element={<CookiePolicy />} />
+                    <Route path="/termini-e-condizioni" element={<TermsAndConditions />} />
+                  </Routes>
+                </PageTransition>
+              </Suspense>
+            </main>
 
-                      {/* La Mia Storia */}
-                      <Route path="/storia" element={<MyStory />} />
-
-                      {/* Services Main Page */}
-                      <Route path="/services" element={<ServicesPage />} />
-
-                      {/* Service Details Pages */}
-                      <Route path="/services/consulenze" element={<ConsulenzePage />} />
-                      <Route path="/services/sitiweb" element={<SitiWebPage />} />
-                      <Route path="/services/presenza" element={<PresenzaOnlinePage />} />
-                      <Route path="/services/multimedia" element={<MultimediaPage />} />
-
-                      {/* Portfolio */}
-                      <Route path="/portfolio" element={<Portfolio />} />
-                      <Route path="/portfolio/componenti" element={<ComponentShowcase />} />
-                      <Route path="/portfolio/grafiche" element={<GraficheShowcase />} />
-                      <Route path="/portfolio/sitiweb" element={<SitiWebShowcase />} />
-
-                      {/* Portfolio Component Details */}
-                      <Route path="/portfolio/componenti/slider" element={<SliderPage />} />
-                      <Route path="/portfolio/componenti/text-sampler" element={<TextSamplerPage />} />
-                      <Route path="/portfolio/componenti/cubo-3d" element={<Cubo3DPage />} />
-                      <Route path="/portfolio/componenti/music-player" element={<MusicPlayerPage />} />
-                      <Route path="/portfolio/componenti/crud-simulator" element={<CRUDSimulatorPage />} />
-                      <Route path="/portfolio/componenti/black-market" element={<FemosBlackMarketPage />} />
-                      <Route path="/portfolio/componenti/dashboard" element={<DashboardPage />} />
-                      <Route path="/portfolio/componenti/image-checker" element={<ImageCheckerPage />} />
-                      <Route path="/portfolio/componenti/booking" element={<BookingPage />} />
-
-                      {/* Contacts */}
-                      <Route path="/contatti" element={<Contacts />} />
-
-                      {/* Privacy & Cookie Policy */}
-                      <Route path="/privacy-policy" element={<PrivacyPolicy />} />
-                      <Route path="/cookie-policy" element={<CookiePolicy />} />
-                      <Route path="/termini-e-condizioni" element={<TermsAndConditions />} />
-                    </Routes>
-                  </PageTransition>
-                </Suspense>
-              </main>
-
-              <Footer />
-            </>
-          )}
+            <Footer />
+          </>
         </BrowserRouter>
       </GuideProvider>
       </ThemeProvider>
