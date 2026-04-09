@@ -221,6 +221,27 @@ const ServicesPage = () => {
       <div className="code-background" id="codeBackground"></div>
       <div id="gridOverlay" className="grid-overlay"></div>
 
+      {/* Positioning note */}
+      <div style={{
+        position: 'fixed',
+        top: '70px',
+        left: '50%',
+        transform: 'translateX(-50%)',
+        zIndex: 10,
+        fontFamily: "'Share Tech Mono', monospace",
+        fontSize: '0.7rem',
+        letterSpacing: '0.15em',
+        color: 'rgba(0,255,255,0.5)',
+        border: '1px solid rgba(0,255,255,0.15)',
+        padding: '0.25rem 0.75rem',
+        background: 'rgba(0,0,0,0.6)',
+        backdropFilter: 'blur(4px)',
+        whiteSpace: 'nowrap',
+        pointerEvents: 'none',
+      }}>
+        // SHOWCASE COMPETENZE — attività commerciale non ancora attiva
+      </div>
+
       {/* Mobile: 4 sezioni fullscreen verticali */}
       <div className="services-mobile">
         {[

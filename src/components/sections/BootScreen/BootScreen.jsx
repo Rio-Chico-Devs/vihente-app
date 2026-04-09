@@ -100,6 +100,35 @@ const BootScreen = ({ onBootComplete }) => {
 
   return (
     <div className="boot-screen-container">
+      {/* Skip button */}
+      <button
+        onClick={onBootComplete}
+        style={{
+          position: 'absolute',
+          bottom: '2rem',
+          right: '2rem',
+          zIndex: 20,
+          background: 'transparent',
+          border: '1px solid rgba(0,255,255,0.4)',
+          color: 'rgba(0,255,255,0.6)',
+          fontFamily: "'Share Tech Mono', monospace",
+          fontSize: '0.75rem',
+          letterSpacing: '0.15em',
+          padding: '0.4rem 0.9rem',
+          cursor: 'pointer',
+          transition: 'all 0.2s ease',
+        }}
+        onMouseEnter={e => {
+          e.currentTarget.style.borderColor = 'rgba(0,255,255,0.9)';
+          e.currentTarget.style.color = 'rgba(0,255,255,1)';
+        }}
+        onMouseLeave={e => {
+          e.currentTarget.style.borderColor = 'rgba(0,255,255,0.4)';
+          e.currentTarget.style.color = 'rgba(0,255,255,0.6)';
+        }}
+      >
+        SKIP &gt;
+      </button>
       {/* Geometric Eye Pattern Background */}
       <div className="geometric-background">
         <svg className="geometric-pattern" viewBox="0 0 1000 1000">

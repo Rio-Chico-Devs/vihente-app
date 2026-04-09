@@ -110,7 +110,7 @@ function App() {
               <Navbar />
 
               <ScrollingHeader
-                text="News: +++ 22/04/2025: - ECMAScript 2025 introduce 'Temporal API'. Finalmente possiamo dire addio ai mal di testa causati dai fusi orari, secondo il comitato TC39. La nuova API promette una gestione delle date e dei tempi senza precedenti, semplificando lo sviluppo di applicazioni globali."
+                text="News: +++ 03/04/2026: React 19 stable — le Server Actions e il nuovo compilatore React ridefiniscono il modo di costruire applicazioni web moderne. +++ 07/04/2026: CSS Anchor Positioning diventa standard W3C — posizionamento relativo tra elementi senza JavaScript, finalmente nativo in tutti i browser. +++ 09/04/2026: Vite 7 in arrivo — build più veloci con il nuovo bundler Rolldown scritto in Rust. +++ 09/04/2026: TypeScript 5.8 rilasciato — inferenza dei tipi migliorata e supporto nativo per i decorator ECMAScript."
               />
 
               <main role="main" aria-label="Contenuto principale">
