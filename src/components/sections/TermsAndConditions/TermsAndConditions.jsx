@@ -94,7 +94,7 @@ const TermsAndConditions = () => {
           <h2>3. Proprietà Intellettuale e Diritti d'Autore</h2>
           <p>
             Tutti i contenuti presenti su questo sito (testi, immagini, grafica, codice, loghi) sono protetti
-            da diritto d'autore (Legge 633/1941) e sono di proprietà di VIHENTE o dei rispettivi proprietari.
+            da diritto d'autore (Legge 633/1941) e sono di proprietà del titolare del sito o dei rispettivi proprietari.
           </p>
           <div className="rights-box">
             <h3>Cosa NON puoi fare:</h3>
@@ -108,7 +108,7 @@ const TermsAndConditions = () => {
             <strong>Portfolio e lavori mostrati:</strong>
           </p>
           <ul>
-            <li><strong>Diritti morali:</strong> VIHENTE mantiene la paternità di tutti i lavori presentati</li>
+            <li><strong>Diritti morali:</strong> il titolare del sito mantiene la paternità di tutti i lavori presentati</li>
             <li><strong>Diritti d'utilizzo:</strong> I lavori mostrati sono presentati a scopo dimostrativo</li>
           </ul>
         </section>
@@ -201,7 +201,7 @@ const TermsAndConditions = () => {
         <section className="terms-section">
           <h2>6. Modifiche ai Termini e Condizioni</h2>
           <p>
-            VIHENTE si riserva il diritto di modificare i presenti Termini e Condizioni in qualsiasi momento.
+            Il titolare del sito si riserva il diritto di modificare i presenti Termini e Condizioni in qualsiasi momento.
             Le modifiche saranno pubblicate su questa pagina e entreranno in vigore dalla data di pubblicazione.
           </p>
           <p>

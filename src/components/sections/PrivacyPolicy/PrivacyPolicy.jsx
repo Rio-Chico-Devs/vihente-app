@@ -17,7 +17,7 @@ const PrivacyPolicy = () => {
             Il Titolare del trattamento dei dati personali è:
           </p>
           <div className="info-box">
-            <p><strong>Antonio Vihente</strong></p>
+            <p><strong>Antonio Vicente Bruno</strong></p>
             <p>Email: <a href="mailto:[vihenteweb@proton.me]">[vihenteweb@proton.me]</a></p>
             <p>Sito web: vihente.it</p>
           </div>

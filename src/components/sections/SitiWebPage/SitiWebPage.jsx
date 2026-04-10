@@ -124,31 +124,31 @@ const SitiWebPage = () => {
                 <tr>
                   <td className="feature-name">C</td>
                   <td className="feature-description">
-                    Ho studiato il C durante il mio percorso scolastico, ma solo lavorando sono riuscito a comprenderne la potenza.
+                    Ho studiato il C durante il mio percorso scolastico integrandolo ad alcune funzioni tra le API di Win32 per la grafica, ma solo lavorando sono riuscito a comprenderne la potenza.
                   </td>
                 </tr>
                 <tr>
                   <td className="feature-name">C++</td>
                   <td className="feature-description">
-                    Il mio primo linguaggio con il quale ho iniziato a scrivere i miei primi programmi durante gli studi, sto ancora studiando per poter capire a pieno le operazioni più complesse.
+                    Il mio primo linguaggio con il quale ho iniziato a scrivere i miei primi programmi durante gli anni del diploma in sistemi informatici aziendali, sto ancora studiando per poter capire a pieno le operazioni più complesse, do molta importanza alla formazione, sono aggiornato fino allo standard C++17 , sto aspettando che lancino C++26 per un corso di aggiornamento.
                   </td>
                 </tr>
                 <tr>
                   <td className="feature-name">Js/JSX</td>
                   <td className="feature-description">
-                    Utilizzo Js principalmente per la manipolazione del DOM e la gestione di animazioni particolarmente ostiche.
+                    Utilizzo Js principalmente per la manipolazione del DOM e la gestione di animazioni particolarmente ostiche. Seguo costantemente gli aggiornamenti della ECMAScript Language Specification (ECMA-262) per rimanere al passo.
                   </td>
                 </tr>
                 <tr>
                   <td className="feature-name">HTML</td>
                   <td className="feature-description">
-                    Sono anni che uso l'HTML, per creare pagine, fare modifiche, organizzare form o strutturare contenuti digitali.
+                    Sono anni che uso l'HTML, per creare pagine, fare modifiche, organizzare form o strutturare contenuti digitali. Ho cominciato ad adottare uno stile basato sulle convenzioni della W3C.
                   </td>
                 </tr>
                 <tr>
                   <td className="feature-name">CSS</td>
                   <td className="feature-description">
-                    Anche con il CSS la mia esperienza è abbastanza lunga, preferisco se possibile usare solo CSS per evitare di appesantire quel che creo, l'utilizzo delle risorse dell'utente per me è fondamentale.
+                    Anche con il CSS la mia esperienza è abbastanza lunga, preferisco se possibile usare solo CSS per evitare di appesantire quel che creo, l'utilizzo delle risorse dell'utente per me è fondamentale. Preferisco stilizzare in Vanilla, ho utilizzato veramente poco Tailwind o il Saas, che pur essendo molto utili in team e in grandi progetti, non mi danno il margine di personalizzazione che offro per alcuni siti.
                   </td>
                 </tr>
                 <tr>

@@ -243,7 +243,7 @@ const PresenzaOnlinePage = () => {
         </div>
 
         <div className="services-section">
-          <h2 className="section-title">Servizi Offerti</h2>
+          <h2 className="section-title">Le mie competenze</h2>
           <div className="services-grid">
             {services.map((service, index) => (
               <div key={index} className="service-card">
@@ -256,11 +256,11 @@ const PresenzaOnlinePage = () => {
         </div>
 
         <div className="packages-section">
-          <h2 className="section-title">Scegli in base alle tue necessità</h2>
+          <h2 className="section-title">Tipo di collaborazione che offro</h2>
           <div className="packages-grid">
             <div className="package-card">
               <div className="package-header">
-                <h3 className="package-title">Starter</h3>
+                <h3 className="package-title">Occasionale</h3>
                 <p className="package-subtitle">Ideale per iniziare</p>
               </div>
               <ul className="package-features">
@@ -273,7 +273,7 @@ const PresenzaOnlinePage = () => {
             
             <div className="package-card package-featured">
               <div className="package-header">
-                <h3 className="package-title">Professional</h3>
+                <h3 className="package-title">Frequente</h3>
                 <p className="package-subtitle">Per business in crescita</p>
               </div>
               <ul className="package-features">
@@ -288,7 +288,7 @@ const PresenzaOnlinePage = () => {
             
             <div className="package-card">
               <div className="package-header">
-                <h3 className="package-title">Enterprise</h3>
+                <h3 className="package-title">Completa</h3>
                 <p className="package-subtitle">Soluzione completa</p>
               </div>
               <ul className="package-features">

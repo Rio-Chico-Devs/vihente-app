@@ -7,56 +7,56 @@ const CART_MAX_ITEMS = 12;
 
 const productsDatabase = [
   // SPECIAL (2 tipi, max 1 generabile)
-  { id: 1, name: "Arcobalecaedro", price: 9999, rarity: "special", image: "/shop/arcobalecaedro.png", desc: "Ogni faccia riflette una realtà diversa. Nessuna di queste è la tua. Tienilo lontano dagli specchi.", maxStock: 1, baseStock: 1 },
+  { id: 1, name: "Carnivals Deck", price: 9999, rarity: "special", image: "/shop/singularity.jpg", desc: "Un sogno che diventa realtà?", maxStock: 1, baseStock: 1 },
   { id: 36, name: "Connessione Eterna", price: 9999, rarity: "special", image: "/shop/connessione-eterna.png", desc: "Collegati, per sempre.", maxStock: 1, baseStock: 1 },
   
   // ??? (1 solo tipo, max 1 generabile, ultra raro)
-  { id: 2, name: "La Chiave", price: 99999, rarity: "mystery", image: "/shop/key.jpg", desc: "Nessuno sa cosa apra. Nessuno sa da dove viene. Ma tutti la vogliono.", maxStock: 1, baseStock: 1 },
+  { id: 2, name: "La Chiave", price: 99999, rarity: "mystery", image: "/shop/key.jpg", desc: "Non sembra essere utile da sola.", maxStock: 1, baseStock: 1 },
   
   // LEGENDARY (4 tipi diversi, max 1 generabile)
-  { id: 3, name: "Phoetica", price: 2999, rarity: "legendary", image: "/shop/phoetica.png", desc: "Rinasce ad ogni utilizzo. Non esiste versione danneggiata. Non esiste versione spenta.", maxStock: 1, baseStock: 1 },
-  { id: 4, name: "Onice", price: 3499, rarity: "legendary", image: "/shop/onice.png", desc: "Assorbe ciò che non dovresti vedere. Più lo usi, più pesa. Non è un difetto.", maxStock: 1, baseStock: 1 },
-  { id: 5, name: "Quantum Core", price: 4299, rarity: "legendary", image: "/shop/core.jpg", desc: "Alimenta città intere. O le distrugge. Dipende da te.", maxStock: 1, baseStock: 1 },
-  { id: 6, name: "Neural Override System", price: 3799, rarity: "legendary", image: "/shop/override.jpg", desc: "Controllo mentale diretto. Etica? Quella è per i deboli.", maxStock: 1, baseStock: 1 },
+  { id: 3, name: "Phoesia", price: 2999, rarity: "legendary", image: "/shop/blade.jpg", desc: "Qualcuno privò un essere di una frazione della sua bellezza, scrisse 1000 poesie, perfette, come fosse magia.", maxStock: 1, baseStock: 1 },
+  { id: 4, name: "Mistery Blessing", price: 3499, rarity: "legendary", image: "/shop/cloak.jpg", desc: "A tutti piacciono le sorprese... finchè rimangono sorprese...", maxStock: 1, baseStock: 1 },
+  { id: 5, name: "Oni", price: 4299, rarity: "legendary", image: "/shop/core.jpg", desc: "Apparteneva a un bambino pieno di speranze, queste speranze non morirono mai e vissero dentro il suo peluche preferito.", maxStock: 1, baseStock: 1 },
+  { id: 6, name: "Arcobalecaedro", price: 3799, rarity: "legendary", image: "/shop/override.jpg", desc: "Qualcuno è riuscito a catturarci dentro l'impossibile, in tutti i suoi 7 colori.", maxStock: 1, baseStock: 1 },
   
   // EPIC (6 tipi diversi, max 2 generabili)
   { id: 7, name: "Profondo Blu", price: 1499, rarity: "epic", image: "/shop/profondo-blu.png", desc: "Molto, molto lontano, esistono tonalità di blu ancora più forti e ipnotiche. Dona un incredibile sollievo.", maxStock: 2, baseStock: 2 },
-  { id: 8, name: "Intento Diabolico", price: 1899, rarity: "epic", image: "/shop/intento-diabolico.png", desc: "La volontà trasformata in oggetto. Non ha istruzioni. Sa già cosa fare.", maxStock: 2, baseStock: 2 },
-  { id: 9, name: "Cuor di Leone", price: 1699, rarity: "epic", image: "/shop/cuor-di-leone.png", desc: "Il coraggio non si vende. Questo è l'eccezione. Usalo con rispetto, o non usarlo.", maxStock: 2, baseStock: 2 },
-  { id: 10, name: "Paura Liquida", price: 2199, rarity: "epic", image: "/shop/paura-liquida.png", desc: "Imbottigliata da un incubo di classe A. Diluita. Ma non troppo.", maxStock: 2, baseStock: 2 },
-  { id: 11, name: "Graviton Manipulator", price: 1799, rarity: "epic", image: "/shop/graviton.jpg", desc: "Piega la gravità alla tua volontà. Vola, schiaccia, domina.", maxStock: 2, baseStock: 2 },
-  { id: 12, name: "Phase Shifter", price: 1599, rarity: "epic", image: "/shop/phase.jpg", desc: "Attraversa pareti e proiettili. La materia è solo un suggerimento.", maxStock: 2, baseStock: 2 },
+  { id: 8, name: "Cuor di Leone", price: 1899, rarity: "epic", image: "/shop/gun.jpg", desc: "Qualcuno lo ha perso, io l'ho trovato in un luogo dimenticato, deve aver avuto molto coraggio per sopravvivere.", maxStock: 2, baseStock: 2 },
+  { id: 9, name: "United We Stand", price: 1699, rarity: "epic", image: "/shop/suit.jpg", desc: "Uniti resistiamo, fino alla fine. Resta con me.", maxStock: 2, baseStock: 2 },
+  { id: 10, name: "Avidità", price: 2199, rarity: "epic", image: "/shop/katana.jpg", desc: "L'uomo più avido scomparì nel nulla, al suo posto trovarono solo questo...", maxStock: 2, baseStock: 2 },
+  { id: 11, name: "Idolo Sconosciuto", price: 1799, rarity: "epic", image: "/shop/graviton.jpg", desc: "Produce dei suoni ritmici interessanti, nessuno sa a cosa serve...", maxStock: 2, baseStock: 2 },
+  { id: 12, name: "Oltre Il Nulla", price: 1599, rarity: "epic", image: "/shop/phase.jpg", desc: "Queste pagine raccontano un'avventura oltre ogni immaginazione", maxStock: 2, baseStock: 2 },
   
   // RARE (8 tipi diversi, max 3 generabili)
   { id: 13, name: "Prigione dei sensi", price: 599, rarity: "rare", image: "/shop/prigione-sensi.png", desc: "Privati dei propri sensi non siamo altro che contenitori. Allontana le minacce.", maxStock: 3, baseStock: 3 },
   { id: 14, name: "Cima della fragilità", price: 799, rarity: "rare", image: "/shop/cima-fragilita.png", desc: "Forgiato con molte speranze. Aumenta la prospettiva.", maxStock: 3, baseStock: 3 },
-  { id: 15, name: "Yo! Burp!", price: 1099, rarity: "rare", image: "/shop/yo-burp.png", desc: "Nessuno sa esattamente cosa fa. Ma tutti la vogliono. Strana storia.", maxStock: 3, baseStock: 3 },
-  { id: 16, name: "Grapplergun", price: 899, rarity: "rare", image: "/shop/grapplergun.png", desc: "Aggancia. Tira. Vola. Non fare domande sul rinculo.", maxStock: 3, baseStock: 3 },
-  { id: 17, name: "Eco Magico", price: 949, rarity: "rare", image: "/shop/eco-magico.png", desc: "Ripete l'ultimo suono che sente. A volte aggiunge qualcosa di suo.", maxStock: 3, baseStock: 3 },
-  { id: 18, name: "Il Tempo è Denaro", price: 1199, rarity: "rare", image: "/shop/tempo-e-denaro.png", desc: "Letteralmente. Ogni secondo conta. Non sprecarlo a leggere questa descrizione.", maxStock: 3, baseStock: 3 },
-  { id: 19, name: "Oltre l'Infinito", price: 749, rarity: "rare", image: "/shop/oltre-infinito.png", desc: "Superato il limite massimo. Quello che viene dopo lo scopri tu.", maxStock: 3, baseStock: 3 },
-  { id: 20, name: "Energia Cosmica", price: 699, rarity: "rare", image: "/shop/energia-cosmica.png", desc: "Distillata dal bordo dell'universo conosciuto. Sapore: indefinibile.", maxStock: 3, baseStock: 3 },
+  { id: 15, name: "No Pain No Gain", price: 1099, rarity: "rare", image: "/shop/shield.jpg", desc: "Tutto vale il giusto prezzo. Sacrifichi salute per avere più potenza.", maxStock: 3, baseStock: 3 },
+  { id: 16, name: "Incubi Istantanei", price: 899, rarity: "rare", image: "/shop/booster.jpg", desc: "Infligge danni pesanti su soggetti addormentati.", maxStock: 3, baseStock: 3 },
+  { id: 17, name: "Anti Malocchio", price: 949, rarity: "rare", image: "/shop/optical.jpg", desc: "A nessuno piace avere una brutta giornata, elimina status di sfortuna.", maxStock: 3, baseStock: 3 },
+  { id: 18, name: "Demone Interiore", price: 1199, rarity: "rare", image: "/shop/deck.jpg", desc: "Ognuno ha i suoi scheletri. Aumenta la potenza ma aumenta anche lo stress.", maxStock: 3, baseStock: 3 },
+  { id: 19, name: "Divine Soup", price: 749, rarity: "rare", image: "/shop/thermal.jpg", desc: "Non è succo di pomodoro... Aumenta la salute di molto ma aumenta lo stress.", maxStock: 3, baseStock: 3 },
+  { id: 20, name: "Pensieri Oscuri", price: 699, rarity: "rare", image: "/shop/adrenaline.jpg", desc: "Aumenta lo stress, meglio non usarlo su se stessi.", maxStock: 3, baseStock: 3 },
   
   // COMMON (15 tipi diversi, stock abbondante)
-  { id: 21, name: "Healt Unit 37A", price: 299, rarity: "common", image: "/shop/healt-unit-37a.png", desc: "Patch biologica standard. Tappa i buchi. Non fa domande.", maxStock: 8, baseStock: 8 },
-  { id: 22, name: "Risucchio Portatile", price: 199, rarity: "common", image: "/shop/risucchio-portatile.png", desc: "Aspira quello che non vuoi. Non chiede il permesso. Non rilascia ricevute.", maxStock: 8, baseStock: 8 },
-  { id: 23, name: "Healt Unit 37B", price: 349, rarity: "common", image: "/shop/healt-unit-37b.png", desc: "Versione B. Migliorata rispetto alla A. Il produttore non specifica come.", maxStock: 8, baseStock: 8 },
-  { id: 24, name: "Trova Rotte", price: 149, rarity: "common", image: "/shop/trova-rotte.png", desc: "Conosce tutte le uscite. Anche quelle che non esistono ancora.", maxStock: 8, baseStock: 8 },
-  { id: 25, name: "Carnivals Card", price: 249, rarity: "common", image: "/shop/carnivals-card.png", desc: "Accesso illimitato. A cosa? Il carnevale decide.", maxStock: 8, baseStock: 8 },
-  { id: 26, name: "Blue Amber", price: 179, rarity: "common", image: "/shop/blue-amber.png", desc: "Qualcosa dentro si muove. Solo quando non guardi.", maxStock: 8, baseStock: 8 },
-  { id: 27, name: "Anti-Malocchio", price: 229, rarity: "common", image: "/shop/anti-malocchio.png", desc: "Efficacia: discutibile. Vendite: altissime. Coincidenza: improbabile.", maxStock: 8, baseStock: 8 },
-  { id: 28, name: "No-Time", price: 189, rarity: "common", image: "/shop/no-time.png", desc: "Ferma il tempo per 0.3 secondi. A volte è abbastanza.", maxStock: 8, baseStock: 8 },
-  { id: 29, name: "Anima Bollente", price: 399, rarity: "common", image: "/shop/anima-bollente.png", desc: "Temperatura interna: sconosciuta. Non toccare a mani nude. Forse.", maxStock: 8, baseStock: 8 },
-  { id: 30, name: "Grappling Hook", price: 279, rarity: "common", image: "/shop/grapple.jpg", desc: "Scala edifici rapidamente. Utile per infiltrazioni.", maxStock: 8, baseStock: 8 },
-  { id: 31, name: "Smoke Grenade", price: 199, rarity: "common", image: "/shop/smoke.jpg", desc: "Copertura istantanea. Essenziale per ritirate tattiche.", maxStock: 8, baseStock: 8 },
-  { id: 32, name: "Lockpick Set", price: 159, rarity: "common", image: "/shop/lockpick.jpg", desc: "Apre serrature meccaniche standard. Vecchia scuola funziona.", maxStock: 8, baseStock: 8 },
-  { id: 33, name: "Armor Vest Light", price: 449, rarity: "common", image: "/shop/vest.jpg", desc: "Protezione base contro armi da fuoco. Meglio di niente.", maxStock: 8, baseStock: 8 },
-  { id: 34, name: "Stim Pack", price: 299, rarity: "common", image: "/shop/stim.jpg", desc: "Recupero energia rapido. Ti tiene in piedi più a lungo.", maxStock: 8, baseStock: 8 },
-  { id: 35, name: "Recon Drone Mini", price: 549, rarity: "common", image: "/shop/drone.jpg", desc: "Ricognizione aerea base. Vedi cosa ti aspetta prima di entrare.", maxStock: 8, baseStock: 8 }
+  { id: 21, name: "Magnet Pull", price: 299, rarity: "common", image: "/shop/hacktool.jpg", desc: "Attrae ogni sorta di cosa in un lampo.", maxStock: 8, baseStock: 8 },
+  { id: 22, name: "Lume", price: 199, rarity: "common", image: "/shop/scanner.jpg", desc: "illumina anche l'oscurità più fitta.", maxStock: 8, baseStock: 8 },
+  { id: 23, name: "Eye C Yu", price: 349, rarity: "common", image: "/shop/emp.jpg", desc: "Ormai la privacy non esiste più... Individua tutto.", maxStock: 8, baseStock: 8 },
+  { id: 24, name: "Karma Flasks", price: 149, rarity: "common", image: "/shop/cell.jpg", desc: "Recupera una buona dose di Karma.", maxStock: 8, baseStock: 8 },
+  { id: 25, name: "Etereonite", price: 249, rarity: "common", image: "/shop/medkit.jpg", desc: "Tipico materiale energetico.", maxStock: 8, baseStock: 8 },
+  { id: 26, name: "Cura Massima", price: 179, rarity: "common", image: "/shop/knife.jpg", desc: "Ripristina molta salute.", maxStock: 8, baseStock: 8 },
+  { id: 27, name: "Hp-Plus", price: 229, rarity: "common", image: "/shop/flashbang.jpg", desc: "Recupera una dose di salute normale.", maxStock: 8, baseStock: 8 },
+  { id: 28, name: "Flashbanger", price: 189, rarity: "common", image: "/shop/comm.jpg", desc: "Boom. Correre.", maxStock: 8, baseStock: 8 },
+  { id: 29, name: "Passpartout", price: 399, rarity: "common", image: "/shop/nightvision.jpg", desc: "Entra dove vuoi, sei il padrone di casa.", maxStock: 8, baseStock: 8 },
+  { id: 30, name: "Passionate Soul", price: 279, rarity: "common", image: "/shop/grapple.jpg", desc: "Brucia il mondo, un pò alla volta...", maxStock: 8, baseStock: 8 },
+  { id: 31, name: "Milky Way", price: 199, rarity: "common", image: "/shop/smoke.jpg", desc: "Ripristina una dose bassa di Karma e salute.", maxStock: 8, baseStock: 8 },
+  { id: 32, name: "Passione Liquida", price: 159, rarity: "common", image: "/shop/lockpick.jpg", desc: "Ripristina una buone dose di Energia", maxStock: 8, baseStock: 8 },
+  { id: 33, name: "Spaccamenti", price: 449, rarity: "common", image: "/shop/vest.jpg", desc: "Elimina lo stress.", maxStock: 8, baseStock: 8 },
+  { id: 34, name: "Misuratore", price: 299, rarity: "common", image: "/shop/stim.jpg", desc: "Misura le tue statistiche.", maxStock: 8, baseStock: 8 },
+  { id: 35, name: "Vecchio Giocattolo", price: 549, rarity: "common", image: "/shop/drone.jpg", desc: "Un tenero ricordo... aumenta il karma nel tempo.", maxStock: 8, baseStock: 8 }
 ];
 
 const mascotPhrases = {
-  mystery: ["...Cosa? Come hai trovato QUELLA?", "La Chiave. Non dovrebbe essere qui. Non dovrebbe esistere.", "Se la compri... non so cosa succederà. Ma sarà irreversibile."],
+  mystery: ["...?", "èwì97 djw9<5 _swo", "..."],
   special: ["ATTENZIONE: Artefatto di classe SPECIAL. Pericolo estremo.", "Questo... non dovrebbe esistere. Ma eccolo qui.", "Solo per i più folli. O i più coraggiosi. Forse entrambi."],
   legendary: ["RARO. Molto raro. Forse troppo per te?", "Pezzo unico. Una volta venduto, sparisce per sempre.", "Potere leggendario. Gestiscilo con rispetto."],
   epic: ["Qualità superiore. Per operatori esperti.", "Stock limitato. Non ricapita spesso.", "Ottima scelta. Sopravviverai più a lungo."],
