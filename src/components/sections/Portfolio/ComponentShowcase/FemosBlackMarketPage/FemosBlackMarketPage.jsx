@@ -7,14 +7,14 @@ const CART_MAX_ITEMS = 12;
 
 const productsDatabase = [
   // SPECIAL (2 tipi, max 1 generabile)
-  { id: 1, name: "Void Singularity", price: 9999, rarity: "special", image: "/shop/singularity.jpg", desc: "Un frammento di pura energia del vuoto. Distrugge la realtà stessa.", maxStock: 1, baseStock: 1 },
+  { id: 1, name: "Carnivals Deck", price: 9999, rarity: "special", image: "/shop/singularity.jpg", desc: "Un sogno che diventa realtà?", maxStock: 1, baseStock: 1 },
   { id: 36, name: "Connessione Eterna", price: 9999, rarity: "special", image: "/shop/connessione-eterna.png", desc: "Collegati, per sempre.", maxStock: 1, baseStock: 1 },
   
   // ??? (1 solo tipo, max 1 generabile, ultra raro)
-  { id: 2, name: "La Chiave", price: 99999, rarity: "mystery", image: "/shop/key.jpg", desc: "Nessuno sa cosa apra. Nessuno sa da dove viene. Ma tutti la vogliono.", maxStock: 1, baseStock: 1 },
+  { id: 2, name: "La Chiave", price: 99999, rarity: "mystery", image: "/shop/key.jpg", desc: "Non sembra essere utile da sola.", maxStock: 1, baseStock: 1 },
   
   // LEGENDARY (4 tipi diversi, max 1 generabile)
-  { id: 3, name: "Cyber Blade X1", price: 2999, rarity: "legendary", image: "/shop/blade.jpg", desc: "Forgiata nel nucleo di una stella morente. Taglia firewall e nemici.", maxStock: 1, baseStock: 1 },
+  { id: 3, name: "Phoesia", price: 2999, rarity: "legendary", image: "/shop/blade.jpg", desc: "Preso.", maxStock: 1, baseStock: 1 },
   { id: 4, name: "Stealth Cloak Mk.V", price: 3499, rarity: "legendary", image: "/shop/cloak.jpg", desc: "Invisibilità totale. Gli scanner nemici vedono solo il vuoto.", maxStock: 1, baseStock: 1 },
   { id: 5, name: "Quantum Core", price: 4299, rarity: "legendary", image: "/shop/core.jpg", desc: "Alimenta città intere. O le distrugge. Dipende da te.", maxStock: 1, baseStock: 1 },
   { id: 6, name: "Neural Override System", price: 3799, rarity: "legendary", image: "/shop/override.jpg", desc: "Controllo mentale diretto. Etica? Quella è per i deboli.", maxStock: 1, baseStock: 1 },
