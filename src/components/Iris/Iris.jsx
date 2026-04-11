@@ -12,6 +12,16 @@ const GREETINGS = [
   'rrrr* zz* boop* Ca-Carica e P-Pronta!',
 ];
 
+/* ── File audio pre-registrati — stessa posizione di GREETINGS ── */
+const GREETING_VOICES = [
+  '/audio/iris/iris-g0.mp3',
+  '/audio/iris/iris-g1.mp3',
+  '/audio/iris/iris-g2.mp3',
+  '/audio/iris/iris-g3.mp3',
+  '/audio/iris/iris-g4.mp3',
+  '/audio/iris/iris-g5.mp3',
+];
+
 /* ── Guide text per ogni pagina/sezione ── */
 const PAGE_GUIDES = {
   '/':                                      'Home — panoramica del sito. Scorri per scoprire chi siamo e cosa facciamo.',
@@ -40,6 +50,34 @@ const PAGE_GUIDES = {
   '/termini-e-condizioni':                  'Termini e Condizioni — le regole di utilizzo del sito.',
 };
 
+/* ── File audio pre-registrati per ogni pagina ── */
+const PAGE_VOICES = {
+  '/':                                    '/audio/iris/iris-home.mp3',
+  '/storia':                              '/audio/iris/iris-storia.mp3',
+  '/services':                            '/audio/iris/iris-services.mp3',
+  '/services/consulenze':                 '/audio/iris/iris-consulenze.mp3',
+  '/services/sitiweb':                    '/audio/iris/iris-sitiweb.mp3',
+  '/services/presenza':                   '/audio/iris/iris-presenza.mp3',
+  '/services/multimedia':                 '/audio/iris/iris-multimedia.mp3',
+  '/portfolio':                           '/audio/iris/iris-portfolio.mp3',
+  '/portfolio/componenti':                '/audio/iris/iris-componenti.mp3',
+  '/portfolio/grafiche':                  '/audio/iris/iris-grafiche.mp3',
+  '/portfolio/sitiweb':                   '/audio/iris/iris-sitiweb-portfolio.mp3',
+  '/portfolio/componenti/black-market':   '/audio/iris/iris-black-market.mp3',
+  '/portfolio/componenti/dashboard':      '/audio/iris/iris-dashboard.mp3',
+  '/portfolio/componenti/booking':        '/audio/iris/iris-booking.mp3',
+  '/portfolio/componenti/music-player':   '/audio/iris/iris-music-player.mp3',
+  '/portfolio/componenti/crud-simulator': '/audio/iris/iris-crud.mp3',
+  '/portfolio/componenti/slider':         '/audio/iris/iris-slider.mp3',
+  '/portfolio/componenti/text-sampler':   '/audio/iris/iris-text-sampler.mp3',
+  '/portfolio/componenti/cubo-3d':        '/audio/iris/iris-cubo-3d.mp3',
+  '/portfolio/componenti/image-checker':  '/audio/iris/iris-image-checker.mp3',
+  '/contatti':                            '/audio/iris/iris-contatti.mp3',
+  '/privacy-policy':                      '/audio/iris/iris-privacy.mp3',
+  '/cookie-policy':                       '/audio/iris/iris-cookie.mp3',
+  '/termini-e-condizioni':                '/audio/iris/iris-termini.mp3',
+};
+
 const Iris = () => {
   const [isActive,    setIsActive]    = useState(false);
   const [isGlitching, setIsGlitching] = useState(false);
@@ -51,25 +89,24 @@ const Iris = () => {
   const location         = useLocation();
   const ref              = useRef(null);
   const greetingTimer    = useRef(null);
-  const isSpeech         = typeof window !== 'undefined' && 'speechSynthesis' in window;
-  const bestVoiceRef     = useRef(null);
+  const speechAudioRef   = useRef(null);
+  const greetingIdxRef   = useRef(0);
 
-  /* ── Load best available Italian voice (async — fires after voiceschanged) ── */
-  useEffect(() => {
-    if (!isSpeech) return;
-    const pick = () => {
-      const all = window.speechSynthesis.getVoices();
-      const it  = all.filter(v => v.lang.startsWith('it'));
-      bestVoiceRef.current =
-        it.find(v => /natural|neural/i.test(v.name)) || // Microsoft/Google neural
-        it.find(v => !v.localService)                 || // any online voice
-        it.find(v => /google/i.test(v.name))          || // Google TTS
-        it[0] || null;
-    };
-    pick();
-    window.speechSynthesis.addEventListener('voiceschanged', pick);
-    return () => window.speechSynthesis.removeEventListener('voiceschanged', pick);
-  }, [isSpeech]);
+  /* ── Audio helpers ── */
+  const stopVoice = useCallback(() => {
+    if (speechAudioRef.current) {
+      speechAudioRef.current.pause();
+      speechAudioRef.current = null;
+    }
+  }, []);
+
+  const playVoice = useCallback((path) => {
+    stopVoice();
+    if (!path) return;
+    const audio = new Audio(path);
+    speechAudioRef.current = audio;
+    audio.play().catch(() => {});
+  }, [stopVoice]);
 
   /* ── Clear hover guide on route change ── */
   useEffect(() => {
@@ -116,27 +153,28 @@ const Iris = () => {
     return () => clearInterval(id);
   }, [isActive]);
 
-  /* ── Cleanup ── */
-  useEffect(() => () => clearTimeout(greetingTimer.current), []);
+  /* ── Cleanup timers and audio on unmount ── */
+  useEffect(() => () => {
+    clearTimeout(greetingTimer.current);
+    stopVoice();
+  }, [stopVoice]);
 
-  /* ── TTS: speak bubbleText when it changes ── */
+  /* ── Play greeting voice when Iris opens ── */
   useEffect(() => {
-    if (!isSpeech) return;
-    if (!isActive || isMuted) { window.speechSynthesis.cancel(); return; }
-    const txt = greeting || (text || (PAGE_GUIDES[location.pathname] ?? null));
-    if (!txt) { window.speechSynthesis.cancel(); return; }
-    window.speechSynthesis.cancel();
-    const utter = new SpeechSynthesisUtterance(txt);
-    utter.lang  = 'it-IT';
-    utter.rate  = 0.92;  // leggermente più lento = più naturale
-    utter.pitch = 1.0;   // pitch neutro, meno robotico
-    if (bestVoiceRef.current) utter.voice = bestVoiceRef.current;
-    window.speechSynthesis.speak(utter);
-    return () => window.speechSynthesis.cancel();
-  }, [greeting, text, isActive, isMuted, isSpeech, location.pathname]);
+    if (!greeting || isMuted) return;
+    playVoice(GREETING_VOICES[greetingIdxRef.current]);
+  }, [greeting, isMuted, playVoice]);
 
-  /* ── Cancel speech on unmount ── */
-  useEffect(() => () => { if (isSpeech) window.speechSynthesis.cancel(); }, [isSpeech]);
+  /* ── Play page guide voice on navigation (only when active) ── */
+  useEffect(() => {
+    if (!isActive || isMuted) return;
+    playVoice(PAGE_VOICES[location.pathname] ?? null);
+  }, [location.pathname, isActive, isMuted, playVoice]);
+
+  /* ── Stop voice when muted or deactivated ── */
+  useEffect(() => {
+    if (isMuted || !isActive) stopVoice();
+  }, [isMuted, isActive, stopVoice]);
 
   /* ── Mute toggle ── */
   const toggleMute = useCallback((e) => {
@@ -144,10 +182,9 @@ const Iris = () => {
     setIsMuted(prev => {
       const next = !prev;
       localStorage.setItem('iris-muted', next);
-      if (next && isSpeech) window.speechSynthesis.cancel();
       return next;
     });
-  }, [isSpeech]);
+  }, []);
 
   /* ── Toggle on/off ── */
   const handleToggle = () => {
@@ -161,7 +198,9 @@ const Iris = () => {
         setIsGlitching(false);
         setIsActive(true);
         setPupilPos({ x: 50, y: 50 });
-        const msg = GREETINGS[Math.floor(Math.random() * GREETINGS.length)];
+        const idx = Math.floor(Math.random() * GREETINGS.length);
+        greetingIdxRef.current = idx;
+        const msg = GREETINGS[idx];
         setGreeting(msg);
         greetingTimer.current = setTimeout(() => setGreeting(null), 4500);
       }, 650);
@@ -199,7 +238,7 @@ const Iris = () => {
 
       {/* ── Eye widget + mute button row ── */}
       <div className="iris-widget-row">
-        {isActive && isSpeech && (
+        {isActive && (
           <button
             className={`iris-mute-btn${isMuted ? ' iris-mute-btn--muted' : ''}`}
             onClick={toggleMute}
