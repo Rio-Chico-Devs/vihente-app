@@ -52,6 +52,24 @@ const Iris = () => {
   const ref              = useRef(null);
   const greetingTimer    = useRef(null);
   const isSpeech         = typeof window !== 'undefined' && 'speechSynthesis' in window;
+  const bestVoiceRef     = useRef(null);
+
+  /* ── Load best available Italian voice (async — fires after voiceschanged) ── */
+  useEffect(() => {
+    if (!isSpeech) return;
+    const pick = () => {
+      const all = window.speechSynthesis.getVoices();
+      const it  = all.filter(v => v.lang.startsWith('it'));
+      bestVoiceRef.current =
+        it.find(v => /natural|neural/i.test(v.name)) || // Microsoft/Google neural
+        it.find(v => !v.localService)                 || // any online voice
+        it.find(v => /google/i.test(v.name))          || // Google TTS
+        it[0] || null;
+    };
+    pick();
+    window.speechSynthesis.addEventListener('voiceschanged', pick);
+    return () => window.speechSynthesis.removeEventListener('voiceschanged', pick);
+  }, [isSpeech]);
 
   /* ── Clear hover guide on route change ── */
   useEffect(() => {
@@ -110,11 +128,9 @@ const Iris = () => {
     window.speechSynthesis.cancel();
     const utter = new SpeechSynthesisUtterance(txt);
     utter.lang  = 'it-IT';
-    utter.rate  = 1.05;
-    utter.pitch = 1.1;
-    const voices    = window.speechSynthesis.getVoices();
-    const itVoice   = voices.find(v => v.lang.startsWith('it'));
-    if (itVoice) utter.voice = itVoice;
+    utter.rate  = 0.92;  // leggermente più lento = più naturale
+    utter.pitch = 1.0;   // pitch neutro, meno robotico
+    if (bestVoiceRef.current) utter.voice = bestVoiceRef.current;
     window.speechSynthesis.speak(utter);
     return () => window.speechSynthesis.cancel();
   }, [greeting, text, isActive, isMuted, isSpeech, location.pathname]);
