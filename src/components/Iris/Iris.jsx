@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import { useLocation } from 'react-router-dom';
 import { useGuide } from '../../contexts/GuideContext';
 import './Iris.css';
@@ -46,10 +46,12 @@ const Iris = () => {
   const [greeting,    setGreeting]    = useState(null);
   const [pupilPos,    setPupilPos]    = useState({ x: 50, y: 50 });
   const [blinking,    setBlinking]    = useState(false);
+  const [isMuted,     setIsMuted]     = useState(() => localStorage.getItem('iris-muted') === 'true');
   const { text, clearGuide } = useGuide();
   const location         = useLocation();
   const ref              = useRef(null);
   const greetingTimer    = useRef(null);
+  const isSpeech         = typeof window !== 'undefined' && 'speechSynthesis' in window;
 
   /* ── Clear hover guide on route change ── */
   useEffect(() => {
@@ -99,6 +101,38 @@ const Iris = () => {
   /* ── Cleanup ── */
   useEffect(() => () => clearTimeout(greetingTimer.current), []);
 
+  /* ── TTS: speak bubbleText when it changes ── */
+  useEffect(() => {
+    if (!isSpeech) return;
+    if (!isActive || isMuted) { window.speechSynthesis.cancel(); return; }
+    const txt = greeting || (text || (PAGE_GUIDES[location.pathname] ?? null));
+    if (!txt) { window.speechSynthesis.cancel(); return; }
+    window.speechSynthesis.cancel();
+    const utter = new SpeechSynthesisUtterance(txt);
+    utter.lang  = 'it-IT';
+    utter.rate  = 1.05;
+    utter.pitch = 1.1;
+    const voices    = window.speechSynthesis.getVoices();
+    const itVoice   = voices.find(v => v.lang.startsWith('it'));
+    if (itVoice) utter.voice = itVoice;
+    window.speechSynthesis.speak(utter);
+    return () => window.speechSynthesis.cancel();
+  }, [greeting, text, isActive, isMuted, isSpeech, location.pathname]);
+
+  /* ── Cancel speech on unmount ── */
+  useEffect(() => () => { if (isSpeech) window.speechSynthesis.cancel(); }, [isSpeech]);
+
+  /* ── Mute toggle ── */
+  const toggleMute = useCallback((e) => {
+    e.stopPropagation();
+    setIsMuted(prev => {
+      const next = !prev;
+      localStorage.setItem('iris-muted', next);
+      if (next && isSpeech) window.speechSynthesis.cancel();
+      return next;
+    });
+  }, [isSpeech]);
+
   /* ── Toggle on/off ── */
   const handleToggle = () => {
     if (isGlitching) return;
@@ -147,18 +181,41 @@ const Iris = () => {
         <span className="iris-bubble-text">{bubbleText}</span>
       </div>
 
-      {/* ── Eye widget ── */}
-      <div
-        className={[
-          'iris-widget',
-          sleeping  ? 'iris-widget--sleeping'  : '',
-          glitching ? 'iris-widget--glitching' : '',
-        ].join(' ').trim()}
-        ref={ref}
-        aria-label={isActive ? 'Disattiva Iris' : 'Attiva Iris'}
-        title={isActive ? 'Disattiva Iris' : 'Attiva Iris'}
-        onClick={handleToggle}
-      >
+      {/* ── Eye widget + mute button row ── */}
+      <div className="iris-widget-row">
+        {isActive && isSpeech && (
+          <button
+            className={`iris-mute-btn${isMuted ? ' iris-mute-btn--muted' : ''}`}
+            onClick={toggleMute}
+            title={isMuted ? 'Attiva voce' : 'Muta voce'}
+            aria-label={isMuted ? 'Attiva voce di Iris' : 'Muta voce di Iris'}
+          >
+            {isMuted ? (
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
+                <line x1="23" y1="9" x2="17" y2="15"/>
+                <line x1="17" y1="9" x2="23" y2="15"/>
+              </svg>
+            ) : (
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
+                <path d="M15.54 8.46a5 5 0 0 1 0 7.07"/>
+                <path d="M19.07 4.93a10 10 0 0 1 0 14.14"/>
+              </svg>
+            )}
+          </button>
+        )}
+        <div
+          className={[
+            'iris-widget',
+            sleeping  ? 'iris-widget--sleeping'  : '',
+            glitching ? 'iris-widget--glitching' : '',
+          ].join(' ').trim()}
+          ref={ref}
+          aria-label={isActive ? 'Disattiva Iris' : 'Attiva Iris'}
+          title={isActive ? 'Disattiva Iris' : 'Attiva Iris'}
+          onClick={handleToggle}
+        >
         <svg className="iris-svg" viewBox="20 27 62 42" aria-hidden="true">
           <defs>
             <filter id="irisGlowD">
@@ -245,6 +302,7 @@ const Iris = () => {
           {/* ── Neo ── */}
           <circle cx="65" cy="61" r="1.5" fill="var(--color-primary, #0ff)" filter="url(#irisGlowD)" />
         </svg>
+        </div>
       </div>
     </div>
   );
