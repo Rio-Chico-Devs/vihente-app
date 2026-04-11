@@ -1,0 +1,112 @@
+import { useEffect, useRef, useState } from 'react';
+import { useLocation } from 'react-router-dom';
+import './SiteSoundtrack.css';
+
+const MUSIC_PLAYER_PATH = '/portfolio/componenti/music-player';
+
+const SiteSoundtrack = () => {
+  const audioRef   = useRef(null);
+  const location   = useLocation();
+  const wasPlaying = useRef(false);
+
+  const [isMuted,     setIsMuted]     = useState(() => localStorage.getItem('soundtrack-muted') === 'true');
+  const [hasStarted,  setHasStarted]  = useState(false);
+  const [isPlaying,   setIsPlaying]   = useState(false);
+
+  /* ── Start on first user interaction (browser autoplay policy) ── */
+  useEffect(() => {
+    if (isMuted || hasStarted) return;
+
+    const start = () => {
+      const audio = audioRef.current;
+      if (!audio) return;
+      audio.volume = 0.18;
+      audio.play()
+        .then(() => {
+          setHasStarted(true);
+          setIsPlaying(true);
+          wasPlaying.current = true;
+        })
+        .catch(() => {});
+    };
+
+    document.addEventListener('click',   start, { once: true });
+    document.addEventListener('keydown', start, { once: true });
+    return () => {
+      document.removeEventListener('click',   start);
+      document.removeEventListener('keydown', start);
+    };
+  }, [isMuted, hasStarted]);
+
+  /* ── Pause on music player, resume when leaving ── */
+  useEffect(() => {
+    const audio = audioRef.current;
+    if (!audio || !hasStarted) return;
+
+    if (location.pathname === MUSIC_PLAYER_PATH) {
+      wasPlaying.current = isPlaying;
+      audio.pause();
+      setIsPlaying(false);
+    } else if (wasPlaying.current && !isMuted) {
+      audio.play().catch(() => {});
+      setIsPlaying(true);
+    }
+  }, [location.pathname]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  /* ── Cancel on unmount ── */
+  useEffect(() => () => { audioRef.current?.pause(); }, []);
+
+  const toggleMute = () => {
+    const audio = audioRef.current;
+    const next  = !isMuted;
+    setIsMuted(next);
+    localStorage.setItem('soundtrack-muted', next);
+
+    if (!audio) return;
+
+    if (next) {
+      wasPlaying.current = isPlaying;
+      audio.pause();
+      setIsPlaying(false);
+    } else if (hasStarted && location.pathname !== MUSIC_PLAYER_PATH) {
+      audio.play().catch(() => {});
+      setIsPlaying(true);
+    }
+  };
+
+  return (
+    <>
+      <audio
+        ref={audioRef}
+        src="/audio/soundtrack.mp3"
+        loop
+        preload="none"
+      />
+      <button
+        className={`soundtrack-btn${isMuted ? ' soundtrack-btn--muted' : ''}`}
+        onClick={toggleMute}
+        title={isMuted ? 'Attiva soundtrack' : 'Muta soundtrack'}
+        aria-label={isMuted ? 'Attiva musica di sottofondo' : 'Muta musica di sottofondo'}
+      >
+        {isMuted ? (
+          /* Muted: speaker with X */
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
+            <line x1="23" y1="9" x2="17" y2="15"/>
+            <line x1="17" y1="9" x2="23" y2="15"/>
+          </svg>
+        ) : (
+          /* Playing: speaker with waves */
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
+            <path d="M15.54 8.46a5 5 0 0 1 0 7.07"/>
+            <path d="M19.07 4.93a10 10 0 0 1 0 14.14"/>
+          </svg>
+        )}
+        <span className="soundtrack-label">{isMuted ? 'Music' : 'Music'}</span>
+      </button>
+    </>
+  );
+};
+
+export default SiteSoundtrack;

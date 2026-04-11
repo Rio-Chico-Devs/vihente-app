@@ -1,0 +1,66 @@
+/* ============================================
+   SITE SOUNDTRACK — fixed button above ThemeToggle
+   ============================================ */
+
+.soundtrack-btn {
+  position: fixed;
+  bottom: 9.5rem;
+  right: var(--spacing-lg, 2rem);
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-xs, 0.25rem);
+  background: var(--bg-dark, rgba(0, 0, 0, 0.85));
+  border: 1px solid var(--border-glow, rgba(0, 255, 255, 0.3));
+  padding: 0.6rem;
+  border-radius: 50px;
+  cursor: pointer;
+  color: var(--color-primary, #0ff);
+  transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+  box-shadow: 0 0 15px rgba(0, 255, 255, 0.2);
+}
+
+[data-theme="dark"] .soundtrack-btn {
+  backdrop-filter: blur(10px);
+}
+
+[data-theme="light"] .soundtrack-btn {
+  background: rgba(10, 20, 32, 0.92);
+  border-color: rgba(0, 180, 255, 0.5);
+  backdrop-filter: blur(12px);
+  box-shadow: 0 0 15px rgba(0, 180, 255, 0.3);
+  color: rgba(0, 180, 255, 0.9);
+}
+
+.soundtrack-btn:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 0 25px rgba(0, 255, 255, 0.35);
+  border-color: var(--color-primary, #0ff);
+}
+
+.soundtrack-btn--muted {
+  color: rgba(255, 255, 255, 0.3);
+  border-color: rgba(255, 255, 255, 0.1);
+  box-shadow: none;
+}
+
+.soundtrack-btn--muted:hover {
+  color: var(--color-primary, #0ff);
+  border-color: var(--color-primary-30, rgba(0, 255, 255, 0.3));
+  box-shadow: 0 0 15px rgba(0, 255, 255, 0.2);
+}
+
+.soundtrack-label {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 0.6rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-weight: 600;
+}
+
+@media (max-width: 768px) {
+  .soundtrack-btn {
+    display: none;
+  }
+}

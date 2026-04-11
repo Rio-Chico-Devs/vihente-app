@@ -11,6 +11,7 @@ import ThemeToggle from './components/ThemeToggle/ThemeToggle';
 import ScrollingHeader from './components/ScrollingHeader';
 import CookieConsentBanner from './components/global/CookieConsent/CookieConsent';
 import PageTransition from './components/PageTransition/PageTransition';
+import SiteSoundtrack from './components/SiteSoundtrack/SiteSoundtrack';
 
 // 🚀 LAZY LOADING - Carica componenti solo quando necessario
 const LandingPage = lazy(() => import('./components/sections/LandingPage/LandingPage'));
@@ -94,6 +95,7 @@ function App() {
         <BrowserRouter basename={import.meta.env.DEV ? '/' : '/vihente-app'}>
           <CustomCursor />
           <Iris />
+          <SiteSoundtrack />
           <CookieConsentBanner isBooting={false} />
           <ThemeToggle />
 
