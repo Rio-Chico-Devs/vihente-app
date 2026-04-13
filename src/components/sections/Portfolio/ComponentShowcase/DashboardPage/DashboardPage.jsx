@@ -239,7 +239,7 @@ const statusClass = (s) => {
 const DashboardPage = () => {
   const { setGuide, clearGuide } = useGuide();
   const navigate = useNavigate();
-  const [period,     setPeriod]     = useState('30d');
+  const [period,     setPeriod]     = useState('7d');
   const [fading,     setFading]     = useState(false);
   const [ecgPlaying, setEcgPlaying] = useState(
     Object.fromEntries(ECG_METRICS.map(m => [m.id, true]))

@@ -16,12 +16,12 @@ const productsDatabase = [
   // LEGENDARY (4 tipi diversi, max 1 generabile)
   { id: 3, name: "Phoesia", price: 2999, rarity: "legendary", image: "/shop/Phoesia.webp", desc: "Qualcuno privò un essere di una frazione della sua bellezza, scrisse 1000 poesie, perfette, come fosse magia.", maxStock: 1, baseStock: 1 },
   { id: 4, name: "Mistery Blessing", price: 3499, rarity: "legendary", image: "/shop/mistery-blessing.webp", desc: "A tutti piacciono le sorprese... finchè rimangono sorprese...", maxStock: 1, baseStock: 1 },
-  { id: 5, name: "Oni", price: 4299, rarity: "legendary", image: "/shop/Oni.webp", desc: "Apparteneva a un bambino pieno di speranze, queste speranze non morirono mai e vissero dentro il suo peluche preferito.", maxStock: 1, baseStock: 1 },
+  { id: 5, name: "Oni", price: 4299, rarity: "legendary", image: "/shop/oni.webp", desc: "Apparteneva a un bambino pieno di speranze, queste speranze non morirono mai e vissero dentro il suo peluche preferito.", maxStock: 1, baseStock: 1 },
   { id: 6, name: "Arcobalecaedro", price: 3799, rarity: "legendary", image: "/shop/arcobalecaedro.webp", desc: "Qualcuno è riuscito a catturarci dentro l'impossibile, in tutti i suoi 7 colori.", maxStock: 1, baseStock: 1 },
 
   // EPIC (6 tipi diversi, max 2 generabili)
   { id: 7, name: "Profondo Blu", price: 1499, rarity: "epic", image: "/shop/profondo-blu.webp", desc: "Molto, molto lontano, esistono tonalità di blu ancora più forti e ipnotiche. Dona un incredibile sollievo.", maxStock: 2, baseStock: 2 },
-  { id: 8, name: "Cuor di Leone", price: 1899, rarity: "epic", image: "/shop/Cuor-di-leone.webp", desc: "Qualcuno lo ha perso, io l'ho trovato in un luogo dimenticato, deve aver avuto molto coraggio per sopravvivere.", maxStock: 2, baseStock: 2 },
+  { id: 8, name: "Cuor di Leone", price: 1899, rarity: "epic", image: "/shop/cuor-di-leone.webp", desc: "Qualcuno lo ha perso, io l'ho trovato in un luogo dimenticato, deve aver avuto molto coraggio per sopravvivere.", maxStock: 2, baseStock: 2 },
   { id: 9, name: "United We Stand", price: 1699, rarity: "epic", image: "/shop/united-we-stand.webp", desc: "Uniti resistiamo, fino alla fine. Resta con me.", maxStock: 2, baseStock: 2 },
   { id: 10, name: "Avidità", price: 2199, rarity: "epic", image: "/shop/avidita.webp", desc: "L'uomo più avido scomparì nel nulla, al suo posto trovarono solo questo...", maxStock: 2, baseStock: 2 },
   { id: 11, name: "Idolo Sconosciuto", price: 1799, rarity: "epic", image: "/shop/idolo-sconosciuto.webp", desc: "Produce dei suoni ritmici interessanti, nessuno sa a cosa serve...", maxStock: 2, baseStock: 2 },
