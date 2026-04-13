@@ -13,96 +13,76 @@ const MusicPlayerPage = () => {
   const [playMode, setPlayMode] = useState('order');
 
   const [playlist] = useState([
-    { 
-      id: 1, 
-      title: "Neon Pulse", 
-      artist: "Cyber Sound", 
-      album: "Digital Dreams",
-      year: "2024",
+    {
+      id: 1,
+      title: "Crystal Cave Elettro",
+      artist: "—",
+      album: "—",
+      year: "—",
       genre: "Electronic",
-      duration: 0, 
-      file: "/audio/CRYSTAL CAVE ELETTRO .mp3" 
+      duration: 0,
+      file: "/audio/CRYSTAL CAVE ELETTRO .opus",
     },
-    { 
-      id: 2, 
-      title: "Electric Dreams", 
-      artist: "Digital Waves", 
-      album: "Synthetic Reality",
-      year: "2024",
-      genre: "Synthwave",
-      duration: 0, 
-      file: "/audio/track2.mp3" 
+    {
+      id: 2,
+      title: "Da Qui Non Si Vola",
+      artist: "—",
+      album: "—",
+      year: "—",
+      genre: "—",
+      duration: 0,
+      file: "/audio/Da Qui Non Si Vola.opus",
     },
-    { 
-      id: 3, 
-      title: "Synth Storm", 
-      artist: "Tech Master", 
-      album: "Binary Code",
-      year: "2023",
-      genre: "Techno",
-      duration: 0, 
-      file: "/audio/track3.mp3" 
+    {
+      id: 3,
+      title: "I Disagree",
+      artist: "—",
+      album: "—",
+      year: "—",
+      genre: "—",
+      duration: 0,
+      file: "/audio/I_Disagree.opus",
     },
-    { 
-      id: 4, 
-      title: "Bass Revolution", 
-      artist: "Underground Beat", 
-      album: "Deep Frequencies",
-      year: "2024",
-      genre: "Bass",
-      duration: 0, 
-      file: "/audio/track4.mp3" 
+    {
+      id: 4,
+      title: "Mind Games",
+      artist: "—",
+      album: "—",
+      year: "—",
+      genre: "—",
+      duration: 0,
+      file: "/audio/Mind_Games.opus",
     },
-    { 
-      id: 5, 
-      title: "Frequency Flow", 
-      artist: "Wave Rider", 
-      album: "Sound Waves",
-      year: "2023",
-      genre: "Ambient",
-      duration: 0, 
-      file: "/audio/track5.mp3" 
+    {
+      id: 5,
+      title: "Piano",
+      artist: "—",
+      album: "—",
+      year: "—",
+      genre: "Piano",
+      duration: 0,
+      file: "/audio/Piano.opus",
     },
-    { 
-      id: 6, 
-      title: "Digital Horizon", 
-      artist: "Neon Knight", 
-      album: "Cyber City",
-      year: "2024",
-      genre: "Electronic",
-      duration: 0, 
-      file: "/audio/track6.mp3" 
+    {
+      id: 6,
+      title: "Red Sand",
+      artist: "—",
+      album: "—",
+      year: "—",
+      genre: "—",
+      duration: 0,
+      file: "/audio/RedSand.opus",
     },
-    { 
-      id: 7, 
-      title: "Cyber Matrix", 
-      artist: "Code Runner", 
-      album: "Virtual World",
-      year: "2023",
-      genre: "Techno",
-      duration: 0, 
-      file: "/audio/track7.mp3" 
+    {
+      id: 7,
+      title: "Sospettoso",
+      artist: "—",
+      album: "—",
+      year: "—",
+      genre: "—",
+      duration: 0,
+      file: "/audio/Sospettoso.opus",
     },
-    { 
-      id: 8, 
-      title: "Techno Pulse", 
-      artist: "Binary Beat", 
-      album: "Machine Language",
-      year: "2024",
-      genre: "Techno",
-      duration: 0, 
-      file: "/audio/track8.mp3" 
-    },
-    { 
-      id: 9, 
-      title: "Future Sound", 
-      artist: "Quantum Echo", 
-      album: "Tomorrow's Beat",
-      year: "2024",
-      genre: "Future Bass",
-      duration: 0, 
-      file: "/audio/track9.mp3" 
-    }
   ]);
 
   const [currentTrack, setCurrentTrack] = useState(0);
@@ -241,6 +221,22 @@ const MusicPlayerPage = () => {
     setTimeout(() => setButtonPressed(''), 200);
   };
 
+  /* Connect the Web Audio graph once — stays alive for the whole session */
+  const connectGraph = () => {
+    if (sourceRef.current || !audioContextRef.current || !audioRef.current) return;
+    try {
+      sourceRef.current = audioContextRef.current.createMediaElementSource(audioRef.current);
+      sourceRef.current.connect(bassFilterRef.current);
+      bassFilterRef.current.connect(midFilterRef.current);
+      midFilterRef.current.connect(trebleFilterRef.current);
+      trebleFilterRef.current.connect(gainNodeRef.current);
+      gainNodeRef.current.connect(analyserRef.current);
+      analyserRef.current.connect(audioContextRef.current.destination);
+    } catch (error) {
+      console.error('Audio context error:', error);
+    }
+  };
+
   const togglePlay = () => {
     if (!audioRef.current) return;
 
@@ -249,20 +245,8 @@ const MusicPlayerPage = () => {
     if (isPlaying) {
       audioRef.current.pause();
     } else {
-      if (!sourceRef.current && audioRef.current) {
-        try {
-          sourceRef.current = audioContextRef.current.createMediaElementSource(audioRef.current);
-          sourceRef.current.connect(bassFilterRef.current);
-          bassFilterRef.current.connect(midFilterRef.current);
-          midFilterRef.current.connect(trebleFilterRef.current);
-          trebleFilterRef.current.connect(gainNodeRef.current);
-          gainNodeRef.current.connect(analyserRef.current);
-          analyserRef.current.connect(audioContextRef.current.destination);
-        } catch (error) {
-          console.error('Audio context error:', error);
-        }
-      }
-
+      audioContextRef.current?.resume().catch(() => {});
+      connectGraph();
       audioRef.current.play().catch((error) => {
         console.error('Play error:', error);
       });
@@ -314,18 +298,14 @@ const MusicPlayerPage = () => {
     setCurrentTime(0);
     setIsPlaying(false);
 
-    if (sourceRef.current) {
-      try {
-        sourceRef.current.disconnect();
-      } catch (error) {
-        console.error('Disconnect error:', error);
-      }
-      sourceRef.current = null;
-    }
+    // Do NOT disconnect sourceRef — changing src + load() keeps the graph alive.
+    // Disconnecting would sever the analyser and break the visualizer.
 
     setTimeout(() => {
       if (audioRef.current) {
         audioRef.current.load();
+        audioContextRef.current?.resume().catch(() => {});
+        connectGraph(); // creates graph if user never pressed play manually
         setIsPlaying(true);
         audioRef.current.play().catch((error) => {
           console.error('Play error:', error);
