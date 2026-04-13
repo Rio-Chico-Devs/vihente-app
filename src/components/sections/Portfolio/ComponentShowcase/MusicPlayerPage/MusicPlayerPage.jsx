@@ -221,6 +221,22 @@ const MusicPlayerPage = () => {
     setTimeout(() => setButtonPressed(''), 200);
   };
 
+  /* Connect the Web Audio graph once — stays alive for the whole session */
+  const connectGraph = () => {
+    if (sourceRef.current || !audioContextRef.current || !audioRef.current) return;
+    try {
+      sourceRef.current = audioContextRef.current.createMediaElementSource(audioRef.current);
+      sourceRef.current.connect(bassFilterRef.current);
+      bassFilterRef.current.connect(midFilterRef.current);
+      midFilterRef.current.connect(trebleFilterRef.current);
+      trebleFilterRef.current.connect(gainNodeRef.current);
+      gainNodeRef.current.connect(analyserRef.current);
+      analyserRef.current.connect(audioContextRef.current.destination);
+    } catch (error) {
+      console.error('Audio context error:', error);
+    }
+  };
+
   const togglePlay = () => {
     if (!audioRef.current) return;
 
@@ -229,20 +245,8 @@ const MusicPlayerPage = () => {
     if (isPlaying) {
       audioRef.current.pause();
     } else {
-      if (!sourceRef.current && audioRef.current) {
-        try {
-          sourceRef.current = audioContextRef.current.createMediaElementSource(audioRef.current);
-          sourceRef.current.connect(bassFilterRef.current);
-          bassFilterRef.current.connect(midFilterRef.current);
-          midFilterRef.current.connect(trebleFilterRef.current);
-          trebleFilterRef.current.connect(gainNodeRef.current);
-          gainNodeRef.current.connect(analyserRef.current);
-          analyserRef.current.connect(audioContextRef.current.destination);
-        } catch (error) {
-          console.error('Audio context error:', error);
-        }
-      }
-
+      audioContextRef.current?.resume().catch(() => {});
+      connectGraph();
       audioRef.current.play().catch((error) => {
         console.error('Play error:', error);
       });
@@ -294,18 +298,14 @@ const MusicPlayerPage = () => {
     setCurrentTime(0);
     setIsPlaying(false);
 
-    if (sourceRef.current) {
-      try {
-        sourceRef.current.disconnect();
-      } catch (error) {
-        console.error('Disconnect error:', error);
-      }
-      sourceRef.current = null;
-    }
+    // Do NOT disconnect sourceRef — changing src + load() keeps the graph alive.
+    // Disconnecting would sever the analyser and break the visualizer.
 
     setTimeout(() => {
       if (audioRef.current) {
         audioRef.current.load();
+        audioContextRef.current?.resume().catch(() => {});
+        connectGraph(); // creates graph if user never pressed play manually
         setIsPlaying(true);
         audioRef.current.play().catch((error) => {
           console.error('Play error:', error);
