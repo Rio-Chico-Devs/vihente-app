@@ -5,10 +5,51 @@ import { useGuide } from '../../../../../contexts/GuideContext';
 
 /* ── Static data ── */
 const SERVICES = [
-  { id: 'web',       label: 'Web Development',    duration: '60 min', icon: '⌨' },
-  { id: 'consulenza',label: 'Consulenza Digitale', duration: '45 min', icon: '🔍' },
-  { id: 'multimedia',label: 'Multimedia & Design', duration: '30 min', icon: '🎨' },
-  { id: 'presenza',  label: 'Presenza Online',     duration: '45 min', icon: '📡' },
+  {
+    id: 'web',
+    label: 'Web Development',
+    duration: '60 min',
+    icon: (
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+        <polyline points="16 18 22 12 16 6"/>
+        <polyline points="8 6 2 12 8 18"/>
+      </svg>
+    ),
+  },
+  {
+    id: 'consulenza',
+    label: 'Consulenza Digitale',
+    duration: '45 min',
+    icon: (
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M12 2a7 7 0 017 7c0 2.38-1.19 4.47-3 5.74V17a2 2 0 01-2 2h-4a2 2 0 01-2-2v-2.26C6.19 13.47 5 11.38 5 9a7 7 0 017-7z"/>
+        <line x1="9" y1="21" x2="15" y2="21"/>
+      </svg>
+    ),
+  },
+  {
+    id: 'multimedia',
+    label: 'Multimedia & Design',
+    duration: '30 min',
+    icon: (
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M12 20h9"/>
+        <path d="M16.5 3.5a2.121 2.121 0 013 3L7 19l-4 1 1-4L16.5 3.5z"/>
+      </svg>
+    ),
+  },
+  {
+    id: 'presenza',
+    label: 'Presenza Online',
+    duration: '45 min',
+    icon: (
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+        <circle cx="12" cy="12" r="10"/>
+        <line x1="2" y1="12" x2="22" y2="12"/>
+        <path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/>
+      </svg>
+    ),
+  },
 ];
 
 const TIME_SLOTS = [

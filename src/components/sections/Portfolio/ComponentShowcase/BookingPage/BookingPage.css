@@ -196,7 +196,11 @@
   background: var(--color-primary-10, rgba(0,255,255,0.1));
   box-shadow: 0 0 14px var(--color-primary-20, rgba(0,255,255,0.2));
 }
-.bk-service-icon { font-size: 1.5rem; line-height: 1; }
+.bk-service-icon {
+  display: flex;
+  align-items: center;
+  color: var(--color-primary, #0ff);
+}
 .bk-service-label {
   font-family: 'Share Tech Mono', monospace;
   font-size: 0.82rem;
@@ -503,6 +507,15 @@
   }
 
   .bk-step-content { gap: 1rem; }
+
+  /* Nav row always visible — sticks to bottom of scrollable panel */
+  .bk-nav-row {
+    position: sticky;
+    bottom: 0;
+    background: var(--color-bg, #000);
+    padding-top: 0.8rem;
+    z-index: 2;
+  }
 
   /* Servizi: 4 per riga */
   .bk-services-grid { grid-template-columns: repeat(4, 1fr); }
