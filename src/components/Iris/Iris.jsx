@@ -6,10 +6,10 @@ import './Iris.css';
 const GREETINGS = [
   ':D Eccomi! Mi hai chiamato?',
   'Yawn... e.e Hola amigo mi ero addormentata.',
-  'Un antico male si risveglia... scherzo :D sono solo io!',
+  'Grazie per aver attivato Iris, siamo pronti a cominciare.',
   'Carica e operativa.',
   'Cominciamo pure, sono Iris la tua guida creata su misura.',
-  'rrrr* zz* boop* Ca-Carica e P-Pronta!',
+  'Sempre pronta, iniziamo.',
 ];
 
 /* ── File audio pre-registrati — stessa posizione di GREETINGS ── */
@@ -24,13 +24,13 @@ const GREETING_VOICES = [
 
 /* ── Guide text per ogni pagina/sezione ── */
 const PAGE_GUIDES = {
-  '/':                                      'Home — panoramica del sito. Scorri per scoprire chi siamo e cosa facciamo.',
-  '/storia':                                'La mia storia — skills, lingue e background di Antonio.',
-  '/services':                              'Servizi — tutto quello che offriamo come consulenti digitali.',
-  '/services/consulenze':                   'Consulenza digitale — strategia, analisi e supporto personalizzato.',
-  '/services/sitiweb':                      'Siti web — dal design al deploy, realizziamo progetti web completi.',
-  '/services/presenza':                     'Presenza online — social media, SEO e visibilità digitale.',
-  '/services/multimedia':                   'Multimedia — illustrazioni, grafiche e content creation.',
+  '/':                                      'Questa è la nostra Home, consulta le varie sezioni per scoprire chi siamo e cosa facciamo.',
+  '/storia':                                'In questa sezione potrai osservare la nostra storia e le skills che ci hanno portato a essere quel che siamo.',
+  '/services':                              'In questa pagina sono presenti le mansioni e i lavori che attualmente svolgiamo.',
+  '/services/consulenze':                   'Consulenza digitale vuol dire strategia, analisi e supporto personalizzato in linea con la tua identità.',
+  '/services/sitiweb':                      'Non creiamo i soliti siti web, esplora questa pagina per scoprire come ci differenziamo.',
+  '/services/presenza':                     'Definire la propria identità mediatica è diventato imperativo per fare business di questi tempi, curiamo con zelo chi sei e come ti vedono i tuoi clienti.',
+  '/services/multimedia':                   'Creiamo video, suoni, e qualsiasi tipo di file multimediale adattandolo ai tuoi bisogni.',
   '/portfolio':                             'Portfolio — una selezione dei lavori più significativi.',
   '/portfolio/componenti':                  'Componenti UI — showcase di interfacce interattive realizzate da zero.',
   '/portfolio/grafiche':                    'Grafiche — illustrazioni e visual design del portfolio.',
