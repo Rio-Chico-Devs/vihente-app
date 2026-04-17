@@ -45,9 +45,9 @@ const PAGE_GUIDES = {
   '/portfolio/componenti/cubo-3d':          'Modelli interattivi ruotabili in tutte le direzioni, zero librerie esterne.',
   '/portfolio/componenti/image-checker':    'Esempio di visualizzatore di immagini con ingrandimento.',
   '/contatti':                              'Usa il form per contattarci, ti risponderemo presto! :D',
-  '/privacy-policy':                        'Privacy Policy — informazioni sul trattamento dei tuoi dati personali.',
-  '/cookie-policy':                         'Cookie Policy — come utilizziamo i cookie su questo sito.',
-  '/termini-e-condizioni':                  'Termini e Condizioni — le regole di utilizzo del sito.',
+  '/privacy-policy':                        'Qui, trovi tutte le informazioni sul trattamento dei tuoi dati personali.',
+  '/cookie-policy':                         'Qui, puoi consultare come utilizziamo i cookie su questo sito.',
+  '/termini-e-condizioni':                  'Qui, puoi consultare le regole di utilizzo del nostro sito.',
 };
 
 /* ── File audio pre-registrati per ogni pagina ── */
