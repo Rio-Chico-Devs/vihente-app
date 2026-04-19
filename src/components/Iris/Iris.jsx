@@ -5,39 +5,77 @@ import './Iris.css';
 
 const GREETINGS = [
   ':D Eccomi! Mi hai chiamato?',
-  'Yawn... e.e Hola amigo mi ero addormentata.',
-  'Un antico male si risveglia... scherzo :D sono solo io!',
+  "E' sempre un piacere vederti :)",
+  'Grazie per aver attivato Iris, siamo pronti a cominciare.',
   'Carica e operativa.',
   'Cominciamo pure, sono Iris la tua guida creata su misura.',
-  'rrrr* zz* boop* Ca-Carica e P-Pronta!',
+  'Sempre pronta, iniziamo.',
+];
+
+/* ── File audio pre-registrati — stessa posizione di GREETINGS ── */
+const GREETING_VOICES = [
+  '/audio/iris/iris-g0.mp3',
+  '/audio/iris/iris-g1.mp3',
+  '/audio/iris/iris-g2.mp3',
+  '/audio/iris/iris-g3.mp3',
+  '/audio/iris/iris-g4.mp3',
+  '/audio/iris/iris-g5.mp3',
 ];
 
 /* ── Guide text per ogni pagina/sezione ── */
 const PAGE_GUIDES = {
-  '/':                                      'Home — panoramica del sito. Scorri per scoprire chi siamo e cosa facciamo.',
-  '/storia':                                'La mia storia — skills, lingue e background di Antonio.',
-  '/services':                              'Servizi — tutto quello che offriamo come consulenti digitali.',
-  '/services/consulenze':                   'Consulenza digitale — strategia, analisi e supporto personalizzato.',
-  '/services/sitiweb':                      'Siti web — dal design al deploy, realizziamo progetti web completi.',
-  '/services/presenza':                     'Presenza online — social media, SEO e visibilità digitale.',
-  '/services/multimedia':                   'Multimedia — illustrazioni, grafiche e content creation.',
-  '/portfolio':                             'Portfolio — una selezione dei lavori più significativi.',
-  '/portfolio/componenti':                  'Componenti UI — showcase di interfacce interattive realizzate da zero.',
-  '/portfolio/grafiche':                    'Grafiche — illustrazioni e visual design del portfolio.',
-  '/portfolio/sitiweb':                     'Siti web — esempi di progetti web realizzati.',
-  '/portfolio/componenti/black-market':     "Femo's Black Market — negozio cyberpunk con inventario casuale, carrello e checkout simulato.",
-  '/portfolio/componenti/dashboard':        'Analytics Dashboard — metriche, grafici e transazioni con dati simulati in tempo reale.',
-  '/portfolio/componenti/booking':          'Booking System — prenota sessioni scegliendo servizio, data e orario.',
-  '/portfolio/componenti/music-player':     'Music Player — riproduttore con equalizzatore, visualizzatore e playlist.',
-  '/portfolio/componenti/crud-simulator':   'Gestionale Logistico — magazzino completo con filtri, form CRUD e monitor memoria.',
-  '/portfolio/componenti/slider':           'Expanding Gallery — galleria con pannelli espandibili e lightbox.',
-  '/portfolio/componenti/text-sampler':     'Text Sampler — effetti tipografici in CSS puro, selezionabili in tempo reale.',
-  '/portfolio/componenti/cubo-3d':          '3D Model — cubo interattivo ruotabile in tutte le direzioni, zero librerie esterne.',
-  '/portfolio/componenti/image-checker':    "Image Checker — lente d'ingrandimento su immagini caricate dall'utente.",
-  '/contatti':                              'Contatti — scrivi un messaggio o richiedi un preventivo. Ti risponderemo presto!',
-  '/privacy-policy':                        'Privacy Policy — informazioni sul trattamento dei tuoi dati personali.',
-  '/cookie-policy':                         'Cookie Policy — come utilizziamo i cookie su questo sito.',
-  '/termini-e-condizioni':                  'Termini e Condizioni — le regole di utilizzo del sito.',
+  '/':                                      'Questa è la nostra Home, consulta le varie sezioni per scoprire chi siamo e cosa facciamo.',
+  '/storia':                                'In questa sezione potrai osservare la nostra storia e le skills che ci hanno portato a essere quel che siamo.',
+  '/services':                              'In questa pagina sono presenti le mansioni e i lavori che attualmente svolgiamo.',
+  '/services/consulenze':                   'Consulenza digitale vuol dire strategia, analisi e supporto personalizzato in linea con la tua identità.',
+  '/services/sitiweb':                      'Non creiamo i soliti siti web, esplora questa pagina per scoprire come ci differenziamo.',
+  '/services/presenza':                     'Definire la propria identità mediatica è diventato imperativo per fare business di questi tempi, curiamo con zelo chi sei e come ti vedono i tuoi clienti.',
+  '/services/multimedia':                   'Creiamo video, suoni, e qualsiasi tipo di file multimediale adattandolo ai tuoi bisogni.',
+  '/portfolio':                             'Qui puoi vedere i nostri lavori migliori e degli esempi di cosa offriamo.',
+  '/portfolio/componenti':                  'Questo spazio è dedicato a mostrare alcuni campioni di lavori UI/UX.',
+  '/portfolio/grafiche':                    'Ecco alcuni campioni di illustrazioni e lavori di grafica.',
+  '/portfolio/sitiweb':                     'Ci scusiamo per il disagio, stiamo ottenendo i permessi necessari dai nostri precedenti datori di lavoro.',
+  '/portfolio/componenti/black-market':     'Questo componente è una simulazione di uno negozio online con generazione randomica per videogiochi.',
+  '/portfolio/componenti/dashboard':        'Un esempio di interfaccia utente con metriche, grafici e transazioni con dati che si popolano da database.',
+  '/portfolio/componenti/booking':          'Presentiamo un sistema di prenotazione facile e veloce, pensato per qualsiasi tipo di attività.',
+  '/portfolio/componenti/music-player':     'Il nostro riproduttore di tracce musicali, tutte le canzoni sono state prodotte da noi collaborando con altri artisti.',
+  '/portfolio/componenti/crud-simulator':   'Questo è un simulatore di operazioni gestionali e organizzazione di magazzino.',
+  '/portfolio/componenti/slider':           "Qui puoi osservare un'idea di visualizzazioni di foto a scorrimento, interamente in CSS.",
+  '/portfolio/componenti/text-sampler':     'Una breve dimostrazione di stilistica del testo.',
+  '/portfolio/componenti/cubo-3d':          'Modelli interattivi ruotabili in tutte le direzioni, zero librerie esterne.',
+  '/portfolio/componenti/image-checker':    'Esempio di visualizzatore di immagini con ingrandimento.',
+  '/contatti':                              'Usa il form per contattarci, ti risponderemo presto! :D',
+  '/privacy-policy':                        'Qui, trovi tutte le informazioni sul trattamento dei tuoi dati personali.',
+  '/cookie-policy':                         'Qui, puoi consultare come utilizziamo i cookie su questo sito.',
+  '/termini-e-condizioni':                  'Qui, puoi consultare le regole di utilizzo del nostro sito.',
+};
+
+/* ── File audio pre-registrati per ogni pagina ── */
+const PAGE_VOICES = {
+  '/':                                    '/audio/iris/iris-home.mp3',
+  '/storia':                              '/audio/iris/iris-storia.mp3',
+  '/services':                            '/audio/iris/iris-services.mp3',
+  '/services/consulenze':                 '/audio/iris/iris-consulenze.mp3',
+  '/services/sitiweb':                    '/audio/iris/iris-sitiweb.mp3',
+  '/services/presenza':                   '/audio/iris/iris-presenza.mp3',
+  '/services/multimedia':                 '/audio/iris/iris-multimedia.mp3',
+  '/portfolio':                           '/audio/iris/iris-portfolio.mp3',
+  '/portfolio/componenti':                '/audio/iris/iris-componenti.mp3',
+  '/portfolio/grafiche':                  '/audio/iris/iris-grafiche.mp3',
+  '/portfolio/sitiweb':                   '/audio/iris/iris-sitiweb-portfolio.mp3',
+  '/portfolio/componenti/black-market':   '/audio/iris/iris-black-market.mp3',
+  '/portfolio/componenti/dashboard':      '/audio/iris/iris-dashboard.mp3',
+  '/portfolio/componenti/booking':        '/audio/iris/iris-booking.mp3',
+  '/portfolio/componenti/music-player':   '/audio/iris/iris-music-player.mp3',
+  '/portfolio/componenti/crud-simulator': '/audio/iris/iris-crud.mp3',
+  '/portfolio/componenti/slider':         '/audio/iris/iris-slider.mp3',
+  '/portfolio/componenti/text-sampler':   '/audio/iris/iris-text-sampler.mp3',
+  '/portfolio/componenti/cubo-3d':        '/audio/iris/iris-cubo-3d.mp3',
+  '/portfolio/componenti/image-checker':  '/audio/iris/iris-image-checker.mp3',
+  '/contatti':                            '/audio/iris/iris-contatti.mp3',
+  '/privacy-policy':                      '/audio/iris/iris-privacy.mp3',
+  '/cookie-policy':                       '/audio/iris/iris-cookie.mp3',
+  '/termini-e-condizioni':                '/audio/iris/iris-termini.mp3',
 };
 
 const Iris = () => {
@@ -51,7 +89,24 @@ const Iris = () => {
   const location         = useLocation();
   const ref              = useRef(null);
   const greetingTimer    = useRef(null);
-  const isSpeech         = typeof window !== 'undefined' && 'speechSynthesis' in window;
+  const speechAudioRef   = useRef(null);
+  const greetingIdxRef   = useRef(0);
+
+  /* ── Audio helpers ── */
+  const stopVoice = useCallback(() => {
+    if (speechAudioRef.current) {
+      speechAudioRef.current.pause();
+      speechAudioRef.current = null;
+    }
+  }, []);
+
+  const playVoice = useCallback((path) => {
+    stopVoice();
+    if (!path) return;
+    const audio = new Audio(path);
+    speechAudioRef.current = audio;
+    audio.play().catch(() => {});
+  }, [stopVoice]);
 
   /* ── Clear hover guide on route change ── */
   useEffect(() => {
@@ -98,29 +153,28 @@ const Iris = () => {
     return () => clearInterval(id);
   }, [isActive]);
 
-  /* ── Cleanup ── */
-  useEffect(() => () => clearTimeout(greetingTimer.current), []);
+  /* ── Cleanup timers and audio on unmount ── */
+  useEffect(() => () => {
+    clearTimeout(greetingTimer.current);
+    stopVoice();
+  }, [stopVoice]);
 
-  /* ── TTS: speak bubbleText when it changes ── */
+  /* ── Play greeting voice when Iris opens ── */
   useEffect(() => {
-    if (!isSpeech) return;
-    if (!isActive || isMuted) { window.speechSynthesis.cancel(); return; }
-    const txt = greeting || (text || (PAGE_GUIDES[location.pathname] ?? null));
-    if (!txt) { window.speechSynthesis.cancel(); return; }
-    window.speechSynthesis.cancel();
-    const utter = new SpeechSynthesisUtterance(txt);
-    utter.lang  = 'it-IT';
-    utter.rate  = 1.05;
-    utter.pitch = 1.1;
-    const voices    = window.speechSynthesis.getVoices();
-    const itVoice   = voices.find(v => v.lang.startsWith('it'));
-    if (itVoice) utter.voice = itVoice;
-    window.speechSynthesis.speak(utter);
-    return () => window.speechSynthesis.cancel();
-  }, [greeting, text, isActive, isMuted, isSpeech, location.pathname]);
+    if (!greeting || isMuted) return;
+    playVoice(GREETING_VOICES[greetingIdxRef.current]);
+  }, [greeting, isMuted, playVoice]);
 
-  /* ── Cancel speech on unmount ── */
-  useEffect(() => () => { if (isSpeech) window.speechSynthesis.cancel(); }, [isSpeech]);
+  /* ── Play page guide voice on navigation (only when active) ── */
+  useEffect(() => {
+    if (!isActive || isMuted) return;
+    playVoice(PAGE_VOICES[location.pathname] ?? null);
+  }, [location.pathname, isActive, isMuted, playVoice]);
+
+  /* ── Stop voice when muted or deactivated ── */
+  useEffect(() => {
+    if (isMuted || !isActive) stopVoice();
+  }, [isMuted, isActive, stopVoice]);
 
   /* ── Mute toggle ── */
   const toggleMute = useCallback((e) => {
@@ -128,10 +182,9 @@ const Iris = () => {
     setIsMuted(prev => {
       const next = !prev;
       localStorage.setItem('iris-muted', next);
-      if (next && isSpeech) window.speechSynthesis.cancel();
       return next;
     });
-  }, [isSpeech]);
+  }, []);
 
   /* ── Toggle on/off ── */
   const handleToggle = () => {
@@ -145,7 +198,9 @@ const Iris = () => {
         setIsGlitching(false);
         setIsActive(true);
         setPupilPos({ x: 50, y: 50 });
-        const msg = GREETINGS[Math.floor(Math.random() * GREETINGS.length)];
+        const idx = Math.floor(Math.random() * GREETINGS.length);
+        greetingIdxRef.current = idx;
+        const msg = GREETINGS[idx];
         setGreeting(msg);
         greetingTimer.current = setTimeout(() => setGreeting(null), 4500);
       }, 650);
@@ -183,7 +238,7 @@ const Iris = () => {
 
       {/* ── Eye widget + mute button row ── */}
       <div className="iris-widget-row">
-        {isActive && isSpeech && (
+        {isActive && (
           <button
             className={`iris-mute-btn${isMuted ? ' iris-mute-btn--muted' : ''}`}
             onClick={toggleMute}
