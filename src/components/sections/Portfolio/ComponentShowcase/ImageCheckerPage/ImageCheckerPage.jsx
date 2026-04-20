@@ -136,7 +136,7 @@ const ImageCheckerPage = () => {
           onTouchMove={handleTouchMove}
           onTouchEnd={handleTouchEnd}
           onTouchCancel={handleTouchEnd}
-          onMouseEnter={() => setGuide('Area immagine — carica una tua immagine o usa quella di default. Muovi il cursore per esplorare i dettagli con la lente.')}
+          onMouseEnter={() => setGuide('Area immagine — muovi il cursore per esplorare i dettagli con la lente.')}
           onMouseLeave={clearGuide}
         >
           <img

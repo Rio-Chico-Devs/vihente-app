@@ -523,7 +523,7 @@ const Navbar = () => {
               aria-label="Vai alla pagina Servizi"
               aria-current={isActive('/services') ? 'page' : undefined}
               onClick={(e) => handleDesktopNavClick(e, '/services')}
-              onMouseEnter={() => setGuide('Scopri i miei servizi: web, grafica, multimedia e consulenze digitali.')}
+              onMouseEnter={() => setGuide('Scopri cosa possiamo fare per te!')}
               onMouseLeave={clearGuide}
             >
               <span className="nav-link-text">Servizi</span>
@@ -536,7 +536,7 @@ const Navbar = () => {
               aria-label="Vai alla pagina Portfolio"
               aria-current={isActive('/portfolio') ? 'page' : undefined}
               onClick={(e) => handleDesktopNavClick(e, '/portfolio')}
-              onMouseEnter={() => setGuide('Dai un\'occhiata ai miei lavori: componenti UI, siti web e grafiche.')}
+              onMouseEnter={() => setGuide("Dai un'occhiata ai miei precedenti lavori!")}
               onMouseLeave={clearGuide}
             >
               <span className="nav-link-text">Portfolio</span>
@@ -549,7 +549,7 @@ const Navbar = () => {
               aria-label="Vai alla pagina La Mia Storia"
               aria-current={isActive('/storia') ? 'page' : undefined}
               onClick={(e) => handleDesktopNavClick(e, '/storia')}
-              onMouseEnter={() => setGuide('Chi sono, da dove vengo e dove sto andando — la storia di Bruno.')}
+              onMouseEnter={() => setGuide('Il nostro percorso, i nostri studi e la nostra voglia di fare.')}
               onMouseLeave={clearGuide}
             >
               <span className="nav-link-text">La Mia Storia</span>

@@ -50,7 +50,134 @@ const PAGE_GUIDES = {
   '/termini-e-condizioni':                  'Qui, puoi consultare le regole di utilizzo del nostro sito.',
 };
 
-/* ── File audio pre-registrati per ogni pagina ── */
+/* ── Voci per i tooltip hover (setGuide) ── */
+const GUIDE_VOICES = {
+  /* Landing / generale */
+  'Questo badge verde significa che siamo disponibili per nuove collaborazioni. Non esitare a contattarci!':
+    '/audio/iris/iris-hover-badge.mp3',
+  'Scopri cosa possiamo fare per te!':
+    '/audio/iris/iris-hover-services-preview.mp3',
+  "Dai un'occhiata ai miei precedenti lavori!":
+    '/audio/iris/iris-hover-portfolio-preview.mp3',
+  "Guarda un pò chi abbiamo qui, è la mia persona preferita <3":
+    '/audio/iris/iris-hover-persona.mp3',
+  'Io ci cliccherei sopra.':
+    '/audio/iris/iris-hover-cliccarci.mp3',
+  "Mi sembra un'ottima idea e.e":
+    '/audio/iris/iris-hover-ottima-idea.mp3',
+  "E quella roba chi l'ha messa lì? o_o":
+    '/audio/iris/iris-hover-roba.mp3',
+
+  /* MyStory */
+  "Questa pagina spiega cosa so fare e cosa fa la mia figura professionale — dall'ideazione alla realizzazione.":
+    '/audio/iris/iris-hover-storia-desc.mp3',
+  'Il nostro percorso, i nostri studi e la nostra voglia di fare.':
+    '/audio/iris/iris-hover-storia-chi.mp3',
+
+  /* Services */
+  'Seleziona il servizio di cui hai bisogno: consulenza, grafica, sito web, social media o content creation.':
+    '/audio/iris/iris-hover-service-select.mp3',
+
+  /* Portfolio / Siti web WIP */
+  "Ci scusiamo per il momentaneo disagio — questa sezione è in aggiornamento e tornerà presto con i progetti!":
+    '/audio/iris/iris-hover-sitiweb-wip.mp3',
+
+  /* Contacts */
+  'Il tuo nome o il nome della tua azienda. Es: "Mario Rossi" o "Acme S.r.l."':
+    '/audio/iris/iris-hover-contact-name.mp3',
+  'La tua email: useremo questo indirizzo per risponderti. Es: "mario@gmail.com"':
+    '/audio/iris/iris-hover-contact-email.mp3',
+  'Spiegaci brevemente il motivo del contatto. Es: "Vorrei una collaborazione" o "Ho bisogno di informazioni"':
+    '/audio/iris/iris-hover-contact-message.mp3',
+  'Invia il modulo compilato — ti risponderemo il prima possibile!':
+    '/audio/iris/iris-hover-contact-send.mp3',
+  "Accetta la Privacy Policy per inviare il modulo — i tuoi dati vengono usati solo per risponderti.":
+    '/audio/iris/iris-hover-contact-privacy.mp3',
+
+  /* Booking */
+  'Indicatore di avanzamento — mostra in quale step della prenotazione ti trovi.':
+    '/audio/iris/iris-hover-booking-stepper.mp3',
+  'Scegli il servizio che ti interessa prenotare — ogni opzione ha durata e prezzo dedicati.':
+    '/audio/iris/iris-hover-booking-services.mp3',
+  'Calendario interattivo — seleziona il giorno disponibile per la tua prenotazione.':
+    '/audio/iris/iris-hover-booking-calendar.mp3',
+
+  /* Dashboard */
+  'Transazioni recenti — lista degli ultimi movimenti con importo, servizio e stato di pagamento.':
+    '/audio/iris/iris-hover-dash-transactions.mp3',
+  'Andamento fatturato — grafico a barre o lineare del fatturato nel periodo selezionato.':
+    '/audio/iris/iris-hover-dash-chart.mp3',
+  'Crescita settori — confronto visivo delle performance per area di business nel 2025.':
+    '/audio/iris/iris-hover-dash-sectors.mp3',
+  'Metriche ECG — indicatori di salute del business con trend animati in tempo reale.':
+    '/audio/iris/iris-hover-dash-ecg.mp3',
+  'Seleziona il periodo di analisi: 7 giorni, 30 giorni, 90 giorni o annuale.':
+    '/audio/iris/iris-hover-dash-period.mp3',
+
+  /* Music Player */
+  "Ed eccoci alla mia sezione preferita, metti un pò di musica ;D":
+    '/audio/iris/iris-hover-music-welcome.mp3',
+  "Visualizzatore — l'occhio reagisce al volume e al beat della musica in riproduzione.":
+    '/audio/iris/iris-hover-music-visualizer.mp3',
+  'Info traccia — titolo, artista, album, anno e genere del brano selezionato.':
+    '/audio/iris/iris-hover-music-info.mp3',
+  'Equalizzatore — regola bass, mid e treble per personalizzare il suono.':
+    '/audio/iris/iris-hover-music-eq.mp3',
+  'Playlist — seleziona un brano dalla lista per avviarne la riproduzione.':
+    '/audio/iris/iris-hover-music-playlist.mp3',
+  'Barra di avanzamento — mostra il progresso del brano. Clicca per saltare a un punto preciso.':
+    '/audio/iris/iris-hover-music-progress.mp3',
+
+  /* CRUD Simulator */
+  'Filtri — cerca per nome, filtra per magazzino e ordina i prodotti secondo le tue esigenze.':
+    '/audio/iris/iris-hover-crud-filters.mp3',
+  'Form prodotto — aggiungi un nuovo articolo al magazzino inserendo nome, categoria, quantità e prezzo.':
+    '/audio/iris/iris-hover-crud-form.mp3',
+  'Statistiche — panoramica del magazzino: prodotti totali, pezzi, valore e scorte in esaurimento.':
+    '/audio/iris/iris-hover-crud-stats.mp3',
+  'Tabella prodotti — visualizza, modifica o elimina ogni articolo del magazzino con le operazioni CRUD.':
+    '/audio/iris/iris-hover-crud-table.mp3',
+  'Monitor memoria — mostra quanta memoria simulata stanno occupando i dati del magazzino.':
+    '/audio/iris/iris-hover-crud-memory.mp3',
+
+  /* Femo's Black Market */
+  'Aggiungi prodotti, modifica le quantità e procedi al checkout.':
+    '/audio/iris/iris-hover-bm-cart.mp3',
+  "Inventario del mercato nero — ogni refresh cambia i prodotti disponibili con rarità casuali: common, rare, epic, legendary e mystery.":
+    '/audio/iris/iris-hover-bm-inventory.mp3',
+  "Psst... questo è Femo! Si irrita facilmente, quindi trattalo con rispetto.":
+    '/audio/iris/iris-hover-bm-femo.mp3',
+  'Questo è Femo — il mascotte del mercato. Commenta le tue azioni in tempo reale.':
+    '/audio/iris/iris-hover-bm-femo2.mp3',
+  "Rifornisce il negozio con nuovi prodotti casuali — ogni click cambia l'inventario.":
+    '/audio/iris/iris-hover-bm-restock.mp3',
+
+  /* Slider */
+  "Galleria espandibile — clicca su un pannello per espanderlo. Hover per vedere l'anteprima colorata.":
+    '/audio/iris/iris-hover-slider-gallery.mp3',
+  'Descrizione immagine — titolo e dettagli del pannello selezionato.':
+    '/audio/iris/iris-hover-slider-desc.mp3',
+  "Lightbox — visualizzazione a schermo intero dell'immagine selezionata. Clicca fuori per chiudere.":
+    '/audio/iris/iris-hover-slider-lightbox.mp3',
+
+  /* Text Sampler */
+  "Lista effetti — seleziona un effetto tipografico per vederlo applicato all'anteprima. Sono tutti realizzati in CSS puro.":
+    '/audio/iris/iris-hover-text-list.mp3',
+  'Anteprima live — mostra il testo con l\'effetto selezionato applicato in tempo reale.':
+    '/audio/iris/iris-hover-text-preview.mp3',
+
+  /* Cubo 3D */
+  'Viewport 3D — trascina per ruotare il cubo in tutte le direzioni. Zero librerie 3D: tutto in CSS puro con trasformazioni matriciali.':
+    '/audio/iris/iris-hover-cubo-viewport.mp3',
+
+  /* Image Checker */
+  'Area immagine — muovi il cursore per esplorare i dettagli con la lente.':
+    '/audio/iris/iris-hover-img-area.mp3',
+  "Attiva o disattiva la lente di ingrandimento — quando attiva segue il cursore sull'immagine.":
+    '/audio/iris/iris-hover-img-toggle.mp3',
+  'Info lente — stato, zoom e dimensione della lente attiva.':
+    '/audio/iris/iris-hover-img-info.mp3',
+};
 const PAGE_VOICES = {
   '/':                                    '/audio/iris/iris-home.mp3',
   '/storia':                              '/audio/iris/iris-storia.mp3',
@@ -87,10 +214,12 @@ const Iris = () => {
   const [isMuted,     setIsMuted]     = useState(() => localStorage.getItem('iris-muted') === 'true');
   const { text, clearGuide } = useGuide();
   const location         = useLocation();
-  const ref              = useRef(null);
-  const greetingTimer    = useRef(null);
-  const speechAudioRef   = useRef(null);
-  const greetingIdxRef   = useRef(0);
+  const ref                  = useRef(null);
+  const greetingTimer        = useRef(null);
+  const speechAudioRef       = useRef(null);
+  const greetingIdxRef       = useRef(0);
+  const hoverTimerRef        = useRef(null);
+  const greetingPlayingRef   = useRef(false);
 
   /* ── Audio helpers ── */
   const stopVoice = useCallback(() => {
@@ -98,6 +227,7 @@ const Iris = () => {
       speechAudioRef.current.pause();
       speechAudioRef.current = null;
     }
+    greetingPlayingRef.current = false;
   }, []);
 
   const playVoice = useCallback((path) => {
@@ -107,6 +237,24 @@ const Iris = () => {
     speechAudioRef.current = audio;
     audio.play().catch(() => {});
   }, [stopVoice]);
+
+  /* Play greeting, then page voice once greeting ends */
+  const playGreetingThenPage = useCallback((greetPath, pagePath) => {
+    stopVoice();
+    if (!greetPath) { if (pagePath) playVoice(pagePath); return; }
+    greetingPlayingRef.current = true;
+    const audio = new Audio(greetPath);
+    speechAudioRef.current = audio;
+    audio.onended = () => {
+      greetingPlayingRef.current = false;
+      speechAudioRef.current = null;
+      if (pagePath) playVoice(pagePath);
+    };
+    audio.play().catch(() => {
+      greetingPlayingRef.current = false;
+      if (pagePath) playVoice(pagePath);
+    });
+  }, [stopVoice, playVoice]);
 
   /* ── Clear hover guide on route change ── */
   useEffect(() => {
@@ -156,24 +304,33 @@ const Iris = () => {
   /* ── Cleanup timers and audio on unmount ── */
   useEffect(() => () => {
     clearTimeout(greetingTimer.current);
+    clearTimeout(hoverTimerRef.current);
     stopVoice();
   }, [stopVoice]);
 
-  /* ── Play greeting voice when Iris opens ── */
-  useEffect(() => {
-    if (!greeting || isMuted) return;
-    playVoice(GREETING_VOICES[greetingIdxRef.current]);
-  }, [greeting, isMuted, playVoice]);
-
-  /* ── Play page guide voice on navigation (only when active) ── */
+  /* ── Page voice on navigation (NOT on first activation — handled in handleToggle) ── */
   useEffect(() => {
     if (!isActive || isMuted) return;
     playVoice(PAGE_VOICES[location.pathname] ?? null);
-  }, [location.pathname, isActive, isMuted, playVoice]);
+  }, [location.pathname]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  /* ── Hover guide voice — debounced 400ms, never interrupts greeting ── */
+  useEffect(() => {
+    clearTimeout(hoverTimerRef.current);
+    if (!isActive || isMuted || !text) return;
+    hoverTimerRef.current = setTimeout(() => {
+      if (greetingPlayingRef.current) return;
+      const path = GUIDE_VOICES[text];
+      if (path) playVoice(path);
+    }, 400);
+  }, [text, isActive, isMuted, playVoice]);
 
   /* ── Stop voice when muted or deactivated ── */
   useEffect(() => {
-    if (isMuted || !isActive) stopVoice();
+    if (isMuted || !isActive) {
+      clearTimeout(hoverTimerRef.current);
+      stopVoice();
+    }
   }, [isMuted, isActive, stopVoice]);
 
   /* ── Mute toggle ── */
@@ -203,6 +360,13 @@ const Iris = () => {
         const msg = GREETINGS[idx];
         setGreeting(msg);
         greetingTimer.current = setTimeout(() => setGreeting(null), 4500);
+        /* Saluto → poi voce pagina in sequenza */
+        if (!isMuted) {
+          playGreetingThenPage(
+            GREETING_VOICES[idx],
+            PAGE_VOICES[location.pathname] ?? null
+          );
+        }
       }, 650);
     } else {
       /* Deactivate */
