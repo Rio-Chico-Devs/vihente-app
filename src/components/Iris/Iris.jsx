@@ -55,13 +55,13 @@ const GUIDE_VOICES = {
   /* Landing / generale */
   'Questo badge verde significa che siamo disponibili per nuove collaborazioni. Non esitare a contattarci!':
     '/audio/iris/iris-hover-badge.mp3',
-  'Scopri i miei servizi: web, grafica, multimedia e consulenze digitali.':
+  'Scopri cosa possiamo fare per te!':
     '/audio/iris/iris-hover-services-preview.mp3',
-  "Dai un'occhiata ai miei lavori: componenti UI, siti web e grafiche.":
+  "Dai un'occhiata ai miei precedenti lavori!":
     '/audio/iris/iris-hover-portfolio-preview.mp3',
   "Guarda un pò chi abbiamo qui, è la mia persona preferita <3":
     '/audio/iris/iris-hover-persona.mp3',
-  "Non riesco a resistere al bisogno di cliccarci su! -\\-":
+  'Io ci cliccherei sopra.':
     '/audio/iris/iris-hover-cliccarci.mp3',
   "Mi sembra un'ottima idea e.e":
     '/audio/iris/iris-hover-ottima-idea.mp3',
@@ -71,7 +71,7 @@ const GUIDE_VOICES = {
   /* MyStory */
   "Questa pagina spiega cosa so fare e cosa fa la mia figura professionale — dall'ideazione alla realizzazione.":
     '/audio/iris/iris-hover-storia-desc.mp3',
-  'Chi sono, da dove vengo e dove sto andando — la storia di Bruno.':
+  'Il nostro percorso, i nostri studi e la nostra voglia di fare.':
     '/audio/iris/iris-hover-storia-chi.mp3',
 
   /* Services */
@@ -141,7 +141,7 @@ const GUIDE_VOICES = {
     '/audio/iris/iris-hover-crud-memory.mp3',
 
   /* Femo's Black Market */
-  'Il tuo carrello — aggiungi prodotti, modifica le quantità e procedi al checkout cyberpunk.':
+  'Aggiungi prodotti, modifica le quantità e procedi al checkout.':
     '/audio/iris/iris-hover-bm-cart.mp3',
   "Inventario del mercato nero — ogni refresh cambia i prodotti disponibili con rarità casuali: common, rare, epic, legendary e mystery.":
     '/audio/iris/iris-hover-bm-inventory.mp3',
@@ -171,7 +171,7 @@ const GUIDE_VOICES = {
     '/audio/iris/iris-hover-cubo-viewport.mp3',
 
   /* Image Checker */
-  "Area immagine — carica una tua immagine o usa quella di default. Muovi il cursore per esplorare i dettagli con la lente.":
+  'Area immagine — muovi il cursore per esplorare i dettagli con la lente.':
     '/audio/iris/iris-hover-img-area.mp3',
   "Attiva o disattiva la lente di ingrandimento — quando attiva segue il cursore sull'immagine.":
     '/audio/iris/iris-hover-img-toggle.mp3',

@@ -862,7 +862,7 @@ const LandingPageOldEye = ({ startTime }) => {
                 className="eye-svg glitch-layer"
                 viewBox="0 0 1000 1000"
                 onClick={handleEyeClick}
-                onMouseEnter={() => setGuide('Non riesco a resistere al bisogno di cliccarci su! -\\-')}
+                onMouseEnter={() => setGuide('Io ci cliccherei sopra.')}
                 onMouseLeave={clearGuide}
                 style={{
                   cursor: 'pointer',

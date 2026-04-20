@@ -494,7 +494,7 @@ const FemosBlackMarketPage = () => {
         )}
 
         {currentPage === 'cart' && (
-          <div className="cart-section" onMouseEnter={() => setGuide('Il tuo carrello — aggiungi prodotti, modifica le quantità e procedi al checkout cyberpunk.')} onMouseLeave={clearGuide}>
+          <div className="cart-section" onMouseEnter={() => setGuide('Aggiungi prodotti, modifica le quantità e procedi al checkout.')} onMouseLeave={clearGuide}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem' }}>
               <h2 className="section-title persona-section-title">// INVENTARIO RUNNER //</h2>
               <div style={{ color: getTotalItems() >= CART_MAX_ITEMS ? '#ff0055' : '#0ff', fontSize: '1.1rem', fontWeight: '700' }}>
