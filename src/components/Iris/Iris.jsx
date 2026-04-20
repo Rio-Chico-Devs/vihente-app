@@ -73,10 +73,52 @@ const GUIDE_VOICES = {
     '/audio/iris/iris-hover-storia-desc.mp3',
   'Il nostro percorso, i nostri studi e la nostra voglia di fare.':
     '/audio/iris/iris-hover-storia-chi.mp3',
+  'da 7 anni ormai.':
+    '/audio/iris/iris-hover-skill-web.mp3',
+  'Il suo record è 20k followers per ora!':
+    '/audio/iris/iris-hover-skill-social.mp3',
+  'Penso che sia il suo lavoro preferito ^^':
+    '/audio/iris/iris-hover-skill-creator.mp3',
+  'Ha una matita in mano da quando è nato :V':
+    '/audio/iris/iris-hover-skill-illustratore.mp3',
+  'Non si è mai arreso, ha allenato e vinto molte competizioni di E-sports ;)':
+    '/audio/iris/iris-hover-skill-coach.mp3',
+  'Attualmente solo dove risiede.':
+    '/audio/iris/iris-hover-skill-linguistico.mp3',
+  'Con esperienza e alta formazione accademica.':
+    '/audio/iris/iris-hover-skill-traduttore.mp3',
 
   /* Services */
   'Seleziona il servizio di cui hai bisogno: consulenza, grafica, sito web, social media o content creation.':
     '/audio/iris/iris-hover-service-select.mp3',
+
+  /* Portfolio categories */
+  'Loghi, illustrazioni e materiali grafici — visual identity e comunicazione digitale.':
+    '/audio/iris/iris-hover-portfolio-grafiche.mp3',
+  'Siti web professionali realizzati per clienti — design e sviluppo su misura.':
+    '/audio/iris/iris-hover-portfolio-siti.mp3',
+  'Componenti React interattivi realizzati da zero — slider, player, dashboard, shop e molto altro.':
+    '/audio/iris/iris-hover-portfolio-componenti.mp3',
+
+  /* ComponentShowcase cards */
+  'Gallery/slider con animazioni, transizioni fluide e navigazione touch.':
+    '/audio/iris/iris-hover-comp-slider.mp3',
+  'Anteprima live di tutti i font e stili tipografici usati nel sito.':
+    '/audio/iris/iris-hover-comp-text.mp3',
+  'Cubo 3D interattivo con rotazione animata — CSS puro, zero librerie.':
+    '/audio/iris/iris-hover-comp-cubo.mp3',
+  'Player musicale con playlist, progress bar e visualizer grafico in tempo reale.':
+    '/audio/iris/iris-hover-comp-music.mp3',
+  'Simulatore di magazzino con operazioni CRUD complete e inventario gestito in stato.':
+    '/audio/iris/iris-hover-comp-crud.mp3',
+  'Shop cyberpunk con sistema di rarità, inventario randomico, carrello e checkout.':
+    '/audio/iris/iris-hover-comp-bm.mp3',
+  'Pannello analytics con grafici SVG, KPI, metriche ECG scrollanti e selezione periodo.':
+    '/audio/iris/iris-hover-comp-dashboard.mp3',
+  'Tool per caricare e analizzare immagini: dimensioni, colori dominanti e dettagli tecnici.':
+    '/audio/iris/iris-hover-comp-imagechecker.mp3',
+  'Sistema di prenotazione con calendario interattivo e gestione disponibilità.':
+    '/audio/iris/iris-hover-comp-booking.mp3',
 
   /* Portfolio / Siti web WIP */
   "Ci scusiamo per il momentaneo disagio — questa sezione è in aggiornamento e tornerà presto con i progetti!":
@@ -93,6 +135,10 @@ const GUIDE_VOICES = {
     '/audio/iris/iris-hover-contact-send.mp3',
   "Accetta la Privacy Policy per inviare il modulo — i tuoi dati vengono usati solo per risponderti.":
     '/audio/iris/iris-hover-contact-privacy.mp3',
+  'Descrivi il tuo progetto: obiettivi, tempi, budget e qualsiasi dettaglio utile per prepararti un preventivo preciso.':
+    '/audio/iris/iris-hover-contact-preventivo.mp3',
+  'Scrivi liberamente: presentati, racconta cosa cerchi e come possiamo aiutarti.':
+    '/audio/iris/iris-hover-contact-messaggio.mp3',
 
   /* Booking */
   'Indicatore di avanzamento — mostra in quale step della prenotazione ti trovi.':
