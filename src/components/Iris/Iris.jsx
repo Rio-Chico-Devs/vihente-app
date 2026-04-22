@@ -235,7 +235,7 @@ const PAGE_VOICES = {
   '/portfolio':                           '/audio/iris/iris-portfolio.opus',
   '/portfolio/componenti':                '/audio/iris/iris-componenti.opus',
   '/portfolio/grafiche':                  '/audio/iris/iris-grafiche.opus',
-  '/portfolio/sitiweb':                   '/audio/iris/iris-sitiweb-portfolio.opus',
+  '/portfolio/sitiweb':                   '/audio/iris/iris-siti-web-portfolio.opus',
   '/portfolio/componenti/black-market':   '/audio/iris/iris-black-market.opus',
   '/portfolio/componenti/dashboard':      '/audio/iris/iris-dashboard.opus',
   '/portfolio/componenti/booking':        '/audio/iris/iris-booking.opus',
