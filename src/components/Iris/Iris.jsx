@@ -263,17 +263,24 @@ const Iris = () => {
   const ref                  = useRef(null);
   const greetingTimer        = useRef(null);
   const speechAudioRef       = useRef(null);
+  const playPromiseRef       = useRef(null);
   const greetingIdxRef       = useRef(0);
   const hoverTimerRef        = useRef(null);
   const greetingPlayingRef   = useRef(false);
 
   /* ── Audio helpers ── */
   const stopVoice = useCallback(() => {
-    if (speechAudioRef.current) {
-      speechAudioRef.current.pause();
-      speechAudioRef.current = null;
-    }
     greetingPlayingRef.current = false;
+    const audio = speechAudioRef.current;
+    const promise = playPromiseRef.current;
+    speechAudioRef.current = null;
+    playPromiseRef.current = null;
+    if (!audio) return;
+    if (promise) {
+      promise.then(() => { try { audio.pause(); } catch (_) {} }).catch(() => {});
+    } else {
+      try { audio.pause(); } catch (_) {}
+    }
   }, []);
 
   const playVoice = useCallback((path) => {
@@ -281,7 +288,9 @@ const Iris = () => {
     if (!path) return;
     const audio = new Audio(path);
     speechAudioRef.current = audio;
-    audio.play().catch(() => {});
+    const p = audio.play();
+    playPromiseRef.current = p;
+    if (p) p.catch(() => { if (playPromiseRef.current === p) playPromiseRef.current = null; });
   }, [stopVoice]);
 
   /* Play greeting, then page voice once greeting ends */
@@ -294,10 +303,14 @@ const Iris = () => {
     audio.onended = () => {
       greetingPlayingRef.current = false;
       speechAudioRef.current = null;
+      playPromiseRef.current = null;
       if (pagePath) playVoice(pagePath);
     };
-    audio.play().catch(() => {
+    const p = audio.play();
+    playPromiseRef.current = p;
+    if (p) p.catch(() => {
       greetingPlayingRef.current = false;
+      playPromiseRef.current = null;
       if (pagePath) playVoice(pagePath);
     });
   }, [stopVoice, playVoice]);
