@@ -215,7 +215,7 @@ const ServicesPage = () => {
   return (
     <div
       className="services-page-wrapper"
-      onMouseEnter={() => setGuide('Questa pagina spiega cosa so fare e cosa fa la mia figura professionale — dall\'ideazione alla realizzazione.')}
+      onMouseEnter={() => setGuide('Visita questa sezione per conoscere la storia del titolare del sito')}
       onMouseLeave={clearGuide}
     >
       <div className="code-background" id="codeBackground"></div>

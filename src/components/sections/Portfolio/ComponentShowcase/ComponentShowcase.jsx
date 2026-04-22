@@ -13,9 +13,9 @@ const ComponentShowcase = () => {
     'cubo-3d':         'Cubo 3D interattivo con rotazione animata — CSS puro, zero librerie.',
     'music-player':    'Player musicale con playlist, progress bar e visualizer grafico in tempo reale.',
     'crud-simulator':  'Simulatore di magazzino con operazioni CRUD complete e inventario gestito in stato.',
-    'black-market':    'Shop cyberpunk con sistema di rarità, inventario randomico, carrello e checkout.',
+    'black-market':    'shop game con sistema di rarità, inventario randomico, carrello e checkout.',
     'dashboard':       'Pannello analytics con grafici SVG, KPI, metriche ECG scrollanti e selezione periodo.',
-    'image-checker':   'Tool per caricare e analizzare immagini: dimensioni, colori dominanti e dettagli tecnici.',
+    'image-checker':   'componente per analizzare immagini, con lente per focalizzare piccoli dettagli',
     'booking':         'Sistema di prenotazione con calendario interattivo e gestione disponibilità.',
   };
 

@@ -442,7 +442,7 @@ const FemosBlackMarketPage = () => {
 
         {currentPage === 'shop' && (
           <div className="products-section">
-            <div className="section-header" onMouseEnter={() => setGuide('Inventario del mercato nero — ogni refresh cambia i prodotti disponibili con rarità casuali: common, rare, epic, legendary e mystery.')} onMouseLeave={clearGuide}>
+            <div className="section-header" onMouseEnter={() => setGuide('Inventario del market, ogni refresh cambia i prodotti disponibili con rarità casuali.')} onMouseLeave={clearGuide}>
               <h2 className="section-title persona-section-title">// INVENTARIO //</h2>
             </div>
             <div className="products-grid">
@@ -616,7 +616,7 @@ const FemosBlackMarketPage = () => {
           </div>
         )}
 
-        <div className="mascot-container" onMouseEnter={() => setGuide('Questo è Femo — il mascotte del mercato. Commenta le tue azioni in tempo reale.')} onMouseLeave={clearGuide}>
+        <div className="mascot-container" onMouseEnter={() => setGuide("Questo è Femo — l'altra mascotte del mercato. Commenta le tue azioni in tempo reale.")} onMouseLeave={clearGuide}>
           <div className="mascot-bubble persona-bubble">
             <p className="mascot-text">{mascotMessage}</p>
           </div>

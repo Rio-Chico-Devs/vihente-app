@@ -348,7 +348,7 @@ const DashboardPage = () => {
           <div className="dash-center-col">
 
             {/* ZONA 2 — Grafico */}
-            <div className="dash-zone dash-zone-chart" onMouseEnter={() => setGuide('Andamento fatturato — grafico a barre o lineare del fatturato nel periodo selezionato.')} onMouseLeave={clearGuide}>
+            <div className="dash-zone dash-zone-chart" onMouseEnter={() => setGuide('Andamento del fatturato, grafico a barre o lineare del periodo selezionato.')} onMouseLeave={clearGuide}>
               <div className="zone-hd">
                 <h2 className="zone-title">Andamento Fatturato</h2>
                 <span className="zone-unit">{d.chartNote}</span>
@@ -360,7 +360,7 @@ const DashboardPage = () => {
             </div>
 
             {/* ZONA 4 — Settori */}
-            <div className="dash-zone dash-zone-sectors" onMouseEnter={() => setGuide('Crescita settori — confronto visivo delle performance per area di business nel 2025.')} onMouseLeave={clearGuide}>
+            <div className="dash-zone dash-zone-sectors" onMouseEnter={() => setGuide('Crescita settori — confronto visivo delle performance per area di business.')} onMouseLeave={clearGuide}>
               <div className="zone-hd">
                 <h2 className="zone-title">Crescita Settori 2025</h2>
                 <span className="zone-unit">dati simulati</span>

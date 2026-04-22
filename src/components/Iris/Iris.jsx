@@ -55,7 +55,7 @@ const GUIDE_VOICES = {
   /* Landing / generale */
   'Questo badge verde significa che siamo disponibili per nuove collaborazioni. Non esitare a contattarci!':
     '/audio/iris/iris-hover-badge.mp3',
-  'Scopri cosa possiamo fare per te!':
+  "Dai un'occhiata ad alcuni dei miei precedenti lavori":
     '/audio/iris/iris-hover-services-preview.mp3',
   "Dai un'occhiata ai miei precedenti lavori!":
     '/audio/iris/iris-hover-portfolio-preview.mp3',
@@ -69,14 +69,56 @@ const GUIDE_VOICES = {
     '/audio/iris/iris-hover-roba.mp3',
 
   /* MyStory */
-  "Questa pagina spiega cosa so fare e cosa fa la mia figura professionale — dall'ideazione alla realizzazione.":
+  'Visita questa sezione per conoscere la storia del titolare del sito':
     '/audio/iris/iris-hover-storia-desc.mp3',
   'Il nostro percorso, i nostri studi e la nostra voglia di fare.':
     '/audio/iris/iris-hover-storia-chi.mp3',
+  'da 7 anni ormai.':
+    '/audio/iris/iris-hover-skill-web.mp3',
+  'Il suo record è 20k followers per ora!':
+    '/audio/iris/iris-hover-skill-social.mp3',
+  'Penso che sia il suo lavoro preferito ^^':
+    '/audio/iris/iris-hover-skill-creator.mp3',
+  'Ha una matita in mano da quando è nato :V':
+    '/audio/iris/iris-hover-skill-illustratore.mp3',
+  'Non si è mai arreso, ha allenato giocatori e vinto molte competizioni di E-sports ;)':
+    '/audio/iris/iris-hover-skill-coach.mp3',
+  'Attualmente disponibile solo previa consultazione.':
+    '/audio/iris/iris-hover-skill-linguistico.mp3',
+  'Con esperienza e alta formazione accademica.':
+    '/audio/iris/iris-hover-skill-traduttore.mp3',
 
   /* Services */
   'Seleziona il servizio di cui hai bisogno: consulenza, grafica, sito web, social media o content creation.':
     '/audio/iris/iris-hover-service-select.mp3',
+
+  /* Portfolio categories */
+  'Loghi, illustrazioni e materiali grafici — visual identity e comunicazione digitale.':
+    '/audio/iris/iris-hover-portfolio-grafiche.mp3',
+  'Siti web professionali — design e sviluppo su misura.':
+    '/audio/iris/iris-hover-portfolio-siti.mp3',
+  'Componenti interattivi realizzati da zero — slider, player, dashboard, shop e molto altro.':
+    '/audio/iris/iris-hover-portfolio-componenti.mp3',
+
+  /* ComponentShowcase cards */
+  'Gallery/slider con animazioni, transizioni fluide e navigazione touch.':
+    '/audio/iris/iris-hover-comp-slider.mp3',
+  'Anteprima live di tutti i font e stili tipografici usati nel sito.':
+    '/audio/iris/iris-hover-comp-text.mp3',
+  'Cubo 3D interattivo con rotazione animata — CSS puro, zero librerie.':
+    '/audio/iris/iris-hover-comp-cubo.mp3',
+  'Player musicale con playlist, progress bar e visualizer grafico in tempo reale.':
+    '/audio/iris/iris-hover-comp-music.mp3',
+  'Simulatore di magazzino con operazioni CRUD complete e inventario gestito in stato.':
+    '/audio/iris/iris-hover-comp-crud.mp3',
+  'shop game con sistema di rarità, inventario randomico, carrello e checkout.':
+    '/audio/iris/iris-hover-comp-bm.mp3',
+  'Pannello analytics con grafici SVG, KPI, metriche ECG scrollanti e selezione periodo.':
+    '/audio/iris/iris-hover-comp-dashboard.mp3',
+  'componente per analizzare immagini, con lente per focalizzare piccoli dettagli':
+    '/audio/iris/iris-hover-comp-imagechecker.mp3',
+  'Sistema di prenotazione con calendario interattivo e gestione disponibilità.':
+    '/audio/iris/iris-hover-comp-booking.mp3',
 
   /* Portfolio / Siti web WIP */
   "Ci scusiamo per il momentaneo disagio — questa sezione è in aggiornamento e tornerà presto con i progetti!":
@@ -93,6 +135,10 @@ const GUIDE_VOICES = {
     '/audio/iris/iris-hover-contact-send.mp3',
   "Accetta la Privacy Policy per inviare il modulo — i tuoi dati vengono usati solo per risponderti.":
     '/audio/iris/iris-hover-contact-privacy.mp3',
+  'Descrivi il tuo progetto: obiettivi, tempi, budget e qualsiasi dettaglio utile per prepararti un preventivo preciso.':
+    '/audio/iris/iris-hover-contact-preventivo.mp3',
+  'Scrivi liberamente: dicci chi sei, racconta cosa cerchi e come possiamo aiutarti.':
+    '/audio/iris/iris-hover-contact-messaggio.mp3',
 
   /* Booking */
   'Indicatore di avanzamento — mostra in quale step della prenotazione ti trovi.':
@@ -105,9 +151,9 @@ const GUIDE_VOICES = {
   /* Dashboard */
   'Transazioni recenti — lista degli ultimi movimenti con importo, servizio e stato di pagamento.':
     '/audio/iris/iris-hover-dash-transactions.mp3',
-  'Andamento fatturato — grafico a barre o lineare del fatturato nel periodo selezionato.':
+  'Andamento del fatturato, grafico a barre o lineare del periodo selezionato.':
     '/audio/iris/iris-hover-dash-chart.mp3',
-  'Crescita settori — confronto visivo delle performance per area di business nel 2025.':
+  'Crescita settori — confronto visivo delle performance per area di business.':
     '/audio/iris/iris-hover-dash-sectors.mp3',
   'Metriche ECG — indicatori di salute del business con trend animati in tempo reale.':
     '/audio/iris/iris-hover-dash-ecg.mp3',
@@ -143,17 +189,17 @@ const GUIDE_VOICES = {
   /* Femo's Black Market */
   'Aggiungi prodotti, modifica le quantità e procedi al checkout.':
     '/audio/iris/iris-hover-bm-cart.mp3',
-  "Inventario del mercato nero — ogni refresh cambia i prodotti disponibili con rarità casuali: common, rare, epic, legendary e mystery.":
+  'Inventario del market, ogni refresh cambia i prodotti disponibili con rarità casuali.':
     '/audio/iris/iris-hover-bm-inventory.mp3',
-  "Psst... questo è Femo! Si irrita facilmente, quindi trattalo con rispetto.":
+  'Ti presento Femo! Si irrita facilmente, quindi trattalo con rispetto':
     '/audio/iris/iris-hover-bm-femo.mp3',
-  'Questo è Femo — il mascotte del mercato. Commenta le tue azioni in tempo reale.':
+  "Questo è Femo — l'altra mascotte del mercato. Commenta le tue azioni in tempo reale.":
     '/audio/iris/iris-hover-bm-femo2.mp3',
   "Rifornisce il negozio con nuovi prodotti casuali — ogni click cambia l'inventario.":
     '/audio/iris/iris-hover-bm-restock.mp3',
 
   /* Slider */
-  "Galleria espandibile — clicca su un pannello per espanderlo. Hover per vedere l'anteprima colorata.":
+  "Galleria espandibile — clicca su un pannello per espanderlo. Passaci sopra per vedere l'anteprima colorata.":
     '/audio/iris/iris-hover-slider-gallery.mp3',
   'Descrizione immagine — titolo e dettagli del pannello selezionato.':
     '/audio/iris/iris-hover-slider-desc.mp3',
@@ -167,7 +213,7 @@ const GUIDE_VOICES = {
     '/audio/iris/iris-hover-text-preview.mp3',
 
   /* Cubo 3D */
-  'Viewport 3D — trascina per ruotare il cubo in tutte le direzioni. Zero librerie 3D: tutto in CSS puro con trasformazioni matriciali.':
+  'Viewport 3D — trascina per ruotare il cubo in tutte le direzioni. Zero librerie 3D: tutto in CSS puro.':
     '/audio/iris/iris-hover-cubo-viewport.mp3',
 
   /* Image Checker */

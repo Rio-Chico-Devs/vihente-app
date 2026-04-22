@@ -14,8 +14,8 @@ const Portfolio = () => {
 
   const categoryGuide = {
     grafiche:    'Loghi, illustrazioni e materiali grafici — visual identity e comunicazione digitale.',
-    sitiweb:     'Siti web professionali realizzati per clienti — design e sviluppo su misura.',
-    componenti:  'Componenti React interattivi realizzati da zero — slider, player, dashboard, shop e molto altro.',
+    sitiweb:     'Siti web professionali — design e sviluppo su misura.',
+    componenti:  'Componenti interattivi realizzati da zero — slider, player, dashboard, shop e molto altro.',
   };
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [isFlipped, setIsFlipped] = useState(false);
