@@ -129,7 +129,7 @@ const SliderPage = () => {
         className="expanding-container"
         ref={containerRef}
         onTouchMove={handleTouchMove}
-        onMouseEnter={() => setGuide('Galleria espandibile — clicca su un pannello per espanderlo. Hover per vedere l\'anteprima colorata.')}
+        onMouseEnter={() => setGuide("Galleria espandibile — clicca su un pannello per espanderlo. Passaci sopra per vedere l'anteprima colorata.")}
         onMouseLeave={clearGuide}
       >
         {images.map((image, index) => (

@@ -112,7 +112,7 @@ const Cubo3DPage = () => {
           onMouseDown={handleMouseDown}
           onTouchStart={handleTouchStart}
           style={{ cursor: isDragging ? 'grabbing' : 'grab' }}
-          onMouseEnter={() => setGuide('Viewport 3D — trascina per ruotare il cubo in tutte le direzioni. Zero librerie 3D: tutto in CSS puro con trasformazioni matriciali.')}
+          onMouseEnter={() => setGuide('Viewport 3D — trascina per ruotare il cubo in tutte le direzioni. Zero librerie 3D: tutto in CSS puro.')}
           onMouseLeave={clearGuide}
         >
           <div 

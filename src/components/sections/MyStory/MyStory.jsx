@@ -9,8 +9,8 @@ const MyStory = () => {
     { name: 'Social Media',              guide: 'Il suo record è 20k followers per ora!' },
     { name: 'Creator Digitale',          guide: 'Penso che sia il suo lavoro preferito ^^' },
     { name: 'Illustratore',              guide: 'Ha una matita in mano da quando è nato :V' },
-    { name: 'Coach',                     guide: 'Non si è mai arreso, ha allenato e vinto molte competizioni di E-sports ;)' },
-    { name: 'Intermediatore Linguistico',guide: 'Attualmente solo dove risiede.' },
+    { name: 'Coach',                     guide: 'Non si è mai arreso, ha allenato giocatori e vinto molte competizioni di E-sports ;)' },
+    { name: 'Intermediatore Linguistico',guide: 'Attualmente disponibile solo previa consultazione.' },
     { name: 'Traduttore',                guide: 'Con esperienza e alta formazione accademica.' },
   ];
 

@@ -378,7 +378,7 @@ const Contacts = () => {
                   aria-describedby={errors.message ? "message-error" : undefined}
                   onMouseEnter={() => setGuide(isQuoteMode
                     ? 'Descrivi il tuo progetto: obiettivi, tempi, budget e qualsiasi dettaglio utile per prepararti un preventivo preciso.'
-                    : 'Scrivi liberamente: presentati, racconta cosa cerchi e come possiamo aiutarti.')}
+                    : 'Scrivi liberamente: dicci chi sei, racconta cosa cerchi e come possiamo aiutarti.')}
                   onMouseLeave={clearGuide}
                 />
                 {errors.message && (

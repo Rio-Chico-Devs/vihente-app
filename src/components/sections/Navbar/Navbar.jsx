@@ -371,7 +371,7 @@ const Navbar = () => {
             className={`navbar-logo ${mobileMenuOpen ? 'menu-open' : ''}`}
             aria-label="Torna alla home"
             onClick={handleLogoClick}
-            onMouseEnter={() => setGuide('Psst... questo è Femo! Si irrita facilmente, quindi trattalo con rispetto.')}
+            onMouseEnter={() => setGuide('Ti presento Femo! Si irrita facilmente, quindi trattalo con rispetto')}
             onMouseLeave={clearGuide}
           >
             {/* Desktop: plain eye */}
@@ -523,7 +523,7 @@ const Navbar = () => {
               aria-label="Vai alla pagina Servizi"
               aria-current={isActive('/services') ? 'page' : undefined}
               onClick={(e) => handleDesktopNavClick(e, '/services')}
-              onMouseEnter={() => setGuide('Scopri cosa possiamo fare per te!')}
+              onMouseEnter={() => setGuide("Dai un'occhiata ad alcuni dei miei precedenti lavori")}
               onMouseLeave={clearGuide}
             >
               <span className="nav-link-text">Servizi</span>
