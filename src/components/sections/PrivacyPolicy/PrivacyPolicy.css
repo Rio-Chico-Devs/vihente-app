@@ -1,5 +1,5 @@
 .privacy-policy-container {
-  min-height: 100vh;
+  min-height: 100dvh;
   background: var(--bg-black);
   color: var(--text-primary-95);
   padding: 160px 2rem 120px 2rem;

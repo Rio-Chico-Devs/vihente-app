@@ -1,7 +1,7 @@
 .theme-toggle {
   position: fixed;
-  bottom: var(--spacing-lg);
-  right: var(--spacing-lg);
+  bottom: calc(var(--spacing-lg) + env(safe-area-inset-bottom));
+  right: calc(var(--spacing-lg) + env(safe-area-inset-right));
   z-index: 9999;
   display: flex;
   flex-direction: column;

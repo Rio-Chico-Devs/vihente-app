@@ -1,5 +1,5 @@
 .text-sampler-page {
-  height: 100vh;
+  height: 100dvh;
   width: 100vw;
   background: var(--color-background, #000);
   position: relative;
@@ -8,7 +8,7 @@
 
 .text-sampler-container {
   width: 100%;
-  height: 100vh;
+  height: 100dvh;
   display: flex;
   align-items: center;
   justify-content: center;

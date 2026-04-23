@@ -5,7 +5,7 @@
 .image-checker-page {
   background: var(--color-background, #000);
   color: var(--color-text, #fff);
-  min-height: 100vh;
+  min-height: 100dvh;
   position: relative;
   overflow: hidden;
   font-family: 'Share Tech Mono', monospace;
@@ -296,7 +296,7 @@
 
 @media (min-width: 769px) {
   .image-checker-page {
-    height: 100vh;
+    height: 100dvh;
     padding: 0;
     padding-top: 160px;
     padding-bottom: 160px;
@@ -309,8 +309,8 @@
     grid-template-rows: 1fr;
     gap: 2rem;
     padding: 1.5rem;
-    height: calc(100vh - 320px);
-    max-height: calc(100vh - 320px);
+    height: calc(100dvh - 320px);
+    max-height: calc(100dvh - 320px);
     overflow: hidden;
   }
 

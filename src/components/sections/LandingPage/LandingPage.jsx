@@ -388,8 +388,8 @@ const LandingPageOldEye = ({ startTime }) => {
     <div style={{
       background: colors.bg,
       color: colors.text,
-      minHeight: '100vh',
-      height: '100vh',
+      minHeight: '100dvh',
+      height: '100dvh',
       overflow: 'hidden',
       position: 'relative',
       fontFamily: "'Share Tech Mono', monospace",
@@ -605,8 +605,8 @@ const LandingPageOldEye = ({ startTime }) => {
 
         .landing-page-main {
           padding: 0.75rem !important;
-          min-height: 100vh !important;
-          height: 100vh !important;
+          min-height: 100dvh !important;
+          height: 100dvh !important;
           display: flex !important;
           align-items: center !important;
           justify-content: center !important;
