@@ -1,5 +1,5 @@
 .expanding-gallery {
-  min-height: 100vh;
+  min-height: 100dvh;
   width: 100vw;
   background: var(--color-background, #000);
   display: flex;

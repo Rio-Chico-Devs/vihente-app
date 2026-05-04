@@ -5,13 +5,13 @@ import './MyStory.css';
 const MyStory = () => {
   const { setGuide, clearGuide } = useGuide();
   const skills = [
-    { name: 'Sviluppatore Web',          guide: 'da 7 anni ormai.' },
-    { name: 'Social Media',              guide: 'Il suo record è 20k followers per ora!' },
-    { name: 'Creator Digitale',          guide: 'Penso che sia il suo lavoro preferito ^^' },
-    { name: 'Illustratore',              guide: 'Ha una matita in mano da quando è nato :V' },
-    { name: 'Coach',                     guide: 'Non si è mai arreso, ha allenato giocatori e vinto molte competizioni di E-sports ;)' },
-    { name: 'Intermediatore Linguistico',guide: 'Attualmente disponibile solo previa consultazione.' },
-    { name: 'Traduttore',                guide: 'Con esperienza e alta formazione accademica.' },
+    { name: 'Sviluppatore Web',   guide: 'Ho lavorato per anni nell\'ambito del web design sia nel lato front end che backend, seguo continuamente gli aggiornamenti nel mio campo, è un lavoro continuo, che richiede impegno costante.' },
+    { name: 'Social Media',       guide: 'Gestendo vari account social, comprendo e conosco a fondo le complessità della gestione dei social più importanti.' },
+    { name: 'Creator Digitale',   guide: 'Da anni creo grafiche e contenuti di vario tipo per un audience varia ed esigente, so dove colpire e sono sempre aggiornato sulle ultime tendenze.' },
+    { name: 'Illustratore',       guide: 'Sono un illustratore professionale da più di 10 anni, che sia arte digitale e non, sono sempre pronto a creare qualcosa di nuovo.' },
+    { name: 'Esperto linguistico',guide: 'Ho studiato in vari parti del mondo approfondendo culture e lingue, credo che siano skills importanti in un ambiente dove l\'esperienza dell\'utente viene prima di tutto.' },
+    { name: 'Assistenza clienti', guide: 'Ho lavorato spesso a contatto con il pubblico, so capire le esigenze di un cliente e trovare una soluzione coerente con le risorse a disposizione.' },
+    { name: 'Reselling',          guide: 'Ho esperienza pratica in operazioni di reselling con recensioni perfette e un lungo storico di operazioni di trading.' },
   ];
 
   // Typewriter code background effect
@@ -75,9 +75,9 @@ const MyStory = () => {
         {/* Skills - Left */}
         <div className="mystory-skills">
           <h3 className="mystory-skills-title">Skills</h3>
-          {skills.map((skill, index) => (
+          {skills.map((skill) => (
             <div
-              key={index}
+              key={skill.name}
               className="mystory-skill-item"
               onMouseEnter={() => setGuide(skill.guide)}
               onMouseLeave={clearGuide}
@@ -89,7 +89,11 @@ const MyStory = () => {
 
         {/* Center - Bio + Languages */}
         <div className="mystory-center">
-          <div className="mystory-box">
+          <div
+            className="mystory-box"
+            onMouseEnter={() => setGuide('Il nostro percorso, i nostri studi e la nostra voglia di fare.')}
+            onMouseLeave={clearGuide}
+          >
             <h1 className="mystory-title">CHI SONO</h1>
             <p className="mystory-text">
               Ciao, sono Antonio e sono un Consulente Digitale specializzato in grafiche e contenuti multimediali.
@@ -115,10 +119,12 @@ const MyStory = () => {
         >
           <div className="mystory-photo">
             <img
-      src="/images/AVBPT.webp"
-      alt="Antonio - Consulente Digitale"
-      className="mystory-photo-img"
-    />
+              src="/images/AVBPT.webp"
+              alt="Antonio - Consulente Digitale"
+              className="mystory-photo-img"
+              loading="lazy"
+              decoding="async"
+            />
           </div>
         </div>
       </div>

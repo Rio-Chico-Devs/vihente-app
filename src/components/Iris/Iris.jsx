@@ -14,12 +14,12 @@ const GREETINGS = [
 
 /* ── File audio pre-registrati — stessa posizione di GREETINGS ── */
 const GREETING_VOICES = [
-  '/audio/iris/iris-g0.opus',
-  '/audio/iris/iris-g1.opus',
-  '/audio/iris/iris-g2.opus',
-  '/audio/iris/iris-g3.opus',
-  '/audio/iris/iris-g4.opus',
-  '/audio/iris/iris-g5.opus',
+  '/audio/iris/iris-g0.ogg',
+  '/audio/iris/iris-g1.ogg',
+  '/audio/iris/iris-g2.ogg',
+  '/audio/iris/iris-g3.ogg',
+  '/audio/iris/iris-g4.ogg',
+  '/audio/iris/iris-g5.ogg',
 ];
 
 /* ── Guide text per ogni pagina/sezione ── */
@@ -54,201 +54,213 @@ const PAGE_GUIDES = {
 const GUIDE_VOICES = {
   /* Landing / generale */
   'Questo badge verde significa che siamo disponibili per nuove collaborazioni. Non esitare a contattarci!':
-    '/audio/iris/iris-hover-badge.opus',
+    '/audio/iris/iris-hover-badge.ogg',
   "Dai un'occhiata ad alcuni dei miei precedenti lavori":
-    '/audio/iris/iris-hover-services-preview.opus',
+    '/audio/iris/iris-hover-services-preview.ogg',
   "Dai un'occhiata ai miei precedenti lavori!":
-    '/audio/iris/iris-hover-portfolio-preview.opus',
+    '/audio/iris/iris-hover-portfolio-preview.ogg',
   "Guarda un pò chi abbiamo qui, è la mia persona preferita <3":
-    '/audio/iris/iris-hover-persona.opus',
+    '/audio/iris/iris-hover-persona.ogg',
   'Io ci cliccherei sopra.':
-    '/audio/iris/iris-hover-cliccarci.opus',
+    '/audio/iris/iris-hover-cliccarci.ogg',
   "Mi sembra un'ottima idea e.e":
-    '/audio/iris/iris-hover-ottima-idea.opus',
+    '/audio/iris/iris-hover-ottima-idea.ogg',
   "E quella roba chi l'ha messa lì? o_o":
-    '/audio/iris/iris-hover-roba.opus',
+    '/audio/iris/iris-hover-roba.ogg',
 
   /* MyStory */
   'Visita questa sezione per conoscere la storia del titolare del sito':
-    '/audio/iris/iris-hover-storia-desc.opus',
+    '/audio/iris/iris-hover-storia-desc.ogg',
   'Il nostro percorso, i nostri studi e la nostra voglia di fare.':
-    '/audio/iris/iris-hover-storia-chi.opus',
-  'da 7 anni ormai.':
-    '/audio/iris/iris-hover-skill-web.opus',
-  'Il suo record è 20k followers per ora!':
-    '/audio/iris/iris-hover-skill-social.opus',
-  'Penso che sia il suo lavoro preferito ^^':
-    '/audio/iris/iris-hover-skill-creator.opus',
-  'Ha una matita in mano da quando è nato :V':
-    '/audio/iris/iris-hover-skill-illustratore.opus',
-  'Non si è mai arreso, ha allenato giocatori e vinto molte competizioni di E-sports ;)':
-    '/audio/iris/iris-hover-skill-coach.opus',
-  'Attualmente disponibile solo previa consultazione.':
-    '/audio/iris/iris-hover-skill-linguistico.opus',
-  'Con esperienza e alta formazione accademica.':
-    '/audio/iris/iris-hover-skill-traduttore.opus',
+    '/audio/iris/iris-hover-storia-chi.ogg',
+  'Ho lavorato per anni nell\'ambito del web design sia nel lato front end che backend, seguo continuamente gli aggiornamenti nel mio campo, è un lavoro continuo, che richiede impegno costante.':
+    '/audio/iris/iris-hover-skill-web.ogg',
+  'Gestendo vari account social, comprendo e conosco a fondo le complessità della gestione dei social più importanti.':
+    '/audio/iris/iris-hover-skill-social.ogg',
+  'Da anni creo grafiche e contenuti di vario tipo per un audience varia ed esigente, so dove colpire e sono sempre aggiornato sulle ultime tendenze.':
+    '/audio/iris/iris-hover-skill-creator.ogg',
+  'Sono un illustratore professionale da più di 10 anni, che sia arte digitale e non, sono sempre pronto a creare qualcosa di nuovo.':
+    '/audio/iris/iris-hover-skill-illustratore.ogg',
+  'Ho studiato in vari parti del mondo approfondendo culture e lingue, credo che siano skills importanti in un ambiente dove l\'esperienza dell\'utente viene prima di tutto.':
+    '/audio/iris/iris-hover-skill-linguistico.ogg',
+  'Ho lavorato spesso a contatto con il pubblico, so capire le esigenze di un cliente e trovare una soluzione coerente con le risorse a disposizione.':
+    '/audio/iris/iris-hover-skill-assistenza.ogg',
+  'Ho esperienza pratica in operazioni di reselling con recensioni perfette e un lungo storico di operazioni di trading.':
+    '/audio/iris/iris-hover-skill-reselling.ogg',
 
   /* Services */
   'Seleziona il servizio di cui hai bisogno: consulenza, grafica, sito web, social media o content creation.':
-    '/audio/iris/iris-hover-service-select.opus',
+    '/audio/iris/iris-hover-service-select.ogg',
+  'Ti aiutiamo a capire cosa fa al caso tuo':
+    '/audio/iris/iris-hover-service-consulenze.ogg',
+  'Ti aiutiamo a creare il tuo sito web':
+    '/audio/iris/iris-hover-service-sitiweb.ogg',
+  'Ti aiutiamo a crescere sui social':
+    '/audio/iris/iris-hover-service-presenza.ogg',
+  'Creiamo i tuoi contenuti su misura':
+    '/audio/iris/iris-hover-service-multimedia.ogg',
+
+  /* GraficheShowcase cards */
+  'Trascina per ruotare, clicca per aprire i dettagli del progetto.':
+    '/audio/iris/iris-hover-grafiche-card.ogg',
 
   /* Portfolio categories */
   'Loghi, illustrazioni e materiali grafici — visual identity e comunicazione digitale.':
-    '/audio/iris/iris-hover-portfolio-grafiche.opus',
+    '/audio/iris/iris-hover-portfolio-grafiche.ogg',
   'Siti web professionali — design e sviluppo su misura.':
-    '/audio/iris/iris-hover-portfolio-siti.opus',
+    '/audio/iris/iris-hover-portfolio-siti.ogg',
   'Componenti interattivi realizzati da zero — slider, player, dashboard, shop e molto altro.':
-    '/audio/iris/iris-hover-portfolio-componenti.opus',
+    '/audio/iris/iris-hover-portfolio-componenti.ogg',
 
   /* ComponentShowcase cards */
   'Gallery/slider con animazioni, transizioni fluide e navigazione touch.':
-    '/audio/iris/iris-hover-comp-slider.opus',
+    '/audio/iris/iris-hover-comp-slider.ogg',
   'Anteprima live di tutti i font e stili tipografici usati nel sito.':
-    '/audio/iris/iris-hover-comp-text.opus',
+    '/audio/iris/iris-hover-comp-text.ogg',
   'Cubo 3D interattivo con rotazione animata — CSS puro, zero librerie.':
-    '/audio/iris/iris-hover-comp-cubo.opus',
+    '/audio/iris/iris-hover-comp-cubo.ogg',
   'Player musicale con playlist, progress bar e visualizer grafico in tempo reale.':
-    '/audio/iris/iris-hover-comp-music.opus',
+    '/audio/iris/iris-hover-comp-music.ogg',
   'Simulatore di magazzino con operazioni CRUD complete e inventario gestito in stato.':
-    '/audio/iris/iris-hover-comp-crud.opus',
+    '/audio/iris/iris-hover-comp-crud.ogg',
   'shop game con sistema di rarità, inventario randomico, carrello e checkout.':
-    '/audio/iris/iris-hover-comp-bm.opus',
+    '/audio/iris/iris-hover-comp-bm.ogg',
   'Pannello analytics con grafici SVG, KPI, metriche ECG scrollanti e selezione periodo.':
-    '/audio/iris/iris-hover-comp-dashboard.opus',
+    '/audio/iris/iris-hover-comp-dashboard.ogg',
   'componente per analizzare immagini, con lente per focalizzare piccoli dettagli':
-    '/audio/iris/iris-hover-comp-imagechecker.opus',
+    '/audio/iris/iris-hover-comp-imagechecker.ogg',
   'Sistema di prenotazione con calendario interattivo e gestione disponibilità.':
-    '/audio/iris/iris-hover-comp-booking.opus',
+    '/audio/iris/iris-hover-comp-booking.ogg',
 
   /* Portfolio / Siti web WIP */
   "Ci scusiamo per il momentaneo disagio — questa sezione è in aggiornamento e tornerà presto con i progetti!":
-    '/audio/iris/iris-hover-sitiweb-wip.opus',
+    '/audio/iris/iris-hover-sitiweb-wip.ogg',
 
   /* Contacts */
   'Il tuo nome o il nome della tua azienda. Es: "Mario Rossi" o "Acme S.r.l."':
-    '/audio/iris/iris-hover-contact-name.opus',
+    '/audio/iris/iris-hover-contact-name.ogg',
   'La tua email: useremo questo indirizzo per risponderti. Es: "mario@gmail.com"':
-    '/audio/iris/iris-hover-contact-email.opus',
+    '/audio/iris/iris-hover-contact-email.ogg',
   'Spiegaci brevemente il motivo del contatto. Es: "Vorrei una collaborazione" o "Ho bisogno di informazioni"':
-    '/audio/iris/iris-hover-contact-message.opus',
+    '/audio/iris/iris-hover-contact-message.ogg',
   'Invia il modulo compilato — ti risponderemo il prima possibile!':
-    '/audio/iris/iris-hover-contact-send.opus',
+    '/audio/iris/iris-hover-contact-send.ogg',
   "Accetta la Privacy Policy per inviare il modulo — i tuoi dati vengono usati solo per risponderti.":
-    '/audio/iris/iris-hover-contact-privacy.opus',
+    '/audio/iris/iris-hover-contact-privacy.ogg',
   'Descrivi il tuo progetto: obiettivi, tempi, budget e qualsiasi dettaglio utile per prepararti un preventivo preciso.':
-    '/audio/iris/iris-hover-contact-preventivo.opus',
+    '/audio/iris/iris-hover-contact-preventivo.ogg',
   'Scrivi liberamente: dicci chi sei, racconta cosa cerchi e come possiamo aiutarti.':
-    '/audio/iris/iris-hover-contact-messaggio.opus',
+    '/audio/iris/iris-hover-contact-messaggio.ogg',
 
   /* Booking */
   'Indicatore di avanzamento — mostra in quale step della prenotazione ti trovi.':
-    '/audio/iris/iris-hover-booking-stepper.opus',
+    '/audio/iris/iris-hover-booking-stepper.ogg',
   'Scegli il servizio che ti interessa prenotare — ogni opzione ha durata e prezzo dedicati.':
-    '/audio/iris/iris-hover-booking-services.opus',
+    '/audio/iris/iris-hover-booking-services.ogg',
   'Calendario interattivo — seleziona il giorno disponibile per la tua prenotazione.':
-    '/audio/iris/iris-hover-booking-calendar.opus',
+    '/audio/iris/iris-hover-booking-calendar.ogg',
 
   /* Dashboard */
   'Transazioni recenti — lista degli ultimi movimenti con importo, servizio e stato di pagamento.':
-    '/audio/iris/iris-hover-dash-transactions.opus',
+    '/audio/iris/iris-hover-dash-transactions.ogg',
   'Andamento del fatturato, grafico a barre o lineare del periodo selezionato.':
-    '/audio/iris/iris-hover-dash-chart.opus',
+    '/audio/iris/iris-hover-dash-chart.ogg',
   'Crescita settori — confronto visivo delle performance per area di business.':
-    '/audio/iris/iris-hover-dash-sectors.opus',
+    '/audio/iris/iris-hover-dash-sectors.ogg',
   'Metriche ECG — indicatori di salute del business con trend animati in tempo reale.':
-    '/audio/iris/iris-hover-dash-ecg.opus',
+    '/audio/iris/iris-hover-dash-ecg.ogg',
   'Seleziona il periodo di analisi: 7 giorni, 30 giorni, 90 giorni o annuale.':
-    '/audio/iris/iris-hover-dash-period.opus',
+    '/audio/iris/iris-hover-dash-period.ogg',
 
   /* Music Player */
   "Ed eccoci alla mia sezione preferita, metti un pò di musica ;D":
-    '/audio/iris/iris-hover-music-welcome.opus',
+    '/audio/iris/iris-hover-music-welcome.ogg',
   "Visualizzatore — l'occhio reagisce al volume e al beat della musica in riproduzione.":
-    '/audio/iris/iris-hover-music-visualizer.opus',
+    '/audio/iris/iris-hover-music-visualizer.ogg',
   'Info traccia — titolo, artista, album, anno e genere del brano selezionato.':
-    '/audio/iris/iris-hover-music-info.opus',
+    '/audio/iris/iris-hover-music-info.ogg',
   'Equalizzatore — regola bass, mid e treble per personalizzare il suono.':
-    '/audio/iris/iris-hover-music-eq.opus',
+    '/audio/iris/iris-hover-music-eq.ogg',
   'Playlist — seleziona un brano dalla lista per avviarne la riproduzione.':
-    '/audio/iris/iris-hover-music-playlist.opus',
+    '/audio/iris/iris-hover-music-playlist.ogg',
   'Barra di avanzamento — mostra il progresso del brano. Clicca per saltare a un punto preciso.':
-    '/audio/iris/iris-hover-music-progress.opus',
+    '/audio/iris/iris-hover-music-progress.ogg',
 
   /* CRUD Simulator */
   'Filtri — cerca per nome, filtra per magazzino e ordina i prodotti secondo le tue esigenze.':
-    '/audio/iris/iris-hover-crud-filters.opus',
+    '/audio/iris/iris-hover-crud-filters.ogg',
   'Form prodotto — aggiungi un nuovo articolo al magazzino inserendo nome, categoria, quantità e prezzo.':
-    '/audio/iris/iris-hover-crud-form.opus',
+    '/audio/iris/iris-hover-crud-form.ogg',
   'Statistiche — panoramica del magazzino: prodotti totali, pezzi, valore e scorte in esaurimento.':
-    '/audio/iris/iris-hover-crud-stats.opus',
+    '/audio/iris/iris-hover-crud-stats.ogg',
   'Tabella prodotti — visualizza, modifica o elimina ogni articolo del magazzino con le operazioni CRUD.':
-    '/audio/iris/iris-hover-crud-table.opus',
+    '/audio/iris/iris-hover-crud-table.ogg',
   'Monitor memoria — mostra quanta memoria simulata stanno occupando i dati del magazzino.':
-    '/audio/iris/iris-hover-crud-memory.opus',
+    '/audio/iris/iris-hover-crud-memory.ogg',
 
   /* Femo's Black Market */
   'Aggiungi prodotti, modifica le quantità e procedi al checkout.':
-    '/audio/iris/iris-hover-bm-cart.opus',
+    '/audio/iris/iris-hover-bm-cart.ogg',
   'Inventario del market, ogni refresh cambia i prodotti disponibili con rarità casuali.':
-    '/audio/iris/iris-hover-bm-inventory.opus',
+    '/audio/iris/iris-hover-bm-inventory.ogg',
   'Ti presento Femo! Si irrita facilmente, quindi trattalo con rispetto':
-    '/audio/iris/iris-hover-bm-femo.opus',
+    '/audio/iris/iris-hover-bm-femo.ogg',
   "Questo è Femo — l'altra mascotte del mercato. Commenta le tue azioni in tempo reale.":
-    '/audio/iris/iris-hover-bm-femo2.opus',
+    '/audio/iris/iris-hover-bm-femo2.ogg',
   "Rifornisce il negozio con nuovi prodotti casuali — ogni click cambia l'inventario.":
-    '/audio/iris/iris-hover-bm-restock.opus',
+    '/audio/iris/iris-hover-bm-restock.ogg',
 
   /* Slider */
   "Galleria espandibile — clicca su un pannello per espanderlo. Passaci sopra per vedere l'anteprima colorata.":
-    '/audio/iris/iris-hover-slider-gallery.opus',
+    '/audio/iris/iris-hover-slider-gallery.ogg',
   'Descrizione immagine — titolo e dettagli del pannello selezionato.':
-    '/audio/iris/iris-hover-slider-desc.opus',
+    '/audio/iris/iris-hover-slider-desc.ogg',
   "Lightbox — visualizzazione a schermo intero dell'immagine selezionata. Clicca fuori per chiudere.":
-    '/audio/iris/iris-hover-slider-lightbox.opus',
+    '/audio/iris/iris-hover-slider-lightbox.ogg',
 
   /* Text Sampler */
   "Lista effetti — seleziona un effetto tipografico per vederlo applicato all'anteprima. Sono tutti realizzati in CSS puro.":
-    '/audio/iris/iris-hover-text-list.opus',
+    '/audio/iris/iris-hover-text-list.ogg',
   'Anteprima live — mostra il testo con l\'effetto selezionato applicato in tempo reale.':
-    '/audio/iris/iris-hover-text-preview.opus',
+    '/audio/iris/iris-hover-text-preview.ogg',
 
   /* Cubo 3D */
   'Viewport 3D — trascina per ruotare il cubo in tutte le direzioni. Zero librerie 3D: tutto in CSS puro.':
-    '/audio/iris/iris-hover-cubo-viewport.opus',
+    '/audio/iris/iris-hover-cubo-viewport.ogg',
 
   /* Image Checker */
   'Area immagine — muovi il cursore per esplorare i dettagli con la lente.':
-    '/audio/iris/iris-hover-img-area.opus',
+    '/audio/iris/iris-hover-img-area.ogg',
   "Attiva o disattiva la lente di ingrandimento — quando attiva segue il cursore sull'immagine.":
-    '/audio/iris/iris-hover-img-toggle.opus',
+    '/audio/iris/iris-hover-img-toggle.ogg',
   'Info lente — stato, zoom e dimensione della lente attiva.':
-    '/audio/iris/iris-hover-img-info.opus',
+    '/audio/iris/iris-hover-img-info.ogg',
 };
 const PAGE_VOICES = {
-  '/':                                    '/audio/iris/iris-home.opus',
-  '/storia':                              '/audio/iris/iris-storia.opus',
-  '/services':                            '/audio/iris/iris-services.opus',
-  '/services/consulenze':                 '/audio/iris/iris-consulenze.opus',
-  '/services/sitiweb':                    '/audio/iris/iris-sitiweb.opus',
-  '/services/presenza':                   '/audio/iris/iris-presenza.opus',
-  '/services/multimedia':                 '/audio/iris/iris-multimedia.opus',
-  '/portfolio':                           '/audio/iris/iris-portfolio.opus',
-  '/portfolio/componenti':                '/audio/iris/iris-componenti.opus',
-  '/portfolio/grafiche':                  '/audio/iris/iris-grafiche.opus',
-  '/portfolio/sitiweb':                   '/audio/iris/iris-siti-web-portfolio.opus',
-  '/portfolio/componenti/black-market':   '/audio/iris/iris-black-market.opus',
-  '/portfolio/componenti/dashboard':      '/audio/iris/iris-dashboard.opus',
-  '/portfolio/componenti/booking':        '/audio/iris/iris-booking.opus',
-  '/portfolio/componenti/music-player':   '/audio/iris/iris-music-player.opus',
-  '/portfolio/componenti/crud-simulator': '/audio/iris/iris-crud.opus',
-  '/portfolio/componenti/slider':         '/audio/iris/iris-slider.opus',
-  '/portfolio/componenti/text-sampler':   '/audio/iris/iris-text-sampler.opus',
-  '/portfolio/componenti/cubo-3d':        '/audio/iris/iris-cubo-3d.opus',
-  '/portfolio/componenti/image-checker':  '/audio/iris/iris-image-checker.opus',
-  '/contatti':                            '/audio/iris/iris-contatti.opus',
-  '/privacy-policy':                      '/audio/iris/iris-privacy.opus',
-  '/cookie-policy':                       '/audio/iris/iris-cookie.opus',
-  '/termini-e-condizioni':                '/audio/iris/iris-termini.opus',
+  '/':                                    '/audio/iris/iris-home.ogg',
+  '/storia':                              '/audio/iris/iris-storia.ogg',
+  '/services':                            '/audio/iris/iris-services.ogg',
+  '/services/consulenze':                 '/audio/iris/iris-consulenze.ogg',
+  '/services/sitiweb':                    '/audio/iris/iris-sitiweb.ogg',
+  '/services/presenza':                   '/audio/iris/iris-presenza.ogg',
+  '/services/multimedia':                 '/audio/iris/iris-multimedia.ogg',
+  '/portfolio':                           '/audio/iris/iris-portfolio.ogg',
+  '/portfolio/componenti':                '/audio/iris/iris-componenti.ogg',
+  '/portfolio/grafiche':                  '/audio/iris/iris-grafiche.ogg',
+  '/portfolio/sitiweb':                   '/audio/iris/iris-siti-web-portfolio.ogg',
+  '/portfolio/componenti/black-market':   '/audio/iris/iris-black-market.ogg',
+  '/portfolio/componenti/dashboard':      '/audio/iris/iris-dashboard.ogg',
+  '/portfolio/componenti/booking':        '/audio/iris/iris-booking.ogg',
+  '/portfolio/componenti/music-player':   '/audio/iris/iris-music-player.ogg',
+  '/portfolio/componenti/crud-simulator': '/audio/iris/iris-crud.ogg',
+  '/portfolio/componenti/slider':         '/audio/iris/iris-slider.ogg',
+  '/portfolio/componenti/text-sampler':   '/audio/iris/iris-text-sampler.ogg',
+  '/portfolio/componenti/cubo-3d':        '/audio/iris/iris-cubo-3d.ogg',
+  '/portfolio/componenti/image-checker':  '/audio/iris/iris-image-checker.ogg',
+  '/contatti':                            '/audio/iris/iris-contatti.ogg',
+  '/privacy-policy':                      '/audio/iris/iris-privacy.ogg',
+  '/cookie-policy':                       '/audio/iris/iris-cookie.ogg',
+  '/termini-e-condizioni':                '/audio/iris/iris-termini.ogg',
 };
 
 const Iris = () => {

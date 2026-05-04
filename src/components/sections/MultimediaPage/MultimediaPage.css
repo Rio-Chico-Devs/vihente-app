@@ -11,7 +11,7 @@ body.multimedia-page-body {
 /* Wrapper principale */
 .multimedia-page-wrapper {
     position: relative;
-    min-height: 100vh;
+    min-height: 100dvh;
     background: var(--bg-black);
     color: var(--text-primary);
     transition: background-color var(--transition-theme), color var(--transition-theme);

@@ -6,8 +6,8 @@
 /* Container: holds bubble + widget, fixed at bottom-left */
 .iris-container {
   position: fixed;
-  bottom: var(--spacing-lg, 2rem);
-  left: var(--spacing-lg, 2rem);
+  bottom: calc(var(--spacing-lg, 2rem) + env(safe-area-inset-bottom));
+  left: calc(var(--spacing-lg, 2rem) + env(safe-area-inset-left));
   z-index: 9999;
   display: flex;
   flex-direction: column;

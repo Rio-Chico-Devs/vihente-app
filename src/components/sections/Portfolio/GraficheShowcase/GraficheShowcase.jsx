@@ -1,11 +1,13 @@
 import { useRef, useState } from 'react';
 import './GraficheShowcase.css';
+import { useGuide } from '../../../../contexts/GuideContext';
 
 const GraficheShowcase = () => {
   // Logo occhio path - stesso della navbar
   const eyeContourPath = "M 35 50 C 39 43, 44 40, 50 40 C 56 40, 61 43, 65 50 C 61 57, 56 60, 50 60 C 44 60, 39 57, 35 50 Z";
 
   // State per la rotazione interattiva nel modal
+  const { setGuide, clearGuide } = useGuide();
   const [modalRotations, setModalRotations] = useState({});
   const dragRef = useRef({});
 
@@ -203,6 +205,8 @@ const GraficheShowcase = () => {
               htmlFor={`trophy-${trophy.id}`}
               className="trophy-container"
               style={{ '--trophy-index': index }}
+              onMouseEnter={() => setGuide('Trascina per ruotare, clicca per aprire i dettagli del progetto.')}
+              onMouseLeave={clearGuide}
             >
               <div className="trophy-scene">
                 {/* Trophy 3D vero con preserve-3d */}

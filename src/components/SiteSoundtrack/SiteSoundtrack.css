@@ -4,8 +4,8 @@
 
 .soundtrack-btn {
   position: fixed;
-  bottom: 9.5rem;
-  right: var(--spacing-lg, 2rem);
+  bottom: calc(9.5rem + env(safe-area-inset-bottom));
+  right: calc(var(--spacing-lg, 2rem) + env(safe-area-inset-right));
   z-index: 9999;
   display: flex;
   flex-direction: column;

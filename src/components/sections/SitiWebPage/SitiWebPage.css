@@ -5,7 +5,7 @@
 
 /* Base wrapper */
 .sitiweb-page-wrapper {
-  min-height: 100vh;
+  min-height: 100dvh;
   background: var(--color-background, #000);
   color: var(--color-text, rgba(255, 255, 255, 0.9));
   font-family: 'Share Tech Mono', monospace;

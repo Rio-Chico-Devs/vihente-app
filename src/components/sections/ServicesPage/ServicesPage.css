@@ -88,7 +88,7 @@
 
 .services-page-wrapper {
     font-family: 'Share Tech Mono', monospace;
-    min-height: 100vh;
+    min-height: 100dvh;
     position: relative;
     background: var(--bg-black);
     color: var(--text-primary);
@@ -100,7 +100,7 @@ body.services-page-body {
     background: var(--bg-black);
     color: var(--text-primary);
     overflow: hidden;
-    height: 100vh;
+    height: 100dvh;
     position: relative;
     transition: background-color var(--transition-theme), color var(--transition-theme);
 }
@@ -1788,7 +1788,7 @@ footer {
         left: 0;
         right: 0;
         /* Altezza = viewport - header - footer (aggiornata via JS) */
-        height: calc(100vh - var(--header-height, 80px) - var(--footer-height, 60px));
+        height: calc(100dvh - var(--header-height, 80px) - var(--footer-height, 60px));
         display: grid;
         grid-template-rows: 1fr 1fr 1fr 1fr; /* 4 righe ESATTAMENTE uguali */
         z-index: 1;

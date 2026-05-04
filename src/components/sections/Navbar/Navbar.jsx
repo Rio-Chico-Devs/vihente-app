@@ -62,12 +62,20 @@ const Navbar = () => {
 
   // Detect scroll to add background to navbar
   useEffect(() => {
+    let rafId = null;
     const handleScroll = () => {
-      setScrolled(window.scrollY > 50);
+      if (rafId) return;
+      rafId = requestAnimationFrame(() => {
+        setScrolled(window.scrollY > 50);
+        rafId = null;
+      });
     };
 
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => {
+      if (rafId) cancelAnimationFrame(rafId);
+      window.removeEventListener('scroll', handleScroll);
+    };
   }, []);
 
   // Track mouse movement globally to make pupil follow cursor
@@ -549,7 +557,7 @@ const Navbar = () => {
               aria-label="Vai alla pagina La Mia Storia"
               aria-current={isActive('/storia') ? 'page' : undefined}
               onClick={(e) => handleDesktopNavClick(e, '/storia')}
-              onMouseEnter={() => setGuide('Il nostro percorso, i nostri studi e la nostra voglia di fare.')}
+              onMouseEnter={() => setGuide('Visita questa sezione per conoscere la storia del titolare del sito')}
               onMouseLeave={clearGuide}
             >
               <span className="nav-link-text">La Mia Storia</span>

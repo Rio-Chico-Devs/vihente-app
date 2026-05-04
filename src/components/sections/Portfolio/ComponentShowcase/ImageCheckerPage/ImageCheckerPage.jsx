@@ -145,6 +145,7 @@ const ImageCheckerPage = () => {
             alt="Image to inspect"
             className="uploaded-image"
             draggable="false"
+            decoding="async"
           />
 
           {lensActive && imageRef.current && (

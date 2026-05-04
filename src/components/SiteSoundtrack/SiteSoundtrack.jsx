@@ -9,7 +9,7 @@ const SiteSoundtrack = () => {
   const location   = useLocation();
   const wasPlaying = useRef(false);
 
-  const [isMuted,     setIsMuted]     = useState(() => localStorage.getItem('soundtrack-muted') === 'true');
+  const [isMuted,     setIsMuted]     = useState(() => { try { return localStorage.getItem('soundtrack-muted') === 'true'; } catch { return false; } });
   const [hasStarted,  setHasStarted]  = useState(false);
   const [isPlaying,   setIsPlaying]   = useState(false);
 
@@ -60,7 +60,7 @@ const SiteSoundtrack = () => {
     const audio = audioRef.current;
     const next  = !isMuted;
     setIsMuted(next);
-    localStorage.setItem('soundtrack-muted', next);
+    try { localStorage.setItem('soundtrack-muted', next); } catch {}
 
     if (!audio) return;
 

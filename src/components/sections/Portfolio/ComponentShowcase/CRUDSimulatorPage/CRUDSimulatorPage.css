@@ -3,7 +3,7 @@
    ==================================== */
 
 .crud-simulator-page {
-  min-height: 100vh;
+  min-height: 100dvh;
   background: var(--bg-black, #000);
   color: var(--text-primary, #fff);
   font-family: 'Share Tech Mono', monospace;
@@ -53,7 +53,7 @@
 }
 
 .crud-container {
-  min-height: calc(100vh - 240px);
+  min-height: calc(100dvh - 240px);
   padding: 2rem;
   position: relative;
   z-index: 3;

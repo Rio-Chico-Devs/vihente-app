@@ -9,7 +9,9 @@
   border-top: 2px solid var(--color-primary-30, rgba(0, 255, 255, 0.3));
   background: rgba(0, 0, 0, 0.85);
   backdrop-filter: blur(12px);
-  padding: 0.8rem 0;
+  padding: 0.8rem 0 calc(0.8rem + env(safe-area-inset-bottom));
+  padding-left: env(safe-area-inset-left);
+  padding-right: env(safe-area-inset-right);
   z-index: 50;
 }
 

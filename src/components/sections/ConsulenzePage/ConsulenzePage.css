@@ -3,7 +3,7 @@
    ==================================== */
 
 .service-detail-wrapper {
-  min-height: 100vh;
+  min-height: 100dvh;
   background: var(--color-background, #000);
   color: var(--color-text, #fff);
   font-family: 'Share Tech Mono', monospace;
