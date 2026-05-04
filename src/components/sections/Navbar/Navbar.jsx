@@ -549,7 +549,7 @@ const Navbar = () => {
               aria-label="Vai alla pagina La Mia Storia"
               aria-current={isActive('/storia') ? 'page' : undefined}
               onClick={(e) => handleDesktopNavClick(e, '/storia')}
-              onMouseEnter={() => setGuide('Il nostro percorso, i nostri studi e la nostra voglia di fare.')}
+              onMouseEnter={() => setGuide('Visita questa sezione per conoscere la storia del titolare del sito')}
               onMouseLeave={clearGuide}
             >
               <span className="nav-link-text">La Mia Storia</span>

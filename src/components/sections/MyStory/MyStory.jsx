@@ -91,7 +91,7 @@ const MyStory = () => {
         <div className="mystory-center">
           <div
             className="mystory-box"
-            onMouseEnter={() => setGuide('Scopri la storia, il percorso e la filosofia del fondatore di Vihente.')}
+            onMouseEnter={() => setGuide('Il nostro percorso, i nostri studi e la nostra voglia di fare.')}
             onMouseLeave={clearGuide}
           >
             <h1 className="mystory-title">CHI SONO</h1>

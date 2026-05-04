@@ -73,8 +73,6 @@ const GUIDE_VOICES = {
     '/audio/iris/iris-hover-storia-desc.ogg',
   'Il nostro percorso, i nostri studi e la nostra voglia di fare.':
     '/audio/iris/iris-hover-storia-chi.ogg',
-  'Scopri la storia, il percorso e la filosofia del fondatore di Vihente.':
-    '/audio/iris/iris-hover-storia-bio.ogg',
   'da 7 anni ormai.':
     '/audio/iris/iris-hover-skill-web.ogg',
   'Il suo record è 20k followers per ora!':
