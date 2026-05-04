@@ -215,8 +215,6 @@ const ServicesPage = () => {
   return (
     <div
       className="services-page-wrapper"
-      onMouseEnter={() => setGuide('Visita questa sezione per conoscere la storia del titolare del sito')}
-      onMouseLeave={clearGuide}
     >
       <div className="code-background" id="codeBackground"></div>
       <div id="gridOverlay" className="grid-overlay"></div>
