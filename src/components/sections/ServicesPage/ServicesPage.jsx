@@ -243,10 +243,10 @@ const ServicesPage = () => {
       {/* Mobile: 4 sezioni fullscreen verticali */}
       <div className="services-mobile">
         {[
-          { path: '/services/consulenze', title: 'CONSULENZE DIGITALI', desc: 'Analisi e ottimizzazione della presenza digitale aziendale' },
-          { path: '/services/sitiweb', title: 'SITI WEB', desc: 'Sviluppo siti web con tecnologie moderne e design responsive' },
-          { path: '/services/presenza', title: 'SOCIAL MEDIA', desc: 'Gestione dei canali online e strategie di engagement' },
-          { path: '/services/multimedia', title: 'FILE MULTIMEDIALI', desc: 'Produzione file multimediali e grafiche digitali' },
+          { path: '/services/consulenze', title: 'CONSULENZE DIGITALI', desc: 'Analisi e ottimizzazione della presenza digitale aziendale', guide: 'Ti aiutiamo a capire cosa fa al caso tuo' },
+          { path: '/services/sitiweb', title: 'SITI WEB', desc: 'Sviluppo siti web con tecnologie moderne e design responsive', guide: 'Ti aiutiamo a creare il tuo sito web' },
+          { path: '/services/presenza', title: 'SOCIAL MEDIA', desc: 'Gestione dei canali online e strategie di engagement', guide: 'Ti aiutiamo a crescere sui social' },
+          { path: '/services/multimedia', title: 'FILE MULTIMEDIALI', desc: 'Produzione file multimediali e grafiche digitali', guide: 'Creiamo i tuoi contenuti su misura' },
         ].map((service) => (
           <div
             key={service.path}
@@ -255,6 +255,8 @@ const ServicesPage = () => {
             role="button"
             tabIndex={0}
             aria-label={`Vai a ${service.title}`}
+            onMouseEnter={() => setGuide(service.guide)}
+            onMouseLeave={clearGuide}
             onKeyDown={(e) => {
               if (e.key === 'Enter' || e.key === ' ') {
                 e.preventDefault();
@@ -275,6 +277,8 @@ const ServicesPage = () => {
           role="button"
           tabIndex={0}
           aria-label="Vai alla pagina Consulenze digitali"
+          onMouseEnter={() => setGuide('Ti aiutiamo a capire cosa fa al caso tuo')}
+          onMouseLeave={clearGuide}
           onKeyDown={(e) => {
             if (e.key === 'Enter' || e.key === ' ') {
               e.preventDefault();
@@ -298,6 +302,8 @@ const ServicesPage = () => {
           role="button"
           tabIndex={0}
           aria-label="Vai alla pagina Sviluppo di Siti web su misura"
+          onMouseEnter={() => setGuide('Ti aiutiamo a creare il tuo sito web')}
+          onMouseLeave={clearGuide}
           onKeyDown={(e) => {
             if (e.key === 'Enter' || e.key === ' ') {
               e.preventDefault();
@@ -338,6 +344,8 @@ const ServicesPage = () => {
           role="button"
           tabIndex={0}
           aria-label="Vai alla pagina Social Media e presenza"
+          onMouseEnter={() => setGuide('Ti aiutiamo a crescere sui social')}
+          onMouseLeave={clearGuide}
           onKeyDown={(e) => {
             if (e.key === 'Enter' || e.key === ' ') {
               e.preventDefault();
@@ -365,6 +373,8 @@ const ServicesPage = () => {
           role="button"
           tabIndex={0}
           aria-label="Vai alla pagina creazione File Multimediali"
+          onMouseEnter={() => setGuide('Creiamo i tuoi contenuti su misura')}
+          onMouseLeave={clearGuide}
           onKeyDown={(e) => {
             if (e.key === 'Enter' || e.key === ' ') {
               e.preventDefault();

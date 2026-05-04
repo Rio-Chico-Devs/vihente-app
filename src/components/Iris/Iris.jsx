@@ -91,6 +91,14 @@ const GUIDE_VOICES = {
   /* Services */
   'Seleziona il servizio di cui hai bisogno: consulenza, grafica, sito web, social media o content creation.':
     '/audio/iris/iris-hover-service-select.ogg',
+  'Ti aiutiamo a capire cosa fa al caso tuo':
+    '/audio/iris/iris-hover-service-consulenze.ogg',
+  'Ti aiutiamo a creare il tuo sito web':
+    '/audio/iris/iris-hover-service-sitiweb.ogg',
+  'Ti aiutiamo a crescere sui social':
+    '/audio/iris/iris-hover-service-presenza.ogg',
+  'Creiamo i tuoi contenuti su misura':
+    '/audio/iris/iris-hover-service-multimedia.ogg',
 
   /* GraficheShowcase cards */
   'Trascina per ruotare, clicca per aprire i dettagli del progetto.':
