@@ -5,11 +5,11 @@ import './MyStory.css';
 const MyStory = () => {
   const { setGuide, clearGuide } = useGuide();
   const skills = [
-    { name: 'Sviluppatore Web',   guide: 'Ho lavorato per anni nell\'ambito del web design sia nel lato front end che backend, seguo costantemente gli aggiornamenti nel mio campo, è un lavoro continuo, che richiede impegno costante.' },
-    { name: 'Social Media',       guide: 'Essendo io stesso il gestore di vari account social, comprendo e conosco a fondo le complessità della gestione dei social più importanti.' },
+    { name: 'Sviluppatore Web',   guide: 'Ho lavorato per anni nell\'ambito del web design sia nel lato front end che backend, seguo continuamente gli aggiornamenti nel mio campo, è un lavoro continuo, che richiede impegno costante.' },
+    { name: 'Social Media',       guide: 'Gestendo vari account social, comprendo e conosco a fondo le complessità della gestione dei social più importanti.' },
     { name: 'Creator Digitale',   guide: 'Da anni creo grafiche e contenuti di vario tipo per un audience varia ed esigente, so dove colpire e sono sempre aggiornato sulle ultime tendenze.' },
     { name: 'Illustratore',       guide: 'Sono un illustratore professionale da più di 10 anni, che sia arte digitale e non, sono sempre pronto a creare qualcosa di nuovo.' },
-    { name: 'Esperto linguistico',guide: 'Credo che una buona dizione e conoscenza del mondo, facciano la differenza in un ambito dove l\'esperienza dell\'utente viene prima di tutto.' },
+    { name: 'Esperto linguistico',guide: 'Ho studiato in vari parti del mondo approfondendo culture e lingue, credo che siano skills importanti in un ambiente dove l\'esperienza dell\'utente viene prima di tutto.' },
     { name: 'Assistenza clienti', guide: 'Ho lavorato spesso a contatto con il pubblico, so capire le esigenze di un cliente e trovare una soluzione coerente con le risorse a disposizione.' },
     { name: 'Reselling',          guide: 'Ho esperienza pratica in operazioni di reselling con recensioni perfette e un lungo storico di operazioni di trading.' },
   ];

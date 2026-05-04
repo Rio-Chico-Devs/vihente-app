@@ -73,15 +73,15 @@ const GUIDE_VOICES = {
     '/audio/iris/iris-hover-storia-desc.ogg',
   'Il nostro percorso, i nostri studi e la nostra voglia di fare.':
     '/audio/iris/iris-hover-storia-chi.ogg',
-  'Ho lavorato per anni nell\'ambito del web design sia nel lato front end che backend, seguo costantemente gli aggiornamenti nel mio campo, è un lavoro continuo, che richiede impegno costante.':
+  'Ho lavorato per anni nell\'ambito del web design sia nel lato front end che backend, seguo continuamente gli aggiornamenti nel mio campo, è un lavoro continuo, che richiede impegno costante.':
     '/audio/iris/iris-hover-skill-web.ogg',
-  'Essendo io stesso il gestore di vari account social, comprendo e conosco a fondo le complessità della gestione dei social più importanti.':
+  'Gestendo vari account social, comprendo e conosco a fondo le complessità della gestione dei social più importanti.':
     '/audio/iris/iris-hover-skill-social.ogg',
   'Da anni creo grafiche e contenuti di vario tipo per un audience varia ed esigente, so dove colpire e sono sempre aggiornato sulle ultime tendenze.':
     '/audio/iris/iris-hover-skill-creator.ogg',
   'Sono un illustratore professionale da più di 10 anni, che sia arte digitale e non, sono sempre pronto a creare qualcosa di nuovo.':
     '/audio/iris/iris-hover-skill-illustratore.ogg',
-  'Credo che una buona dizione e conoscenza del mondo, facciano la differenza in un ambito dove l\'esperienza dell\'utente viene prima di tutto.':
+  'Ho studiato in vari parti del mondo approfondendo culture e lingue, credo che siano skills importanti in un ambiente dove l\'esperienza dell\'utente viene prima di tutto.':
     '/audio/iris/iris-hover-skill-linguistico.ogg',
   'Ho lavorato spesso a contatto con il pubblico, so capire le esigenze di un cliente e trovare una soluzione coerente con le risorse a disposizione.':
     '/audio/iris/iris-hover-skill-assistenza.ogg',
