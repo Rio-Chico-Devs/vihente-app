@@ -75,9 +75,9 @@ const MyStory = () => {
         {/* Skills - Left */}
         <div className="mystory-skills">
           <h3 className="mystory-skills-title">Skills</h3>
-          {skills.map((skill, index) => (
+          {skills.map((skill) => (
             <div
-              key={index}
+              key={skill.name}
               className="mystory-skill-item"
               onMouseEnter={() => setGuide(skill.guide)}
               onMouseLeave={clearGuide}
@@ -119,10 +119,12 @@ const MyStory = () => {
         >
           <div className="mystory-photo">
             <img
-      src="/images/AVBPT.webp"
-      alt="Antonio - Consulente Digitale"
-      className="mystory-photo-img"
-    />
+              src="/images/AVBPT.webp"
+              alt="Antonio - Consulente Digitale"
+              className="mystory-photo-img"
+              loading="lazy"
+              decoding="async"
+            />
           </div>
         </div>
       </div>

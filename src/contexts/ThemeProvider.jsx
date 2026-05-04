@@ -3,13 +3,13 @@ import ThemeContext from './theme';
 
 const ThemeProvider = ({ children }) => {
   const [theme, setTheme] = useState(() => {
-    const saved = localStorage.getItem('vihente-theme');
-    return saved || 'dark';
+    try { return localStorage.getItem('vihente-theme') || 'dark'; }
+    catch { return 'dark'; }
   });
 
   useEffect(() => {
     document.documentElement.setAttribute('data-theme', theme);
-    localStorage.setItem('vihente-theme', theme);
+    try { localStorage.setItem('vihente-theme', theme); } catch {}
   }, [theme]);
 
   const toggleTheme = useCallback(() => {

@@ -475,6 +475,8 @@ const FemosBlackMarketPage = () => {
                       src={product.image}
                       alt={product.name}
                       style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: 'inherit' }}
+                      loading="lazy"
+                      decoding="async"
                       onError={(e) => { e.currentTarget.style.display = 'none'; e.currentTarget.nextSibling.style.display = 'flex'; }}
                     />
                     <span style={{ display: 'none', width: '100%', height: '100%', alignItems: 'center', justifyContent: 'center', fontSize: '2rem' }}>📦</span>
@@ -521,6 +523,8 @@ const FemosBlackMarketPage = () => {
                           src={item.image}
                           alt={item.name}
                           style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: 'inherit' }}
+                          loading="lazy"
+                          decoding="async"
                           onError={(e) => { e.currentTarget.style.display = 'none'; e.currentTarget.nextSibling.style.display = 'block'; }}
                         />
                         <span style={{ display: 'none', fontSize: '1.5rem' }}>📦</span>

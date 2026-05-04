@@ -62,12 +62,20 @@ const Navbar = () => {
 
   // Detect scroll to add background to navbar
   useEffect(() => {
+    let rafId = null;
     const handleScroll = () => {
-      setScrolled(window.scrollY > 50);
+      if (rafId) return;
+      rafId = requestAnimationFrame(() => {
+        setScrolled(window.scrollY > 50);
+        rafId = null;
+      });
     };
 
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => {
+      if (rafId) cancelAnimationFrame(rafId);
+      window.removeEventListener('scroll', handleScroll);
+    };
   }, []);
 
   // Track mouse movement globally to make pupil follow cursor

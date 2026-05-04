@@ -81,6 +81,7 @@ const MultimediaPage = () => {
               src={GRAFICHE_SLIDES[modal].src}
               alt={GRAFICHE_SLIDES[modal].alt}
               className="modal-img"
+              decoding="async"
             />
             <p className="modal-description">{GRAFICHE_SLIDES[modal].description}</p>
           </div>
@@ -130,6 +131,7 @@ const MultimediaPage = () => {
                   src={ANIM_FRAMES[frame].src}
                   alt={ANIM_FRAMES[frame].alt}
                   className="anim-frame-img"
+                  decoding="async"
                 />
                 <button
                   className={`anim-play-btn${playing ? ' is-playing' : ''}`}
@@ -179,6 +181,7 @@ const MultimediaPage = () => {
                     src={GRAFICHE_SLIDES[slide].src}
                     alt={GRAFICHE_SLIDES[slide].alt}
                     className="slider-img"
+                    decoding="async"
                   />
                   <button
                     className="slider-arrow slider-prev"
@@ -228,6 +231,8 @@ const MultimediaPage = () => {
                   src=""
                   alt="Illustrazione — aggiungi descrizione"
                   className="showcase-img"
+                  loading="lazy"
+                  decoding="async"
                 />
               </div>
             </div>
@@ -290,6 +295,8 @@ const MultimediaPage = () => {
                   src=""
                   alt="Brand Identity — aggiungi descrizione"
                   className="showcase-img"
+                  loading="lazy"
+                  decoding="async"
                 />
               </div>
             </div>

@@ -143,11 +143,13 @@ const SliderPage = () => {
             onTouchStart={handleTouchStart}
             onTouchEnd={() => handleTouchEnd(index)}
           >
-            <img 
-              src={image.url} 
+            <img
+              src={image.url}
               alt={image.caption}
               className={hoveredIndex === index && selectedIndex !== index ? 'colored' : ''}
               draggable={false}
+              loading="lazy"
+              decoding="async"
             />
           </div>
         ))}
@@ -163,10 +165,11 @@ const SliderPage = () => {
         <div className="lightbox-overlay" onClick={closeLightbox} onMouseEnter={() => setGuide('Lightbox — visualizzazione a schermo intero dell\'immagine selezionata. Clicca fuori per chiudere.')} onMouseLeave={clearGuide}>
           <button className="lightbox-close" onClick={closeLightbox}>×</button>
           <div className="lightbox-content" onClick={(e) => e.stopPropagation()}>
-            <img 
-              src={lightboxImage.url} 
+            <img
+              src={lightboxImage.url}
               alt={lightboxImage.caption}
               className="lightbox-image"
+              decoding="async"
             />
           </div>
         </div>
