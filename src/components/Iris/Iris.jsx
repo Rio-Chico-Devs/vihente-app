@@ -269,7 +269,7 @@ const Iris = () => {
   const [greeting,    setGreeting]    = useState(null);
   const [pupilPos,    setPupilPos]    = useState({ x: 50, y: 50 });
   const [blinking,    setBlinking]    = useState(false);
-  const [isMuted,     setIsMuted]     = useState(() => localStorage.getItem('iris-muted') === 'true');
+  const [isMuted,     setIsMuted]     = useState(() => { try { return localStorage.getItem('iris-muted') === 'true'; } catch { return false; } });
   const { text, clearGuide } = useGuide();
   const location         = useLocation();
   const ref                  = useRef(null);
@@ -414,12 +414,17 @@ const Iris = () => {
     });
   }, []);
 
+  const playFx = useCallback((path) => {
+    try { new Audio(path).play().catch(() => {}); } catch (_) {}
+  }, []);
+
   /* ── Toggle on/off ── */
   const handleToggle = () => {
     if (isGlitching) return;
 
     if (!isActive) {
       /* Activate: glitch → open → greet */
+      if (!isMuted) playFx('/audio/fx/iris-open.mp3');
       setIsGlitching(true);
       clearTimeout(greetingTimer.current);
       setTimeout(() => {
@@ -441,6 +446,7 @@ const Iris = () => {
       }, 650);
     } else {
       /* Deactivate */
+      if (!isMuted) playFx('/audio/fx/iris-close.mp3');
       clearTimeout(greetingTimer.current);
       setGreeting(null);
       setIsActive(false);

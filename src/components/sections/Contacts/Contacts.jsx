@@ -144,6 +144,7 @@ const Contacts = () => {
 
         setIsAnimating(false);
         setSubmitStatus('success');
+        try { new Audio('/audio/fx/mail-sent.mp3').play().catch(() => {}); } catch (_) {}
 
         const timeout4 = setTimeout(() => {
           setFormData({

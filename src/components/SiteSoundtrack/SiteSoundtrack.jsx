@@ -2,7 +2,10 @@ import { useEffect, useRef, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import './SiteSoundtrack.css';
 
-const MUSIC_PLAYER_PATH = '/portfolio/componenti/music-player';
+const PAUSE_PATHS = [
+  '/portfolio/componenti/music-player',
+  '/portfolio/componenti/black-market',
+];
 
 const SiteSoundtrack = () => {
   const audioRef   = useRef(null);
@@ -38,12 +41,12 @@ const SiteSoundtrack = () => {
     };
   }, [isMuted, hasStarted]);
 
-  /* ── Pause on music player, resume when leaving ── */
+  /* ── Pause on music player / black market, resume when leaving ── */
   useEffect(() => {
     const audio = audioRef.current;
     if (!audio || !hasStarted) return;
 
-    if (location.pathname === MUSIC_PLAYER_PATH) {
+    if (PAUSE_PATHS.includes(location.pathname)) {
       wasPlaying.current = isPlaying;
       audio.pause();
       setIsPlaying(false);

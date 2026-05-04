@@ -69,8 +69,13 @@ const mascotPhrases = {
   randomize: ["Nuovo shipment. Controlla l'inventario.", "Ho rifornito. Potrebbero esserci sorprese.", "Merce fresca dal mercato nero."]
 };
 
+const playFx = (path) => {
+  try { new Audio(path).play().catch(() => {}); } catch (_) {}
+};
+
 const FemosBlackMarketPage = () => {
   const { setGuide, clearGuide } = useGuide();
+  const marketMusicRef = useRef(null);
   const [simulationActive, setSimulationActive] = useState(false);
   const [currentPage, setCurrentPage] = useState('shop');
   const [cart, setCart] = useState([]);
@@ -85,6 +90,16 @@ const FemosBlackMarketPage = () => {
   const targetPositionRef = useRef({ x: 500, y: 500 });
   const currentPositionRef = useRef({ x: 500, y: 500 });
   const interpolationFrameRef = useRef(null);
+
+  /* ── Market music: play on mount, stop on unmount ── */
+  useEffect(() => {
+    const music = new Audio('/audio/market/black-market.mp3');
+    music.loop = true;
+    music.volume = 0.35;
+    marketMusicRef.current = music;
+    music.play().catch(() => {});
+    return () => { music.pause(); music.src = ''; marketMusicRef.current = null; };
+  }, []);
 
   const [productStock, setProductStock] = useState(() => {
     const initialStock = {};
@@ -147,6 +162,11 @@ const FemosBlackMarketPage = () => {
       const rarityProducts = availableProducts.filter(p => p.rarity === selectedRarity && !usedIds.has(p.id));
       if (rarityProducts.length > 0) {
         const randomProduct = rarityProducts[Math.floor(Math.random() * rarityProducts.length)];
+        if (selectedRarity === 'mystery') {
+          playFx('/audio/fx/chiave.mp3');
+          setCurrentProducts([randomProduct]);
+          return;
+        }
         selectedProducts.push(randomProduct);
         usedIds.add(randomProduct.id);
         rarityCounts[selectedRarity]++;
