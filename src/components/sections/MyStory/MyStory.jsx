@@ -89,7 +89,11 @@ const MyStory = () => {
 
         {/* Center - Bio + Languages */}
         <div className="mystory-center">
-          <div className="mystory-box">
+          <div
+            className="mystory-box"
+            onMouseEnter={() => setGuide('Scopri la storia, il percorso e la filosofia del fondatore di Vihente.')}
+            onMouseLeave={clearGuide}
+          >
             <h1 className="mystory-title">CHI SONO</h1>
             <p className="mystory-text">
               Ciao, sono Antonio e sono un Consulente Digitale specializzato in grafiche e contenuti multimediali.

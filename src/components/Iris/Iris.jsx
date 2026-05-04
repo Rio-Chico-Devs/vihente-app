@@ -73,6 +73,8 @@ const GUIDE_VOICES = {
     '/audio/iris/iris-hover-storia-desc.ogg',
   'Il nostro percorso, i nostri studi e la nostra voglia di fare.':
     '/audio/iris/iris-hover-storia-chi.ogg',
+  'Scopri la storia, il percorso e la filosofia del fondatore di Vihente.':
+    '/audio/iris/iris-hover-storia-bio.ogg',
   'da 7 anni ormai.':
     '/audio/iris/iris-hover-skill-web.ogg',
   'Il suo record è 20k followers per ora!':
@@ -91,6 +93,10 @@ const GUIDE_VOICES = {
   /* Services */
   'Seleziona il servizio di cui hai bisogno: consulenza, grafica, sito web, social media o content creation.':
     '/audio/iris/iris-hover-service-select.ogg',
+
+  /* GraficheShowcase cards */
+  'Trascina per ruotare, clicca per aprire i dettagli del progetto.':
+    '/audio/iris/iris-hover-grafiche-card.ogg',
 
   /* Portfolio categories */
   'Loghi, illustrazioni e materiali grafici — visual identity e comunicazione digitale.':
