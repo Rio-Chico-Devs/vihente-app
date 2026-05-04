@@ -73,20 +73,20 @@ const GUIDE_VOICES = {
     '/audio/iris/iris-hover-storia-desc.ogg',
   'Il nostro percorso, i nostri studi e la nostra voglia di fare.':
     '/audio/iris/iris-hover-storia-chi.ogg',
-  'da 7 anni ormai.':
+  'Ho lavorato per anni nell\'ambito del web design sia nel lato front end che backend, seguo costantemente gli aggiornamenti nel mio campo, è un lavoro continuo, che richiede impegno costante.':
     '/audio/iris/iris-hover-skill-web.ogg',
-  'Il suo record è 20k followers per ora!':
+  'Essendo io stesso il gestore di vari account social, comprendo e conosco a fondo le complessità della gestione dei social più importanti.':
     '/audio/iris/iris-hover-skill-social.ogg',
-  'Penso che sia il suo lavoro preferito ^^':
+  'Da anni creo grafiche e contenuti di vario tipo per un audience varia ed esigente, so dove colpire e sono sempre aggiornato sulle ultime tendenze.':
     '/audio/iris/iris-hover-skill-creator.ogg',
-  'Ha una matita in mano da quando è nato :V':
+  'Sono un illustratore professionale da più di 10 anni, che sia arte digitale e non, sono sempre pronto a creare qualcosa di nuovo.':
     '/audio/iris/iris-hover-skill-illustratore.ogg',
-  'Non si è mai arreso, ha allenato giocatori e vinto molte competizioni di E-sports ;)':
-    '/audio/iris/iris-hover-skill-coach.ogg',
-  'Attualmente disponibile solo previa consultazione.':
+  'Credo che una buona dizione e conoscenza del mondo, facciano la differenza in un ambito dove l\'esperienza dell\'utente viene prima di tutto.':
     '/audio/iris/iris-hover-skill-linguistico.ogg',
-  'Con esperienza e alta formazione accademica.':
-    '/audio/iris/iris-hover-skill-traduttore.ogg',
+  'Ho lavorato spesso a contatto con il pubblico, so capire le esigenze di un cliente e trovare una soluzione coerente con le risorse a disposizione.':
+    '/audio/iris/iris-hover-skill-assistenza.ogg',
+  'Ho esperienza pratica in operazioni di reselling con recensioni perfette e un lungo storico di operazioni di trading.':
+    '/audio/iris/iris-hover-skill-reselling.ogg',
 
   /* Services */
   'Seleziona il servizio di cui hai bisogno: consulenza, grafica, sito web, social media o content creation.':

@@ -5,13 +5,13 @@ import './MyStory.css';
 const MyStory = () => {
   const { setGuide, clearGuide } = useGuide();
   const skills = [
-    { name: 'Sviluppatore Web',          guide: 'da 7 anni ormai.' },
-    { name: 'Social Media',              guide: 'Il suo record è 20k followers per ora!' },
-    { name: 'Creator Digitale',          guide: 'Penso che sia il suo lavoro preferito ^^' },
-    { name: 'Illustratore',              guide: 'Ha una matita in mano da quando è nato :V' },
-    { name: 'Coach',                     guide: 'Non si è mai arreso, ha allenato giocatori e vinto molte competizioni di E-sports ;)' },
-    { name: 'Intermediatore Linguistico',guide: 'Attualmente disponibile solo previa consultazione.' },
-    { name: 'Traduttore',                guide: 'Con esperienza e alta formazione accademica.' },
+    { name: 'Sviluppatore Web',   guide: 'Ho lavorato per anni nell\'ambito del web design sia nel lato front end che backend, seguo costantemente gli aggiornamenti nel mio campo, è un lavoro continuo, che richiede impegno costante.' },
+    { name: 'Social Media',       guide: 'Essendo io stesso il gestore di vari account social, comprendo e conosco a fondo le complessità della gestione dei social più importanti.' },
+    { name: 'Creator Digitale',   guide: 'Da anni creo grafiche e contenuti di vario tipo per un audience varia ed esigente, so dove colpire e sono sempre aggiornato sulle ultime tendenze.' },
+    { name: 'Illustratore',       guide: 'Sono un illustratore professionale da più di 10 anni, che sia arte digitale e non, sono sempre pronto a creare qualcosa di nuovo.' },
+    { name: 'Esperto linguistico',guide: 'Credo che una buona dizione e conoscenza del mondo, facciano la differenza in un ambito dove l\'esperienza dell\'utente viene prima di tutto.' },
+    { name: 'Assistenza clienti', guide: 'Ho lavorato spesso a contatto con il pubblico, so capire le esigenze di un cliente e trovare una soluzione coerente con le risorse a disposizione.' },
+    { name: 'Reselling',          guide: 'Ho esperienza pratica in operazioni di reselling con recensioni perfette e un lungo storico di operazioni di trading.' },
   ];
 
   // Typewriter code background effect
