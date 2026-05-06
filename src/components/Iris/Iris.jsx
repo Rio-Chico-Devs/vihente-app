@@ -414,8 +414,21 @@ const Iris = () => {
     });
   }, []);
 
+  const fxAudioRef = useRef(null);
+
   const playFx = useCallback((path) => {
-    try { new Audio(path).play().catch(() => {}); } catch (_) {}
+    try {
+      const audio = new Audio(path);
+      fxAudioRef.current = audio;
+      audio.onended = () => { fxAudioRef.current = null; };
+      const p = audio.play();
+      if (p) p.catch((err) => {
+        if (import.meta.env.DEV) console.warn('[Iris fx]', err);
+        fxAudioRef.current = null;
+      });
+    } catch (err) {
+      if (import.meta.env.DEV) console.warn('[Iris fx]', err);
+    }
   }, []);
 
   /* ── Toggle on/off ── */
