@@ -114,6 +114,46 @@
   border: none;
 }
 
+/* ── Saved confirmation ── */
+.settings-saved {
+  display: block;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 0.7rem;
+  color: var(--color-primary, #0ff);
+  margin-top: 0.35rem;
+  letter-spacing: 0.08em;
+  animation: fade-in-out 1.8s ease forwards;
+}
+
+@keyframes fade-in-out {
+  0%   { opacity: 0; transform: translateY(-4px); }
+  15%  { opacity: 1; transform: translateY(0); }
+  70%  { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+/* ── Tour button ── */
+.settings-tour-btn {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 0.82rem;
+  padding: 0.7rem 1.4rem;
+  border: 1px solid rgba(0, 255, 255, 0.5);
+  background: transparent;
+  color: rgba(0, 255, 255, 0.8);
+  cursor: pointer;
+  letter-spacing: 0.1em;
+  transition: all 0.2s;
+  display: inline-flex;
+  align-items: center;
+}
+
+.settings-tour-btn:hover {
+  background: rgba(0, 255, 255, 0.06);
+  border-color: var(--color-primary, #0ff);
+  color: var(--color-primary, #0ff);
+  box-shadow: 0 0 14px rgba(0, 255, 255, 0.2);
+}
+
 /* ── Desc ── */
 .settings-desc {
   font-family: 'Share Tech Mono', monospace;

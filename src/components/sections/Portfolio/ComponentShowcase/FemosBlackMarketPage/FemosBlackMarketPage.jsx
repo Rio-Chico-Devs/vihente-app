@@ -70,16 +70,18 @@ const mascotPhrases = {
   randomize: ["Nuovo shipment. Controlla l'inventario.", "Ho rifornito. Potrebbero esserci sorprese.", "Merce fresca dal mercato nero."]
 };
 
-const playFx = (path) => {
-  try { new Audio(path).play().catch(() => {}); } catch (_) {}
+const playFx = (path, vol = 1) => {
+  try { const a = new Audio(path); a.volume = vol; a.play().catch(() => {}); } catch (_) {}
 };
 
 const BASE_MARKET_VOL = 0.35;
 
 const FemosBlackMarketPage = () => {
   const { setGuide, clearGuide } = useGuide();
-  const { musicVolume } = useSettings();
+  const { musicVolume, fxVolume } = useSettings();
   const musicVolumeRef = useRef(musicVolume);
+  const fxVolumeRef    = useRef(fxVolume);
+  useEffect(() => { fxVolumeRef.current = fxVolume; }, [fxVolume]);
   const marketMusicRef = useRef(null);
   const [simulationActive, setSimulationActive] = useState(false);
   const [currentPage, setCurrentPage] = useState('shop');
@@ -174,7 +176,7 @@ const FemosBlackMarketPage = () => {
       if (rarityProducts.length > 0) {
         const randomProduct = rarityProducts[Math.floor(Math.random() * rarityProducts.length)];
         if (selectedRarity === 'mystery') {
-          playFx('/audio/fx/chiave.mp3');
+          playFx('/audio/fx/chiave.mp3', fxVolumeRef.current);
           setCurrentProducts([randomProduct]);
           return;
         }

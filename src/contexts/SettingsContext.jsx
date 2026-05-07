@@ -10,6 +10,7 @@ const savedNum = (key, def) => {
 export const SettingsProvider = ({ children }) => {
   const [irisVolume,  setIrisVol]  = useState(() => savedNum('s-iris-vol',  1));
   const [musicVolume, setMusicVol] = useState(() => savedNum('s-music-vol', 1));
+  const [fxVolume,    setFxVol]    = useState(() => savedNum('s-fx-vol',    1));
 
   const setIrisVolume = useCallback((v) => {
     setIrisVol(v);
@@ -21,13 +22,18 @@ export const SettingsProvider = ({ children }) => {
     try { localStorage.setItem('s-music-vol', v); } catch {}
   }, []);
 
+  const setFxVolume = useCallback((v) => {
+    setFxVol(v);
+    try { localStorage.setItem('s-fx-vol', v); } catch {}
+  }, []);
+
   const clearData = useCallback(() => {
     try { localStorage.clear(); } catch {}
     setTimeout(() => window.location.reload(), 400);
   }, []);
 
   return (
-    <SettingsContext.Provider value={{ irisVolume, setIrisVolume, musicVolume, setMusicVolume, clearData }}>
+    <SettingsContext.Provider value={{ irisVolume, setIrisVolume, musicVolume, setMusicVolume, fxVolume, setFxVolume, clearData }}>
       {children}
     </SettingsContext.Provider>
   );

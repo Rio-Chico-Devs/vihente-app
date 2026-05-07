@@ -1,10 +1,14 @@
 import { useState, useEffect, useRef } from 'react';
 import { validateContactForm, sanitizeInput } from '../../../utils/validation';
 import { useGuide } from '../../../contexts/GuideContext';
+import { useSettings } from '../../../contexts/SettingsContext';
 import './Contacts.css';
 
 const Contacts = () => {
   const { setGuide, clearGuide } = useGuide();
+  const { fxVolume } = useSettings();
+  const fxVolumeRef = useRef(fxVolume);
+  useEffect(() => { fxVolumeRef.current = fxVolume; }, [fxVolume]);
   const [isQuoteMode, setIsQuoteMode] = useState(false);
   const [formData, setFormData] = useState({
     name: '',
@@ -144,7 +148,7 @@ const Contacts = () => {
 
         setIsAnimating(false);
         setSubmitStatus('success');
-        try { new Audio('/audio/fx/mail-sent.mp3').play().catch(() => {}); } catch (_) {}
+        try { const a = new Audio('/audio/fx/mail-sent.mp3'); a.volume = fxVolumeRef.current; a.play().catch(() => {}); } catch (_) {}
 
         const timeout4 = setTimeout(() => {
           setFormData({

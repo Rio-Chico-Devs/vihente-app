@@ -1,19 +1,36 @@
-import { useState } from 'react';
+import { useState, useCallback, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useSettings } from '../../../contexts/SettingsContext';
 import { useGuide } from '../../../contexts/GuideContext';
+import { useTour } from '../../../contexts/TourContext';
 import './Settings.css';
 
 const Settings = () => {
-  const { irisVolume, setIrisVolume, musicVolume, setMusicVolume, clearData } = useSettings();
+  const { irisVolume, setIrisVolume, musicVolume, setMusicVolume, fxVolume, setFxVolume, clearData } = useSettings();
   const { setGuide, clearGuide } = useGuide();
-  const [clearStep, setClearStep] = useState(0); // 0 idle · 1 confirm · 2 wiping
+  const { startTour } = useTour();
+  const navigate = useNavigate();
+  const [clearStep, setClearStep] = useState(0);
+  const [savedLabel, setSavedLabel] = useState('');
+  const savedTimerRef = useRef(null);
+
+  const pct = (v) => `${Math.round(v * 100)}%`;
+
+  const showSaved = useCallback((label) => {
+    setSavedLabel(label);
+    clearTimeout(savedTimerRef.current);
+    savedTimerRef.current = setTimeout(() => setSavedLabel(''), 1800);
+  }, []);
 
   const handleClear = () => {
     if (clearStep === 0) { setClearStep(1); return; }
     if (clearStep === 1) { setClearStep(2); setTimeout(clearData, 900); }
   };
 
-  const pct = (v) => `${Math.round(v * 100)}%`;
+  const handleRestartTour = () => {
+    startTour();
+    navigate('/');
+  };
 
   return (
     <section className="settings-section">
@@ -40,10 +57,12 @@ const Settings = () => {
             <input
               type="range" min="0" max="100"
               value={Math.round(irisVolume * 100)}
-              onChange={(e) => setIrisVolume(Number(e.target.value) / 100)}
+              style={{ '--pct': pct(irisVolume) }}
+              onChange={(e) => { setIrisVolume(Number(e.target.value) / 100); showSaved('iris'); }}
               className="settings-slider"
               aria-label="Volume voce Iris"
             />
+            {savedLabel === 'iris' && <span className="settings-saved">✓ Salvato</span>}
           </div>
 
           <div
@@ -58,11 +77,51 @@ const Settings = () => {
             <input
               type="range" min="0" max="100"
               value={Math.round(musicVolume * 100)}
-              onChange={(e) => setMusicVolume(Number(e.target.value) / 100)}
+              style={{ '--pct': pct(musicVolume) }}
+              onChange={(e) => { setMusicVolume(Number(e.target.value) / 100); showSaved('music'); }}
               className="settings-slider"
               aria-label="Volume musica"
             />
+            {savedLabel === 'music' && <span className="settings-saved">✓ Salvato</span>}
           </div>
+
+          <div
+            className="settings-row"
+            onMouseEnter={() => setGuide('Volume degli effetti sonori — click, jingle di Iris e suoni di interfaccia.')}
+            onMouseLeave={clearGuide}
+          >
+            <div className="settings-label">
+              <span>Effetti Sonori</span>
+              <span className="settings-value">{pct(fxVolume)}</span>
+            </div>
+            <input
+              type="range" min="0" max="100"
+              value={Math.round(fxVolume * 100)}
+              style={{ '--pct': pct(fxVolume) }}
+              onChange={(e) => { setFxVolume(Number(e.target.value) / 100); showSaved('fx'); }}
+              className="settings-slider"
+              aria-label="Volume effetti sonori"
+            />
+            {savedLabel === 'fx' && <span className="settings-saved">✓ Salvato</span>}
+          </div>
+        </div>
+
+        {/* ── Tour ── */}
+        <div className="settings-group">
+          <h2 className="settings-group-title">◈ Tour Guidato</h2>
+          <p className="settings-desc">
+            Rivivi il tour guidato di Iris per scoprire tutte le sezioni del sito.
+          </p>
+          <button
+            className="settings-tour-btn"
+            onClick={handleRestartTour}
+            onMouseEnter={() => setGuide('Riavvia il tour guidato di Iris — ti mostra tutte le sezioni del sito.')}
+            onMouseLeave={clearGuide}
+          >
+            <span className="btn-bracket">[</span>
+            {' AVVIA TOUR GUIDATO '}
+            <span className="btn-bracket">]</span>
+          </button>
         </div>
 
         {/* ── Dati ── */}

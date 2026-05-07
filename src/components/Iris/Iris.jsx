@@ -2,6 +2,7 @@ import { useState, useEffect, useRef, useCallback } from 'react';
 import { useLocation } from 'react-router-dom';
 import { useGuide } from '../../contexts/GuideContext';
 import { useSettings } from '../../contexts/SettingsContext';
+import { useTour } from '../../contexts/TourContext';
 import './Iris.css';
 
 const GREETINGS = [
@@ -265,32 +266,43 @@ const PAGE_VOICES = {
   '/termini-e-condizioni':                '/audio/iris/iris-termini.ogg',
 };
 
-const Iris = () => {
-  const [isActive,    setIsActive]    = useState(false);
-  const [isGlitching, setIsGlitching] = useState(false);
-  const [greeting,    setGreeting]    = useState(null);
-  const [pupilPos,    setPupilPos]    = useState({ x: 50, y: 50 });
-  const [blinking,    setBlinking]    = useState(false);
-  const [isMuted,     setIsMuted]     = useState(() => { try { return localStorage.getItem('iris-muted') === 'true'; } catch { return false; } });
-  const { text, clearGuide } = useGuide();
-  const { irisVolume } = useSettings();
-  const irisVolumeRef  = useRef(irisVolume);
-  const location         = useLocation();
-  const ref                  = useRef(null);
-  const greetingTimer        = useRef(null);
-  const speechAudioRef       = useRef(null);
-  const playPromiseRef       = useRef(null);
-  const greetingIdxRef       = useRef(0);
-  const hoverTimerRef        = useRef(null);
-  const greetingPlayingRef   = useRef(false);
+const isDesktop = () => window.innerWidth >= 1024;
 
-  /* ── Sync iris volume ref ── */
+const Iris = () => {
+  const [isActive,      setIsActive]      = useState(false);
+  const [isGlitching,   setIsGlitching]   = useState(false);
+  const [greeting,      setGreeting]      = useState(null);
+  const [pupilPos,      setPupilPos]      = useState({ x: 50, y: 50 });
+  const [blinking,      setBlinking]      = useState(false);
+  const [isMuted,       setIsMuted]       = useState(() => { try { return localStorage.getItem('iris-muted') === 'true'; } catch { return false; } });
+  const [showBadge,     setShowBadge]     = useState(() => { try { return !localStorage.getItem('iris-activated'); } catch { return true; } });
+  const [showTooltip,   setShowTooltip]   = useState(false);
+  const [tourPrompt,    setTourPrompt]    = useState(false);
+
+  const { text, clearGuide } = useGuide();
+  const { irisVolume, fxVolume } = useSettings();
+  const { startTour } = useTour();
+  const irisVolumeRef = useRef(irisVolume);
+  const fxVolumeRef   = useRef(fxVolume);
+  const location            = useLocation();
+  const ref                 = useRef(null);
+  const greetingTimer       = useRef(null);
+  const speechAudioRef      = useRef(null);
+  const playPromiseRef      = useRef(null);
+  const greetingIdxRef      = useRef(0);
+  const hoverTimerRef       = useRef(null);
+  const greetingPlayingRef  = useRef(false);
+  const fxAudioRef          = useRef(null);
+  const tooltipTimerRef     = useRef(null);
+
+  /* ── Sync volume refs ── */
   useEffect(() => { irisVolumeRef.current = irisVolume; }, [irisVolume]);
+  useEffect(() => { fxVolumeRef.current   = fxVolume;   }, [fxVolume]);
 
   /* ── Audio helpers ── */
   const stopVoice = useCallback(() => {
     greetingPlayingRef.current = false;
-    const audio = speechAudioRef.current;
+    const audio   = speechAudioRef.current;
     const promise = playPromiseRef.current;
     speechAudioRef.current = null;
     playPromiseRef.current = null;
@@ -308,9 +320,16 @@ const Iris = () => {
     const audio = new Audio(path);
     audio.volume = irisVolumeRef.current;
     speechAudioRef.current = audio;
+    /* Clear ref when finished so hover voices can trigger again */
+    audio.onended = () => {
+      if (speechAudioRef.current === audio) {
+        speechAudioRef.current = null;
+        playPromiseRef.current = null;
+      }
+    };
     const p = audio.play();
     playPromiseRef.current = p;
-    if (p) p.catch(() => { if (playPromiseRef.current === p) playPromiseRef.current = null; });
+    if (p) p.catch(() => { if (playPromiseRef.current === p) { playPromiseRef.current = null; } });
   }, [stopVoice]);
 
   /* Play greeting, then page voice once greeting ends */
@@ -335,6 +354,22 @@ const Iris = () => {
       if (pagePath) playVoice(pagePath);
     });
   }, [stopVoice, playVoice]);
+
+  const playFx = useCallback((path) => {
+    try {
+      const audio = new Audio(path);
+      audio.volume = fxVolumeRef.current;
+      fxAudioRef.current = audio;
+      audio.onended = () => { fxAudioRef.current = null; };
+      const p = audio.play();
+      if (p) p.catch((err) => {
+        if (import.meta.env.DEV) console.warn('[Iris fx]', err);
+        fxAudioRef.current = null;
+      });
+    } catch (err) {
+      if (import.meta.env.DEV) console.warn('[Iris fx]', err);
+    }
+  }, []);
 
   /* ── Clear hover guide on route change ── */
   useEffect(() => {
@@ -385,6 +420,7 @@ const Iris = () => {
   useEffect(() => () => {
     clearTimeout(greetingTimer.current);
     clearTimeout(hoverTimerRef.current);
+    clearTimeout(tooltipTimerRef.current);
     stopVoice();
   }, [stopVoice]);
 
@@ -394,12 +430,15 @@ const Iris = () => {
     playVoice(PAGE_VOICES[location.pathname] ?? null);
   }, [location.pathname]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  /* ── Hover guide voice — debounced 400ms, never interrupts greeting ── */
+  /* ── Hover guide voice — debounced 400ms ── */
   useEffect(() => {
     clearTimeout(hoverTimerRef.current);
     if (!isActive || isMuted || !text) return;
     hoverTimerRef.current = setTimeout(() => {
+      /* Don't interrupt greeting or a currently-playing voice */
       if (greetingPlayingRef.current) return;
+      const current = speechAudioRef.current;
+      if (current && !current.paused && !current.ended) return;
       const path = GUIDE_VOICES[text];
       if (path) playVoice(path);
     }, 400);
@@ -418,26 +457,9 @@ const Iris = () => {
     e.stopPropagation();
     setIsMuted(prev => {
       const next = !prev;
-      localStorage.setItem('iris-muted', next);
+      try { localStorage.setItem('iris-muted', next); } catch {}
       return next;
     });
-  }, []);
-
-  const fxAudioRef = useRef(null);
-
-  const playFx = useCallback((path) => {
-    try {
-      const audio = new Audio(path);
-      fxAudioRef.current = audio;
-      audio.onended = () => { fxAudioRef.current = null; };
-      const p = audio.play();
-      if (p) p.catch((err) => {
-        if (import.meta.env.DEV) console.warn('[Iris fx]', err);
-        fxAudioRef.current = null;
-      });
-    } catch (err) {
-      if (import.meta.env.DEV) console.warn('[Iris fx]', err);
-    }
   }, []);
 
   /* ── Toggle on/off ── */
@@ -445,7 +467,13 @@ const Iris = () => {
     if (isGlitching) return;
 
     if (!isActive) {
-      /* Activate: glitch → open → greet */
+      /* First ever activation */
+      const firstTime = !localStorage.getItem('iris-activated');
+      if (firstTime) {
+        try { localStorage.setItem('iris-activated', '1'); } catch {}
+        setShowBadge(false);
+      }
+
       if (!isMuted) playFx('/audio/fx/iris-open.mp3');
       setIsGlitching(true);
       clearTimeout(greetingTimer.current);
@@ -457,8 +485,13 @@ const Iris = () => {
         greetingIdxRef.current = idx;
         const msg = GREETINGS[idx];
         setGreeting(msg);
-        greetingTimer.current = setTimeout(() => setGreeting(null), 4500);
-        /* Saluto → poi voce pagina in sequenza */
+        greetingTimer.current = setTimeout(() => {
+          setGreeting(null);
+          /* Show tour prompt on desktop, first time only */
+          if (firstTime && isDesktop()) {
+            setTourPrompt(true);
+          }
+        }, 4500);
         if (!isMuted) {
           playGreetingThenPage(
             GREETING_VOICES[idx],
@@ -471,22 +504,39 @@ const Iris = () => {
       if (!isMuted) playFx('/audio/fx/iris-close.mp3');
       clearTimeout(greetingTimer.current);
       setGreeting(null);
+      setTourPrompt(false);
       setIsActive(false);
       setBlinking(false);
     }
   };
 
+  const handleTourYes = () => {
+    setTourPrompt(false);
+    startTour();
+  };
+  const handleTourNo = () => setTourPrompt(false);
+
+  /* ── Tooltip on hover when sleeping (desktop only) ── */
+  const handleWidgetMouseEnter = () => {
+    if (isActive || isGlitching) return;
+    clearTimeout(tooltipTimerRef.current);
+    tooltipTimerRef.current = setTimeout(() => setShowTooltip(true), 600);
+  };
+  const handleWidgetMouseLeave = () => {
+    clearTimeout(tooltipTimerRef.current);
+    setShowTooltip(false);
+  };
+
   const eyeOpacity = blinking ? 0 : 1;
   const pTrans     = 'cx 0.3s ease-out, cy 0.3s ease-out';
   const pageGuide  = PAGE_GUIDES[location.pathname] ?? null;
-  /* greeting > hover element > current page
-     On desktop the page guide shows briefly between hovers — acceptable.
-     On mobile (no hover) it shows persistently while active. */
-  const bubbleText = greeting || (isActive ? (text || pageGuide) : null);
+  const bubbleText = tourPrompt
+    ? 'Vuoi che ti mostri il sito? Posso farti un piccolo tour delle sezioni principali!'
+    : greeting || (isActive ? (text || pageGuide) : null);
 
-  const sleeping   = !isActive && !isGlitching;
-  const glitching  = isGlitching;
-  const awake      = isActive || isGlitching;
+  const sleeping  = !isActive && !isGlitching;
+  const glitching = isGlitching;
+  const awake     = isActive || isGlitching;
 
   return (
     <div className="iris-container">
@@ -497,7 +547,20 @@ const Iris = () => {
         aria-live="polite"
       >
         <span className="iris-bubble-text">{bubbleText}</span>
+        {tourPrompt && (
+          <div className="iris-tour-prompt-btns">
+            <button className="iris-tour-btn iris-tour-btn--yes" onClick={handleTourYes}>Sì, mostrami!</button>
+            <button className="iris-tour-btn iris-tour-btn--no"  onClick={handleTourNo}>No grazie</button>
+          </div>
+        )}
       </div>
+
+      {/* ── Sleeping tooltip ── */}
+      {showTooltip && sleeping && (
+        <div className="iris-sleep-tooltip" role="tooltip">
+          Sono Iris, la tua guida!<br />Clicca per attivarmi.
+        </div>
+      )}
 
       {/* ── Eye widget + mute button row ── */}
       <div className="iris-widget-row">
@@ -529,10 +592,13 @@ const Iris = () => {
             sleeping  ? 'iris-widget--sleeping'  : '',
             glitching ? 'iris-widget--glitching' : '',
           ].join(' ').trim()}
+          data-tour="iris-widget"
           ref={ref}
           aria-label={isActive ? 'Disattiva Iris' : 'Attiva Iris'}
           title={isActive ? 'Disattiva Iris' : 'Attiva Iris'}
           onClick={handleToggle}
+          onMouseEnter={handleWidgetMouseEnter}
+          onMouseLeave={handleWidgetMouseLeave}
         >
         <svg className="iris-svg" viewBox="20 27 62 42" aria-hidden="true">
           <defs>
@@ -579,7 +645,6 @@ const Iris = () => {
           {/* ── Sleeping eye ── */}
           {sleeping && (
             <>
-              {/* Lower drooping lid */}
               <path
                 d="M 36 50 C 42 53.5, 58 53.5, 64 50"
                 fill="none"
@@ -588,7 +653,6 @@ const Iris = () => {
                 strokeLinecap="round"
                 filter="url(#irisGlowD)"
               />
-              {/* Upper lid (faint) */}
               <path
                 d="M 36 50 C 42 47, 58 47, 64 50"
                 fill="none"
@@ -596,7 +660,6 @@ const Iris = () => {
                 strokeWidth="0.8"
                 strokeLinecap="round"
               />
-              {/* Zzz */}
               <text className="iris-zzz iris-zzz--1" x="66" y="44"
                 fill="var(--color-primary, #0ff)" fontSize="3.2"
                 fontFamily="monospace" filter="url(#irisGlowD)">z</text>
@@ -620,6 +683,11 @@ const Iris = () => {
           {/* ── Neo ── */}
           <circle cx="65" cy="61" r="1.5" fill="var(--color-primary, #0ff)" filter="url(#irisGlowD)" />
         </svg>
+
+        {/* ── Exclamation badge (first visit) ── */}
+        {showBadge && sleeping && (
+          <span className="iris-badge" aria-hidden="true">!</span>
+        )}
         </div>
       </div>
     </div>

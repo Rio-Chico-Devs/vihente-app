@@ -379,6 +379,7 @@ const Navbar = () => {
           <Link
             to="/"
             className={`navbar-logo ${mobileMenuOpen ? 'menu-open' : ''}`}
+            data-tour="nav-logo"
             aria-label="Torna alla home"
             onClick={handleLogoClick}
             onMouseEnter={() => setGuide('Ti presento Femo! Si irrita facilmente, quindi trattalo con rispetto')}
@@ -530,6 +531,7 @@ const Navbar = () => {
             <Link
               to="/services"
               className={`nav-link ${isActive('/services') ? 'active' : ''}`}
+              data-tour="nav-servizi"
               aria-label="Vai alla pagina Servizi"
               aria-current={isActive('/services') ? 'page' : undefined}
               onClick={(e) => handleDesktopNavClick(e, '/services')}
@@ -543,6 +545,7 @@ const Navbar = () => {
             <Link
               to="/portfolio"
               className={`nav-link ${isActive('/portfolio') ? 'active' : ''}`}
+              data-tour="nav-portfolio"
               aria-label="Vai alla pagina Portfolio"
               aria-current={isActive('/portfolio') ? 'page' : undefined}
               onClick={(e) => handleDesktopNavClick(e, '/portfolio')}
@@ -556,6 +559,7 @@ const Navbar = () => {
             <Link
               to="/storia"
               className={`nav-link ${isActive('/storia') ? 'active' : ''}`}
+              data-tour="nav-storia"
               aria-label="Vai alla pagina La Mia Storia"
               aria-current={isActive('/storia') ? 'page' : undefined}
               onClick={(e) => handleDesktopNavClick(e, '/storia')}
@@ -569,6 +573,7 @@ const Navbar = () => {
             <Link
               to="/contatti"
               className={`nav-link ${isActive('/contatti') ? 'active' : ''}`}
+              data-tour="nav-contatti"
               aria-label="Vai alla pagina Contatti"
               aria-current={isActive('/contatti') ? 'page' : undefined}
               onClick={(e) => handleDesktopNavClick(e, '/contatti')}
@@ -583,6 +588,7 @@ const Navbar = () => {
           {/* Settings gear — desktop only */}
           <button
             className="nav-settings-btn desktop-only"
+            data-tour="nav-settings"
             onClick={(e) => handleDesktopNavClick(e, '/impostazioni')}
             aria-label="Vai alle impostazioni"
             onMouseEnter={() => setGuide('Impostazioni — volumi, preferenze e gestione dati.')}
@@ -597,6 +603,7 @@ const Navbar = () => {
           {/* Availability Badge */}
           <div
             className="availability-badge desktop-only"
+            data-tour="nav-availability"
             aria-label="Stato disponibilità"
             onMouseEnter={() => setGuide('Questo badge verde significa che siamo disponibili per nuove collaborazioni. Non esitare a contattarci!')}
             onMouseLeave={clearGuide}

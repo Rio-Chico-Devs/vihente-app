@@ -229,3 +229,96 @@
     display: none;
   }
 }
+
+/* ── Exclamation badge ── */
+.iris-widget {
+  position: relative;
+}
+
+.iris-badge {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #ff0055;
+  color: #fff;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 0.75rem;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0 10px rgba(255, 0, 85, 0.7);
+  animation: badge-pulse 1.4s ease-in-out infinite alternate;
+  z-index: 1;
+  pointer-events: none;
+}
+
+@keyframes badge-pulse {
+  from { box-shadow: 0 0 4px rgba(255, 0, 85, 0.5);  transform: scale(1); }
+  to   { box-shadow: 0 0 14px rgba(255, 0, 85, 0.9); transform: scale(1.15); }
+}
+
+/* ── Sleeping tooltip ── */
+.iris-sleep-tooltip {
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%) translateY(-8px);
+  background: rgba(0, 0, 0, 0.9);
+  border: 1px solid var(--color-primary-40, rgba(0,255,255,0.4));
+  border-radius: 8px;
+  padding: 0.5rem 0.75rem;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 0.68rem;
+  color: var(--color-primary, #0ff);
+  white-space: nowrap;
+  pointer-events: none;
+  animation: tooltip-in 0.2s ease forwards;
+  z-index: 1;
+}
+
+@keyframes tooltip-in {
+  from { opacity: 0; transform: translateX(-50%) translateY(-4px); }
+  to   { opacity: 1; transform: translateX(-50%) translateY(-8px); }
+}
+
+/* ── Tour prompt buttons in bubble ── */
+.iris-tour-prompt-btns {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 0.6rem;
+  pointer-events: all;
+}
+
+.iris-tour-btn {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 0.65rem;
+  padding: 0.3rem 0.6rem;
+  border-radius: 4px;
+  cursor: pointer;
+  border: 1px solid;
+  transition: all 0.15s;
+  letter-spacing: 0.05em;
+}
+
+.iris-tour-btn--yes {
+  border-color: var(--color-primary, #0ff);
+  background: rgba(0,255,255,0.08);
+  color: var(--color-primary, #0ff);
+}
+.iris-tour-btn--yes:hover {
+  background: rgba(0,255,255,0.18);
+}
+
+.iris-tour-btn--no {
+  border-color: rgba(255,255,255,0.2);
+  background: transparent;
+  color: rgba(255,255,255,0.5);
+}
+.iris-tour-btn--no:hover {
+  border-color: rgba(255,255,255,0.4);
+  color: rgba(255,255,255,0.8);
+}
