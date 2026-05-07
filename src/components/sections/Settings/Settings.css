@@ -1,0 +1,188 @@
+.settings-section {
+  min-height: 100dvh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6rem 2rem 4rem;
+  background: var(--bg-primary, #0a0a0a);
+}
+
+.settings-container {
+  width: 100%;
+  max-width: 580px;
+}
+
+.settings-header {
+  margin-bottom: 3rem;
+}
+
+.settings-tag {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 0.7rem;
+  color: var(--color-primary-60, rgba(0,255,255,0.6));
+  letter-spacing: 0.2em;
+  display: block;
+  margin-bottom: 0.4rem;
+}
+
+.settings-title {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 2rem;
+  color: var(--color-primary, #0ff);
+  letter-spacing: 0.12em;
+  text-shadow: 0 0 18px var(--color-primary, #0ff);
+  margin: 0;
+}
+
+/* ── Groups ── */
+.settings-group {
+  margin-bottom: 2.5rem;
+  padding-left: 1.25rem;
+  border-left: 2px solid var(--color-primary-30, rgba(0,255,255,0.3));
+}
+
+.settings-group-title {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 0.78rem;
+  color: var(--color-primary-70, rgba(0,255,255,0.7));
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  margin-bottom: 1.5rem;
+}
+
+/* ── Rows ── */
+.settings-row {
+  margin-bottom: 1.75rem;
+}
+
+.settings-label {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 0.9rem;
+  color: var(--text-primary, #e0e0e0);
+  margin-bottom: 0.6rem;
+}
+
+.settings-value {
+  color: var(--color-primary, #0ff);
+  min-width: 3.5rem;
+  text-align: right;
+  font-size: 0.85rem;
+}
+
+/* ── Slider ── */
+.settings-slider {
+  width: 100%;
+  height: 3px;
+  appearance: none;
+  -webkit-appearance: none;
+  background: linear-gradient(
+    to right,
+    var(--color-primary, #0ff) 0%,
+    var(--color-primary, #0ff) var(--pct, 50%),
+    var(--color-primary-20, rgba(0,255,255,0.2)) var(--pct, 50%)
+  );
+  border-radius: 2px;
+  cursor: pointer;
+  outline: none;
+}
+
+.settings-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--color-primary, #0ff);
+  box-shadow: 0 0 8px var(--color-primary, #0ff);
+  cursor: pointer;
+  transition: transform 0.15s;
+}
+
+.settings-slider::-webkit-slider-thumb:hover {
+  transform: scale(1.25);
+}
+
+.settings-slider::-moz-range-thumb {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--color-primary, #0ff);
+  box-shadow: 0 0 8px var(--color-primary, #0ff);
+  cursor: pointer;
+  border: none;
+}
+
+/* ── Desc ── */
+.settings-desc {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 0.78rem;
+  color: var(--text-secondary, #888);
+  line-height: 1.7;
+  margin-bottom: 1.5rem;
+}
+
+/* ── Clear button ── */
+.settings-clear-btn {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 0.82rem;
+  padding: 0.7rem 1.4rem;
+  border: 1px solid rgba(255, 0, 85, 0.6);
+  background: transparent;
+  color: rgba(255, 0, 85, 0.8);
+  cursor: pointer;
+  letter-spacing: 0.1em;
+  transition: all 0.2s;
+  display: inline-flex;
+  align-items: center;
+  gap: 0;
+}
+
+.settings-clear-btn:hover:not(:disabled) {
+  background: rgba(255, 0, 85, 0.08);
+  border-color: #ff0055;
+  color: #ff0055;
+  box-shadow: 0 0 14px rgba(255, 0, 85, 0.25);
+}
+
+.settings-clear-btn.step-1 {
+  border-color: #ff6600;
+  color: #ff6600;
+  animation: pulse-warn 0.6s ease-in-out infinite alternate;
+}
+
+.settings-clear-btn.step-2 {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.btn-bracket {
+  color: inherit;
+  opacity: 0.6;
+}
+
+.settings-warn {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 0.72rem;
+  color: #ff6600;
+  margin-top: 0.75rem;
+  letter-spacing: 0.05em;
+}
+
+@keyframes pulse-warn {
+  from { box-shadow: 0 0 4px rgba(255, 102, 0, 0.2); }
+  to   { box-shadow: 0 0 16px rgba(255, 102, 0, 0.6); }
+}
+
+/* ── Mobile ── */
+@media (max-width: 768px) {
+  .settings-section {
+    padding: 5rem 1.5rem 3rem;
+    align-items: flex-start;
+  }
+
+  .settings-title {
+    font-size: 1.4rem;
+  }
+}

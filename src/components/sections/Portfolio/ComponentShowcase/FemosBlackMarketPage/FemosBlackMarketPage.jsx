@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect, useCallback } from 'react';
 import './FemosBlackMarketPage.css';
 import { useGuide } from '../../../../../contexts/GuideContext';
+import { useSettings } from '../../../../../contexts/SettingsContext';
 
 // Costanti e database fuori dal componente per evitare problemi di dipendenze
 const CART_MAX_ITEMS = 12;
@@ -73,8 +74,12 @@ const playFx = (path) => {
   try { new Audio(path).play().catch(() => {}); } catch (_) {}
 };
 
+const BASE_MARKET_VOL = 0.35;
+
 const FemosBlackMarketPage = () => {
   const { setGuide, clearGuide } = useGuide();
+  const { musicVolume } = useSettings();
+  const musicVolumeRef = useRef(musicVolume);
   const marketMusicRef = useRef(null);
   const [simulationActive, setSimulationActive] = useState(false);
   const [currentPage, setCurrentPage] = useState('shop');
@@ -91,11 +96,17 @@ const FemosBlackMarketPage = () => {
   const currentPositionRef = useRef({ x: 500, y: 500 });
   const interpolationFrameRef = useRef(null);
 
+  /* ── Sync music volume ref + update market audio in real-time ── */
+  useEffect(() => {
+    musicVolumeRef.current = musicVolume;
+    if (marketMusicRef.current) marketMusicRef.current.volume = musicVolume * BASE_MARKET_VOL;
+  }, [musicVolume]);
+
   /* ── Market music: play on mount, stop on unmount ── */
   useEffect(() => {
     const music = new Audio('/audio/market/black-market.mp3');
     music.loop = true;
-    music.volume = 0.35;
+    music.volume = musicVolumeRef.current * BASE_MARKET_VOL;
     marketMusicRef.current = music;
     music.play().catch(() => {});
     return () => { music.pause(); music.src = ''; marketMusicRef.current = null; };

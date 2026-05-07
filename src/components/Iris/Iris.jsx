@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { useLocation } from 'react-router-dom';
 import { useGuide } from '../../contexts/GuideContext';
+import { useSettings } from '../../contexts/SettingsContext';
 import './Iris.css';
 
 const GREETINGS = [
@@ -48,6 +49,7 @@ const PAGE_GUIDES = {
   '/privacy-policy':                        'Qui, trovi tutte le informazioni sul trattamento dei tuoi dati personali.',
   '/cookie-policy':                         'Qui, puoi consultare come utilizziamo i cookie su questo sito.',
   '/termini-e-condizioni':                  'Qui, puoi consultare le regole di utilizzo del nostro sito.',
+  '/impostazioni':                          'Impostazioni — personalizza i volumi di Iris e della musica, oppure reimposta le preferenze di navigazione.',
 };
 
 /* ── Voci per i tooltip hover (setGuide) ── */
@@ -271,6 +273,8 @@ const Iris = () => {
   const [blinking,    setBlinking]    = useState(false);
   const [isMuted,     setIsMuted]     = useState(() => { try { return localStorage.getItem('iris-muted') === 'true'; } catch { return false; } });
   const { text, clearGuide } = useGuide();
+  const { irisVolume } = useSettings();
+  const irisVolumeRef  = useRef(irisVolume);
   const location         = useLocation();
   const ref                  = useRef(null);
   const greetingTimer        = useRef(null);
@@ -279,6 +283,9 @@ const Iris = () => {
   const greetingIdxRef       = useRef(0);
   const hoverTimerRef        = useRef(null);
   const greetingPlayingRef   = useRef(false);
+
+  /* ── Sync iris volume ref ── */
+  useEffect(() => { irisVolumeRef.current = irisVolume; }, [irisVolume]);
 
   /* ── Audio helpers ── */
   const stopVoice = useCallback(() => {
@@ -299,6 +306,7 @@ const Iris = () => {
     stopVoice();
     if (!path) return;
     const audio = new Audio(path);
+    audio.volume = irisVolumeRef.current;
     speechAudioRef.current = audio;
     const p = audio.play();
     playPromiseRef.current = p;
@@ -311,6 +319,7 @@ const Iris = () => {
     if (!greetPath) { if (pagePath) playVoice(pagePath); return; }
     greetingPlayingRef.current = true;
     const audio = new Audio(greetPath);
+    audio.volume = irisVolumeRef.current;
     speechAudioRef.current = audio;
     audio.onended = () => {
       greetingPlayingRef.current = false;
