@@ -136,14 +136,15 @@ const TourOverlay = () => {
   /* ───────────────────────────── panel position ─────────────────────────────
      Place above or below the target depending on space available; clamp X & Y
      within the viewport. */
-  const vW = window.innerWidth;
-  const vH = window.innerHeight;
+  const vW  = window.innerWidth;
+  const vH  = window.innerHeight;
+  const PAD = currentStep?.spotPad ?? SPOTLIGHT_PAD;
 
   let panelStyle, intro = false;
   if (rect) {
     const cx = rect.x + rect.w / 2;
     const cy = rect.y + rect.h / 2;
-    const ry = rect.h / 2 + SPOTLIGHT_PAD;
+    const ry = rect.h / 2 + PAD;
 
     const placeAbove = cy > vH / 2;
     let top;
@@ -169,10 +170,10 @@ const TourOverlay = () => {
   /* Spotlight box-shadow technique: small element with massive box-shadow
      creates the dark surround everywhere except this rect. */
   const spotStyle = rect ? {
-    left:   `${rect.x - SPOTLIGHT_PAD}px`,
-    top:    `${rect.y - SPOTLIGHT_PAD}px`,
-    width:  `${rect.w + SPOTLIGHT_PAD * 2}px`,
-    height: `${rect.h + SPOTLIGHT_PAD * 2}px`,
+    left:   `${rect.x - PAD}px`,
+    top:    `${rect.y - PAD}px`,
+    width:  `${rect.w + PAD * 2}px`,
+    height: `${rect.h + PAD * 2}px`,
   } : null;
 
   const progressPct = ((stepIdx + 1) / TOUR_STEPS.length) * 100;

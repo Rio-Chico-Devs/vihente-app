@@ -3,7 +3,7 @@ import { createContext, useContext, useState, useCallback } from 'react';
 export const TOUR_STEPS = [
   {
     id:     'intro',
-    target: null,
+    target: 'iris-widget',
     text:   'Ciao! Sono Iris, sono stata creata per rendere questo sito accessibile a tutti.',
     audio:  '/audio/iris/iris-tour-intro.ogg',
   },
@@ -14,10 +14,11 @@ export const TOUR_STEPS = [
     audio:  '/audio/iris/iris-tour-toggle.ogg',
   },
   {
-    id:     'logo',
-    target: 'nav-logo',
-    text:   'Oltre ad essere il nostro logo, questa è la seconda mascotte del sito, clicca su di lei per tornare alla home.',
-    audio:  '/audio/iris/iris-tour-logo.ogg',
+    id:      'logo',
+    target:  'nav-logo',
+    spotPad: 24,
+    text:    'Oltre ad essere il nostro logo, questa è la seconda mascotte del sito, clicca su di lei per tornare alla home.',
+    audio:   '/audio/iris/iris-tour-logo.ogg',
   },
   {
     id:     'servizi',

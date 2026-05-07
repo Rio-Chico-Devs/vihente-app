@@ -281,7 +281,7 @@ const Iris = () => {
 
   const { text, clearGuide } = useGuide();
   const { irisVolume, fxVolume } = useSettings();
-  const { startTour } = useTour();
+  const { active: tourActive, startTour } = useTour();
   const irisVolumeRef = useRef(irisVolume);
   const fxVolumeRef   = useRef(fxVolume);
   const location            = useLocation();
@@ -433,7 +433,7 @@ const Iris = () => {
   /* ── Hover guide voice — debounced 400ms ── */
   useEffect(() => {
     clearTimeout(hoverTimerRef.current);
-    if (!isActive || isMuted || !text) return;
+    if (!isActive || isMuted || !text || tourActive) return;
     hoverTimerRef.current = setTimeout(() => {
       /* Don't interrupt greeting or a currently-playing voice */
       if (greetingPlayingRef.current) return;
@@ -444,13 +444,13 @@ const Iris = () => {
     }, 400);
   }, [text, isActive, isMuted, playVoice]);
 
-  /* ── Stop voice when muted or deactivated ── */
+  /* ── Stop voice when muted, deactivated, or tour starts ── */
   useEffect(() => {
-    if (isMuted || !isActive) {
+    if (isMuted || !isActive || tourActive) {
       clearTimeout(hoverTimerRef.current);
       stopVoice();
     }
-  }, [isMuted, isActive, stopVoice]);
+  }, [isMuted, isActive, tourActive, stopVoice]);
 
   /* ── Auto-dismiss tour prompt after 15s of inactivity ── */
   useEffect(() => {
@@ -537,9 +537,11 @@ const Iris = () => {
   const eyeOpacity = blinking ? 0 : 1;
   const pTrans     = 'cx 0.3s ease-out, cy 0.3s ease-out';
   const pageGuide  = PAGE_GUIDES[location.pathname] ?? null;
-  const bubbleText = tourPrompt
-    ? 'Vuoi che ti mostri il sito? Posso farti un piccolo tour delle sezioni principali!'
-    : greeting || (isActive ? (text || pageGuide) : null);
+  const bubbleText = tourActive
+    ? null
+    : tourPrompt
+      ? 'Vuoi che ti mostri il sito? Posso farti un piccolo tour delle sezioni principali!'
+      : greeting || (isActive ? (text || pageGuide) : null);
 
   const sleeping  = !isActive && !isGlitching;
   const glitching = isGlitching;
@@ -571,28 +573,6 @@ const Iris = () => {
 
       {/* ── Eye widget + mute button row ── */}
       <div className="iris-widget-row">
-        {isActive && (
-          <button
-            className={`iris-mute-btn${isMuted ? ' iris-mute-btn--muted' : ''}`}
-            onClick={toggleMute}
-            title={isMuted ? 'Attiva voce' : 'Muta voce'}
-            aria-label={isMuted ? 'Attiva voce di Iris' : 'Muta voce di Iris'}
-          >
-            {isMuted ? (
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
-                <line x1="23" y1="9" x2="17" y2="15"/>
-                <line x1="17" y1="9" x2="23" y2="15"/>
-              </svg>
-            ) : (
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
-                <path d="M15.54 8.46a5 5 0 0 1 0 7.07"/>
-                <path d="M19.07 4.93a10 10 0 0 1 0 14.14"/>
-              </svg>
-            )}
-          </button>
-        )}
         <div
           className={[
             'iris-widget',
@@ -696,6 +676,28 @@ const Iris = () => {
           <span className="iris-badge" aria-hidden="true">!</span>
         )}
         </div>
+        {isActive && (
+          <button
+            className={`iris-mute-btn${isMuted ? ' iris-mute-btn--muted' : ''}`}
+            onClick={toggleMute}
+            title={isMuted ? 'Attiva voce' : 'Muta voce'}
+            aria-label={isMuted ? 'Attiva voce di Iris' : 'Muta voce di Iris'}
+          >
+            {isMuted ? (
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
+                <line x1="23" y1="9" x2="17" y2="15"/>
+                <line x1="17" y1="9" x2="23" y2="15"/>
+              </svg>
+            ) : (
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
+                <path d="M15.54 8.46a5 5 0 0 1 0 7.07"/>
+                <path d="M19.07 4.93a10 10 0 0 1 0 14.14"/>
+              </svg>
+            )}
+          </button>
+        )}
       </div>
     </div>
   );

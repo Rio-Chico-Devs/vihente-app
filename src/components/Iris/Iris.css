@@ -169,22 +169,15 @@
    GLITCH / ACTIVATION
    ═══════════════════════════ */
 
-@keyframes iris-glitch {
-  0%   { transform: translate(0,     0);     filter: none;                              }
-  10%  { transform: translate(-5px,  2px);   filter: hue-rotate(90deg)  brightness(1.8);}
-  20%  { transform: translate(5px,  -3px);   filter: hue-rotate(180deg) brightness(0.6);}
-  30%  { transform: translate(-3px,  4px);   filter: hue-rotate(270deg) brightness(2);  }
-  40%  { transform: translate(4px,  -2px);   filter: none;                              }
-  50%  { transform: translate(-4px,  1px);   filter: hue-rotate(90deg)  brightness(1.5);}
-  60%  { transform: translate(5px,  -4px);   filter: brightness(2.2);                   }
-  70%  { transform: translate(-5px,  3px);   filter: hue-rotate(180deg);                }
-  80%  { transform: translate(3px,  -1px);   filter: none;                              }
-  90%  { transform: translate(-2px,  4px);   filter: brightness(1.8);                   }
-  100% { transform: translate(0,     0);     filter: none;                              }
+@keyframes iris-awaken {
+  0%   { opacity: 0.2; transform: scale(0.90); filter: brightness(0.3) blur(3px); box-shadow: 0 0 4px  rgba(0,255,255,0.08); }
+  30%  { opacity: 0.5; transform: scale(0.96); filter: brightness(0.7) blur(1px); box-shadow: 0 0 12px rgba(0,255,255,0.2);  }
+  65%  { opacity: 0.85;transform: scale(1.03); filter: brightness(1.05);           box-shadow: 0 0 28px rgba(0,255,255,0.45); }
+  100% { opacity: 1;   transform: scale(1);    filter: none;                       box-shadow: 0 0 15px rgba(0,255,255,0.2);  }
 }
 
 .iris-widget--glitching {
-  animation: iris-glitch 0.65s steps(2) forwards;
+  animation: iris-awaken 0.7s cubic-bezier(.25,.46,.45,.94) forwards;
   cursor: wait;
 }
 
