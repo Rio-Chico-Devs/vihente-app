@@ -1,4 +1,8 @@
-/* ── Tour root ── */
+/* ============================================
+   TOUR OVERLAY — Iris guided tour
+   Spotlight via box-shadow technique
+   ============================================ */
+
 .tour-root {
   position: fixed;
   inset: 0;
@@ -6,100 +10,198 @@
   pointer-events: none;
 }
 
-/* Dark overlay with clip-path cutout */
-.tour-overlay {
+/* ── Full-screen overlay (intro step, no target) ── */
+.tour-fullscreen-overlay {
   position: absolute;
   inset: 0;
   background: rgba(0, 0, 0, 0.78);
-  transition: clip-path 0.35s ease;
   pointer-events: all;
+  animation: tour-fade-in 0.3s ease forwards;
 }
 
-/* Glowing ring around the spotlight */
-.tour-spotlight-ring {
+/* ── Spotlight: massive box-shadow creates the surround ── */
+.tour-spotlight {
   position: absolute;
-  border: 2px solid rgba(0, 255, 255, 0.7);
   border-radius: 8px;
+  pointer-events: none;
   box-shadow:
-    0 0 0 3px rgba(0, 255, 255, 0.12),
+    0 0 0 9999px rgba(0, 0, 0, 0.78),
+    0 0 0 2px rgba(0, 255, 255, 0.7),
     0 0 24px rgba(0, 255, 255, 0.4),
     inset 0 0 16px rgba(0, 255, 255, 0.06);
-  pointer-events: none;
-  transition: all 0.35s ease;
-  animation: ring-pulse 2s ease-in-out infinite alternate;
+  /* smooth move between steps */
+  transition:
+    left 0.45s cubic-bezier(.4,.0,.2,1),
+    top  0.45s cubic-bezier(.4,.0,.2,1),
+    width  0.45s cubic-bezier(.4,.0,.2,1),
+    height 0.45s cubic-bezier(.4,.0,.2,1);
+  animation: tour-spot-pulse 2.4s ease-in-out infinite alternate;
 }
 
-@keyframes ring-pulse {
-  from { box-shadow: 0 0 0 3px rgba(0,255,255,0.1), 0 0 20px rgba(0,255,255,0.3); }
-  to   { box-shadow: 0 0 0 3px rgba(0,255,255,0.2), 0 0 36px rgba(0,255,255,0.55); }
+@keyframes tour-fade-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
 }
 
-/* Step panel */
+@keyframes tour-spot-pulse {
+  from {
+    box-shadow:
+      0 0 0 9999px rgba(0, 0, 0, 0.78),
+      0 0 0 2px rgba(0, 255, 255, 0.45),
+      0 0 16px rgba(0, 255, 255, 0.25),
+      inset 0 0 12px rgba(0, 255, 255, 0.04);
+  }
+  to {
+    box-shadow:
+      0 0 0 9999px rgba(0, 0, 0, 0.78),
+      0 0 0 2px rgba(0, 255, 255, 0.85),
+      0 0 36px rgba(0, 255, 255, 0.55),
+      inset 0 0 18px rgba(0, 255, 255, 0.1);
+  }
+}
+
+/* ── Step panel ── */
 .tour-panel {
   position: fixed;
   width: 320px;
   background: rgba(4, 12, 20, 0.96);
   border: 1px solid rgba(0, 255, 255, 0.45);
   border-radius: 10px;
-  padding: 1.1rem 1.25rem;
-  box-shadow: 0 0 32px rgba(0, 255, 255, 0.2), 0 8px 32px rgba(0, 0, 0, 0.6);
+  padding: 0 0 1.05rem;
+  box-shadow:
+    0 0 32px rgba(0, 255, 255, 0.2),
+    0 8px 32px rgba(0, 0, 0, 0.6);
   backdrop-filter: blur(12px);
   pointer-events: all;
-  animation: panel-in 0.25s ease forwards;
+  overflow: hidden;
+  /* animate position changes between steps; opacity-only entrance to avoid
+     conflicts with the inline transform used by the intro step */
+  transition: top 0.35s ease, left 0.35s ease;
+  animation: tour-panel-in 0.25s ease forwards;
 }
 
-@keyframes panel-in {
-  from { opacity: 0; transform: translateY(8px); }
-  to   { opacity: 1; transform: translateY(0); }
+@keyframes tour-panel-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
 }
 
-/* Override for intro (centered) */
-.tour-panel[style*="50%"] {
-  transform: translate(-50%, -50%);
+/* Intro: panel stays centered (transform set inline) */
+.tour-panel--intro {
+  transition: none;
+}
+
+/* ── Progress bar ── */
+.tour-progress {
+  height: 3px;
+  background: rgba(0, 255, 255, 0.12);
+  overflow: hidden;
+}
+
+.tour-progress-bar {
+  height: 100%;
+  background: linear-gradient(90deg, #08c, #0ff);
+  box-shadow: 0 0 8px rgba(0, 255, 255, 0.55);
+  transition: width 0.45s cubic-bezier(.4,.0,.2,1);
+}
+
+/* ── Header (step counter + audio toggle) ── */
+.tour-panel-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem 1.15rem 0.35rem;
 }
 
 .tour-panel-step {
   font-family: 'Share Tech Mono', monospace;
   font-size: 0.65rem;
   color: rgba(0, 255, 255, 0.5);
-  letter-spacing: 0.15em;
-  margin-bottom: 0.6rem;
+  letter-spacing: 0.18em;
 }
 
+.tour-icon-btn {
+  background: transparent;
+  border: 1px solid rgba(0, 255, 255, 0.3);
+  color: rgba(0, 255, 255, 0.7);
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.15s;
+  padding: 0;
+}
+.tour-icon-btn:hover {
+  border-color: #0ff;
+  color: #0ff;
+  box-shadow: 0 0 8px rgba(0, 255, 255, 0.3);
+}
+
+/* ── Body text ── */
 .tour-panel-text {
   font-family: 'Share Tech Mono', monospace;
   font-size: 0.8rem;
   line-height: 1.65;
   color: #d8d8d8;
-  margin: 0 0 1rem;
+  margin: 0.3rem 1.15rem 0.95rem;
 }
 
-/* Buttons */
+/* ── Actions row ── */
 .tour-panel-actions {
   display: flex;
-  gap: 0.6rem;
-  justify-content: flex-end;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0 1.15rem;
+}
+
+.tour-nav-group {
+  display: flex;
+  gap: 0.4rem;
 }
 
 .tour-btn {
   font-family: 'Share Tech Mono', monospace;
   font-size: 0.72rem;
-  padding: 0.4rem 0.9rem;
+  padding: 0.45rem 0.9rem;
   border-radius: 4px;
   cursor: pointer;
   border: 1px solid;
   letter-spacing: 0.06em;
   transition: all 0.15s;
+  background: transparent;
+}
+
+.tour-btn:focus-visible {
+  outline: 2px solid rgba(0, 255, 255, 0.55);
+  outline-offset: 2px;
+}
+
+.tour-btn:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
 }
 
 .tour-btn--stop {
   border-color: rgba(255, 255, 255, 0.2);
-  background: transparent;
   color: rgba(255, 255, 255, 0.45);
 }
-.tour-btn--stop:hover {
+.tour-btn--stop:hover:not(:disabled) {
   border-color: rgba(255, 0, 85, 0.6);
-  color: rgba(255, 0, 85, 0.8);
+  color: rgba(255, 0, 85, 0.85);
+}
+
+.tour-btn--back {
+  border-color: rgba(0, 255, 255, 0.3);
+  color: rgba(0, 255, 255, 0.65);
+  padding: 0.45rem 0.7rem;
+  min-width: 36px;
+}
+.tour-btn--back:hover:not(:disabled) {
+  border-color: rgba(0, 255, 255, 0.6);
+  color: #0ff;
 }
 
 .tour-btn--next {
@@ -107,8 +209,8 @@
   background: rgba(0, 255, 255, 0.07);
   color: #0ff;
 }
-.tour-btn--next:hover {
-  background: rgba(0, 255, 255, 0.15);
+.tour-btn--next:hover:not(:disabled) {
+  background: rgba(0, 255, 255, 0.16);
   border-color: #0ff;
   box-shadow: 0 0 10px rgba(0, 255, 255, 0.25);
 }

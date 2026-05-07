@@ -97,6 +97,10 @@ export const TourProvider = ({ children }) => {
     });
   }, []);
 
+  const prevStep = useCallback(() => {
+    setStepIdx(prev => Math.max(0, prev - 1));
+  }, []);
+
   const endTour = useCallback(() => {
     setActive(false);
     setStepIdx(0);
@@ -105,7 +109,7 @@ export const TourProvider = ({ children }) => {
   const currentStep = active ? TOUR_STEPS[stepIdx] : null;
 
   return (
-    <TourContext.Provider value={{ active, stepIdx, currentStep, startTour, nextStep, endTour }}>
+    <TourContext.Provider value={{ active, stepIdx, currentStep, startTour, nextStep, prevStep, endTour }}>
       {children}
     </TourContext.Provider>
   );

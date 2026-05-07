@@ -452,6 +452,13 @@ const Iris = () => {
     }
   }, [isMuted, isActive, stopVoice]);
 
+  /* ── Auto-dismiss tour prompt after 15s of inactivity ── */
+  useEffect(() => {
+    if (!tourPrompt) return;
+    const t = setTimeout(() => setTourPrompt(false), 15000);
+    return () => clearTimeout(t);
+  }, [tourPrompt]);
+
   /* ── Mute toggle ── */
   const toggleMute = useCallback((e) => {
     e.stopPropagation();

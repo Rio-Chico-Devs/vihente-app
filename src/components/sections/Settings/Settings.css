@@ -122,13 +122,13 @@
   color: var(--color-primary, #0ff);
   margin-top: 0.35rem;
   letter-spacing: 0.08em;
-  animation: fade-in-out 1.8s ease forwards;
+  animation: settings-saved-pop 1.4s ease forwards;
 }
 
-@keyframes fade-in-out {
+@keyframes settings-saved-pop {
   0%   { opacity: 0; transform: translateY(-4px); }
-  15%  { opacity: 1; transform: translateY(0); }
-  70%  { opacity: 1; }
+  18%  { opacity: 1; transform: translateY(0); }
+  78%  { opacity: 1; }
   100% { opacity: 0; }
 }
 

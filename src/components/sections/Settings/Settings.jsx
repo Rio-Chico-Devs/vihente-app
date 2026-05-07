@@ -12,14 +12,22 @@ const Settings = () => {
   const navigate = useNavigate();
   const [clearStep, setClearStep] = useState(0);
   const [savedLabel, setSavedLabel] = useState('');
-  const savedTimerRef = useRef(null);
+  const [savedTick,  setSavedTick]  = useState(0);  /* forces animation restart */
+  const debounceRef = useRef(null);
+  const hideRef     = useRef(null);
 
   const pct = (v) => `${Math.round(v * 100)}%`;
 
+  /* Debounced "✓ Salvato": fires 400ms after last change so it doesn't flicker
+     during slider drag, then auto-hides after 1.4s. */
   const showSaved = useCallback((label) => {
-    setSavedLabel(label);
-    clearTimeout(savedTimerRef.current);
-    savedTimerRef.current = setTimeout(() => setSavedLabel(''), 1800);
+    clearTimeout(debounceRef.current);
+    clearTimeout(hideRef.current);
+    debounceRef.current = setTimeout(() => {
+      setSavedLabel(label);
+      setSavedTick(t => t + 1);
+      hideRef.current = setTimeout(() => setSavedLabel(''), 1400);
+    }, 400);
   }, []);
 
   const handleClear = () => {
@@ -62,7 +70,7 @@ const Settings = () => {
               className="settings-slider"
               aria-label="Volume voce Iris"
             />
-            {savedLabel === 'iris' && <span className="settings-saved">✓ Salvato</span>}
+            {savedLabel === 'iris' && <span key={`iris-${savedTick}`} className="settings-saved">✓ Salvato</span>}
           </div>
 
           <div
@@ -82,7 +90,7 @@ const Settings = () => {
               className="settings-slider"
               aria-label="Volume musica"
             />
-            {savedLabel === 'music' && <span className="settings-saved">✓ Salvato</span>}
+            {savedLabel === 'music' && <span key={`music-${savedTick}`} className="settings-saved">✓ Salvato</span>}
           </div>
 
           <div
@@ -102,7 +110,7 @@ const Settings = () => {
               className="settings-slider"
               aria-label="Volume effetti sonori"
             />
-            {savedLabel === 'fx' && <span className="settings-saved">✓ Salvato</span>}
+            {savedLabel === 'fx' && <span key={`fx-${savedTick}`} className="settings-saved">✓ Salvato</span>}
           </div>
         </div>
 
