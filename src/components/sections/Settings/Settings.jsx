@@ -42,6 +42,7 @@ const Settings = () => {
 
   return (
     <section className="settings-section">
+      <div className="settings-vignette" />
       <div className="settings-container">
 
         <div className="settings-header">
@@ -49,7 +50,9 @@ const Settings = () => {
           <h1 className="settings-title">IMPOSTAZIONI</h1>
         </div>
 
-        {/* ── Audio ── */}
+        <div className="settings-grid">
+
+        {/* ── Col sinistra: Audio ── */}
         <div className="settings-group">
           <h2 className="settings-group-title">◈ Audio</h2>
 
@@ -114,50 +117,54 @@ const Settings = () => {
           </div>
         </div>
 
-        {/* ── Tour ── */}
-        <div className="settings-group">
-          <h2 className="settings-group-title">◈ Tour Guidato</h2>
-          <p className="settings-desc">
-            Rivivi il tour guidato di Iris per scoprire tutte le sezioni del sito.
-          </p>
-          <button
-            className="settings-tour-btn"
-            onClick={handleRestartTour}
-            onMouseEnter={() => setGuide('Riavvia il tour guidato di Iris — ti mostra tutte le sezioni del sito.')}
-            onMouseLeave={clearGuide}
-          >
-            <span className="btn-bracket">[</span>
-            {' AVVIA TOUR GUIDATO '}
-            <span className="btn-bracket">]</span>
-          </button>
+        {/* ── Col destra: Tour + Dati ── */}
+        <div className="settings-col-right">
+
+          <div className="settings-group">
+            <h2 className="settings-group-title">◈ Tour Guidato</h2>
+            <p className="settings-desc">
+              Rivivi il tour guidato di Iris per scoprire tutte le sezioni del sito.
+            </p>
+            <button
+              className="settings-tour-btn"
+              onClick={handleRestartTour}
+              onMouseEnter={() => setGuide('Riavvia il tour guidato di Iris — ti mostra tutte le sezioni del sito.')}
+              onMouseLeave={clearGuide}
+            >
+              <span className="btn-bracket">[</span>
+              {' AVVIA TOUR GUIDATO '}
+              <span className="btn-bracket">]</span>
+            </button>
+          </div>
+
+          <div className="settings-group">
+            <h2 className="settings-group-title">◈ Dati di Navigazione</h2>
+            <p className="settings-desc">
+              Cancella le preferenze salvate: tema, stato audio, configurazione Iris e volumi.<br />
+              Il sito si riavvierà con le impostazioni predefinite.
+            </p>
+
+            <button
+              className={`settings-clear-btn${clearStep > 0 ? ` step-${clearStep}` : ''}`}
+              onClick={handleClear}
+              disabled={clearStep === 2}
+              onMouseEnter={() => setGuide('Cancella tutti i dati salvati dal sito. Il sito si riavvierà.')}
+              onMouseLeave={clearGuide}
+            >
+              <span className="btn-bracket">[</span>
+              {clearStep === 0 && ' FORMAT DATA '}
+              {clearStep === 1 && ' SICURO? CLICCA ANCORA '}
+              {clearStep === 2 && ' CANCELLAZIONE IN CORSO... '}
+              <span className="btn-bracket">]</span>
+            </button>
+
+            {clearStep === 1 && (
+              <p className="settings-warn">⚠ Questa operazione è irreversibile.</p>
+            )}
+          </div>
+
         </div>
-
-        {/* ── Dati ── */}
-        <div className="settings-group">
-          <h2 className="settings-group-title">◈ Dati di Navigazione</h2>
-          <p className="settings-desc">
-            Cancella le preferenze salvate: tema, stato audio, configurazione Iris e volumi.<br />
-            Il sito si riavvierà con le impostazioni predefinite.
-          </p>
-
-          <button
-            className={`settings-clear-btn${clearStep > 0 ? ` step-${clearStep}` : ''}`}
-            onClick={handleClear}
-            disabled={clearStep === 2}
-            onMouseEnter={() => setGuide('Cancella tutti i dati salvati dal sito. Il sito si riavvierà.')}
-            onMouseLeave={clearGuide}
-          >
-            <span className="btn-bracket">[</span>
-            {clearStep === 0 && ' FORMAT DATA '}
-            {clearStep === 1 && ' SICURO? CLICCA ANCORA '}
-            {clearStep === 2 && ' CANCELLAZIONE IN CORSO... '}
-            <span className="btn-bracket">]</span>
-          </button>
-
-          {clearStep === 1 && (
-            <p className="settings-warn">⚠ Questa operazione è irreversibile.</p>
-          )}
-        </div>
+        </div>{/* /settings-grid */}
 
       </div>
     </section>
