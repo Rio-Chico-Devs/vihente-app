@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Hyperboloid Cage — Eye Concept</title>
+<title>Logo 3D — Vihente</title>
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -14,28 +14,11 @@
     cursor: crosshair;
   }
 
-  /* Tre layer in profondità:
-     bg-canvas (z<0)  →  eye-svg  →  fg-canvas (z≥0)
-     Le linee dietro l'occhio sono dietro, quelle davanti sono davanti.
-     È vero 3D, non un trucco 2D. */
-
   canvas {
     position: fixed;
     inset: 0;
     width: 100%;
     height: 100%;
-  }
-
-  #bg-canvas { z-index: 1;  }
-  #fg-canvas { z-index: 20; pointer-events: none; }
-
-  #eye-svg {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    z-index: 10;
-    pointer-events: none;
   }
 
   #caption {
@@ -47,7 +30,7 @@
     font-size: 0.62rem;
     letter-spacing: 0.32em;
     color: rgba(0, 255, 255, 0.32);
-    z-index: 30;
+    z-index: 10;
     text-align: center;
     pointer-events: none;
   }
@@ -56,223 +39,282 @@
 </head>
 <body>
 
-<canvas id="bg-canvas"></canvas>
-
-<svg id="eye-svg" viewBox="0 0 1000 1000">
-  <defs>
-    <filter id="g">
-      <feGaussianBlur stdDeviation="2" result="b"/>
-      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
-    </filter>
-    <clipPath id="ec">
-      <path d="M350 500 C390 430,440 400,500 400 C560 400,610 430,650 500 C610 570,560 600,500 600 C440 600,390 570,350 500Z"/>
-    </clipPath>
-  </defs>
-  <path d="M350 500 C390 430,440 400,500 400 C560 400,610 430,650 500 C610 570,560 600,500 600 C440 600,390 570,350 500Z"
-    fill="none" stroke="rgba(0,255,255,0.95)" stroke-width="11"
-    stroke-linecap="round" filter="url(#g)"/>
-  <g clip-path="url(#ec)">
-    <circle id="p1" cx="500" cy="500" r="80"
-      fill="none" stroke="rgba(0,255,255,0.95)" stroke-width="10" filter="url(#g)"/>
-    <circle id="p2" cx="500" cy="500" r="34"
-      fill="none" stroke="rgba(0,255,255,0.95)" stroke-width="7" filter="url(#g)"/>
-  </g>
-</svg>
-
-<canvas id="fg-canvas"></canvas>
+<canvas id="c"></canvas>
 
 <div id="caption">
-  IPERBOLOIDE A DOPPIA RIGATURA &nbsp;·&nbsp;
-  <span>x² + z² − y² = a²</span>
-  &nbsp;·&nbsp; ω_spin / ω_tilt = φ
+  VIHENTE &nbsp;·&nbsp; <span>3D LOGO</span> &nbsp;·&nbsp; COIN FLIP
 </div>
 
 <script>
 'use strict';
 
-// ── Costanti geometriche ─────────────────────────────────────────────────
-const PHI       = (1 + Math.sqrt(5)) / 2;   // sezione aurea
-const N_LINES   = 22;                       // rette per famiglia
-const SEGS      = 26;                       // segmenti per retta (smoothing 3D)
-const A_WAIST   = 0.78;                     // raggio strozzatura (normalizzato)
-const H_HALF    = 1.55;                     // semi-altezza
-const FOV       = 760;                      // lunghezza focale (proiezione prospettica)
-const CAM_Z     = 4.4;                      // distanza camera
+// ── Canvas setup ─────────────────────────────────────────────────────────
+const canvas = document.getElementById('c');
+const ctx    = canvas.getContext('2d');
 
-// Velocità: rapporto irrazionale → mai stessa configurazione
-const W_SPIN    = 0.46;                     // rotazione assiale (scivolamento rette)
-const W_TILT    = 0.46 / PHI;               // basculamento (tumble) → φ⁻¹
-
-// ── DOM ──────────────────────────────────────────────────────────────────
-const bgCanvas = document.getElementById('bg-canvas');
-const fgCanvas = document.getElementById('fg-canvas');
-const eyeSvg   = document.getElementById('eye-svg');
-const p1       = document.getElementById('p1');
-const p2       = document.getElementById('p2');
-const bg       = bgCanvas.getContext('2d');
-const fg       = fgCanvas.getContext('2d');
-
-let W, H, CX, CY, SCALE;
-let mx = 0, my = 0;
-let tPx = 500, tPy = 500, cPx = 500, cPy = 500;
+let W, H, CX, CY, R;   // R = coin radius in px
 
 function resize() {
   const dpr = Math.min(window.devicePixelRatio || 1, 2);
   W = window.innerWidth;
   H = window.innerHeight;
-  [bgCanvas, fgCanvas].forEach(c => {
-    c.width  = W * dpr;
-    c.height = H * dpr;
-    c.style.width  = W + 'px';
-    c.style.height = H + 'px';
-    c.getContext('2d').setTransform(dpr, 0, 0, dpr, 0, 0);
-  });
+  canvas.width  = W * dpr;
+  canvas.height = H * dpr;
+  canvas.style.width  = W + 'px';
+  canvas.style.height = H + 'px';
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
   CX = W / 2;
   CY = H / 2;
-  SCALE = Math.min(W, H) * 0.205;            // dimensione gabbia
-  const eyePx = SCALE * 1.55;                // l'occhio è nel waist
-  eyeSvg.style.width  = eyePx + 'px';
-  eyeSvg.style.height = eyePx + 'px';
-  mx = CX; my = CY;
+  R  = Math.min(W, H) * 0.33;
 }
 resize();
 window.addEventListener('resize', resize);
 
-// ── Pupilla che segue il mouse (logica del sito) ─────────────────────────
+// ── Mouse ────────────────────────────────────────────────────────────────
+let mxN = 0, myN = 0;
 window.addEventListener('mousemove', e => {
-  mx = e.clientX; my = e.clientY;
-  const r    = eyeSvg.getBoundingClientRect();
-  const relX = (e.clientX - r.left) / r.width  * 1000;
-  const relY = (e.clientY - r.top)  / r.height * 1000;
-  const dx   = relX - 500, dy = relY - 500;
-  const MRX = 95, MRY = 65;
-  const nd   = Math.sqrt((dx*dx)/(MRX*MRX) + (dy*dy)/(MRY*MRY));
-  if (nd > 1) {
-    const a = Math.atan2(dy, dx);
-    tPx = 500 + Math.cos(a) * MRX;
-    tPy = 500 + Math.sin(a) * MRY;
-  } else { tPx = relX; tPy = relY; }
+  mxN = (e.clientX - W / 2) / (W / 2);
+  myN = (e.clientY - H / 2) / (H / 2);
 });
 
-function pupilTick() {
-  cPx += (tPx - cPx) * 0.1;
-  cPy += (tPy - cPy) * 0.1;
-  p1.setAttribute('cx', cPx); p1.setAttribute('cy', cPy);
-  p2.setAttribute('cx', cPx); p2.setAttribute('cy', cPy);
+// ── 3D math ──────────────────────────────────────────────────────────────
+// Y-axis rotation (coin's flip axis — vertical)
+function rotY(x, y, z, a) {
+  return [x * Math.cos(a) + z * Math.sin(a),
+          y,
+         -x * Math.sin(a) + z * Math.cos(a)];
+}
+// X-axis rotation (camera tilt driven by mouse Y)
+function rotX(x, y, z, a) {
+  return [x,
+          y * Math.cos(a) - z * Math.sin(a),
+          y * Math.sin(a) + z * Math.cos(a)];
 }
 
-// ── Proiezione prospettica 3D → 2D ───────────────────────────────────────
+const CAM_Z = 5.5;
 function project(x, y, z) {
-  const dz = CAM_Z - z;
-  if (dz < 0.05) return null;
-  return {
-    sx: CX + FOV * x / dz,
-    sy: CY - FOV * y / dz,
-    inv: 1 / dz,                              // più alto = più vicino
-    z:   z,
-  };
+  const d = CAM_Z - z;
+  if (d < 0.01) return null;
+  const f = CAM_Z / d;
+  return [CX + x * R * f, CY - y * R * f, z];
 }
 
-// ── Generatori dell'iperboloide x² + z² − y² = a² ───────────────────────
-//
-// Famiglia 1 (sign = +1):
-//   x(s) = a·cos θ − s·sin θ
-//   y(s) = s
-//   z(s) = a·sin θ + s·cos θ
-//
-// Famiglia 2 (sign = −1):  rotazione opposta
-//   x(s) = a·cos θ + s·sin θ
-//   z(s) = a·sin θ − s·cos θ
-//
-// Le due famiglie costituiscono la doppia rigatura.
-function buildSegments(sign, spin, tilt) {
-  const cT = Math.cos(tilt), sT = Math.sin(tilt);
-  const segs = [];
-
-  for (let i = 0; i < N_LINES; i++) {
-    const theta = (i / N_LINES) * Math.PI * 2 + sign * spin;
-    const ct = Math.cos(theta), st = Math.sin(theta);
-
-    let prev = null;
-    for (let j = 0; j <= SEGS; j++) {
-      const s = -H_HALF + (j / SEGS) * 2 * H_HALF;
-
-      // Punto sulla retta in coord. iperboloide (asse Y)
-      const x0 = A_WAIST * ct - sign * s * st;
-      const y0 = s;
-      const z0 = A_WAIST * st + sign * s * ct;
-
-      // Tumble (rotazione attorno all'asse X della scena)
-      const x = x0;
-      const y = y0 * cT - z0 * sT;
-      const z = y0 * sT + z0 * cT;
-
-      const p = project(x * SCALE, y * SCALE, z);
-      if (!p) { prev = null; continue; }
-
-      if (prev) {
-        segs.push({
-          x1: prev.sx, y1: prev.sy,
-          x2: p.sx,    y2: p.sy,
-          inv: (prev.inv + p.inv) / 2,        // depth media (per alpha)
-          z:   (prev.z   + p.z)   / 2,        // z media (per back/front)
-        });
-      }
-      prev = p;
-    }
-  }
-  return segs;
+// Transform: 2D point on face plane (faceZ) → rotate → project
+function xfm(px, py, faceZ, spinA, tiltA) {
+  let [x, y, z] = [px, py, faceZ];
+  [x, y, z] = rotY(x, y, z, spinA);
+  [x, y, z] = rotX(x, y, z, tiltA);
+  return project(x, y, z);
 }
 
-// ── Render principale ────────────────────────────────────────────────────
-function render(time) {
-  bg.clearRect(0, 0, W, H);
-  fg.clearRect(0, 0, W, H);
+// ── Eye geometry (normalized to coin radius = 1) ─────────────────────────
+// Source: favicon.svg — eye centered at (500,500), coin circle r=238
+const S = 1 / 238;
+const norm = (x, y) => [(x - 500) * S, -(y - 500) * S];
 
-  // Mouse perturba dolcemente tilt e spin (entro range piccoli)
-  const mTilt = ((my - CY) / H) * 0.35;
-  const mSpin = ((mx - CX) / W) * 0.40;
-
-  const spin = W_SPIN * time + mSpin;
-  const tilt = 0.34 * Math.sin(W_TILT * time) + mTilt;
-
-  const all = [
-    ...buildSegments(+1, spin, tilt),
-    ...buildSegments(-1, spin, tilt),
+function cubicBezier(ax, ay, bx, by, cx, cy, dx, dy, t) {
+  const u = 1 - t;
+  return [
+    u*u*u*ax + 3*u*u*t*bx + 3*u*t*t*cx + t*t*t*dx,
+    u*u*u*ay + 3*u*u*t*by + 3*u*t*t*cy + t*t*t*dy,
   ];
+}
 
-  // Range di profondità per normalizzare l'alpha
-  let invMin = Infinity, invMax = -Infinity;
-  for (const s of all) {
-    if (s.inv < invMin) invMin = s.inv;
-    if (s.inv > invMax) invMax = s.inv;
+// SVG path: M350 500 C390 430,440 400,500 400 C560 400,610 430,650 500
+//           C610 570,560 600,500 600 C440 600,390 570,350 500 Z
+const eyeSegs = [
+  [norm(350,500), norm(390,430), norm(440,400), norm(500,400)],
+  [norm(500,400), norm(560,400), norm(610,430), norm(650,500)],
+  [norm(650,500), norm(610,570), norm(560,600), norm(500,600)],
+  [norm(500,600), norm(440,600), norm(390,570), norm(350,500)],
+];
+
+function sampleBezier(seg, n) {
+  const pts = [];
+  for (let i = 0; i < n; i++) {
+    const t = i / n;
+    pts.push(cubicBezier(...seg[0], ...seg[1], ...seg[2], ...seg[3], t));
   }
-  const range = (invMax - invMin) || 1;
+  return pts;
+}
 
-  // Disegna ogni segmento sul layer corretto (back se z<0, front altrimenti)
-  for (const s of all) {
-    const norm  = (s.inv - invMin) / range;   // 0 (lontano) → 1 (vicino)
-    const alpha = 0.10 + norm * 0.78;
-    const lw    = 0.5  + norm * 1.5;
-    const ctx   = s.z < 0 ? bg : fg;
-    ctx.strokeStyle = 'rgba(0, 255, 255, ' + alpha.toFixed(3) + ')';
-    ctx.lineWidth   = lw;
+const EYE_PTS   = eyeSegs.flatMap(s => sampleBezier(s, 24));
+
+function circlePts(r, n) {
+  return Array.from({ length: n + 1 }, (_, i) => {
+    const a = (i / n) * Math.PI * 2;
+    return [Math.cos(a) * r, Math.sin(a) * r];
+  });
+}
+
+const IRIS_PTS  = circlePts(80 * S, 52);
+const PUPIL_PTS = circlePts(35 * S, 36);
+const RIM_PTS   = circlePts(1.0, 96);
+
+const THICKNESS = 0.11;    // coin depth (fraction of coin radius)
+const ZF =  THICKNESS / 2; // front face z in coin-local space
+const ZB = -THICKNESS / 2; // back face z
+
+// ── Drawing helpers ──────────────────────────────────────────────────────
+function polyPath(pts, faceZ, spinA, tiltA, mirrorX) {
+  ctx.beginPath();
+  let started = false;
+  for (const [px, py] of pts) {
+    const p = xfm(px * mirrorX, py, faceZ, spinA, tiltA);
+    if (!p) continue;
+    if (!started) { ctx.moveTo(p[0], p[1]); started = true; }
+    else ctx.lineTo(p[0], p[1]);
+  }
+}
+
+// ── Ambient background glow behind coin ──────────────────────────────────
+function drawGlow(cosSpin) {
+  const glowR = R * (1.35 + 0.05 * Math.abs(cosSpin));
+  const g = ctx.createRadialGradient(CX, CY, R * 0.5, CX, CY, glowR);
+  g.addColorStop(0,   `rgba(0,255,255,${(0.04 * Math.abs(cosSpin)).toFixed(4)})`);
+  g.addColorStop(0.6, 'rgba(0,255,255,0.012)');
+  g.addColorStop(1,   'rgba(0,0,0,0)');
+  ctx.fillStyle = g;
+  ctx.fillRect(0, 0, W, H);
+}
+
+// ── Coin face ─────────────────────────────────────────────────────────────
+function drawFace(faceZ, spinA, tiltA, isFront, eyeAlpha) {
+  const mirrorX = isFront ? 1 : -1;
+
+  // Filled disc (occludes everything behind)
+  polyPath(RIM_PTS, faceZ, spinA, tiltA, 1);
+  ctx.closePath();
+  ctx.fillStyle = 'rgba(3,5,9,0.98)';
+  ctx.fill();
+
+  // Rim circle (thin cyan border)
+  const rimA = 0.22 + Math.abs(eyeAlpha) * 0.32;
+  ctx.strokeStyle = `rgba(0,255,255,${rimA.toFixed(3)})`;
+  ctx.lineWidth = 1.5;
+  ctx.stroke();
+
+  if (eyeAlpha < 0.025) return;
+
+  // Eye lines: brightness driven by face-facing angle
+  const ea = Math.min(1, eyeAlpha * 1.35);
+  const lw = 1.1 + eyeAlpha * 2.4;
+
+  // Glow when near full frontal
+  if (eyeAlpha > 0.65) {
+    ctx.shadowColor = 'rgba(0,255,255,0.7)';
+    ctx.shadowBlur  = 10 * eyeAlpha;
+  }
+
+  ctx.strokeStyle = `rgba(0,255,255,${ea.toFixed(3)})`;
+  ctx.lineWidth   = lw;
+  polyPath(EYE_PTS, faceZ, spinA, tiltA, mirrorX);
+  ctx.closePath();
+  ctx.stroke();
+
+  ctx.lineWidth = lw * 0.82;
+  polyPath(IRIS_PTS, faceZ, spinA, tiltA, mirrorX);
+  ctx.closePath();
+  ctx.stroke();
+
+  ctx.lineWidth = lw * 0.65;
+  polyPath(PUPIL_PTS, faceZ, spinA, tiltA, mirrorX);
+  ctx.closePath();
+  ctx.stroke();
+
+  ctx.shadowBlur = 0;
+}
+
+// ── Coin edge ─────────────────────────────────────────────────────────────
+// Only the camera-facing quads are drawn.
+// Visibility check: edge outward normal (cos(aMid), sin(aMid), 0) in coin-local,
+// after Y-rotation → z component = -cos(aMid) * sin(spinA).
+// Facing camera requires this z-component > 0.
+// Diffuse shading from a gentle overhead light (0, 0.9, 0.3).
+
+function drawEdge(spinA, tiltA) {
+  const N = 96;
+  for (let i = 0; i < N; i++) {
+    const a1 = (i / N) * Math.PI * 2;
+    const a2 = ((i + 1) / N) * Math.PI * 2;
+    const am = (a1 + a2) / 2;
+
+    const nx = Math.cos(am), ny = Math.sin(am);
+
+    // Camera-facing check (z of rotated normal)
+    const normalCamZ = -nx * Math.sin(spinA);
+    if (normalCamZ <= 0) continue;
+
+    // Diffuse light from (0, 0.9, 0.3) normalized — top-front light
+    // Rotated normal: [nx*cos(spinA), ny, -nx*sin(spinA)]
+    const rnx = nx * Math.cos(spinA), rny = ny, rnz = -nx * Math.sin(spinA);
+    const diffuse = Math.max(0, rny * 0.9 + rnz * 0.3);
+    const shade   = 0.12 + diffuse * 0.45;
+
+    const c1 = xfm(Math.cos(a1), Math.sin(a1), ZF, spinA, tiltA);
+    const c2 = xfm(Math.cos(a2), Math.sin(a2), ZF, spinA, tiltA);
+    const c3 = xfm(Math.cos(a2), Math.sin(a2), ZB, spinA, tiltA);
+    const c4 = xfm(Math.cos(a1), Math.sin(a1), ZB, spinA, tiltA);
+    if (!c1 || !c2 || !c3 || !c4) continue;
+
     ctx.beginPath();
-    ctx.moveTo(s.x1, s.y1);
-    ctx.lineTo(s.x2, s.y2);
+    ctx.moveTo(c1[0], c1[1]);
+    ctx.lineTo(c2[0], c2[1]);
+    ctx.lineTo(c3[0], c3[1]);
+    ctx.lineTo(c4[0], c4[1]);
+    ctx.closePath();
+
+    // Fill with very dark cyan-tinted color
+    ctx.fillStyle   = `rgba(0,18,22,0.97)`;
+    ctx.fill();
+    ctx.strokeStyle = `rgba(0,255,255,${(shade * normalCamZ).toFixed(3)})`;
+    ctx.lineWidth   = 0.5;
     ctx.stroke();
   }
 }
 
-// ── RAF loop ──────────────────────────────────────────────────────────────
+// ── Render loop ───────────────────────────────────────────────────────────
 let t0 = 0;
+let smoothTilt = 0;
+
 function loop(ts) {
   if (!t0) t0 = ts;
   const time = (ts - t0) / 1000;
-  pupilTick();
-  render(time);
+
+  // Smooth mouse tilt (X-axis)
+  smoothTilt += (myN * 0.22 - smoothTilt) * 0.05;
+
+  // Spin: constant velocity + small mouse-X nudge
+  const spinA  = 0.74 * time + mxN * 0.45;
+  const tiltA  = smoothTilt;
+  const cosSpin = Math.cos(spinA);
+
+  ctx.clearRect(0, 0, W, H);
+
+  // Ambient glow ring behind the coin
+  drawGlow(cosSpin);
+
+  // Front-face alpha: max(0, cos(spinA)) — visible only when front faces camera
+  // Back-face  alpha: max(0, −cos(spinA)) — visible only when back faces camera
+  const frontA = Math.max(0, cosSpin);
+  const backA  = Math.max(0, -cosSpin);
+
+  // Depth order: farthest face first, edge quads, nearest face last
+  if (cosSpin >= 0) {
+    // Front face is closer to camera
+    drawFace(ZB, spinA, tiltA, false, backA);  // back face (far)
+    drawEdge(spinA, tiltA);
+    drawFace(ZF, spinA, tiltA, true,  frontA); // front face (near)
+  } else {
+    // Back face is closer to camera
+    drawFace(ZF, spinA, tiltA, true,  frontA); // front face (far)
+    drawEdge(spinA, tiltA);
+    drawFace(ZB, spinA, tiltA, false, backA);  // back face (near)
+  }
+
   requestAnimationFrame(loop);
 }
+
 requestAnimationFrame(loop);
 </script>
 </body>
