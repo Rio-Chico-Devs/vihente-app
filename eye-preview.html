@@ -3,27 +3,31 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Eye — Geometric Preview</title>
+<title>Hyperboloid Cage — Eye Concept</title>
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
 
-  body {
+  html, body {
+    height: 100%;
     background: #000;
-    height: 100vh;
     overflow: hidden;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-family: 'monospace', monospace;
+    cursor: crosshair;
   }
 
-  #canvas {
+  /* Tre layer in profondità:
+     bg-canvas (z<0)  →  eye-svg  →  fg-canvas (z≥0)
+     Le linee dietro l'occhio sono dietro, quelle davanti sono davanti.
+     È vero 3D, non un trucco 2D. */
+
+  canvas {
     position: fixed;
     inset: 0;
     width: 100%;
     height: 100%;
-    z-index: 0;
   }
+
+  #bg-canvas { z-index: 1;  }
+  #fg-canvas { z-index: 20; pointer-events: none; }
 
   #eye-svg {
     position: fixed;
@@ -34,117 +38,109 @@
     pointer-events: none;
   }
 
-  .tabs {
+  #caption {
     position: fixed;
-    top: 22px;
+    bottom: 26px;
     left: 50%;
     transform: translateX(-50%);
-    display: flex;
-    gap: 10px;
-    z-index: 20;
-  }
-
-  .tab {
     font-family: monospace;
-    font-size: 0.72rem;
-    letter-spacing: 0.14em;
-    padding: 0.4rem 1.1rem;
-    border: 1px solid rgba(0,255,255,0.3);
-    background: transparent;
-    color: rgba(0,255,255,0.4);
-    cursor: pointer;
-    transition: all 0.2s;
-  }
-
-  .tab:hover, .tab.on {
-    border-color: #0ff;
-    color: #0ff;
-    box-shadow: 0 0 12px rgba(0,255,255,0.25);
-  }
-
-  #info {
-    position: fixed;
-    bottom: 24px;
-    left: 50%;
-    transform: translateX(-50%);
     font-size: 0.62rem;
-    color: rgba(0,255,255,0.35);
-    letter-spacing: 0.2em;
-    z-index: 20;
-    white-space: nowrap;
+    letter-spacing: 0.32em;
+    color: rgba(0, 255, 255, 0.32);
+    z-index: 30;
+    text-align: center;
+    pointer-events: none;
   }
+  #caption span { color: rgba(0, 255, 255, 0.55); }
 </style>
 </head>
 <body>
 
-<canvas id="canvas"></canvas>
+<canvas id="bg-canvas"></canvas>
 
-<!-- Eye SVG — identico al sito -->
 <svg id="eye-svg" viewBox="0 0 1000 1000">
   <defs>
-    <filter id="glow">
-      <feGaussianBlur stdDeviation="2.5" result="b"/>
+    <filter id="g">
+      <feGaussianBlur stdDeviation="2" result="b"/>
       <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
     </filter>
-    <clipPath id="eyeclip">
+    <clipPath id="ec">
       <path d="M350 500 C390 430,440 400,500 400 C560 400,610 430,650 500 C610 570,560 600,500 600 C440 600,390 570,350 500Z"/>
     </clipPath>
   </defs>
   <path d="M350 500 C390 430,440 400,500 400 C560 400,610 430,650 500 C610 570,560 600,500 600 C440 600,390 570,350 500Z"
     fill="none" stroke="rgba(0,255,255,0.95)" stroke-width="11"
-    stroke-linecap="round" filter="url(#glow)"/>
-  <g clip-path="url(#eyeclip)">
+    stroke-linecap="round" filter="url(#g)"/>
+  <g clip-path="url(#ec)">
     <circle id="p1" cx="500" cy="500" r="80"
-      fill="none" stroke="rgba(0,255,255,0.95)" stroke-width="10" filter="url(#glow)"/>
+      fill="none" stroke="rgba(0,255,255,0.95)" stroke-width="10" filter="url(#g)"/>
     <circle id="p2" cx="500" cy="500" r="34"
-      fill="none" stroke="rgba(0,255,255,0.95)" stroke-width="7" filter="url(#glow)"/>
+      fill="none" stroke="rgba(0,255,255,0.95)" stroke-width="7" filter="url(#g)"/>
   </g>
 </svg>
 
-<div class="tabs">
-  <button class="tab on"  onclick="set('A')">A — SPIROGRAFO</button>
-  <button class="tab"     onclick="set('B')">B — PENDULUM WAVE</button>
-  <button class="tab"     onclick="set('C')">C — OROLOGIO COSMICO</button>
+<canvas id="fg-canvas"></canvas>
+
+<div id="caption">
+  IPERBOLOIDE A DOPPIA RIGATURA &nbsp;·&nbsp;
+  <span>x² + z² − y² = a²</span>
+  &nbsp;·&nbsp; ω_spin / ω_tilt = φ
 </div>
 
-<div id="info">A — EPITROCOIDE  ω₁:ω₂:ω₃ = 1:φ:φ²   curva mai chiusa</div>
-
 <script>
-// ── Setup ──────────────────────────────────────────────────────────────────
-const canvas = document.getElementById('canvas');
-const ctx    = canvas.getContext('2d');
-const p1     = document.getElementById('p1');
-const p2     = document.getElementById('p2');
-const eyeSvg = document.getElementById('eye-svg');
+'use strict';
 
-let W, H, CX, CY, eyeR, concept = 'A';
-let t = 0, last = 0;
+// ── Costanti geometriche ─────────────────────────────────────────────────
+const PHI       = (1 + Math.sqrt(5)) / 2;   // sezione aurea
+const N_LINES   = 22;                       // rette per famiglia
+const SEGS      = 26;                       // segmenti per retta (smoothing 3D)
+const A_WAIST   = 0.78;                     // raggio strozzatura (normalizzato)
+const H_HALF    = 1.55;                     // semi-altezza
+const FOV       = 760;                      // lunghezza focale (proiezione prospettica)
+const CAM_Z     = 4.4;                      // distanza camera
+
+// Velocità: rapporto irrazionale → mai stessa configurazione
+const W_SPIN    = 0.46;                     // rotazione assiale (scivolamento rette)
+const W_TILT    = 0.46 / PHI;               // basculamento (tumble) → φ⁻¹
+
+// ── DOM ──────────────────────────────────────────────────────────────────
+const bgCanvas = document.getElementById('bg-canvas');
+const fgCanvas = document.getElementById('fg-canvas');
+const eyeSvg   = document.getElementById('eye-svg');
+const p1       = document.getElementById('p1');
+const p2       = document.getElementById('p2');
+const bg       = bgCanvas.getContext('2d');
+const fg       = fgCanvas.getContext('2d');
+
+let W, H, CX, CY, SCALE;
 let mx = 0, my = 0;
 let tPx = 500, tPy = 500, cPx = 500, cPy = 500;
-let trailA = [];
-let linesC  = [];
-
-const PHI = (1 + Math.sqrt(5)) / 2;
-const INFOS = {
-  A: 'A — EPITROCOIDE  ω₁:ω₂:ω₃ = 1:φ:φ²   curva mai chiusa',
-  B: 'B — PENDULUM WAVE  T_realign = 20s   20 pendoli  n ∈ [50..69]',
-  C: 'C — OROLOGIO COSMICO  ω: 1 · √2 · π/2   anelli: 6·4·8 glifi',
-};
 
 function resize() {
-  W  = canvas.width  = window.innerWidth;
-  H  = canvas.height = window.innerHeight;
-  CX = W / 2;  CY = H / 2;
-  eyeR = Math.min(W, H) * 0.155; // radius of the eye shape (approx)
-  const svgPx = Math.min(W, H) * 0.42;
-  eyeSvg.style.width  = svgPx + 'px';
-  eyeSvg.style.height = svgPx + 'px';
+  const dpr = Math.min(window.devicePixelRatio || 1, 2);
+  W = window.innerWidth;
+  H = window.innerHeight;
+  [bgCanvas, fgCanvas].forEach(c => {
+    c.width  = W * dpr;
+    c.height = H * dpr;
+    c.style.width  = W + 'px';
+    c.style.height = H + 'px';
+    c.getContext('2d').setTransform(dpr, 0, 0, dpr, 0, 0);
+  });
+  CX = W / 2;
+  CY = H / 2;
+  SCALE = Math.min(W, H) * 0.205;            // dimensione gabbia
+  const eyePx = SCALE * 1.55;                // l'occhio è nel waist
+  eyeSvg.style.width  = eyePx + 'px';
+  eyeSvg.style.height = eyePx + 'px';
+  mx = CX; my = CY;
 }
 resize();
 window.addEventListener('resize', resize);
 
+// ── Pupilla che segue il mouse (logica del sito) ─────────────────────────
 window.addEventListener('mousemove', e => {
-  mx = e.clientX;  my = e.clientY;
+  mx = e.clientX; my = e.clientY;
   const r    = eyeSvg.getBoundingClientRect();
   const relX = (e.clientX - r.left) / r.width  * 1000;
   const relY = (e.clientY - r.top)  / r.height * 1000;
@@ -165,244 +161,118 @@ function pupilTick() {
   p2.setAttribute('cx', cPx); p2.setAttribute('cy', cPy);
 }
 
-// ── Concept A — Epitrocoide (3 armoniche, frequenze fibonacciane) ────────
-// x = R1·cos(ω1·t) + R2·cos(ω2·t) + R3·cos(ω3·t)
-// ω1=1  ω2=φ  ω3=φ²  →  rapporti irrazionali = curva mai chiusa
-function renderA(dt) {
-  const prox = proximity(300);
-  const R1 = eyeR * 1.35;
-  const R2 = eyeR * 0.72;
-  const R3 = eyeR * 0.34;
-  const w1 = 0.55, w2 = w1 * PHI, w3 = w1 * PHI * PHI;
-  // Mouse perturba leggermente il terzo raggio
-  const R3m = R3 * (1 + prox * 0.35);
-
-  const px = CX + R1*Math.cos(w1*t) + R2*Math.cos(w2*t) + R3m*Math.cos(w3*t);
-  const py = CY + R1*Math.sin(w1*t) + R2*Math.sin(w2*t) + R3m*Math.sin(w3*t);
-
-  trailA.push({ x: px, y: py });
-  if (trailA.length > 1400) trailA.shift();
-
-  ctx.clearRect(0, 0, W, H);
-
-  // Trail — gradiente di opacità sulla lunghezza
-  for (let i = 2; i < trailA.length; i++) {
-    const alpha = Math.pow(i / trailA.length, 1.8) * 0.75;
-    const width = Math.pow(i / trailA.length, 2)   * 1.8;
-    ctx.beginPath();
-    ctx.moveTo(trailA[i-1].x, trailA[i-1].y);
-    ctx.lineTo(trailA[i].x,   trailA[i].y);
-    ctx.strokeStyle = `rgba(0,255,255,${alpha})`;
-    ctx.lineWidth   = width;
-    ctx.stroke();
-  }
-
-  // Punta luminosa
-  ctx.beginPath();
-  ctx.arc(px, py, 3, 0, Math.PI*2);
-  ctx.shadowColor = '#0ff';
-  ctx.shadowBlur  = 14;
-  ctx.fillStyle   = 'rgba(0,255,255,0.95)';
-  ctx.fill();
-  ctx.shadowBlur  = 0;
+// ── Proiezione prospettica 3D → 2D ───────────────────────────────────────
+function project(x, y, z) {
+  const dz = CAM_Z - z;
+  if (dz < 0.05) return null;
+  return {
+    sx: CX + FOV * x / dz,
+    sy: CY - FOV * y / dz,
+    inv: 1 / dz,                              // più alto = più vicino
+    z:   z,
+  };
 }
 
-// ── Concept B — Pendulum Wave radiale ────────────────────────────────────
-// 20 pendoli disposti in cerchio attorno all'occhio
-// Pendolo i ha n_i = 50+i oscillazioni in T=20s → T_i = 20/(50+i)
-// Al t=0 e t=20s si riallineano tutti — magia matematica garantita
-const NP = 20, T_TOT = 20, N_BASE = 50;
+// ── Generatori dell'iperboloide x² + z² − y² = a² ───────────────────────
+//
+// Famiglia 1 (sign = +1):
+//   x(s) = a·cos θ − s·sin θ
+//   y(s) = s
+//   z(s) = a·sin θ + s·cos θ
+//
+// Famiglia 2 (sign = −1):  rotazione opposta
+//   x(s) = a·cos θ + s·sin θ
+//   z(s) = a·sin θ − s·cos θ
+//
+// Le due famiglie costituiscono la doppia rigatura.
+function buildSegments(sign, spin, tilt) {
+  const cT = Math.cos(tilt), sT = Math.sin(tilt);
+  const segs = [];
 
-function renderB(dt) {
-  ctx.clearRect(0, 0, W, H);
+  for (let i = 0; i < N_LINES; i++) {
+    const theta = (i / N_LINES) * Math.PI * 2 + sign * spin;
+    const ct = Math.cos(theta), st = Math.sin(theta);
 
-  const pendLen  = eyeR * 1.1;
-  const mAngle   = Math.atan2(my - CY, mx - CX);
-  const prox     = proximity(280);
+    let prev = null;
+    for (let j = 0; j <= SEGS; j++) {
+      const s = -H_HALF + (j / SEGS) * 2 * H_HALF;
 
-  for (let i = 0; i < NP; i++) {
-    const baseAngle = (i / NP) * Math.PI * 2;
-    const n_i       = N_BASE + i;
-    const T_i       = T_TOT / n_i;
-    // Perturbazione del mouse: agisce sul pendolo più vicino alla direzione del cursore
-    const dAngle    = Math.abs(((baseAngle - mAngle + 3*Math.PI) % (Math.PI*2)) - Math.PI);
-    const perturb   = prox * Math.exp(-dAngle*dAngle / 0.4) * Math.PI * 0.5;
-    const phase     = (t / T_i) * Math.PI * 2 + perturb;
-    const osc       = Math.sin(phase);           // [-1, 1]
+      // Punto sulla retta in coord. iperboloide (asse Y)
+      const x0 = A_WAIST * ct - sign * s * st;
+      const y0 = s;
+      const z0 = A_WAIST * st + sign * s * ct;
 
-    // Posizione radiale del bob: parte da eyeR, oscilla pendLen verso l'esterno
-    const tipR = eyeR + pendLen * 0.5 + pendLen * 0.5 * (osc + 1) / 2;
+      // Tumble (rotazione attorno all'asse X della scena)
+      const x = x0;
+      const y = y0 * cT - z0 * sT;
+      const z = y0 * sT + z0 * cT;
 
-    const sx = CX + eyeR   * Math.cos(baseAngle);
-    const sy = CY + eyeR   * Math.sin(baseAngle);
-    const tx = CX + tipR   * Math.cos(baseAngle);
-    const ty = CY + tipR   * Math.sin(baseAngle);
+      const p = project(x * SCALE, y * SCALE, z);
+      if (!p) { prev = null; continue; }
 
-    const energy = Math.abs(osc);
-    const alpha  = 0.18 + 0.65 * energy;
-
-    // Arco di corsa (range min-max) — rende visibile la fisica
-    const minR = eyeR;
-    const maxR = eyeR + pendLen;
-    ctx.beginPath();
-    ctx.moveTo(CX + minR * Math.cos(baseAngle), CY + minR * Math.sin(baseAngle));
-    ctx.lineTo(CX + maxR * Math.cos(baseAngle), CY + maxR * Math.sin(baseAngle));
-    ctx.strokeStyle = `rgba(0,255,255,0.07)`;
-    ctx.lineWidth   = 1;
-    ctx.stroke();
-
-    // Pendolo
-    ctx.beginPath();
-    ctx.moveTo(sx, sy);
-    ctx.lineTo(tx, ty);
-    ctx.strokeStyle = `rgba(0,255,255,${alpha})`;
-    ctx.lineWidth   = 1.6;
-    ctx.stroke();
-
-    // Bob
-    ctx.beginPath();
-    ctx.arc(tx, ty, 2.8, 0, Math.PI*2);
-    ctx.shadowColor = energy > 0.85 ? '#0ff' : 'transparent';
-    ctx.shadowBlur  = energy > 0.85 ? 8 : 0;
-    ctx.fillStyle   = `rgba(0,255,255,${alpha + 0.2})`;
-    ctx.fill();
-    ctx.shadowBlur  = 0;
-  }
-}
-
-// ── Concept C — Orologio Cosmico ──────────────────────────────────────────
-// 3 anelli di glifi geometrici — velocità angolari irrazionali tra loro
-// Quando due glifi di anelli diversi si allineano radialmente → connessione lampo
-const RINGS = [
-  { n:6, rf:0.245, omega:1,            shape:'hex',  size:0.022 },
-  { n:4, rf:0.335, omega:Math.SQRT2,   shape:'tri',  size:0.020 },
-  { n:8, rf:0.435, omega:Math.PI/2,    shape:'seg',  size:0.018 },
-];
-const OMEGA_SPEED = 0.28;
-const ALIGN_TOL   = 0.065; // radianti
-
-function glyph(x, y, shape, rot, sz) {
-  ctx.save();
-  ctx.translate(x, y);
-  ctx.rotate(rot);
-  ctx.beginPath();
-  if (shape === 'hex') {
-    for (let i=0; i<6; i++) {
-      const a = (i/6)*Math.PI*2;
-      i===0 ? ctx.moveTo(Math.cos(a)*sz, Math.sin(a)*sz)
-             : ctx.lineTo(Math.cos(a)*sz, Math.sin(a)*sz);
-    }
-    ctx.closePath();
-  } else if (shape === 'tri') {
-    for (let i=0; i<3; i++) {
-      const a = (i/3)*Math.PI*2 - Math.PI/2;
-      i===0 ? ctx.moveTo(Math.cos(a)*sz, Math.sin(a)*sz)
-             : ctx.lineTo(Math.cos(a)*sz, Math.sin(a)*sz);
-    }
-    ctx.closePath();
-  } else {
-    ctx.moveTo(-sz, 0); ctx.lineTo(sz, 0);
-    ctx.moveTo(-sz*0.4, -sz*0.4); ctx.lineTo(sz*0.4, -sz*0.4);
-    ctx.moveTo(-sz*0.4,  sz*0.4); ctx.lineTo(sz*0.4,  sz*0.4);
-  }
-  ctx.stroke();
-  ctx.restore();
-}
-
-function renderC(dt) {
-  ctx.clearRect(0, 0, W, H);
-  const scale = Math.min(W, H);
-  const allG  = [];
-
-  RINGS.forEach((ring, ri) => {
-    for (let i=0; i<ring.n; i++) {
-      const base = (i/ring.n)*Math.PI*2;
-      const ang  = base + ring.omega * OMEGA_SPEED * t;
-      const r    = ring.rf * scale;
-      const gx   = CX + r*Math.cos(ang);
-      const gy   = CY + r*Math.sin(ang);
-      const sz   = ring.size * scale;
-      ctx.strokeStyle = 'rgba(0,255,255,0.5)';
-      ctx.lineWidth   = 1.1;
-      glyph(gx, gy, ring.shape, ang, sz);
-      allG.push({ x:gx, y:gy, ang, ring:ri });
-    }
-  });
-
-  // Allineamenti radiali → scintille
-  for (let a=0; a<allG.length; a++) {
-    for (let b=a+1; b<allG.length; b++) {
-      if (allG[a].ring === allG[b].ring) continue;
-      const angA = Math.atan2(allG[a].y - CY, allG[a].x - CX);
-      const angB = Math.atan2(allG[b].y - CY, allG[b].x - CX);
-      const diff = Math.abs(((angA - angB + 3*Math.PI) % (Math.PI*2)) - Math.PI);
-      if (diff < ALIGN_TOL) {
-        linesC.push({ x1:allG[a].x, y1:allG[a].y, x2:allG[b].x, y2:allG[b].y, life:1 });
+      if (prev) {
+        segs.push({
+          x1: prev.sx, y1: prev.sy,
+          x2: p.sx,    y2: p.sy,
+          inv: (prev.inv + p.inv) / 2,        // depth media (per alpha)
+          z:   (prev.z   + p.z)   / 2,        // z media (per back/front)
+        });
       }
+      prev = p;
     }
   }
+  return segs;
+}
 
-  // Aggiorna e disegna connessioni
-  linesC = linesC.filter(l => l.life > 0);
-  linesC.forEach(l => {
-    l.life -= dt * 2.8;
+// ── Render principale ────────────────────────────────────────────────────
+function render(time) {
+  bg.clearRect(0, 0, W, H);
+  fg.clearRect(0, 0, W, H);
+
+  // Mouse perturba dolcemente tilt e spin (entro range piccoli)
+  const mTilt = ((my - CY) / H) * 0.35;
+  const mSpin = ((mx - CX) / W) * 0.40;
+
+  const spin = W_SPIN * time + mSpin;
+  const tilt = 0.34 * Math.sin(W_TILT * time) + mTilt;
+
+  const all = [
+    ...buildSegments(+1, spin, tilt),
+    ...buildSegments(-1, spin, tilt),
+  ];
+
+  // Range di profondità per normalizzare l'alpha
+  let invMin = Infinity, invMax = -Infinity;
+  for (const s of all) {
+    if (s.inv < invMin) invMin = s.inv;
+    if (s.inv > invMax) invMax = s.inv;
+  }
+  const range = (invMax - invMin) || 1;
+
+  // Disegna ogni segmento sul layer corretto (back se z<0, front altrimenti)
+  for (const s of all) {
+    const norm  = (s.inv - invMin) / range;   // 0 (lontano) → 1 (vicino)
+    const alpha = 0.10 + norm * 0.78;
+    const lw    = 0.5  + norm * 1.5;
+    const ctx   = s.z < 0 ? bg : fg;
+    ctx.strokeStyle = 'rgba(0, 255, 255, ' + alpha.toFixed(3) + ')';
+    ctx.lineWidth   = lw;
     ctx.beginPath();
-    ctx.moveTo(l.x1, l.y1); ctx.lineTo(l.x2, l.y2);
-    ctx.strokeStyle = `rgba(0,255,255,${l.life * 0.85})`;
-    ctx.lineWidth   = l.life * 2.2;
-    ctx.shadowColor = '#0ff';
-    ctx.shadowBlur  = l.life * 10;
+    ctx.moveTo(s.x1, s.y1);
+    ctx.lineTo(s.x2, s.y2);
     ctx.stroke();
-    ctx.shadowBlur  = 0;
-  });
-
-  // Anello fantasma attorno al mouse
-  const prox = proximity(350);
-  if (prox > 0.04) {
-    const ghostR = 0.28 * scale;
-    const mAng   = Math.atan2(my - CY, mx - CX);
-    const ghostN = 5;
-    for (let i=0; i<ghostN; i++) {
-      const a  = (i/ghostN)*Math.PI*2 + mAng + t*0.55;
-      const gx = CX + ghostR*Math.cos(a);
-      const gy = CY + ghostR*Math.sin(a);
-      ctx.beginPath();
-      ctx.arc(gx, gy, 2.2, 0, Math.PI*2);
-      ctx.fillStyle = `rgba(0,255,255,${prox*0.55})`;
-      ctx.fill();
-    }
   }
-}
-
-// ── Utils ─────────────────────────────────────────────────────────────────
-function proximity(radius) {
-  const dx = mx - CX, dy = my - CY;
-  return Math.max(0, 1 - Math.sqrt(dx*dx + dy*dy) / radius);
-}
-
-function set(c) {
-  concept = c;
-  trailA  = [];
-  linesC  = [];
-  document.getElementById('info').textContent = INFOS[c];
-  document.querySelectorAll('.tab').forEach((b, i) => {
-    b.classList.toggle('on', ['A','B','C'][i] === c);
-  });
 }
 
 // ── RAF loop ──────────────────────────────────────────────────────────────
+let t0 = 0;
 function loop(ts) {
-  const dt = Math.min((ts - last) / 1000, 0.05);
-  last = ts;
-  t   += dt;
+  if (!t0) t0 = ts;
+  const time = (ts - t0) / 1000;
   pupilTick();
-  if      (concept === 'A') renderA(dt);
-  else if (concept === 'B') renderB(dt);
-  else                      renderC(dt);
+  render(time);
   requestAnimationFrame(loop);
 }
-
-tPx = cPx = 500; tPy = cPy = 500;
 requestAnimationFrame(loop);
 </script>
 </body>
