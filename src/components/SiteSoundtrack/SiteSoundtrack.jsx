@@ -1,17 +1,31 @@
 import { useEffect, useRef, useState } from 'react';
 import { useLocation } from 'react-router-dom';
+import { useSettings } from '../../contexts/SettingsContext';
 import './SiteSoundtrack.css';
 
-const MUSIC_PLAYER_PATH = '/portfolio/componenti/music-player';
+const PAUSE_PATHS = [
+  '/portfolio/componenti/music-player',
+  '/portfolio/componenti/black-market',
+];
+
+const BASE_VOL = 0.18;
 
 const SiteSoundtrack = () => {
   const audioRef   = useRef(null);
   const location   = useLocation();
   const wasPlaying = useRef(false);
+  const { musicVolume } = useSettings();
+  const musicVolumeRef  = useRef(musicVolume);
 
-  const [isMuted,     setIsMuted]     = useState(() => { try { return localStorage.getItem('soundtrack-muted') === 'true'; } catch { return false; } });
-  const [hasStarted,  setHasStarted]  = useState(false);
-  const [isPlaying,   setIsPlaying]   = useState(false);
+  const [isMuted,    setIsMuted]    = useState(() => { try { return localStorage.getItem('soundtrack-muted') === 'true'; } catch { return false; } });
+  const [hasStarted, setHasStarted] = useState(false);
+  const [isPlaying,  setIsPlaying]  = useState(false);
+
+  /* ── Sync volume ref + update playing audio in real-time ── */
+  useEffect(() => {
+    musicVolumeRef.current = musicVolume;
+    if (audioRef.current) audioRef.current.volume = musicVolume * BASE_VOL;
+  }, [musicVolume]);
 
   /* ── Start on first user interaction (browser autoplay policy) ── */
   useEffect(() => {
@@ -20,7 +34,7 @@ const SiteSoundtrack = () => {
     const start = () => {
       const audio = audioRef.current;
       if (!audio) return;
-      audio.volume = 0.18;
+      audio.volume = musicVolumeRef.current * BASE_VOL;
       audio.play()
         .then(() => {
           setHasStarted(true);
@@ -38,16 +52,17 @@ const SiteSoundtrack = () => {
     };
   }, [isMuted, hasStarted]);
 
-  /* ── Pause on music player, resume when leaving ── */
+  /* ── Pause on music player / black market, resume when leaving ── */
   useEffect(() => {
     const audio = audioRef.current;
     if (!audio || !hasStarted) return;
 
-    if (location.pathname === MUSIC_PLAYER_PATH) {
-      wasPlaying.current = isPlaying;
+    if (PAUSE_PATHS.includes(location.pathname)) {
+      wasPlaying.current = !audio.paused;
       audio.pause();
       setIsPlaying(false);
     } else if (wasPlaying.current && !isMuted) {
+      audio.volume = musicVolumeRef.current * BASE_VOL;
       audio.play().catch(() => {});
       setIsPlaying(true);
     }
@@ -65,10 +80,11 @@ const SiteSoundtrack = () => {
     if (!audio) return;
 
     if (next) {
-      wasPlaying.current = isPlaying;
+      wasPlaying.current = !audio.paused;
       audio.pause();
       setIsPlaying(false);
-    } else if (hasStarted && location.pathname !== MUSIC_PLAYER_PATH) {
+    } else if (hasStarted && !PAUSE_PATHS.includes(location.pathname)) {
+      audio.volume = musicVolumeRef.current * BASE_VOL;
       audio.play().catch(() => {});
       setIsPlaying(true);
     }
@@ -76,12 +92,7 @@ const SiteSoundtrack = () => {
 
   return (
     <>
-      <audio
-        ref={audioRef}
-        src="/audio/soundtrack.mp3"
-        loop
-        preload="none"
-      />
+      <audio ref={audioRef} src="/audio/soundtrack.mp3" loop preload="none" />
       <button
         className={`soundtrack-btn${isMuted ? ' soundtrack-btn--muted' : ''}`}
         onClick={toggleMute}
@@ -89,14 +100,12 @@ const SiteSoundtrack = () => {
         aria-label={isMuted ? 'Attiva musica di sottofondo' : 'Muta musica di sottofondo'}
       >
         {isMuted ? (
-          /* Muted: speaker with X */
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
             <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
             <line x1="23" y1="9" x2="17" y2="15"/>
             <line x1="17" y1="9" x2="23" y2="15"/>
           </svg>
         ) : (
-          /* Playing: speaker with waves */
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
             <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
             <path d="M15.54 8.46a5 5 0 0 1 0 7.07"/>

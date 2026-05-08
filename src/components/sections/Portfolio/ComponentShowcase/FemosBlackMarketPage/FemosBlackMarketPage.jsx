@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect, useCallback } from 'react';
 import './FemosBlackMarketPage.css';
 import { useGuide } from '../../../../../contexts/GuideContext';
+import { useSettings } from '../../../../../contexts/SettingsContext';
 
 // Costanti e database fuori dal componente per evitare problemi di dipendenze
 const CART_MAX_ITEMS = 12;
@@ -69,8 +70,19 @@ const mascotPhrases = {
   randomize: ["Nuovo shipment. Controlla l'inventario.", "Ho rifornito. Potrebbero esserci sorprese.", "Merce fresca dal mercato nero."]
 };
 
+const playFx = (path, vol = 1) => {
+  try { const a = new Audio(path); a.volume = vol; a.play().catch(() => {}); } catch (_) {}
+};
+
+const BASE_MARKET_VOL = 0.35;
+
 const FemosBlackMarketPage = () => {
   const { setGuide, clearGuide } = useGuide();
+  const { musicVolume, fxVolume } = useSettings();
+  const musicVolumeRef = useRef(musicVolume);
+  const fxVolumeRef    = useRef(fxVolume);
+  useEffect(() => { fxVolumeRef.current = fxVolume; }, [fxVolume]);
+  const marketMusicRef = useRef(null);
   const [simulationActive, setSimulationActive] = useState(false);
   const [currentPage, setCurrentPage] = useState('shop');
   const [cart, setCart] = useState([]);
@@ -85,6 +97,22 @@ const FemosBlackMarketPage = () => {
   const targetPositionRef = useRef({ x: 500, y: 500 });
   const currentPositionRef = useRef({ x: 500, y: 500 });
   const interpolationFrameRef = useRef(null);
+
+  /* ── Sync music volume ref + update market audio in real-time ── */
+  useEffect(() => {
+    musicVolumeRef.current = musicVolume;
+    if (marketMusicRef.current) marketMusicRef.current.volume = musicVolume * BASE_MARKET_VOL;
+  }, [musicVolume]);
+
+  /* ── Market music: play on mount, stop on unmount ── */
+  useEffect(() => {
+    const music = new Audio('/audio/market/black-market.mp3');
+    music.loop = true;
+    music.volume = musicVolumeRef.current * BASE_MARKET_VOL;
+    marketMusicRef.current = music;
+    music.play().catch(() => {});
+    return () => { music.pause(); music.src = ''; marketMusicRef.current = null; };
+  }, []);
 
   const [productStock, setProductStock] = useState(() => {
     const initialStock = {};
@@ -147,6 +175,11 @@ const FemosBlackMarketPage = () => {
       const rarityProducts = availableProducts.filter(p => p.rarity === selectedRarity && !usedIds.has(p.id));
       if (rarityProducts.length > 0) {
         const randomProduct = rarityProducts[Math.floor(Math.random() * rarityProducts.length)];
+        if (selectedRarity === 'mystery') {
+          playFx('/audio/fx/chiave.mp3', fxVolumeRef.current);
+          setCurrentProducts([randomProduct]);
+          return;
+        }
         selectedProducts.push(randomProduct);
         usedIds.add(randomProduct.id);
         rarityCounts[selectedRarity]++;

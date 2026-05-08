@@ -2,6 +2,8 @@ import { useState, lazy, Suspense } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import ThemeProvider from './contexts/ThemeProvider';
 import { GuideProvider } from './contexts/GuideContext';
+import { SettingsProvider } from './contexts/SettingsContext';
+import { TourProvider } from './contexts/TourContext';
 import ErrorBoundary from './components/ErrorBoundary/ErrorBoundary';
 import Navbar from './components/sections/Navbar/Navbar';
 import Iris from './components/Iris/Iris';
@@ -12,6 +14,7 @@ import ScrollingHeader from './components/ScrollingHeader';
 import CookieConsentBanner from './components/global/CookieConsent/CookieConsent';
 import PageTransition from './components/PageTransition/PageTransition';
 import SiteSoundtrack from './components/SiteSoundtrack/SiteSoundtrack';
+import TourOverlay from './components/Tour/TourOverlay';
 
 // 🚀 LAZY LOADING - Carica componenti solo quando necessario
 const LandingPage = lazy(() => import('./components/sections/LandingPage/LandingPage'));
@@ -46,6 +49,7 @@ const Contacts = lazy(() => import('./components/sections/Contacts/Contacts'));
 const PrivacyPolicy = lazy(() => import('./components/sections/PrivacyPolicy/PrivacyPolicy'));
 const CookiePolicy = lazy(() => import('./components/sections/CookiePolicy/CookiePolicy'));
 const TermsAndConditions = lazy(() => import('./components/sections/TermsAndConditions/TermsAndConditions'));
+const Settings = lazy(() => import('./components/sections/Settings/Settings'));
 
 // 🎨 Loading Spinner Component
 const LoadingSpinner = () => {
@@ -91,13 +95,16 @@ function App() {
   return (
     <ErrorBoundary>
       <ThemeProvider>
+      <SettingsProvider>
+      <TourProvider>
       <GuideProvider>
         <BrowserRouter basename={import.meta.env.DEV ? '/' : '/vihente-app'}>
           <CustomCursor />
           <Iris />
+          <TourOverlay />
           <SiteSoundtrack />
-          <CookieConsentBanner isBooting={false} />
           <ThemeToggle />
+          <CookieConsentBanner isBooting={false} />
 
           <>
             <Navbar />
@@ -134,6 +141,7 @@ function App() {
                     <Route path="/privacy-policy" element={<PrivacyPolicy />} />
                     <Route path="/cookie-policy" element={<CookiePolicy />} />
                     <Route path="/termini-e-condizioni" element={<TermsAndConditions />} />
+                    <Route path="/impostazioni" element={<Settings />} />
                   </Routes>
                 </PageTransition>
               </Suspense>
@@ -143,6 +151,8 @@ function App() {
           </>
         </BrowserRouter>
       </GuideProvider>
+      </TourProvider>
+      </SettingsProvider>
       </ThemeProvider>
     </ErrorBoundary>
   );

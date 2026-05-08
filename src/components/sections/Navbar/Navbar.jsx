@@ -34,6 +34,7 @@ const PAGE_GUIDES = {
   '/portfolio/componenti/cubo-3d':        '3D Model — cubo interattivo, zero librerie esterne.',
   '/portfolio/componenti/image-checker':  "Image Checker — lente d'ingrandimento su immagini.",
   '/contatti':                            'Contatti — scrivi un messaggio o richiedi un preventivo!',
+  '/impostazioni':                        'Impostazioni — personalizza volumi e gestisci i dati di navigazione.',
 };
 
 const Navbar = () => {
@@ -158,11 +159,12 @@ const Navbar = () => {
 
   // Mobile menu navigation items
   const navItems = [
-    { id: 'landing', label: 'Home', path: '/', number: '01' },
-    { id: 'services', label: 'Servizi', path: '/services', number: '02' },
-    { id: 'portfolio', label: 'Portfolio', path: '/portfolio', number: '03' },
-    { id: 'storia', label: 'La Mia Storia', path: '/storia', number: '04' },
-    { id: 'contatti', label: 'Contatti', path: '/contatti', number: '05' },
+    { id: 'landing',      label: 'Home',          path: '/',             number: '01' },
+    { id: 'services',     label: 'Servizi',        path: '/services',     number: '02' },
+    { id: 'portfolio',    label: 'Portfolio',      path: '/portfolio',    number: '03' },
+    { id: 'storia',       label: 'La Mia Storia',  path: '/storia',       number: '04' },
+    { id: 'contatti',     label: 'Contatti',       path: '/contatti',     number: '05' },
+    { id: 'impostazioni', label: 'Impostazioni',   path: '/impostazioni', number: '06' },
   ];
 
   // Improved transition with proper navigation timing
@@ -377,6 +379,7 @@ const Navbar = () => {
           <Link
             to="/"
             className={`navbar-logo ${mobileMenuOpen ? 'menu-open' : ''}`}
+            data-tour="nav-logo"
             aria-label="Torna alla home"
             onClick={handleLogoClick}
             onMouseEnter={() => setGuide('Ti presento Femo! Si irrita facilmente, quindi trattalo con rispetto')}
@@ -528,6 +531,7 @@ const Navbar = () => {
             <Link
               to="/services"
               className={`nav-link ${isActive('/services') ? 'active' : ''}`}
+              data-tour="nav-servizi"
               aria-label="Vai alla pagina Servizi"
               aria-current={isActive('/services') ? 'page' : undefined}
               onClick={(e) => handleDesktopNavClick(e, '/services')}
@@ -541,6 +545,7 @@ const Navbar = () => {
             <Link
               to="/portfolio"
               className={`nav-link ${isActive('/portfolio') ? 'active' : ''}`}
+              data-tour="nav-portfolio"
               aria-label="Vai alla pagina Portfolio"
               aria-current={isActive('/portfolio') ? 'page' : undefined}
               onClick={(e) => handleDesktopNavClick(e, '/portfolio')}
@@ -554,6 +559,7 @@ const Navbar = () => {
             <Link
               to="/storia"
               className={`nav-link ${isActive('/storia') ? 'active' : ''}`}
+              data-tour="nav-storia"
               aria-label="Vai alla pagina La Mia Storia"
               aria-current={isActive('/storia') ? 'page' : undefined}
               onClick={(e) => handleDesktopNavClick(e, '/storia')}
@@ -567,6 +573,7 @@ const Navbar = () => {
             <Link
               to="/contatti"
               className={`nav-link ${isActive('/contatti') ? 'active' : ''}`}
+              data-tour="nav-contatti"
               aria-label="Vai alla pagina Contatti"
               aria-current={isActive('/contatti') ? 'page' : undefined}
               onClick={(e) => handleDesktopNavClick(e, '/contatti')}
@@ -578,9 +585,25 @@ const Navbar = () => {
             </Link>
           </div>
 
+          {/* Settings gear — desktop only */}
+          <button
+            className="nav-settings-btn desktop-only"
+            data-tour="nav-settings"
+            onClick={(e) => handleDesktopNavClick(e, '/impostazioni')}
+            aria-label="Vai alle impostazioni"
+            onMouseEnter={() => setGuide('Impostazioni — volumi, preferenze e gestione dati.')}
+            onMouseLeave={clearGuide}
+          >
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <circle cx="12" cy="12" r="3"/>
+              <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+            </svg>
+          </button>
+
           {/* Availability Badge */}
           <div
             className="availability-badge desktop-only"
+            data-tour="nav-availability"
             aria-label="Stato disponibilità"
             onMouseEnter={() => setGuide('Questo badge verde significa che siamo disponibili per nuove collaborazioni. Non esitare a contattarci!')}
             onMouseLeave={clearGuide}

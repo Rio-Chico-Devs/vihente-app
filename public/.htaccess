@@ -10,6 +10,10 @@ AddType audio/ogg .opus
 AddType audio/ogg .ogg
 AddType audio/mpeg .mp3
 
+<FilesMatch "\.opus$">
+    ForceType audio/ogg
+</FilesMatch>
+
 <IfModule mod_headers.c>
     # Content Security Policy - Protezione XSS
     Header set Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:; connect-src 'self'; frame-ancestors 'none'; base-uri 'self'; form-action 'self';"
@@ -83,6 +87,10 @@ AddType audio/mpeg .mp3
     ExpiresByType font/woff "access plus 1 year"
     ExpiresByType font/woff2 "access plus 1 year"
     
+    # Audio - 7 giorni
+    ExpiresByType audio/ogg "access plus 7 days"
+    ExpiresByType audio/mpeg "access plus 7 days"
+
     # CSS e JavaScript - 1 mese
     ExpiresByType text/css "access plus 1 month"
     ExpiresByType application/javascript "access plus 1 month"

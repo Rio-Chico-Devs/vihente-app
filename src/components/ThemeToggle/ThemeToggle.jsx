@@ -7,6 +7,7 @@ const ThemeToggle = () => {
   return (
     <button
       className="theme-toggle"
+      data-tour="audio-theme-controls"
       onClick={toggleTheme}
       aria-label={`Switch to ${theme === 'dark' ? 'night' : 'neon'} mode`}
     >

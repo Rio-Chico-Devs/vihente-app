@@ -75,7 +75,7 @@ const ScrollingHeader = ({ text }) => {
   }, [animate]);
 
   return (
-    <div className="scrolling-header">
+    <div className="scrolling-header" data-tour="scrolling-header">
       <div
         className="scrolling-header-btn rewind"
         onMouseDown={startRewind}

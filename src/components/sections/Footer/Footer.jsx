@@ -5,6 +5,7 @@ const Footer = () => {
   return (
     <footer
       className="footer"
+      data-tour="site-footer"
       role="contentinfo"
       aria-label="Informazioni footer"
     >
