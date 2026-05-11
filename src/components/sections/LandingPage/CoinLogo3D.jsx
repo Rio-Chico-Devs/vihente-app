@@ -110,10 +110,6 @@ export default function CoinLogo3D({ onCoinClick, colorR = 0, colorG = 255, colo
     const IRIS_R  = 80 * S;
     const PUPIL_R = 35 * S;
 
-    const IRIS_PTS  = circlePts(IRIS_R,  44);
-    const PUPIL_PTS = circlePts(PUPIL_R, 28);
-    const RIM_PTS   = circlePts(1.0, 72);
-
     const THICKNESS = 0.30;
 
     // Half-band widths (normalised coin units) — each element gets an inner
@@ -144,18 +140,6 @@ export default function CoinLogo3D({ onCoinClick, colorR = 0, colorG = 255, colo
     const ZF =  THICKNESS / 2;
     const ZB = -THICKNESS / 2;
 
-    // ── Helpers ───────────────────────────────────────────────────────────────
-    function polyPath(pts, faceZ, spinA, tiltA, mirrorX) {
-      ctx.beginPath();
-      let started = false;
-      for (const [px, py] of pts) {
-        const p = xfm(px * mirrorX, py, faceZ, spinA, tiltA);
-        if (!p) continue;
-        if (!started) { ctx.moveTo(p[0], p[1]); started = true; }
-        else ctx.lineTo(p[0], p[1]);
-      }
-    }
-
     // ── Ambient glow (modulated by breathe) ──────────────────────────────────
     function drawGlow(abscos) {
       const glowR = R * (1.35 + 0.05 * abscos);
@@ -165,40 +149,6 @@ export default function CoinLogo3D({ onCoinClick, colorR = 0, colorG = 255, colo
       g.addColorStop(1,   'rgba(0,0,0,0)');
       ctx.fillStyle = g;
       ctx.fillRect(0, 0, W, H);
-    }
-
-    // ── Coin face ─────────────────────────────────────────────────────────────
-    function drawFace(faceZ, spinA, tiltA, isFront, faceAlpha, isNear) {
-      if (faceAlpha < 0.015) return;
-      const mirrorX = isFront ? 1 : -1;
-      const ea    = Math.min(1, faceAlpha * (isNear ? 1.1 : 0.75));
-      const lwRim = isNear ? (9.0 + faceAlpha * 7.0) : (4.0 + faceAlpha * 4.0);
-      const lwEye = isNear ? (6.0 + faceAlpha * 7.0) : (3.0 + faceAlpha * 3.0);
-
-      // Fake rim glow: one wide+faint pass before the main stroke.
-      if (isNear && faceAlpha > 0.45) {
-        ctx.lineWidth   = lwRim * 2.6;
-        ctx.strokeStyle = `rgba(${CR},${CG},${CB},${(ea * 0.09 * breathe).toFixed(3)})`;
-        polyPath(RIM_PTS, faceZ, spinA, tiltA, 1);
-        ctx.closePath(); ctx.stroke();
-      }
-
-      ctx.strokeStyle = `rgba(${CR},${CG},${CB},${ea.toFixed(3)})`;
-      ctx.lineWidth   = lwRim;
-      polyPath(RIM_PTS, faceZ, spinA, tiltA, 1);
-      ctx.closePath(); ctx.stroke();
-
-      ctx.lineWidth = lwEye;
-      polyPath(EYE_PTS, faceZ, spinA, tiltA, mirrorX);
-      ctx.closePath(); ctx.stroke();
-
-      ctx.lineWidth = lwEye * 0.84;
-      polyPath(IRIS_PTS, faceZ, spinA, tiltA, mirrorX);
-      ctx.closePath(); ctx.stroke();
-
-      ctx.lineWidth = lwEye * 0.68;
-      polyPath(PUPIL_PTS, faceZ, spinA, tiltA, mirrorX);
-      ctx.closePath(); ctx.stroke();
     }
 
     // ── Filled quad walls ─────────────────────────────────────────────────────
@@ -349,26 +299,7 @@ export default function CoinLogo3D({ onCoinClick, colorR = 0, colorG = 255, colo
 
       ctx.clearRect(0, 0, W, H);
       drawGlow(abscos);
-
-      // edgeFloor keeps faces softly visible when coin is edge-on (cosSpin≈0)
-      // so the animation never fully "turns off" mid-spin.
-      const edgeFloor = 0.14 * (1 - abscos);
-      const fF_near   = Math.max(0,  cosSpin);
-      const fF_alpha  = Math.max(edgeFloor, fF_near + Math.max(0, -cosSpin) * 0.30);
-      const fF_isNear = cosSpin >= 0;
-      const fB_near   = Math.max(0, -cosSpin);
-      const fB_alpha  = Math.max(edgeFloor, fB_near + Math.max(0,  cosSpin) * 0.30);
-      const fB_isNear = cosSpin < 0;
-
-      if (cosSpin >= 0) {
-        drawFace(ZB, spinA, tiltA, false, fB_alpha, fB_isNear);
-        drawEdge(spinA, tiltA);
-        drawFace(ZF, spinA, tiltA, true,  fF_alpha, fF_isNear);
-      } else {
-        drawFace(ZF, spinA, tiltA, true,  fF_alpha, fF_isNear);
-        drawEdge(spinA, tiltA);
-        drawFace(ZB, spinA, tiltA, false, fB_alpha, fB_isNear);
-      }
+      drawEdge(spinA, tiltA);
 
       if (glitchI > 0) drawGlitch(glitchI);
       requestAnimationFrame(loop);
