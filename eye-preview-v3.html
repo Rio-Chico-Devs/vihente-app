@@ -19,7 +19,7 @@
 </head>
 <body>
 <canvas id="c"></canvas>
-<div id="caption">VIHENTE &nbsp;·&nbsp; <span>3D LOGO</span> &nbsp;·&nbsp; SHADED</div>
+<div id="caption">VIHENTE &nbsp;·&nbsp; <span>3D LOGO</span> &nbsp;·&nbsp; TUBE LIGHT</div>
 <script>
 'use strict';
 
@@ -32,9 +32,9 @@ function resize() {
   const dpr = Math.min(window.devicePixelRatio || 1, 2);
   W = window.innerWidth; H = window.innerHeight;
   canvas.width  = W * dpr; canvas.height = H * dpr;
-  canvas.style.width = W + 'px'; canvas.style.height = H + 'px';
+  canvas.style.width = W+'px'; canvas.style.height = H+'px';
   ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-  CX = W / 2; CY = H / 2;
+  CX = W/2; CY = H/2;
   R  = Math.min(W, H) * 0.33;
 }
 resize();
@@ -43,29 +43,23 @@ window.addEventListener('resize', resize);
 // ── Mouse ────────────────────────────────────────────────────────────────
 let mxN = 0, myN = 0;
 window.addEventListener('mousemove', e => {
-  mxN = (e.clientX - W / 2) / (W / 2);
-  myN = (e.clientY - H / 2) / (H / 2);
+  mxN = (e.clientX - W/2) / (W/2);
+  myN = (e.clientY - H/2) / (H/2);
 });
 
 // ── 3D math ──────────────────────────────────────────────────────────────
-function rotY(x, y, z, a) {
-  return [x*Math.cos(a)+z*Math.sin(a), y, -x*Math.sin(a)+z*Math.cos(a)];
-}
-function rotX(x, y, z, a) {
-  return [x, y*Math.cos(a)-z*Math.sin(a), y*Math.sin(a)+z*Math.cos(a)];
-}
+function rotY(x,y,z,a) { return [x*Math.cos(a)+z*Math.sin(a), y, -x*Math.sin(a)+z*Math.cos(a)]; }
+function rotX(x,y,z,a) { return [x, y*Math.cos(a)-z*Math.sin(a), y*Math.sin(a)+z*Math.cos(a)]; }
 const CAM_Z = 5.5;
-function project(x, y, z) {
-  const d = CAM_Z - z;
-  if (d < 0.01) return null;
-  const f = CAM_Z / d;
-  return [CX + x*R*f, CY - y*R*f, z];
+function project(x,y,z) {
+  const d = CAM_Z-z; if (d<0.01) return null;
+  return [CX + x*R*(CAM_Z/d), CY - y*R*(CAM_Z/d), z];
 }
-function xfm(px, py, faceZ, spinA, tiltA) {
-  let [x,y,z] = [px, py, faceZ];
-  [x,y,z] = rotY(x,y,z, spinA);
-  [x,y,z] = rotX(x,y,z, tiltA);
-  return project(x, y, z);
+function xfm(px,py,faceZ,spinA,tiltA) {
+  let [x,y,z] = [px,py,faceZ];
+  [x,y,z] = rotY(x,y,z,spinA);
+  [x,y,z] = rotX(x,y,z,tiltA);
+  return project(x,y,z);
 }
 
 // ── Geometry ─────────────────────────────────────────────────────────────
@@ -83,213 +77,241 @@ const eyeSegs = [
   [norm(650,500),norm(610,570),norm(560,600),norm(500,600)],
   [norm(500,600),norm(440,600),norm(390,570),norm(350,500)],
 ];
-function sampleBez(seg, n) {
-  return Array.from({length:n}, (_,i) =>
-    cubicBezier(...seg[0],...seg[1],...seg[2],...seg[3], i/n));
+function sampleBez(seg,n) {
+  return Array.from({length:n},(_,i)=>
+    cubicBezier(...seg[0],...seg[1],...seg[2],...seg[3],i/n));
 }
-const EYE_PTS   = eyeSegs.flatMap(s => sampleBez(s, 28));
-function circlePts(r, n) {
-  return Array.from({length:n+1}, (_,i) => {
-    const a = (i/n)*Math.PI*2;
-    return [Math.cos(a)*r, Math.sin(a)*r];
-  });
+const EYE_PTS   = eyeSegs.flatMap(s=>sampleBez(s,28));
+function circlePts(r,n) {
+  return Array.from({length:n+1},(_,i)=>{const a=(i/n)*Math.PI*2;return[Math.cos(a)*r,Math.sin(a)*r];});
 }
 const IRIS_PTS  = circlePts(80*S, 56);
 const PUPIL_PTS = circlePts(35*S, 40);
-const RIM_PTS   = circlePts(1.0, 96);
+const RIM_PTS   = circlePts(1.0,  96);
 
 const THICKNESS = 0.14;
-const ZF =  THICKNESS / 2;
-const ZB = -THICKNESS / 2;
+const ZF =  THICKNESS/2;
+const ZB = -THICKNESS/2;
 
 // ── Path helper ───────────────────────────────────────────────────────────
-function polyPath(pts, faceZ, spinA, tiltA, mx) {
+function polyPath(pts,faceZ,spinA,tiltA,mx) {
   ctx.beginPath();
-  let started = false;
+  let started=false;
   for (const [px,py] of pts) {
-    const p = xfm(px*mx, py, faceZ, spinA, tiltA);
-    if (!p) continue;
-    if (!started) { ctx.moveTo(p[0],p[1]); started=true; }
+    const p=xfm(px*mx,py,faceZ,spinA,tiltA);
+    if(!p) continue;
+    if(!started){ctx.moveTo(p[0],p[1]);started=true;}
     else ctx.lineTo(p[0],p[1]);
   }
 }
 
-// ── Lighting constants ────────────────────────────────────────────────────
-// Key light: upper-left, slightly forward  L = (-0.40, 0.72, 0.57) ≈ normalised
-// Blinn-Phong half-vector H = normalise(L + V), V=(0,0,1)
-// H = normalise(-0.40, 0.72, 1.57), |H|≈1.773
-const LX=-0.40, LY=0.72, LZ=0.57;
-const HX=-0.226, HY=0.406, HZ=0.885;
-
-// Edge quad shading: diffuse + specular from approximate Y-rotated normal
-function edgeShade(nx, ny, spinA) {
-  const rnx = nx*Math.cos(spinA), rny = ny, rnz = -nx*Math.sin(spinA);
-  const diffuse  = Math.max(0, rnx*LX + rny*LY + rnz*LZ);
-  const specDot  = Math.max(0, rnx*HX + rny*HY + rnz*HZ);
-  const specular = Math.pow(specDot, 32);
-  return { shade: 0.08 + diffuse*0.56 + specular*0.80, specular };
+// ── Lighting gradient ─────────────────────────────────────────────────────
+//
+// Key light: upper-left, slightly forward.
+// The gradient maps across the full canvas in screen space, so every part
+// of the path picks the colour that corresponds to its screen position:
+//   upper-left arc → bright highlight  (light-facing side of tube)
+//   lower-right arc → deep shadow      (shadow side)
+//
+// Three stops: shadow → dark cyan → main cyan → bright specular highlight
+//
+function tubeGrad(tiltA, alpha) {
+  const gx = R * 0.44;
+  const gy = R * 0.58 * Math.max(0.35, Math.cos(tiltA));
+  const g  = ctx.createLinearGradient(CX+gx, CY+gy, CX-gx, CY-gy);
+  const a  = alpha.toFixed(3);
+  g.addColorStop(0,    `rgba(0,6,12,${a})`);           // deep shadow
+  g.addColorStop(0.28, `rgba(0,100,140,${a})`);        // mid shadow
+  g.addColorStop(0.60, `rgba(0,210,250,${a})`);        // lit surface
+  g.addColorStop(1,    `rgba(155,255,255,${a})`);      // specular highlight
+  return g;
 }
 
 // ── Ambient background glow ───────────────────────────────────────────────
 function drawGlow(abscos) {
-  const glowR = R * (1.5 + 0.08*abscos);
+  const glowR = R*(1.45+0.08*abscos);
   const g = ctx.createRadialGradient(CX,CY, R*0.3, CX,CY, glowR);
   g.addColorStop(0,   `rgba(0,255,255,${(0.09*abscos).toFixed(4)})`);
-  g.addColorStop(0.4, `rgba(0,255,255,${(0.025*abscos).toFixed(4)})`);
+  g.addColorStop(0.4, `rgba(0,255,255,${(0.022*abscos).toFixed(4)})`);
   g.addColorStop(1,   'rgba(0,0,0,0)');
-  ctx.fillStyle = g;
-  ctx.fillRect(0,0,W,H);
+  ctx.fillStyle=g; ctx.fillRect(0,0,W,H);
 }
 
-// ── Coin face ─────────────────────────────────────────────────────────────
+// ── Tube stroke — three-pass 3D cylinder illusion ─────────────────────────
 //
-// Near face:  full dark-metal shading + gradient + shadow/glow strokes
-// Ghost face: simple dark fill + dim strokes (visible through open areas)
+// The path must already be built (polyPath called + closePath).
+// ctx.stroke() is called three times on the same path without rebuilding:
+//
+//   Pass 1 — wide dark base + shadow offset  → depth shadow beneath the tube
+//   Pass 2 — gradient body                   → lit surface of the tube
+//   Pass 3 — thin bright centre line         → specular highlight on tube top
+//
+function tubeStroke(lw, tiltA, alpha, isNear) {
+  if (isNear && alpha > 0.22) {
+    // Pass 1: shadow (wide, dark, directional offset)
+    ctx.strokeStyle   = `rgba(0,0,8,${(alpha*0.60).toFixed(3)})`;
+    ctx.lineWidth     = lw + 5;
+    ctx.shadowColor   = 'rgba(0,0,0,0.75)';
+    ctx.shadowBlur    = 8;
+    ctx.shadowOffsetX = 3;
+    ctx.shadowOffsetY = 3;
+    ctx.stroke();
+    ctx.shadowBlur=0; ctx.shadowOffsetX=0; ctx.shadowOffsetY=0;
+
+    // Pass 2: gradient body
+    ctx.strokeStyle = tubeGrad(tiltA, alpha);
+    ctx.lineWidth   = lw;
+    ctx.shadowColor = 'rgba(0,200,255,0.30)';
+    ctx.shadowBlur  = 6 * alpha;
+    ctx.stroke();
+    ctx.shadowBlur  = 0;
+
+    // Pass 3: thin specular line (very narrow, bright)
+    ctx.strokeStyle = `rgba(200,255,255,${(alpha*0.72).toFixed(3)})`;
+    ctx.lineWidth   = Math.max(0.5, lw*0.15);
+    ctx.shadowColor = 'rgba(200,255,255,0.55)';
+    ctx.shadowBlur  = 4;
+    ctx.stroke();
+    ctx.shadowBlur  = 0;
+
+  } else {
+    // Ghost face: single flat dim stroke
+    ctx.strokeStyle = `rgba(0,210,250,${(alpha*0.85).toFixed(3)})`;
+    ctx.lineWidth   = lw;
+    ctx.stroke();
+  }
+}
+
+// ── Coin face — open / hollow with 3D tube strokes ───────────────────────
+//
+// No disc fill, no carved fills (same as v2).
+// All strokes use tubeStroke() for the 3D cylinder illusion.
 //
 function drawFace(faceZ, spinA, tiltA, isFront, eyeAlpha, isNear) {
   const mx = isFront ? 1 : -1;
+  const ea = eyeAlpha;
 
-  // 1 ── Dark metal disc
+  // ── Rim circle ──
+  const lwR = isNear ? 5.5 + ea*4.5 : 2.5 + ea*2.5;
   polyPath(RIM_PTS, faceZ, spinA, tiltA, 1);
   ctx.closePath();
-  ctx.fillStyle = '#060A11';
-  ctx.fill();
+  tubeStroke(lwR, tiltA, ea, isNear);
 
-  // 2 ── Directional light gradient (metallic sheen — near face only)
-  //      Light from upper-left → highlight at top-left, shadow at bottom-right
-  if (isNear && eyeAlpha > 0.07) {
-    const c = xfm(0, 0, faceZ, spinA, tiltA);
-    if (c) {
-      ctx.save();
-      polyPath(RIM_PTS, faceZ, spinA, tiltA, 1);
-      ctx.closePath();
-      ctx.clip();
-      const gx = R*0.42, gy = R*0.55;
-      const s  = eyeAlpha * 0.38;
-      const g  = ctx.createLinearGradient(c[0]+gx, c[1]+gy, c[0]-gx, c[1]-gy);
-      g.addColorStop(0,    'rgba(0,0,0,0)');
-      g.addColorStop(0.38, `rgba(5,10,20,${(s*0.45).toFixed(3)})`);
-      g.addColorStop(1,    `rgba(36,58,84,${s.toFixed(3)})`);
-      ctx.fillStyle = g;
-      ctx.fillRect(0,0,W,H);
-      ctx.restore();
-    }
-  }
+  if (ea < 0.025) return;
 
-  // 3 ── Rim stroke (glow on near face)
-  const lwR = isNear ? 5.5 + eyeAlpha*4.5 : 2.5 + eyeAlpha*2.5;
-  const rimA = Math.min(1, eyeAlpha * (isNear ? 1.3 : 0.85));
-  if (isNear && eyeAlpha > 0.5) {
-    ctx.shadowColor = 'rgba(0,255,255,0.52)';
-    ctx.shadowBlur  = 11;
-  }
-  ctx.strokeStyle = `rgba(0,255,255,${rimA.toFixed(3)})`;
-  ctx.lineWidth   = lwR;
-  polyPath(RIM_PTS, faceZ, spinA, tiltA, 1);
-  ctx.closePath();
-  ctx.stroke();
-  ctx.shadowBlur = 0;
-
-  if (eyeAlpha < 0.025) return;
-
-  // 4 ── Carved fills
-  //      Each area is a progressively darker recess (step-depth effect)
-  polyPath(EYE_PTS, faceZ, spinA, tiltA, mx);
-  ctx.closePath(); ctx.fillStyle = '#030609'; ctx.fill();
-
-  polyPath(IRIS_PTS, faceZ, spinA, tiltA, mx);
-  ctx.closePath(); ctx.fillStyle = '#020407'; ctx.fill();
-
-  polyPath(PUPIL_PTS, faceZ, spinA, tiltA, mx);
-  ctx.closePath(); ctx.fillStyle = '#010305'; ctx.fill();
-
-  // 5 ── Eye element strokes
-  //      Two passes per element — path built once, stroke() called twice:
-  //        Pass A: wide dark stroke + directional shadow offset → casts depth shadow
-  //        Pass B: bright narrow stroke + cyan blur → light-catching edge + neon glow
-  const lw = isNear ? 3.5 + eyeAlpha*4.5 : 1.8 + eyeAlpha*2.0;
-  const ea  = Math.min(1, eyeAlpha * (isNear ? 1.3 : 0.85));
-
+  // ── Eye outline, iris ring, pupil ring ──
+  const lw = isNear ? 3.5 + ea*4.5 : 1.8 + ea*2.0;
   const elems = [
     [EYE_PTS,   lw       ],
     [IRIS_PTS,  lw * 0.84],
     [PUPIL_PTS, lw * 0.68],
   ];
-
   for (const [pts, w] of elems) {
     polyPath(pts, faceZ, spinA, tiltA, mx);
     ctx.closePath();
-
-    if (isNear && eyeAlpha > 0.25) {
-      // Pass A — dark shadow (wider stroke + directional offset)
-      ctx.strokeStyle   = 'rgba(0,0,10,0.55)';
-      ctx.lineWidth     = w + 5;
-      ctx.shadowColor   = 'rgba(0,0,0,0.72)';
-      ctx.shadowBlur    = 7;
-      ctx.shadowOffsetX = 3;
-      ctx.shadowOffsetY = 3;
-      ctx.stroke();
-      ctx.shadowBlur = 0; ctx.shadowOffsetX = 0; ctx.shadowOffsetY = 0;
-    }
-
-    // Pass B — bright glow (same path, no rebuild)
-    if (isNear && eyeAlpha > 0.52) {
-      ctx.shadowColor = 'rgba(0,255,255,0.62)';
-      ctx.shadowBlur  = 13 * eyeAlpha;
-    }
-    ctx.strokeStyle = `rgba(0,255,255,${ea.toFixed(3)})`;
-    ctx.lineWidth   = w;
-    ctx.stroke();
-    ctx.shadowBlur  = 0;
+    tubeStroke(w, tiltA, ea, isNear);
   }
 }
 
-// ── Coin edge — depth-sorted quads with Blinn-Phong shading ──────────────
+// ── Lateral depth lines — same tube gradient, thin ───────────────────────
+//
+// Each point on EYE/IRIS/PUPIL emits a line ZF→ZB.
+// Camera-facing uses the full gradient; back-facing uses a dim flat stroke.
+//
+function drawEyeLaterals(spinA, tiltA) {
+  const grad = tubeGrad(tiltA, 1.0); // built once, reused
+
+  const configs = [
+    { pts: EYE_PTS,   step: 3, lw: 1.0 },
+    { pts: IRIS_PTS,  step: 2, lw: 0.9 },
+    { pts: PUPIL_PTS, step: 3, lw: 0.8 },
+  ];
+
+  for (const { pts, step, lw } of configs) {
+    for (let i = 0; i < pts.length; i += step) {
+      const [px, py] = pts[i];
+      const len = Math.sqrt(px*px + py*py);
+      if (len < 0.001) continue;
+      const nx = px / len, ny = py / len;
+      const normalCamZ = -nx * Math.sin(spinA);
+
+      // Same diffuse shade formula as the edge quads
+      const diffuse = Math.max(0, ny*0.85 + normalCamZ*0.32);
+      const shade   = (0.10 + diffuse*0.50) * Math.abs(normalCamZ);
+      const alpha   = normalCamZ > 0 ? shade : shade * 0.35;
+      if (alpha < 0.012) continue;
+
+      const pf = xfm(px, py, ZF, spinA, tiltA);
+      const pb = xfm(px, py, ZB, spinA, tiltA);
+      if (!pf || !pb) continue;
+
+      ctx.beginPath();
+      ctx.moveTo(pf[0], pf[1]);
+      ctx.lineTo(pb[0], pb[1]);
+
+      if (normalCamZ > 0) {
+        // Camera-facing lateral: use the tube gradient + slight glow
+        ctx.strokeStyle = grad;
+        ctx.lineWidth   = lw;
+        ctx.shadowColor = 'rgba(0,200,255,0.25)';
+        ctx.shadowBlur  = 3 * alpha;
+        ctx.stroke();
+        ctx.shadowBlur  = 0;
+      } else {
+        // Back-facing: ghost dim flat stroke
+        ctx.strokeStyle = `rgba(0,180,220,${alpha.toFixed(3)})`;
+        ctx.lineWidth   = lw * 0.6;
+        ctx.stroke();
+      }
+    }
+  }
+}
+
+// ── Coin edge ─────────────────────────────────────────────────────────────
+// Depth-sorted quads — same diffuse shading + specular highlight as v2.
+// Fill colour uses the same gradient logic for a metallic look.
 function drawEdge(spinA, tiltA) {
   const N = 96;
   const quads = [];
-
   for (let i = 0; i < N; i++) {
-    const a1 = (i/N)*Math.PI*2, a2 = ((i+1)/N)*Math.PI*2, am = (a1+a2)/2;
-    const nx = Math.cos(am), ny = Math.sin(am);
+    const a1=(i/N)*Math.PI*2, a2=((i+1)/N)*Math.PI*2, am=(a1+a2)/2;
+    const nx=Math.cos(am), ny=Math.sin(am);
     const normalCamZ = -nx*Math.sin(spinA);
 
-    const c1 = xfm(Math.cos(a1),Math.sin(a1), ZF, spinA, tiltA);
-    const c2 = xfm(Math.cos(a2),Math.sin(a2), ZF, spinA, tiltA);
-    const c3 = xfm(Math.cos(a2),Math.sin(a2), ZB, spinA, tiltA);
-    const c4 = xfm(Math.cos(a1),Math.sin(a1), ZB, spinA, tiltA);
-    if (!c1||!c2||!c3||!c4) continue;
+    const c1=xfm(Math.cos(a1),Math.sin(a1),ZF,spinA,tiltA);
+    const c2=xfm(Math.cos(a2),Math.sin(a2),ZF,spinA,tiltA);
+    const c3=xfm(Math.cos(a2),Math.sin(a2),ZB,spinA,tiltA);
+    const c4=xfm(Math.cos(a1),Math.sin(a1),ZB,spinA,tiltA);
+    if(!c1||!c2||!c3||!c4) continue;
 
     const avgZ = (c1[2]+c2[2]+c3[2]+c4[2])/4;
-    const { shade, specular } = edgeShade(nx, ny, spinA);
-    quads.push({ c1,c2,c3,c4, normalCamZ, shade, specular, avgZ });
+    const rnx=nx*Math.cos(spinA), rny=ny, rnz=-nx*Math.sin(spinA);
+    const diffuse  = Math.max(0, rnx*(-0.40)+rny*0.72+rnz*0.57);
+    const specDot  = Math.max(0, rnx*(-0.226)+rny*0.406+rnz*0.885);
+    const specular = Math.pow(specDot, 32);
+    const shade    = 0.08 + diffuse*0.55 + specular*0.82;
+    quads.push({c1,c2,c3,c4,normalCamZ,shade,specular,avgZ});
   }
+  quads.sort((a,b)=>a.avgZ-b.avgZ);
 
-  quads.sort((a,b) => a.avgZ - b.avgZ);
-
-  for (const { c1,c2,c3,c4, normalCamZ, shade, specular } of quads) {
-    const isFront = normalCamZ > 0;
-
+  for (const {c1,c2,c3,c4,normalCamZ,shade,specular} of quads) {
     ctx.beginPath();
-    ctx.moveTo(c1[0],c1[1]);
-    ctx.lineTo(c2[0],c2[1]);
-    ctx.lineTo(c3[0],c3[1]);
-    ctx.lineTo(c4[0],c4[1]);
+    ctx.moveTo(c1[0],c1[1]); ctx.lineTo(c2[0],c2[1]);
+    ctx.lineTo(c3[0],c3[1]); ctx.lineTo(c4[0],c4[1]);
     ctx.closePath();
 
-    if (isFront) {
-      // Fill with slightly lit metal colour on high-specular quads
-      const g = Math.round(Math.min(42, 6 + specular*38));
+    if (normalCamZ > 0) {
+      // Front-facing edge: tinted fill + gradient-matched stroke
+      const g = Math.round(Math.min(45, 6+specular*40));
       ctx.fillStyle   = `rgb(0,${g},${g+3})`;
       ctx.fill();
       ctx.strokeStyle = `rgba(0,255,255,${Math.min(0.95,shade).toFixed(3)})`;
       ctx.lineWidth   = 0.7;
       ctx.stroke();
     } else {
-      // Ghost back-facing edge (faintly visible through open face)
       ctx.fillStyle   = 'rgba(0,10,14,0.22)';
       ctx.fill();
-      ctx.strokeStyle = `rgba(0,255,255,${(shade*0.30).toFixed(3)})`;
+      ctx.strokeStyle = `rgba(0,200,240,${(shade*0.30).toFixed(3)})`;
       ctx.lineWidth   = 0.4;
       ctx.stroke();
     }
@@ -297,44 +319,40 @@ function drawEdge(spinA, tiltA) {
 }
 
 // ── Render loop ───────────────────────────────────────────────────────────
-let t0 = 0, smoothTilt = 0;
+let t0=0, smoothTilt=0;
 
 function loop(ts) {
-  if (!t0) t0 = ts;
-  const time = (ts - t0) / 1000;
+  if (!t0) t0=ts;
+  const time = (ts-t0)/1000;
+  smoothTilt += (myN*0.22 - smoothTilt)*0.05;
 
-  smoothTilt += (myN * 0.22 - smoothTilt) * 0.05;
-
-  const spinA   = 0.74 * time + mxN * 0.45;
+  const spinA   = 0.74*time + mxN*0.45;
   const tiltA   = smoothTilt;
   const cosSpin = Math.cos(spinA);
   const abscos  = Math.abs(cosSpin);
 
-  ctx.clearRect(0, 0, W, H);
+  ctx.clearRect(0,0,W,H);
   drawGlow(abscos);
 
-  // Face F (isFront=true, z=+ZF): near when cosSpin ≥ 0
-  // Face B (isFront=false, z=−ZF): near when cosSpin < 0
-  // Near alpha  = |cosSpin|  (full when facing camera)
-  // Ghost alpha = |cosSpin| * 0.28  (visible through open face)
   const fF_alpha  = abscos * (cosSpin >= 0 ? 1.0 : 0.28);
   const fF_isNear = cosSpin >= 0;
   const fB_alpha  = abscos * (cosSpin <  0 ? 1.0 : 0.28);
-  const fB_isNear = cosSpin < 0;
+  const fB_isNear = cosSpin <  0;
 
   if (cosSpin >= 0) {
     drawFace(ZB, spinA, tiltA, false, fB_alpha, fB_isNear);
+    drawEyeLaterals(spinA, tiltA);
     drawEdge(spinA, tiltA);
     drawFace(ZF, spinA, tiltA, true,  fF_alpha, fF_isNear);
   } else {
     drawFace(ZF, spinA, tiltA, true,  fF_alpha, fF_isNear);
+    drawEyeLaterals(spinA, tiltA);
     drawEdge(spinA, tiltA);
     drawFace(ZB, spinA, tiltA, false, fB_alpha, fB_isNear);
   }
 
   requestAnimationFrame(loop);
 }
-
 requestAnimationFrame(loop);
 </script>
 </body>
