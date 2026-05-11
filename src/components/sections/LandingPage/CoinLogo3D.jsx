@@ -14,7 +14,7 @@ export default function CoinLogo3D({ onCoinClick, colorR = 0, colorG = 255, colo
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
-    const ctx = canvas.getContext('2d');
+    const ctx = canvas.getContext('2d', { desynchronized: true });
     if (!ctx) return;
 
     const CR = colorR, CG = colorG, CB = colorB;
@@ -98,7 +98,7 @@ export default function CoinLogo3D({ onCoinClick, colorR = 0, colorG = 255, colo
       return pts;
     }
 
-    const EYE_PTS   = eyeSegs.flatMap(s => sampleBezier(s, 28));
+    const EYE_PTS   = eyeSegs.flatMap(s => sampleBezier(s, 20)); // 80 pts (was 112)
 
     function circlePts(r, n) {
       return Array.from({ length: n + 1 }, (_, i) => {
@@ -107,9 +107,9 @@ export default function CoinLogo3D({ onCoinClick, colorR = 0, colorG = 255, colo
       });
     }
 
-    const IRIS_PTS  = circlePts(80 * S, 56);
-    const PUPIL_PTS = circlePts(35 * S, 40);
-    const RIM_PTS   = circlePts(1.0, 96);
+    const IRIS_PTS  = circlePts(80 * S, 44); // was 56
+    const PUPIL_PTS = circlePts(35 * S, 28); // was 40
+    const RIM_PTS   = circlePts(1.0, 72);    // was 96
 
     const THICKNESS = 0.22;
     const ZF =  THICKNESS / 2;
@@ -129,10 +129,10 @@ export default function CoinLogo3D({ onCoinClick, colorR = 0, colorG = 255, colo
 
     // ── Ambient glow (modulated by breathe) ──────────────────────────────────
     function drawGlow(abscos) {
-      const glowR = R * (1.4 + 0.06 * abscos);
+      const glowR = R * (1.35 + 0.05 * abscos);
       const g = ctx.createRadialGradient(CX, CY, R * 0.4, CX, CY, glowR);
-      g.addColorStop(0,   `rgba(${CR},${CG},${CB},${(0.09 * abscos * breathe).toFixed(4)})`);
-      g.addColorStop(0.5, `rgba(${CR},${CG},${CB},${(0.022 * breathe).toFixed(4)})`);
+      g.addColorStop(0,   `rgba(${CR},${CG},${CB},${(0.055 * abscos * breathe).toFixed(4)})`);
+      g.addColorStop(0.5, `rgba(${CR},${CG},${CB},${(0.013 * breathe).toFixed(4)})`);
       g.addColorStop(1,   'rgba(0,0,0,0)');
       ctx.fillStyle = g;
       ctx.fillRect(0, 0, W, H);
@@ -142,13 +142,17 @@ export default function CoinLogo3D({ onCoinClick, colorR = 0, colorG = 255, colo
     function drawFace(faceZ, spinA, tiltA, isFront, faceAlpha, isNear) {
       if (faceAlpha < 0.015) return;
       const mirrorX = isFront ? 1 : -1;
-      const ea    = Math.min(1, faceAlpha * (isNear ? 1.3 : 0.85));
+      const ea    = Math.min(1, faceAlpha * (isNear ? 1.1 : 0.75));
       const lwRim = isNear ? (9.0 + faceAlpha * 7.0) : (4.0 + faceAlpha * 4.0);
       const lwEye = isNear ? (6.0 + faceAlpha * 7.0) : (3.0 + faceAlpha * 3.0);
 
-      if (isNear && faceAlpha > 0.60) {
-        ctx.shadowColor = `rgba(${CR},${CG},${CB},0.60)`;
-        ctx.shadowBlur  = 18 * faceAlpha * breathe;
+      // Fake rim glow: one wide+faint pass before the main stroke.
+      // Far cheaper than shadowBlur (no Gaussian blur pass on the GPU).
+      if (isNear && faceAlpha > 0.45) {
+        ctx.lineWidth   = lwRim * 2.6;
+        ctx.strokeStyle = `rgba(${CR},${CG},${CB},${(ea * 0.09 * breathe).toFixed(3)})`;
+        polyPath(RIM_PTS, faceZ, spinA, tiltA, 1);
+        ctx.closePath(); ctx.stroke();
       }
 
       ctx.strokeStyle = `rgba(${CR},${CG},${CB},${ea.toFixed(3)})`;
@@ -167,8 +171,6 @@ export default function CoinLogo3D({ onCoinClick, colorR = 0, colorG = 255, colo
       ctx.lineWidth = lwEye * 0.68;
       polyPath(PUPIL_PTS, faceZ, spinA, tiltA, mirrorX);
       ctx.closePath(); ctx.stroke();
-
-      ctx.shadowBlur = 0;
     }
 
     // ── Filled quad walls ─────────────────────────────────────────────────────
@@ -198,13 +200,14 @@ export default function CoinLogo3D({ onCoinClick, colorR = 0, colorG = 255, colo
     }
 
     function drawEdge(spinA, tiltA) {
-      const N = 96, quads = [];
+      const N = 72, quads = []; // was 96
 
       for (let i = 0; i < N; i++) {
         const a1 = (i / N) * Math.PI * 2, a2 = ((i + 1) / N) * Math.PI * 2;
         const am = (a1 + a2) / 2;
         const nx = Math.cos(am), ny = Math.sin(am);
         const normalCamZ = -nx * Math.sin(spinA);
+        if (normalCamZ <= 0) continue; // skip back-facing — halves fill calls
         const c1 = xfm(Math.cos(a1), Math.sin(a1), ZF, spinA, tiltA);
         const c2 = xfm(Math.cos(a2), Math.sin(a2), ZF, spinA, tiltA);
         const c3 = xfm(Math.cos(a2), Math.sin(a2), ZB, spinA, tiltA);
@@ -213,31 +216,23 @@ export default function CoinLogo3D({ onCoinClick, colorR = 0, colorG = 255, colo
         const avgZ    = (c1[2] + c2[2] + c3[2] + c4[2]) / 4;
         const diffuse = Math.max(0, ny * 0.85 + normalCamZ * 0.32);
         const shade   = (0.10 + diffuse * 0.50) * Math.abs(normalCamZ);
-        quads.push({ c1, c2, c3, c4, normalCamZ, shade, avgZ });
+        quads.push({ c1, c2, c3, c4, shade, avgZ });
       }
 
-      for (const q of buildPathQuads(EYE_PTS,   spinA, tiltA, true))  quads.push(q);
-      for (const q of buildPathQuads(IRIS_PTS,  spinA, tiltA, false)) quads.push(q);
-      for (const q of buildPathQuads(PUPIL_PTS, spinA, tiltA, false)) quads.push(q);
+      for (const q of buildPathQuads(EYE_PTS,   spinA, tiltA, true))  { if (q.normalCamZ > 0) quads.push(q); }
+      for (const q of buildPathQuads(IRIS_PTS,  spinA, tiltA, false)) { if (q.normalCamZ > 0) quads.push(q); }
+      for (const q of buildPathQuads(PUPIL_PTS, spinA, tiltA, false)) { if (q.normalCamZ > 0) quads.push(q); }
 
       quads.sort((a, b) => a.avgZ - b.avgZ);
 
-      for (const { c1, c2, c3, c4, normalCamZ, shade } of quads) {
+      for (const { c1, c2, c3, c4, shade } of quads) {
+        const s = Math.min(1, shade);
+        ctx.fillStyle = `rgb(${Math.round(s*CR*0.70)},${Math.round(s*CG*0.63)},${Math.round(s*CB*0.82)})`;
         ctx.beginPath();
         ctx.moveTo(c1[0], c1[1]); ctx.lineTo(c2[0], c2[1]);
         ctx.lineTo(c3[0], c3[1]); ctx.lineTo(c4[0], c4[1]);
         ctx.closePath();
-
-        if (normalCamZ > 0) {
-          const s  = Math.min(1, shade);
-          // Scale primary colour by shade: 0.70/0.63/0.82 preserve the
-          // original teal tint for cyan and equivalent warmth for amber.
-          ctx.fillStyle = `rgb(${Math.round(s*CR*0.70)},${Math.round(s*CG*0.63)},${Math.round(s*CB*0.82)})`;
-          ctx.fill();
-        } else {
-          ctx.fillStyle = `rgba(${Math.round(CR*0.07)},${Math.round(CG*0.07)},${Math.round(CB*0.07)},0.70)`;
-          ctx.fill();
-        }
+        ctx.fill();
       }
     }
 
@@ -292,13 +287,14 @@ export default function CoinLogo3D({ onCoinClick, colorR = 0, colorG = 255, colo
       ctx.clearRect(0, 0, W, H);
       drawGlow(abscos);
 
+      // edgeFloor keeps faces softly visible when coin is edge-on (cosSpin≈0)
+      // so the animation never fully "turns off" mid-spin.
+      const edgeFloor = 0.14 * (1 - abscos);
       const fF_near   = Math.max(0,  cosSpin);
-      const fF_ghost  = Math.max(0, -cosSpin) * 0.30;
-      const fF_alpha  = fF_near + fF_ghost;
+      const fF_alpha  = Math.max(edgeFloor, fF_near + Math.max(0, -cosSpin) * 0.30);
       const fF_isNear = cosSpin >= 0;
       const fB_near   = Math.max(0, -cosSpin);
-      const fB_ghost  = Math.max(0,  cosSpin) * 0.30;
-      const fB_alpha  = fB_near + fB_ghost;
+      const fB_alpha  = Math.max(edgeFloor, fB_near + Math.max(0,  cosSpin) * 0.30);
       const fB_isNear = cosSpin < 0;
 
       if (cosSpin >= 0) {
