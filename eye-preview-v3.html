@@ -232,11 +232,15 @@ function drawFace(faceZ, spinA, tiltA, isFront, faceAlpha, isNear) {
 // Outward normal at each segment ≈ direction of the segment midpoint from
 // origin. Exact for circles; good approximation for the eye outline.
 //
-function buildPathQuads(pts, spinA, tiltA) {
+// closed=true wraps the last point back to the first (needed for EYE_PTS
+// which has no duplicate endpoint, unlike the circle arrays).
+function buildPathQuads(pts, spinA, tiltA, closed) {
   const quads = [];
-  for (let i = 0; i < pts.length - 1; i++) {
+  const n = pts.length;
+  const count = closed ? n : n - 1;
+  for (let i = 0; i < count; i++) {
     const [px0, py0] = pts[i];
-    const [px1, py1] = pts[i + 1];
+    const [px1, py1] = pts[(i + 1) % n];
     const mx = (px0 + px1) / 2;
     const my = (py0 + py1) / 2;
     const mlen = Math.sqrt(mx * mx + my * my);
@@ -252,7 +256,7 @@ function buildPathQuads(pts, spinA, tiltA) {
     const avgZ = (c1[2] + c2[2] + c3[2] + c4[2]) / 4;
     const diffuse = Math.max(0, ny * 0.85 + normalCamZ * 0.32);
     const shade   = (0.10 + diffuse * 0.50) * Math.abs(normalCamZ);
-    quads.push({ c1, c2, c3, c4, normalCamZ, shade, avgZ });
+    quads.push({ c1, c2, c3, c4, normalCamZ, shade, avgZ, rim: false });
   }
   return quads;
 }
@@ -282,18 +286,18 @@ function drawEdge(spinA, tiltA) {
     const avgZ = (c1[2] + c2[2] + c3[2] + c4[2]) / 4;
     const diffuse = Math.max(0, ny * 0.85 + normalCamZ * 0.32);
     const shade   = (0.10 + diffuse * 0.50) * Math.abs(normalCamZ);
-    quads.push({ c1, c2, c3, c4, normalCamZ, shade, avgZ });
+    quads.push({ c1, c2, c3, c4, normalCamZ, shade, avgZ, rim: true });
   }
 
-  // Eye element quads — same fill treatment, merged for correct depth sort
-  for (const pts of [EYE_PTS, IRIS_PTS, PUPIL_PTS]) {
-    for (const q of buildPathQuads(pts, spinA, tiltA)) quads.push(q);
-  }
+  // Eye element quads — EYE_PTS is a closed loop with no duplicate endpoint
+  for (const q of buildPathQuads(EYE_PTS,   spinA, tiltA, true))  quads.push(q);
+  for (const q of buildPathQuads(IRIS_PTS,  spinA, tiltA, false)) quads.push(q);
+  for (const q of buildPathQuads(PUPIL_PTS, spinA, tiltA, false)) quads.push(q);
 
   // Back-to-front so near quads paint over far ones
   quads.sort((a, b) => a.avgZ - b.avgZ);
 
-  for (const { c1, c2, c3, c4, normalCamZ, shade } of quads) {
+  for (const { c1, c2, c3, c4, normalCamZ, shade, rim } of quads) {
     ctx.beginPath();
     ctx.moveTo(c1[0], c1[1]);
     ctx.lineTo(c2[0], c2[1]);
@@ -305,17 +309,17 @@ function drawEdge(spinA, tiltA) {
       const s  = Math.min(1, shade);
       const cg = Math.round(s * 88);
       const cb = Math.round(s * 115);
-      ctx.fillStyle   = `rgb(0,${cg},${cb})`;
+      ctx.fillStyle = `rgb(0,${cg},${cb})`;
       ctx.fill();
-      ctx.strokeStyle = `rgba(0,255,255,${Math.min(0.95, shade * 1.2).toFixed(3)})`;
-      ctx.lineWidth   = 0.7;
-      ctx.stroke();
+      // Stroke only on rim — inner element walls look cleaner without it
+      if (rim) {
+        ctx.strokeStyle = `rgba(0,255,255,${Math.min(0.95, shade * 1.2).toFixed(3)})`;
+        ctx.lineWidth   = 0.7;
+        ctx.stroke();
+      }
     } else {
-      ctx.fillStyle   = 'rgba(0,12,16,0.55)';
+      ctx.fillStyle = 'rgba(0,12,16,0.55)';
       ctx.fill();
-      ctx.strokeStyle = `rgba(0,255,255,${(shade * 0.35).toFixed(3)})`;
-      ctx.lineWidth   = 0.4;
-      ctx.stroke();
     }
   }
 }
