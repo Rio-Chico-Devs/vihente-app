@@ -42,7 +42,7 @@
 <canvas id="c"></canvas>
 
 <div id="caption">
-  VIHENTE &nbsp;·&nbsp; <span>3D LOGO</span> &nbsp;·&nbsp; INTAGLIO
+  VIHENTE &nbsp;·&nbsp; <span>3D LOGO</span> &nbsp;·&nbsp; OPEN COIN
 </div>
 
 <script>
@@ -145,7 +145,6 @@ const IRIS_PTS  = circlePts(80 * S, 56);
 const PUPIL_PTS = circlePts(35 * S, 40);
 const RIM_PTS   = circlePts(1.0, 96);
 
-// Thicker coin — looks more like a medal/token
 const THICKNESS = 0.14;
 const ZF =  THICKNESS / 2;
 const ZB = -THICKNESS / 2;
@@ -163,86 +162,64 @@ function polyPath(pts, faceZ, spinA, tiltA, mirrorX) {
 }
 
 // ── Ambient glow ──────────────────────────────────────────────────────────
-function drawGlow(cosSpin) {
-  const glowR = R * (1.35 + 0.06 * Math.abs(cosSpin));
-  const g = ctx.createRadialGradient(CX, CY, R * 0.45, CX, CY, glowR);
-  g.addColorStop(0,   `rgba(0,255,255,${(0.055 * Math.abs(cosSpin)).toFixed(4)})`);
-  g.addColorStop(0.55,'rgba(0,255,255,0.014)');
+function drawGlow(abscos) {
+  const glowR = R * (1.4 + 0.06 * abscos);
+  const g = ctx.createRadialGradient(CX, CY, R * 0.4, CX, CY, glowR);
+  g.addColorStop(0,   `rgba(0,255,255,${(0.065 * abscos).toFixed(4)})`);
+  g.addColorStop(0.5, 'rgba(0,255,255,0.014)');
   g.addColorStop(1,   'rgba(0,0,0,0)');
   ctx.fillStyle = g;
   ctx.fillRect(0, 0, W, H);
 }
 
-// ── Coin face — intaglio version ──────────────────────────────────────────
+// ── Coin face — open / hollow ─────────────────────────────────────────────
 //
-// Layer stack (painted front-to-back on the face):
-//   1. Disc fill              — base metal colour
-//   2. Thick rim (2 passes)   — wide dark base + bright narrow line
-//   3. Carved eye fill        — slightly recessed: darker cyan-tinted black
-//   4. Carved iris disk fill  — one step deeper
-//   5. Carved pupil disk fill — deepest recess
-//   6. Thick strokes          — bright groove edges catching the light
+// No face fill. Every element is a stroke-only shape:
+//   RIM    — thick outer circle (the coin border, like in the logo)
+//   EYE    — thick eye outline (vesica piscis)
+//   IRIS   — thick iris ring
+//   PUPIL  — thick pupil ring
 //
-function drawFace(faceZ, spinA, tiltA, isFront, eyeAlpha) {
+// The far face is drawn as a "ghost" (reduced alpha) so it's visible
+// through the open face, giving true depth parallax as the coin spins.
+//
+function drawFace(faceZ, spinA, tiltA, isFront, faceAlpha, isNear) {
+  if (faceAlpha < 0.015) return;
+
   const mirrorX = isFront ? 1 : -1;
 
-  // 1 ── Disc fill
-  polyPath(RIM_PTS, faceZ, spinA, tiltA, 1);
-  ctx.closePath();
-  ctx.fillStyle = 'rgba(4,6,10,0.98)';
-  ctx.fill();
+  // Near face: full brightness + glow
+  // Far face (ghost): muted, no glow
+  const ea   = Math.min(1, faceAlpha * (isNear ? 1.3 : 0.85));
+  const lwRim = isNear ? (5.5 + faceAlpha * 4.5)  : (2.5 + faceAlpha * 2.5);
+  const lwEye = isNear ? (3.5 + faceAlpha * 4.5)  : (1.8 + faceAlpha * 2.0);
 
-  // 2 ── Rim: thick dark band + thin bright highlight line
-  const rimA = 0.20 + Math.abs(eyeAlpha) * 0.30;
-  ctx.lineWidth   = 5;
-  ctx.strokeStyle = `rgba(0,255,255,${(rimA * 0.40).toFixed(3)})`;
-  ctx.stroke();
-  ctx.lineWidth   = 1.4;
-  ctx.strokeStyle = `rgba(0,255,255,${rimA.toFixed(3)})`;
-  ctx.stroke();
-
-  if (eyeAlpha < 0.025) return;
-
-  const ea = Math.min(1, eyeAlpha * 1.35);
-
-  // 3 ── Carved eye area (inside vesica piscis)
-  polyPath(EYE_PTS, faceZ, spinA, tiltA, mirrorX);
-  ctx.closePath();
-  ctx.fillStyle = 'rgba(0,5,10,0.99)';
-  ctx.fill();
-
-  // 4 ── Carved iris disk (r = 80/238 ≈ 0.336)
-  polyPath(IRIS_PTS, faceZ, spinA, tiltA, mirrorX);
-  ctx.closePath();
-  ctx.fillStyle = 'rgba(0,3,8,0.99)';
-  ctx.fill();
-
-  // 5 ── Carved pupil disk (r = 35/238 ≈ 0.147)
-  polyPath(PUPIL_PTS, faceZ, spinA, tiltA, mirrorX);
-  ctx.closePath();
-  ctx.fillStyle = 'rgba(0,2,5,1.0)';
-  ctx.fill();
-
-  // 6 ── Thick glowing strokes — the light-catching groove edges
-  const lw = 3.5 + eyeAlpha * 4.5;   // up to ~8px at full frontal
-
-  if (eyeAlpha > 0.60) {
-    ctx.shadowColor = 'rgba(0,255,255,0.65)';
-    ctx.shadowBlur  = 14 * eyeAlpha;
+  if (isNear && faceAlpha > 0.60) {
+    ctx.shadowColor = 'rgba(0,255,255,0.60)';
+    ctx.shadowBlur  = 13 * faceAlpha;
   }
 
+  // ── Rim circle (the thick outer border) ──
   ctx.strokeStyle = `rgba(0,255,255,${ea.toFixed(3)})`;
-  ctx.lineWidth   = lw;
+  ctx.lineWidth   = lwRim;
+  polyPath(RIM_PTS, faceZ, spinA, tiltA, 1);
+  ctx.closePath();
+  ctx.stroke();
+
+  // ── Eye outline ──
+  ctx.lineWidth = lwEye;
   polyPath(EYE_PTS, faceZ, spinA, tiltA, mirrorX);
   ctx.closePath();
   ctx.stroke();
 
-  ctx.lineWidth = lw * 0.84;
+  // ── Iris ring ──
+  ctx.lineWidth = lwEye * 0.84;
   polyPath(IRIS_PTS, faceZ, spinA, tiltA, mirrorX);
   ctx.closePath();
   ctx.stroke();
 
-  ctx.lineWidth = lw * 0.68;
+  // ── Pupil ring ──
+  ctx.lineWidth = lwEye * 0.68;
   polyPath(PUPIL_PTS, faceZ, spinA, tiltA, mirrorX);
   ctx.closePath();
   ctx.stroke();
@@ -250,30 +227,44 @@ function drawFace(faceZ, spinA, tiltA, isFront, eyeAlpha) {
   ctx.shadowBlur = 0;
 }
 
-// ── Coin edge ─────────────────────────────────────────────────────────────
+// ── Coin edge (the cylindrical wall — the only solid part) ────────────────
+//
+// Draws all edge quads sorted back-to-front.
+// Front-facing quads: opaque fill + bright stroke.
+// Back-facing quads: very faint fill + dim stroke (visible through open face).
+//
 function drawEdge(spinA, tiltA) {
   const N = 96;
+
+  // Build all quads with their midpoint Z for depth sort
+  const quads = [];
   for (let i = 0; i < N; i++) {
     const a1 = (i / N) * Math.PI * 2;
     const a2 = ((i + 1) / N) * Math.PI * 2;
     const am = (a1 + a2) / 2;
 
     const nx = Math.cos(am), ny = Math.sin(am);
-
-    const normalCamZ = -nx * Math.sin(spinA);
-    if (normalCamZ <= 0) continue;
-
-    // Diffuse from overhead-front light
-    const rny = ny;
-    const rnz = -nx * Math.sin(spinA);
-    const diffuse = Math.max(0, rny * 0.85 + rnz * 0.32);
-    const shade   = 0.10 + diffuse * 0.50;
+    const normalCamZ = -nx * Math.sin(spinA); // z of rotated normal
 
     const c1 = xfm(Math.cos(a1), Math.sin(a1), ZF, spinA, tiltA);
     const c2 = xfm(Math.cos(a2), Math.sin(a2), ZF, spinA, tiltA);
     const c3 = xfm(Math.cos(a2), Math.sin(a2), ZB, spinA, tiltA);
     const c4 = xfm(Math.cos(a1), Math.sin(a1), ZB, spinA, tiltA);
     if (!c1 || !c2 || !c3 || !c4) continue;
+
+    const avgZ = (c1[2] + c2[2] + c3[2] + c4[2]) / 4;
+    quads.push({ c1, c2, c3, c4, normalCamZ, ny, avgZ });
+  }
+
+  // Farthest first so near quads paint over far ones
+  quads.sort((a, b) => a.avgZ - b.avgZ);
+
+  for (const { c1, c2, c3, c4, normalCamZ, ny } of quads) {
+    const isFront = normalCamZ > 0;
+
+    // Diffuse from overhead-front light
+    const diffuse = Math.max(0, ny * 0.85 + normalCamZ * 0.32);
+    const shade   = (0.10 + diffuse * 0.50) * Math.abs(normalCamZ);
 
     ctx.beginPath();
     ctx.moveTo(c1[0], c1[1]);
@@ -282,11 +273,21 @@ function drawEdge(spinA, tiltA) {
     ctx.lineTo(c4[0], c4[1]);
     ctx.closePath();
 
-    ctx.fillStyle   = 'rgba(0,18,22,0.97)';
-    ctx.fill();
-    ctx.strokeStyle = `rgba(0,255,255,${(shade * normalCamZ).toFixed(3)})`;
-    ctx.lineWidth   = 0.6;
-    ctx.stroke();
+    if (isFront) {
+      // Solid front-facing edge — gives the coin its physical mass
+      ctx.fillStyle   = 'rgba(0,18,22,0.96)';
+      ctx.fill();
+      ctx.strokeStyle = `rgba(0,255,255,${shade.toFixed(3)})`;
+      ctx.lineWidth   = 0.7;
+      ctx.stroke();
+    } else {
+      // Ghost back-facing edge — faintly visible through the open face
+      ctx.fillStyle   = 'rgba(0,12,16,0.25)';
+      ctx.fill();
+      ctx.strokeStyle = `rgba(0,255,255,${(shade * 0.35).toFixed(3)})`;
+      ctx.lineWidth   = 0.4;
+      ctx.stroke();
+    }
   }
 }
 
@@ -303,21 +304,36 @@ function loop(ts) {
   const spinA   = 0.74 * time + mxN * 0.45;
   const tiltA   = smoothTilt;
   const cosSpin = Math.cos(spinA);
+  const abscos  = Math.abs(cosSpin);
 
   ctx.clearRect(0, 0, W, H);
-  drawGlow(cosSpin);
+  drawGlow(abscos);
 
-  const frontA = Math.max(0, cosSpin);
-  const backA  = Math.max(0, -cosSpin);
+  // Each face has two alpha values:
+  //   nearAlpha  — face is pointing toward camera (dominant, bright)
+  //   ghostAlpha — face is pointing away, visible as ghost through open coin
+  //
+  // Face F (front in coin-local, z=+T/2): nearAlpha when cosSpin > 0
+  // Face B (back  in coin-local, z=−T/2): nearAlpha when cosSpin < 0
+  const fF_near  = Math.max(0,  cosSpin);
+  const fF_ghost = Math.max(0, -cosSpin) * 0.30;
+  const fF_alpha = fF_near + fF_ghost;   // exactly one is non-zero
+  const fF_isNear = cosSpin >= 0;
 
+  const fB_near  = Math.max(0, -cosSpin);
+  const fB_ghost = Math.max(0,  cosSpin) * 0.30;
+  const fB_alpha = fB_near + fB_ghost;
+  const fB_isNear = cosSpin < 0;
+
+  // Draw order: far face → edge (sorted internally) → near face
   if (cosSpin >= 0) {
-    drawFace(ZB, spinA, tiltA, false, backA);
+    drawFace(ZB, spinA, tiltA, false, fB_alpha, fB_isNear); // far (ghost)
     drawEdge(spinA, tiltA);
-    drawFace(ZF, spinA, tiltA, true,  frontA);
+    drawFace(ZF, spinA, tiltA, true,  fF_alpha, fF_isNear); // near (bright)
   } else {
-    drawFace(ZF, spinA, tiltA, true,  frontA);
+    drawFace(ZF, spinA, tiltA, true,  fF_alpha, fF_isNear); // far (ghost)
     drawEdge(spinA, tiltA);
-    drawFace(ZB, spinA, tiltA, false, backA);
+    drawFace(ZB, spinA, tiltA, false, fB_alpha, fB_isNear); // near (bright)
   }
 
   requestAnimationFrame(loop);
