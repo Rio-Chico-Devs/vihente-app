@@ -152,42 +152,31 @@ export default function CoinLogo3D({ onCoinClick, colorR = 0, colorG = 255, colo
     }
 
     // ── Filled quad walls ─────────────────────────────────────────────────────
-    // inward=true flips the outward normal so inner cylindrical walls are
-    // camera-facing from the inside (needed for ring interiors).
-    function buildPathQuads(pts, spinA, tiltA, closed, inward = false) {
+    // Shading is handled by a shared gradient in drawEdge — only positions
+    // and depth value needed here.
+    function buildPathQuads(pts, spinA, tiltA, closed) {
       const quads = [];
       const n     = pts.length;
       const count = closed ? n : n - 1;
       for (let i = 0; i < count; i++) {
         const [px0, py0] = pts[i];
         const [px1, py1] = pts[(i + 1) % n];
-        const mx = (px0 + px1) / 2, my = (py0 + py1) / 2;
-        const mlen = Math.sqrt(mx * mx + my * my);
-        if (mlen < 0.001) continue;
-        const nx = inward ? -(mx / mlen) : (mx / mlen);
-        const ny = inward ? -(my / mlen) : (my / mlen);
-        const normalCamZ = -nx * Math.sin(spinA);
         const c1 = xfm(px0, py0, ZF, spinA, tiltA);
         const c2 = xfm(px1, py1, ZF, spinA, tiltA);
         const c3 = xfm(px1, py1, ZB, spinA, tiltA);
         const c4 = xfm(px0, py0, ZB, spinA, tiltA);
         if (!c1 || !c2 || !c3 || !c4) continue;
-        const avgZ    = (c1[2] + c2[2] + c3[2] + c4[2]) / 4;
-        const diffuse = Math.max(0, ny * 0.85 + normalCamZ * 0.32);
-        // 0.06 ambient keeps back-facing quads dimly visible through hollow face
-        const shade   = 0.06 + (0.08 + diffuse * 0.44) * Math.max(0, normalCamZ);
-        quads.push({ c1, c2, c3, c4, normalCamZ, shade, avgZ });
+        const avgZ = (c1[2] + c2[2] + c3[2] + c4[2]) / 4;
+        quads.push({ c1, c2, c3, c4, avgZ });
       }
       return quads;
     }
 
-    // Annular cap faces at ZF or ZB: flat quads connecting outer to inner edge,
-    // closing each ring into a proper solid 3D band (like a washer).
+    // Annular cap faces at ZF or ZB.
     function buildCapQuads(outerPts, innerPts, faceZ, spinA, tiltA, closed = false) {
       const sign      = faceZ > 0 ? 1 : -1;
       const faceNormZ = sign * Math.cos(spinA) * Math.cos(tiltA);
       if (faceNormZ <= 0) return [];
-      const shade = faceNormZ * 0.65;
       const n     = Math.min(outerPts.length, innerPts.length);
       const count = closed ? n : n - 1;
       const quads = [];
@@ -199,33 +188,57 @@ export default function CoinLogo3D({ onCoinClick, colorR = 0, colorG = 255, colo
         const c4 = xfm(innerPts[i][0], innerPts[i][1], faceZ, spinA, tiltA);
         if (!c1 || !c2 || !c3 || !c4) continue;
         const avgZ = (c1[2] + c2[2] + c3[2] + c4[2]) / 4;
-        quads.push({ c1, c2, c3, c4, shade, avgZ });
+        quads.push({ c1, c2, c3, c4, avgZ });
       }
       return quads;
     }
 
-    // Each ring element gets: outer cylindrical wall + inner cylindrical wall
-    // + flat annular caps at ZF and ZB. Together these form a complete solid band.
+    // All wall quads share ONE linear gradient per frame → adjacent quads sample
+    // the same continuous value at their shared edge = zero visible seams.
+    // Cap quads share a radial gradient → natural face glow, also seam-free.
     function drawEdge(spinA, tiltA) {
+      const rc      = v => Math.round(v);
+      const sinA    = Math.sin(spinA);
+      const cosSpin = Math.cos(spinA);
+      const cosTilt = Math.cos(tiltA);
+
+      // Linear gradient: bright on near side, dim on far side
+      const brightX  = sinA > 0 ? CX - R : CX + R;
+      const dimX     = sinA > 0 ? CX + R : CX - R;
+      const sMax     = 0.15 + 0.32 * Math.abs(sinA);
+      const sAmb     = 0.055;
+      const wc       = s => `rgb(${rc(s*CR*0.50)},${rc(s*CG)},${rc(s*CB)})`;
+      const wallGrad = ctx.createLinearGradient(brightX, 0, dimX, 0);
+      wallGrad.addColorStop(0,    wc(sMax));
+      wallGrad.addColorStop(0.45, wc(sAmb));
+      wallGrad.addColorStop(1,    wc(sAmb));
+
+      // Radial gradient for flat cap faces — breathe-modulated glow
+      const faceVis = Math.abs(cosSpin * cosTilt) * breathe;
+      const capPeak = faceVis * 0.90;
+      const cc      = s => `rgb(${rc(s*CR*0.45)},${rc(s*CG)},${rc(s*CB)})`;
+      const capGrad = ctx.createRadialGradient(CX, CY, R * 0.05, CX, CY, R);
+      capGrad.addColorStop(0,   cc(capPeak * 1.15));
+      capGrad.addColorStop(0.5, cc(capPeak));
+      capGrad.addColorStop(1,   cc(capPeak * 0.30));
+
       const quads = [];
 
       const walls = [
-        [RIM_OUTER,  false, false],
-        [RIM_INNER,  false, true ],
-        [EYE_OUTER,  true,  false],
-        [EYE_INNER,  true,  true ],
-        [IRIS_OUTER, false, false],
-        [IRIS_INNER, false, true ],
-        [PUP_OUTER,  false, false],
-        [PUP_INNER,  false, true ],
+        [RIM_OUTER,  false],
+        [RIM_INNER,  false],
+        [EYE_OUTER,  true ],
+        [EYE_INNER,  true ],
+        [IRIS_OUTER, false],
+        [IRIS_INNER, false],
+        [PUP_OUTER,  false],
+        [PUP_INNER,  false],
       ];
-      for (const [pts, closed, inward] of walls) {
-        for (const q of buildPathQuads(pts, spinA, tiltA, closed, inward)) {
-          quads.push(q); // all quads included — back-facing render dimly through hollow face
-        }
+      for (const [pts, closed] of walls) {
+        for (const q of buildPathQuads(pts, spinA, tiltA, closed))
+          quads.push({ ...q, isWall: true });
       }
 
-      // Annular caps close each ring into a solid 3D band
       const caps = [
         [RIM_OUTER,  RIM_INNER,  false],
         [EYE_OUTER,  EYE_INNER,  true ],
@@ -233,20 +246,34 @@ export default function CoinLogo3D({ onCoinClick, colorR = 0, colorG = 255, colo
         [PUP_OUTER,  PUP_INNER,  false],
       ];
       for (const [outer, inner, closed] of caps) {
-        for (const q of buildCapQuads(outer, inner, ZF, spinA, tiltA, closed)) quads.push(q);
-        for (const q of buildCapQuads(outer, inner, ZB, spinA, tiltA, closed)) quads.push(q);
+        for (const q of buildCapQuads(outer, inner, ZF, spinA, tiltA, closed)) quads.push({ ...q, isWall: false });
+        for (const q of buildCapQuads(outer, inner, ZB, spinA, tiltA, closed)) quads.push({ ...q, isWall: false });
       }
 
       quads.sort((a, b) => a.avgZ - b.avgZ);
-      for (const { c1, c2, c3, c4, shade } of quads) {
-        const s = Math.min(1, shade);
-        ctx.fillStyle = `rgb(${Math.round(s*CR*0.70)},${Math.round(s*CG*0.63)},${Math.round(s*CB*0.82)})`;
+      for (const { c1, c2, c3, c4, isWall } of quads) {
+        ctx.fillStyle = isWall ? wallGrad : capGrad;
         ctx.beginPath();
         ctx.moveTo(c1[0], c1[1]); ctx.lineTo(c2[0], c2[1]);
         ctx.lineTo(c3[0], c3[1]); ctx.lineTo(c4[0], c4[1]);
         ctx.closePath();
         ctx.fill();
       }
+    }
+
+    // Soft radial glow on the coin face — visible when face is toward camera,
+    // fades away edge-on, breathe-modulated.
+    function drawFaceGlow(spinA, tiltA) {
+      const faceNormZ = Math.abs(Math.cos(spinA) * Math.cos(tiltA));
+      if (faceNormZ < 0.04) return;
+      const a  = (faceNormZ * 0.26 * breathe).toFixed(3);
+      const a2 = (faceNormZ * 0.07 * breathe).toFixed(3);
+      const g  = ctx.createRadialGradient(CX, CY, 0, CX, CY, R);
+      g.addColorStop(0,   `rgba(${CR},${CG},${CB},${a})`);
+      g.addColorStop(0.5, `rgba(${CR},${CG},${CB},${a2})`);
+      g.addColorStop(1,   'rgba(0,0,0,0)');
+      ctx.fillStyle = g;
+      ctx.fillRect(0, 0, W, H);
     }
 
     // ── Glitch overlay (clipped to coin area) ─────────────────────────────────
@@ -300,6 +327,7 @@ export default function CoinLogo3D({ onCoinClick, colorR = 0, colorG = 255, colo
       ctx.clearRect(0, 0, W, H);
       drawGlow(abscos);
       drawEdge(spinA, tiltA);
+      drawFaceGlow(spinA, tiltA);
 
       if (glitchI > 0) drawGlitch(glitchI);
       requestAnimationFrame(loop);
