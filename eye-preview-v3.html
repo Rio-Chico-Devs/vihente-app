@@ -227,55 +227,34 @@ function drawFace(faceZ, spinA, tiltA, isFront, faceAlpha, isNear) {
   ctx.shadowBlur = 0;
 }
 
-// ── Eye element lateral lines ─────────────────────────────────────────────
+// ── Build filled quads for any path's Z-wall ─────────────────────────────
 //
-// For each point on EYE, IRIS and PUPIL paths, draw a line from ZF to ZB.
-// This gives each element the same "wall" depth that the rim already has
-// via the edge quads. No mirrorX needed — lateral runs straight in Z.
+// Outward normal at each segment ≈ direction of the segment midpoint from
+// origin. Exact for circles; good approximation for the eye outline.
 //
-// Visibility: outward normal ≈ normalize(px, py).
-// After Y-rotation, z-component = -nx * sin(spinA).
-// Camera-facing (z > 0) → bright; back-facing → ghost at 0.25×.
-//
-function drawEyeLaterals(spinA, tiltA) {
-  // Same shade formula and lineWidth as drawEdge rim quads.
-  // Subsampled so visual density matches the rim (fewer lines on smaller radii).
-  const configs = [
-    { pts: EYE_PTS,   step: 3 },
-    { pts: IRIS_PTS,  step: 2 },
-    { pts: PUPIL_PTS, step: 3 },
-  ];
-
-  ctx.lineWidth = 0.7;
-
-  for (const { pts, step } of configs) {
-    for (let i = 0; i < pts.length; i += step) {
-      const [px, py] = pts[i];
-      const len = Math.sqrt(px * px + py * py);
-      if (len < 0.001) continue;
-      const nx = px / len;
-      const ny = py / len;
-
-      const normalCamZ = -nx * Math.sin(spinA);
-
-      // Identical diffuse formula to drawEdge
-      const diffuse = Math.max(0, ny * 0.85 + normalCamZ * 0.32);
-      const shade   = (0.10 + diffuse * 0.50) * Math.abs(normalCamZ);
-      const alpha   = normalCamZ > 0 ? shade : shade * 0.35;
-
-      if (alpha < 0.012) continue;
-
-      const pf = xfm(px, py, ZF, spinA, tiltA);
-      const pb = xfm(px, py, ZB, spinA, tiltA);
-      if (!pf || !pb) continue;
-
-      ctx.strokeStyle = `rgba(0,255,255,${alpha.toFixed(3)})`;
-      ctx.beginPath();
-      ctx.moveTo(pf[0], pf[1]);
-      ctx.lineTo(pb[0], pb[1]);
-      ctx.stroke();
-    }
+function buildPathQuads(pts, spinA, tiltA) {
+  const quads = [];
+  for (let i = 0; i < pts.length - 1; i++) {
+    const [px0, py0] = pts[i];
+    const [px1, py1] = pts[i + 1];
+    const mx = (px0 + px1) / 2;
+    const my = (py0 + py1) / 2;
+    const mlen = Math.sqrt(mx * mx + my * my);
+    if (mlen < 0.001) continue;
+    const nx = mx / mlen;
+    const ny = my / mlen;
+    const normalCamZ = -nx * Math.sin(spinA);
+    const c1 = xfm(px0, py0, ZF, spinA, tiltA);
+    const c2 = xfm(px1, py1, ZF, spinA, tiltA);
+    const c3 = xfm(px1, py1, ZB, spinA, tiltA);
+    const c4 = xfm(px0, py0, ZB, spinA, tiltA);
+    if (!c1 || !c2 || !c3 || !c4) continue;
+    const avgZ = (c1[2] + c2[2] + c3[2] + c4[2]) / 4;
+    const diffuse = Math.max(0, ny * 0.85 + normalCamZ * 0.32);
+    const shade   = (0.10 + diffuse * 0.50) * Math.abs(normalCamZ);
+    quads.push({ c1, c2, c3, c4, normalCamZ, shade, avgZ });
   }
+  return quads;
 }
 
 // ── Coin edge (the cylindrical wall — the only solid part) ────────────────
@@ -286,37 +265,35 @@ function drawEyeLaterals(spinA, tiltA) {
 //
 function drawEdge(spinA, tiltA) {
   const N = 96;
-
-  // Build all quads with their midpoint Z for depth sort
   const quads = [];
+
+  // Rim quads
   for (let i = 0; i < N; i++) {
     const a1 = (i / N) * Math.PI * 2;
     const a2 = ((i + 1) / N) * Math.PI * 2;
     const am = (a1 + a2) / 2;
-
     const nx = Math.cos(am), ny = Math.sin(am);
-    const normalCamZ = -nx * Math.sin(spinA); // z of rotated normal
-
+    const normalCamZ = -nx * Math.sin(spinA);
     const c1 = xfm(Math.cos(a1), Math.sin(a1), ZF, spinA, tiltA);
     const c2 = xfm(Math.cos(a2), Math.sin(a2), ZF, spinA, tiltA);
     const c3 = xfm(Math.cos(a2), Math.sin(a2), ZB, spinA, tiltA);
     const c4 = xfm(Math.cos(a1), Math.sin(a1), ZB, spinA, tiltA);
     if (!c1 || !c2 || !c3 || !c4) continue;
-
     const avgZ = (c1[2] + c2[2] + c3[2] + c4[2]) / 4;
-    quads.push({ c1, c2, c3, c4, normalCamZ, ny, avgZ });
-  }
-
-  // Farthest first so near quads paint over far ones
-  quads.sort((a, b) => a.avgZ - b.avgZ);
-
-  for (const { c1, c2, c3, c4, normalCamZ, ny } of quads) {
-    const isFront = normalCamZ > 0;
-
-    // Diffuse from overhead-front light
     const diffuse = Math.max(0, ny * 0.85 + normalCamZ * 0.32);
     const shade   = (0.10 + diffuse * 0.50) * Math.abs(normalCamZ);
+    quads.push({ c1, c2, c3, c4, normalCamZ, shade, avgZ });
+  }
 
+  // Eye element quads — same fill treatment, merged for correct depth sort
+  for (const pts of [EYE_PTS, IRIS_PTS, PUPIL_PTS]) {
+    for (const q of buildPathQuads(pts, spinA, tiltA)) quads.push(q);
+  }
+
+  // Back-to-front so near quads paint over far ones
+  quads.sort((a, b) => a.avgZ - b.avgZ);
+
+  for (const { c1, c2, c3, c4, normalCamZ, shade } of quads) {
     ctx.beginPath();
     ctx.moveTo(c1[0], c1[1]);
     ctx.lineTo(c2[0], c2[1]);
@@ -324,10 +301,7 @@ function drawEdge(spinA, tiltA) {
     ctx.lineTo(c4[0], c4[1]);
     ctx.closePath();
 
-    if (isFront) {
-      // Solid front-facing edge — filled with shaded cyan-teal colour.
-      // shade drives both brightness and hue intensity so lit quads
-      // (top, near light) are visibly coloured; dark quads fade to black.
+    if (normalCamZ > 0) {
       const s  = Math.min(1, shade);
       const cg = Math.round(s * 88);
       const cb = Math.round(s * 115);
@@ -337,8 +311,7 @@ function drawEdge(spinA, tiltA) {
       ctx.lineWidth   = 0.7;
       ctx.stroke();
     } else {
-      // Ghost back-facing edge — faintly visible through the open face
-      ctx.fillStyle   = 'rgba(0,12,16,0.25)';
+      ctx.fillStyle   = 'rgba(0,12,16,0.55)';
       ctx.fill();
       ctx.strokeStyle = `rgba(0,255,255,${(shade * 0.35).toFixed(3)})`;
       ctx.lineWidth   = 0.4;
@@ -381,15 +354,13 @@ function loop(ts) {
   const fB_alpha = fB_near + fB_ghost;
   const fB_isNear = cosSpin < 0;
 
-  // Draw order: far face ghost → eye laterals → rim edge → near face bright
+  // Draw order: far face ghost → all edge quads (rim + eye walls) → near face bright
   if (cosSpin >= 0) {
     drawFace(ZB, spinA, tiltA, false, fB_alpha, fB_isNear); // far (ghost)
-    drawEyeLaterals(spinA, tiltA);
     drawEdge(spinA, tiltA);
     drawFace(ZF, spinA, tiltA, true,  fF_alpha, fF_isNear); // near (bright)
   } else {
     drawFace(ZF, spinA, tiltA, true,  fF_alpha, fF_isNear); // far (ghost)
-    drawEyeLaterals(spinA, tiltA);
     drawEdge(spinA, tiltA);
     drawFace(ZB, spinA, tiltA, false, fB_alpha, fB_isNear); // near (bright)
   }
