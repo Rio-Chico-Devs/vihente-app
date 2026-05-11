@@ -224,17 +224,40 @@ export default function CoinLogo3D({ onCoinClick, colorR = 0, colorG = 255, colo
         if (!c1 || !c2 || !c3 || !c4) continue;
         const avgZ    = (c1[2] + c2[2] + c3[2] + c4[2]) / 4;
         const diffuse = Math.max(0, ny * 0.85 + normalCamZ * 0.32);
-        const shade   = (0.10 + diffuse * 0.50) * Math.abs(normalCamZ);
+        const shade   = (0.10 + diffuse * 0.50) * Math.max(0, normalCamZ);
         quads.push({ c1, c2, c3, c4, normalCamZ, shade, avgZ });
       }
       return quads;
     }
 
-    // Each ring element (rim, eye outline, iris, pupil) gets two cylindrical
-    // walls: outer (faces outward) and inner (faces inward). Together they
-    // give the ring a visible band height when seen edge-on.
+    // Annular cap faces at ZF or ZB: flat quads connecting outer to inner edge,
+    // closing each ring into a proper solid 3D band (like a washer).
+    function buildCapQuads(outerPts, innerPts, faceZ, spinA, tiltA, closed = false) {
+      const sign      = faceZ > 0 ? 1 : -1;
+      const faceNormZ = sign * Math.cos(spinA) * Math.cos(tiltA);
+      if (faceNormZ <= 0) return [];
+      const shade = faceNormZ * 0.65;
+      const n     = Math.min(outerPts.length, innerPts.length);
+      const count = closed ? n : n - 1;
+      const quads = [];
+      for (let i = 0; i < count; i++) {
+        const j  = (i + 1) % n;
+        const c1 = xfm(outerPts[i][0], outerPts[i][1], faceZ, spinA, tiltA);
+        const c2 = xfm(outerPts[j][0], outerPts[j][1], faceZ, spinA, tiltA);
+        const c3 = xfm(innerPts[j][0], innerPts[j][1], faceZ, spinA, tiltA);
+        const c4 = xfm(innerPts[i][0], innerPts[i][1], faceZ, spinA, tiltA);
+        if (!c1 || !c2 || !c3 || !c4) continue;
+        const avgZ = (c1[2] + c2[2] + c3[2] + c4[2]) / 4;
+        quads.push({ c1, c2, c3, c4, shade, avgZ });
+      }
+      return quads;
+    }
+
+    // Each ring element gets: outer cylindrical wall + inner cylindrical wall
+    // + flat annular caps at ZF and ZB. Together these form a complete solid band.
     function drawEdge(spinA, tiltA) {
       const quads = [];
+
       const walls = [
         [RIM_OUTER,  false, false],
         [RIM_INNER,  false, true ],
@@ -247,9 +270,22 @@ export default function CoinLogo3D({ onCoinClick, colorR = 0, colorG = 255, colo
       ];
       for (const [pts, closed, inward] of walls) {
         for (const q of buildPathQuads(pts, spinA, tiltA, closed, inward)) {
-          if (q.normalCamZ > 0) quads.push(q);
+          if (q.shade > 0.005) quads.push(q);
         }
       }
+
+      // Annular caps close each ring into a solid 3D band
+      const caps = [
+        [RIM_OUTER,  RIM_INNER,  false],
+        [EYE_OUTER,  EYE_INNER,  true ],
+        [IRIS_OUTER, IRIS_INNER, false],
+        [PUP_OUTER,  PUP_INNER,  false],
+      ];
+      for (const [outer, inner, closed] of caps) {
+        for (const q of buildCapQuads(outer, inner, ZF, spinA, tiltA, closed)) quads.push(q);
+        for (const q of buildCapQuads(outer, inner, ZB, spinA, tiltA, closed)) quads.push(q);
+      }
+
       quads.sort((a, b) => a.avgZ - b.avgZ);
       for (const { c1, c2, c3, c4, shade } of quads) {
         const s = Math.min(1, shade);
