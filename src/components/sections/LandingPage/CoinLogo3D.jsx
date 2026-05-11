@@ -224,7 +224,8 @@ export default function CoinLogo3D({ onCoinClick, colorR = 0, colorG = 255, colo
         if (!c1 || !c2 || !c3 || !c4) continue;
         const avgZ    = (c1[2] + c2[2] + c3[2] + c4[2]) / 4;
         const diffuse = Math.max(0, ny * 0.85 + normalCamZ * 0.32);
-        const shade   = (0.10 + diffuse * 0.50) * Math.max(0, normalCamZ);
+        // 0.06 ambient keeps back-facing quads dimly visible through hollow face
+        const shade   = 0.06 + (0.08 + diffuse * 0.44) * Math.max(0, normalCamZ);
         quads.push({ c1, c2, c3, c4, normalCamZ, shade, avgZ });
       }
       return quads;
@@ -270,7 +271,7 @@ export default function CoinLogo3D({ onCoinClick, colorR = 0, colorG = 255, colo
       ];
       for (const [pts, closed, inward] of walls) {
         for (const q of buildPathQuads(pts, spinA, tiltA, closed, inward)) {
-          if (q.shade > 0.005) quads.push(q);
+          quads.push(q); // all quads included — back-facing render dimly through hollow face
         }
       }
 
