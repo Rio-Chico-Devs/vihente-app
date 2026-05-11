@@ -2,12 +2,30 @@ import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTheme } from '../../../contexts/theme';
 import { useGuide } from '../../../contexts/GuideContext';
+import CoinLogo3D from './CoinLogo3D';
 import './LandingPage.css';
+
+// Canvas 2D feature detection — virtually all browsers since 2011 pass this,
+// but if something fails (canvas disabled, very old engine) we fall back to SVG.
+function canUseCanvas2D() {
+  try {
+    return !!document.createElement('canvas').getContext('2d');
+  } catch (_) {
+    return false;
+  }
+}
 
 const LandingPageOldEye = ({ startTime }) => {
   const navigate = useNavigate();
   const { theme } = useTheme();
   const { setGuide, clearGuide } = useGuide();
+
+  // Evaluate once — no point re-checking after mount.
+  const [use3D] = useState(canUseCanvas2D);
+  // Theme-matched primary colour passed to the 3D coin.
+  const coinColor = theme === 'light'
+    ? { r: 232, g: 160, b: 48 }
+    : { r: 0,   g: 255, b: 255 };
 
   const colors = theme === 'light' ? {
     primary: 'rgba(232, 160, 48, 1)',
@@ -852,75 +870,79 @@ const LandingPageOldEye = ({ startTime }) => {
             justifyContent: 'center',
             flex: '0 0 auto'
           }}>
-            <div className="holographic-circle"></div>
+            {/* Holographic CSS halo — kept only for the 2D SVG fallback */}
+            {!use3D && <div className="holographic-circle"></div>}
 
-            <div
-              ref={eyeRef}
-              className={`eye-glitch ${isEyeGlitching ? 'active' : ''}`}
-            >
-              <svg
-                className="eye-svg glitch-layer"
-                viewBox="0 0 1000 1000"
-                onClick={handleEyeClick}
+            {use3D ? (
+              /* ── 3D spinning coin ── */
+              <div
+                ref={eyeRef}
+                className="eye-svg"
                 onMouseEnter={() => setGuide('Io ci cliccherei sopra.')}
                 onMouseLeave={clearGuide}
-                style={{
-                  cursor: 'pointer',
-                  position: 'relative',
-                  zIndex: 1
-                }}
+                style={{ position: 'relative' }}
               >
-                <defs>
-                  <filter id="eyeGlow">
-                    <feGaussianBlur stdDeviation="1.5" result="coloredBlur"/>
-                    <feMerge>
-                      <feMergeNode in="coloredBlur"/>
-                      <feMergeNode in="SourceGraphic"/>
-                    </feMerge>
-                  </filter>
-
-                  <clipPath id="eyeContourClip">
-                    <path d="M 350 500 C 390 430, 440 400, 500 400 C 560 400, 610 430, 650 500 C 610 570, 560 600, 500 600 C 440 600, 390 570, 350 500 Z"/>
-                  </clipPath>
-                </defs>
-
-                <g>
-                  <path
-                    d="M 350 500 C 390 430, 440 400, 500 400 C 560 400, 610 430, 650 500 C 610 570, 560 600, 500 600 C 440 600, 390 570, 350 500 Z"
-                    fill="none"
-                    stroke={colors.primary95}
-                    strokeWidth="12"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    filter="url(#eyeGlow)"
-                  />
-
-                  <g clipPath="url(#eyeContourClip)">
-                    <circle
-                      ref={pupilCircle1Ref}
-                      cx="500"
-                      cy="500"
-                      r="80"
+                <CoinLogo3D
+                  onCoinClick={handleEyeClick}
+                  colorR={coinColor.r}
+                  colorG={coinColor.g}
+                  colorB={coinColor.b}
+                />
+              </div>
+            ) : (
+              /* ── SVG eye fallback ── */
+              <div
+                ref={eyeRef}
+                className={`eye-glitch ${isEyeGlitching ? 'active' : ''}`}
+              >
+                <svg
+                  className="eye-svg glitch-layer"
+                  viewBox="0 0 1000 1000"
+                  onClick={handleEyeClick}
+                  onMouseEnter={() => setGuide('Io ci cliccherei sopra.')}
+                  onMouseLeave={clearGuide}
+                  style={{ cursor: 'pointer', position: 'relative', zIndex: 1 }}
+                >
+                  <defs>
+                    <filter id="eyeGlow">
+                      <feGaussianBlur stdDeviation="1.5" result="coloredBlur"/>
+                      <feMerge>
+                        <feMergeNode in="coloredBlur"/>
+                        <feMergeNode in="SourceGraphic"/>
+                      </feMerge>
+                    </filter>
+                    <clipPath id="eyeContourClip">
+                      <path d="M 350 500 C 390 430, 440 400, 500 400 C 560 400, 610 430, 650 500 C 610 570, 560 600, 500 600 C 440 600, 390 570, 350 500 Z"/>
+                    </clipPath>
+                  </defs>
+                  <g>
+                    <path
+                      d="M 350 500 C 390 430, 440 400, 500 400 C 560 400, 610 430, 650 500 C 610 570, 560 600, 500 600 C 440 600, 390 570, 350 500 Z"
                       fill="none"
                       stroke={colors.primary95}
-                      strokeWidth="10"
+                      strokeWidth="12"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
                       filter="url(#eyeGlow)"
                     />
-
-                    <circle
-                      ref={pupilCircle2Ref}
-                      cx="500"
-                      cy="500"
-                      r="35"
-                      fill="none"
-                      stroke={colors.primary95}
-                      strokeWidth="8"
-                      filter="url(#eyeGlow)"
-                    />
+                    <g clipPath="url(#eyeContourClip)">
+                      <circle
+                        ref={pupilCircle1Ref}
+                        cx="500" cy="500" r="80"
+                        fill="none" stroke={colors.primary95} strokeWidth="10"
+                        filter="url(#eyeGlow)"
+                      />
+                      <circle
+                        ref={pupilCircle2Ref}
+                        cx="500" cy="500" r="35"
+                        fill="none" stroke={colors.primary95} strokeWidth="8"
+                        filter="url(#eyeGlow)"
+                      />
+                    </g>
                   </g>
-                </g>
-              </svg>
-            </div>
+                </svg>
+              </div>
+            )}
           </div>
         </div>
       </div>
