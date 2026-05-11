@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Logo 3D v2 — Vihente</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html, body {
+    height: 100%;
+    background: #000;
+    overflow: hidden;
+    cursor: crosshair;
+  }
+
+  canvas {
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  #caption {
+    position: fixed;
+    bottom: 26px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-family: monospace;
+    font-size: 0.62rem;
+    letter-spacing: 0.32em;
+    color: rgba(0, 255, 255, 0.32);
+    z-index: 10;
+    text-align: center;
+    pointer-events: none;
+  }
+  #caption span { color: rgba(0, 255, 255, 0.55); }
+</style>
+</head>
+<body>
+
+<canvas id="c"></canvas>
+
+<div id="caption">
+  VIHENTE &nbsp;·&nbsp; <span>3D LOGO</span> &nbsp;·&nbsp; INTAGLIO
+</div>
+
+<script>
+'use strict';
+
+// ── Canvas setup ─────────────────────────────────────────────────────────
+const canvas = document.getElementById('c');
+const ctx    = canvas.getContext('2d');
+
+let W, H, CX, CY, R;
+
+function resize() {
+  const dpr = Math.min(window.devicePixelRatio || 1, 2);
+  W = window.innerWidth;
+  H = window.innerHeight;
+  canvas.width  = W * dpr;
+  canvas.height = H * dpr;
+  canvas.style.width  = W + 'px';
+  canvas.style.height = H + 'px';
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  CX = W / 2;
+  CY = H / 2;
+  R  = Math.min(W, H) * 0.33;
+}
+resize();
+window.addEventListener('resize', resize);
+
+// ── Mouse ────────────────────────────────────────────────────────────────
+let mxN = 0, myN = 0;
+window.addEventListener('mousemove', e => {
+  mxN = (e.clientX - W / 2) / (W / 2);
+  myN = (e.clientY - H / 2) / (H / 2);
+});
+
+// ── 3D math ──────────────────────────────────────────────────────────────
+function rotY(x, y, z, a) {
+  return [x * Math.cos(a) + z * Math.sin(a),
+          y,
+         -x * Math.sin(a) + z * Math.cos(a)];
+}
+function rotX(x, y, z, a) {
+  return [x,
+          y * Math.cos(a) - z * Math.sin(a),
+          y * Math.sin(a) + z * Math.cos(a)];
+}
+
+const CAM_Z = 5.5;
+function project(x, y, z) {
+  const d = CAM_Z - z;
+  if (d < 0.01) return null;
+  const f = CAM_Z / d;
+  return [CX + x * R * f, CY - y * R * f, z];
+}
+
+function xfm(px, py, faceZ, spinA, tiltA) {
+  let [x, y, z] = [px, py, faceZ];
+  [x, y, z] = rotY(x, y, z, spinA);
+  [x, y, z] = rotX(x, y, z, tiltA);
+  return project(x, y, z);
+}
+
+// ── Eye geometry ─────────────────────────────────────────────────────────
+const S    = 1 / 238;
+const norm = (x, y) => [(x - 500) * S, -(y - 500) * S];
+
+function cubicBezier(ax, ay, bx, by, cx, cy, dx, dy, t) {
+  const u = 1 - t;
+  return [
+    u*u*u*ax + 3*u*u*t*bx + 3*u*t*t*cx + t*t*t*dx,
+    u*u*u*ay + 3*u*u*t*by + 3*u*t*t*cy + t*t*t*dy,
+  ];
+}
+
+const eyeSegs = [
+  [norm(350,500), norm(390,430), norm(440,400), norm(500,400)],
+  [norm(500,400), norm(560,400), norm(610,430), norm(650,500)],
+  [norm(650,500), norm(610,570), norm(560,600), norm(500,600)],
+  [norm(500,600), norm(440,600), norm(390,570), norm(350,500)],
+];
+
+function sampleBezier(seg, n) {
+  const pts = [];
+  for (let i = 0; i < n; i++) {
+    const t = i / n;
+    pts.push(cubicBezier(...seg[0], ...seg[1], ...seg[2], ...seg[3], t));
+  }
+  return pts;
+}
+
+const EYE_PTS   = eyeSegs.flatMap(s => sampleBezier(s, 28));
+
+function circlePts(r, n) {
+  return Array.from({ length: n + 1 }, (_, i) => {
+    const a = (i / n) * Math.PI * 2;
+    return [Math.cos(a) * r, Math.sin(a) * r];
+  });
+}
+
+const IRIS_PTS  = circlePts(80 * S, 56);
+const PUPIL_PTS = circlePts(35 * S, 40);
+const RIM_PTS   = circlePts(1.0, 96);
+
+// Thicker coin — looks more like a medal/token
+const THICKNESS = 0.14;
+const ZF =  THICKNESS / 2;
+const ZB = -THICKNESS / 2;
+
+// ── Helpers ───────────────────────────────────────────────────────────────
+function polyPath(pts, faceZ, spinA, tiltA, mirrorX) {
+  ctx.beginPath();
+  let started = false;
+  for (const [px, py] of pts) {
+    const p = xfm(px * mirrorX, py, faceZ, spinA, tiltA);
+    if (!p) continue;
+    if (!started) { ctx.moveTo(p[0], p[1]); started = true; }
+    else ctx.lineTo(p[0], p[1]);
+  }
+}
+
+// ── Ambient glow ──────────────────────────────────────────────────────────
+function drawGlow(cosSpin) {
+  const glowR = R * (1.35 + 0.06 * Math.abs(cosSpin));
+  const g = ctx.createRadialGradient(CX, CY, R * 0.45, CX, CY, glowR);
+  g.addColorStop(0,   `rgba(0,255,255,${(0.055 * Math.abs(cosSpin)).toFixed(4)})`);
+  g.addColorStop(0.55,'rgba(0,255,255,0.014)');
+  g.addColorStop(1,   'rgba(0,0,0,0)');
+  ctx.fillStyle = g;
+  ctx.fillRect(0, 0, W, H);
+}
+
+// ── Coin face — intaglio version ──────────────────────────────────────────
+//
+// Layer stack (painted front-to-back on the face):
+//   1. Disc fill              — base metal colour
+//   2. Thick rim (2 passes)   — wide dark base + bright narrow line
+//   3. Carved eye fill        — slightly recessed: darker cyan-tinted black
+//   4. Carved iris disk fill  — one step deeper
+//   5. Carved pupil disk fill — deepest recess
+//   6. Thick strokes          — bright groove edges catching the light
+//
+function drawFace(faceZ, spinA, tiltA, isFront, eyeAlpha) {
+  const mirrorX = isFront ? 1 : -1;
+
+  // 1 ── Disc fill
+  polyPath(RIM_PTS, faceZ, spinA, tiltA, 1);
+  ctx.closePath();
+  ctx.fillStyle = 'rgba(4,6,10,0.98)';
+  ctx.fill();
+
+  // 2 ── Rim: thick dark band + thin bright highlight line
+  const rimA = 0.20 + Math.abs(eyeAlpha) * 0.30;
+  ctx.lineWidth   = 5;
+  ctx.strokeStyle = `rgba(0,255,255,${(rimA * 0.40).toFixed(3)})`;
+  ctx.stroke();
+  ctx.lineWidth   = 1.4;
+  ctx.strokeStyle = `rgba(0,255,255,${rimA.toFixed(3)})`;
+  ctx.stroke();
+
+  if (eyeAlpha < 0.025) return;
+
+  const ea = Math.min(1, eyeAlpha * 1.35);
+
+  // 3 ── Carved eye area (inside vesica piscis)
+  polyPath(EYE_PTS, faceZ, spinA, tiltA, mirrorX);
+  ctx.closePath();
+  ctx.fillStyle = 'rgba(0,5,10,0.99)';
+  ctx.fill();
+
+  // 4 ── Carved iris disk (r = 80/238 ≈ 0.336)
+  polyPath(IRIS_PTS, faceZ, spinA, tiltA, mirrorX);
+  ctx.closePath();
+  ctx.fillStyle = 'rgba(0,3,8,0.99)';
+  ctx.fill();
+
+  // 5 ── Carved pupil disk (r = 35/238 ≈ 0.147)
+  polyPath(PUPIL_PTS, faceZ, spinA, tiltA, mirrorX);
+  ctx.closePath();
+  ctx.fillStyle = 'rgba(0,2,5,1.0)';
+  ctx.fill();
+
+  // 6 ── Thick glowing strokes — the light-catching groove edges
+  const lw = 3.5 + eyeAlpha * 4.5;   // up to ~8px at full frontal
+
+  if (eyeAlpha > 0.60) {
+    ctx.shadowColor = 'rgba(0,255,255,0.65)';
+    ctx.shadowBlur  = 14 * eyeAlpha;
+  }
+
+  ctx.strokeStyle = `rgba(0,255,255,${ea.toFixed(3)})`;
+  ctx.lineWidth   = lw;
+  polyPath(EYE_PTS, faceZ, spinA, tiltA, mirrorX);
+  ctx.closePath();
+  ctx.stroke();
+
+  ctx.lineWidth = lw * 0.84;
+  polyPath(IRIS_PTS, faceZ, spinA, tiltA, mirrorX);
+  ctx.closePath();
+  ctx.stroke();
+
+  ctx.lineWidth = lw * 0.68;
+  polyPath(PUPIL_PTS, faceZ, spinA, tiltA, mirrorX);
+  ctx.closePath();
+  ctx.stroke();
+
+  ctx.shadowBlur = 0;
+}
+
+// ── Coin edge ─────────────────────────────────────────────────────────────
+function drawEdge(spinA, tiltA) {
+  const N = 96;
+  for (let i = 0; i < N; i++) {
+    const a1 = (i / N) * Math.PI * 2;
+    const a2 = ((i + 1) / N) * Math.PI * 2;
+    const am = (a1 + a2) / 2;
+
+    const nx = Math.cos(am), ny = Math.sin(am);
+
+    const normalCamZ = -nx * Math.sin(spinA);
+    if (normalCamZ <= 0) continue;
+
+    // Diffuse from overhead-front light
+    const rny = ny;
+    const rnz = -nx * Math.sin(spinA);
+    const diffuse = Math.max(0, rny * 0.85 + rnz * 0.32);
+    const shade   = 0.10 + diffuse * 0.50;
+
+    const c1 = xfm(Math.cos(a1), Math.sin(a1), ZF, spinA, tiltA);
+    const c2 = xfm(Math.cos(a2), Math.sin(a2), ZF, spinA, tiltA);
+    const c3 = xfm(Math.cos(a2), Math.sin(a2), ZB, spinA, tiltA);
+    const c4 = xfm(Math.cos(a1), Math.sin(a1), ZB, spinA, tiltA);
+    if (!c1 || !c2 || !c3 || !c4) continue;
+
+    ctx.beginPath();
+    ctx.moveTo(c1[0], c1[1]);
+    ctx.lineTo(c2[0], c2[1]);
+    ctx.lineTo(c3[0], c3[1]);
+    ctx.lineTo(c4[0], c4[1]);
+    ctx.closePath();
+
+    ctx.fillStyle   = 'rgba(0,18,22,0.97)';
+    ctx.fill();
+    ctx.strokeStyle = `rgba(0,255,255,${(shade * normalCamZ).toFixed(3)})`;
+    ctx.lineWidth   = 0.6;
+    ctx.stroke();
+  }
+}
+
+// ── Render loop ───────────────────────────────────────────────────────────
+let t0 = 0;
+let smoothTilt = 0;
+
+function loop(ts) {
+  if (!t0) t0 = ts;
+  const time = (ts - t0) / 1000;
+
+  smoothTilt += (myN * 0.22 - smoothTilt) * 0.05;
+
+  const spinA   = 0.74 * time + mxN * 0.45;
+  const tiltA   = smoothTilt;
+  const cosSpin = Math.cos(spinA);
+
+  ctx.clearRect(0, 0, W, H);
+  drawGlow(cosSpin);
+
+  const frontA = Math.max(0, cosSpin);
+  const backA  = Math.max(0, -cosSpin);
+
+  if (cosSpin >= 0) {
+    drawFace(ZB, spinA, tiltA, false, backA);
+    drawEdge(spinA, tiltA);
+    drawFace(ZF, spinA, tiltA, true,  frontA);
+  } else {
+    drawFace(ZF, spinA, tiltA, true,  frontA);
+    drawEdge(spinA, tiltA);
+    drawFace(ZB, spinA, tiltA, false, backA);
+  }
+
+  requestAnimationFrame(loop);
+}
+
+requestAnimationFrame(loop);
+</script>
+</body>
+</html>
