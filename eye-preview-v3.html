@@ -319,25 +319,34 @@ function drawEdge(spinA, tiltA) {
 
 // ── Glitch overlay ────────────────────────────────────────────────────────
 function drawGlitch(intensity) {
-  // Horizontal interference bands
-  const bands = Math.floor(4 + intensity * 12);
+  ctx.save();
+  // Confine everything to the coin area — a circle slightly larger than R
+  ctx.beginPath();
+  ctx.arc(CX, CY, R * 1.38, 0, Math.PI * 2);
+  ctx.clip();
+
+  const glitchW = R * 2.8;
+  const xL      = CX - R * 1.4;
+  const yMin    = CY - R * 1.3;
+  const yRange  = R * 2.6;
+
+  // Fewer, narrower bands — teal dominant, no aggressive white/black
+  const bands = Math.floor(2 + intensity * 6);
   for (let i = 0; i < bands; i++) {
-    const y = Math.random() * H;
-    const h = 1 + Math.random() * 7;
-    const roll = Math.random();
-    let colour;
-    if (roll < 0.55)      colour = `rgba(0,255,255,${(0.08 + Math.random() * 0.28 * intensity).toFixed(3)})`;
-    else if (roll < 0.80) colour = `rgba(255,255,255,${(0.04 + Math.random() * 0.12 * intensity).toFixed(3)})`;
-    else                  colour = `rgba(0,0,0,${(Math.random() * 0.55 * intensity).toFixed(3)})`;
-    ctx.fillStyle = colour;
-    ctx.fillRect(0, y, W, h);
+    const y = yMin + Math.random() * yRange;
+    const h = 1 + Math.random() * 4;
+    const a = (0.06 + Math.random() * 0.18 * intensity).toFixed(3);
+    ctx.fillStyle = `rgba(0,255,255,${a})`;
+    ctx.fillRect(xL, y, glitchW, h);
   }
 
-  // Brief full-screen cyan flash right at the click moment
+  // Soft localised flash at impact — just within coin, very brief
   if (intensity > 0.88) {
-    ctx.fillStyle = `rgba(0,255,255,${((intensity - 0.88) * 4 * 0.18).toFixed(3)})`;
-    ctx.fillRect(0, 0, W, H);
+    ctx.fillStyle = `rgba(0,255,255,${((intensity - 0.88) * 4 * 0.10).toFixed(3)})`;
+    ctx.fillRect(xL, CY - R * 1.3, glitchW, R * 2.6);
   }
+
+  ctx.restore();
 }
 
 // ── Render loop ───────────────────────────────────────────────────────────
@@ -353,8 +362,8 @@ function loop(ts) {
   if (glitchT > 0) glitchT = Math.max(0, glitchT - dt);
   const glitchI = glitchT / GLITCH_DUR;   // 1 → 0 during glitch
 
-  // Auto-spin with glitch stutter (rapid jitter decaying to 0)
-  const stutter = glitchI > 0 ? Math.sin(time * 60) * 0.55 * glitchI * glitchI : 0;
+  // Gentle spin stutter — low frequency so rapid clicks stay comfortable
+  const stutter = glitchI > 0 ? Math.sin(time * 28) * 0.18 * glitchI * glitchI : 0;
   const spinA   = 0.74 * time + stutter;
 
   // Gentle organic auto-tilt — no mouse control
