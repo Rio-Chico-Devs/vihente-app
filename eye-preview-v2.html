@@ -237,26 +237,31 @@ function drawFace(faceZ, spinA, tiltA, isFront, faceAlpha, isNear) {
 // After Y-rotation, z-component = -nx * sin(spinA).
 // Camera-facing (z > 0) → bright; back-facing → ghost at 0.25×.
 //
-function drawEyeLaterals(spinA, tiltA, baseAlpha) {
-  if (baseAlpha < 0.02) return;
-
+function drawEyeLaterals(spinA, tiltA) {
+  // Same shade formula and lineWidth as drawEdge rim quads.
+  // Subsampled so visual density matches the rim (fewer lines on smaller radii).
   const configs = [
-    { pts: EYE_PTS,   lw: 1.2  },
-    { pts: IRIS_PTS,  lw: 1.05 },
-    { pts: PUPIL_PTS, lw: 0.88 },
+    { pts: EYE_PTS,   step: 3 },
+    { pts: IRIS_PTS,  step: 2 },
+    { pts: PUPIL_PTS, step: 3 },
   ];
 
-  for (const { pts, lw } of configs) {
-    ctx.lineWidth = lw;
-    for (const [px, py] of pts) {
+  ctx.lineWidth = 0.7;
+
+  for (const { pts, step } of configs) {
+    for (let i = 0; i < pts.length; i += step) {
+      const [px, py] = pts[i];
       const len = Math.sqrt(px * px + py * py);
       if (len < 0.001) continue;
-      const nx         = px / len;
+      const nx = px / len;
+      const ny = py / len;
+
       const normalCamZ = -nx * Math.sin(spinA);
 
-      const alpha = normalCamZ > 0
-        ? baseAlpha * Math.min(1, normalCamZ * 1.3)
-        : baseAlpha * Math.abs(normalCamZ) * 0.22;
+      // Identical diffuse formula to drawEdge
+      const diffuse = Math.max(0, ny * 0.85 + normalCamZ * 0.32);
+      const shade   = (0.10 + diffuse * 0.50) * Math.abs(normalCamZ);
+      const alpha   = normalCamZ > 0 ? shade : shade * 0.35;
 
       if (alpha < 0.012) continue;
 
@@ -374,12 +379,12 @@ function loop(ts) {
   // Draw order: far face ghost → eye laterals → rim edge → near face bright
   if (cosSpin >= 0) {
     drawFace(ZB, spinA, tiltA, false, fB_alpha, fB_isNear); // far (ghost)
-    drawEyeLaterals(spinA, tiltA, 0.78);
+    drawEyeLaterals(spinA, tiltA);
     drawEdge(spinA, tiltA);
     drawFace(ZF, spinA, tiltA, true,  fF_alpha, fF_isNear); // near (bright)
   } else {
     drawFace(ZF, spinA, tiltA, true,  fF_alpha, fF_isNear); // far (ghost)
-    drawEyeLaterals(spinA, tiltA, 0.78);
+    drawEyeLaterals(spinA, tiltA);
     drawEdge(spinA, tiltA);
     drawFace(ZB, spinA, tiltA, false, fB_alpha, fB_isNear); // near (bright)
   }
