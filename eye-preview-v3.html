@@ -256,7 +256,7 @@ function buildPathQuads(pts, spinA, tiltA, closed) {
     const avgZ = (c1[2] + c2[2] + c3[2] + c4[2]) / 4;
     const diffuse = Math.max(0, ny * 0.85 + normalCamZ * 0.32);
     const shade   = (0.10 + diffuse * 0.50) * Math.abs(normalCamZ);
-    quads.push({ c1, c2, c3, c4, normalCamZ, shade, avgZ, rim: false });
+    quads.push({ c1, c2, c3, c4, normalCamZ, shade, avgZ });
   }
   return quads;
 }
@@ -286,7 +286,7 @@ function drawEdge(spinA, tiltA) {
     const avgZ = (c1[2] + c2[2] + c3[2] + c4[2]) / 4;
     const diffuse = Math.max(0, ny * 0.85 + normalCamZ * 0.32);
     const shade   = (0.10 + diffuse * 0.50) * Math.abs(normalCamZ);
-    quads.push({ c1, c2, c3, c4, normalCamZ, shade, avgZ, rim: true });
+    quads.push({ c1, c2, c3, c4, normalCamZ, shade, avgZ });
   }
 
   // Eye element quads — EYE_PTS is a closed loop with no duplicate endpoint
@@ -297,7 +297,7 @@ function drawEdge(spinA, tiltA) {
   // Back-to-front so near quads paint over far ones
   quads.sort((a, b) => a.avgZ - b.avgZ);
 
-  for (const { c1, c2, c3, c4, normalCamZ, shade, rim } of quads) {
+  for (const { c1, c2, c3, c4, normalCamZ, shade } of quads) {
     ctx.beginPath();
     ctx.moveTo(c1[0], c1[1]);
     ctx.lineTo(c2[0], c2[1]);
@@ -307,18 +307,12 @@ function drawEdge(spinA, tiltA) {
 
     if (normalCamZ > 0) {
       const s  = Math.min(1, shade);
-      const cg = Math.round(s * 88);
-      const cb = Math.round(s * 115);
+      const cg = Math.round(s * 160);
+      const cb = Math.round(s * 210);
       ctx.fillStyle = `rgb(0,${cg},${cb})`;
       ctx.fill();
-      // Stroke only on rim — inner element walls look cleaner without it
-      if (rim) {
-        ctx.strokeStyle = `rgba(0,255,255,${Math.min(0.95, shade * 1.2).toFixed(3)})`;
-        ctx.lineWidth   = 0.7;
-        ctx.stroke();
-      }
     } else {
-      ctx.fillStyle = 'rgba(0,12,16,0.55)';
+      ctx.fillStyle = 'rgba(0,20,28,0.70)';
       ctx.fill();
     }
   }
