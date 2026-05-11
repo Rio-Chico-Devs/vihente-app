@@ -24,6 +24,7 @@ export default function CoinLogo3D({ onCoinClick, colorR = 0, colorG = 255, colo
     let glitchT = 0;
     const GLITCH_DUR = 0.75;
     let alive = true;
+    let breathe = 1; // slow glow pulse, updated each frame
 
     // ── Sizing ──────────────────────────────────────────────────────────────
     function resize() {
@@ -126,12 +127,12 @@ export default function CoinLogo3D({ onCoinClick, colorR = 0, colorG = 255, colo
       }
     }
 
-    // ── Ambient glow ──────────────────────────────────────────────────────────
+    // ── Ambient glow (modulated by breathe) ──────────────────────────────────
     function drawGlow(abscos) {
       const glowR = R * (1.4 + 0.06 * abscos);
       const g = ctx.createRadialGradient(CX, CY, R * 0.4, CX, CY, glowR);
-      g.addColorStop(0,   `rgba(${CR},${CG},${CB},${(0.065 * abscos).toFixed(4)})`);
-      g.addColorStop(0.5, `rgba(${CR},${CG},${CB},0.014)`);
+      g.addColorStop(0,   `rgba(${CR},${CG},${CB},${(0.09 * abscos * breathe).toFixed(4)})`);
+      g.addColorStop(0.5, `rgba(${CR},${CG},${CB},${(0.022 * breathe).toFixed(4)})`);
       g.addColorStop(1,   'rgba(0,0,0,0)');
       ctx.fillStyle = g;
       ctx.fillRect(0, 0, W, H);
@@ -147,7 +148,7 @@ export default function CoinLogo3D({ onCoinClick, colorR = 0, colorG = 255, colo
 
       if (isNear && faceAlpha > 0.60) {
         ctx.shadowColor = `rgba(${CR},${CG},${CB},0.60)`;
-        ctx.shadowBlur  = 13 * faceAlpha;
+        ctx.shadowBlur  = 18 * faceAlpha * breathe;
       }
 
       ctx.strokeStyle = `rgba(${CR},${CG},${CB},${ea.toFixed(3)})`;
@@ -278,6 +279,9 @@ export default function CoinLogo3D({ onCoinClick, colorR = 0, colorG = 255, colo
 
       if (glitchT > 0) glitchT = Math.max(0, glitchT - dt);
       const glitchI = glitchT / GLITCH_DUR;
+
+      // Slow breathing pulse — ~10.5s period, range 0.68 → 1.0
+      breathe = 0.68 + 0.32 * (0.5 + 0.5 * Math.sin(time * 0.6));
 
       const stutter = glitchI > 0 ? Math.sin(time * 28) * 0.18 * glitchI * glitchI : 0;
       const spinA   = 0.74 * time + stutter;

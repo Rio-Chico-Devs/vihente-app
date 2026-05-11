@@ -164,8 +164,8 @@ function polyPath(pts, faceZ, spinA, tiltA, mirrorX) {
 function drawGlow(abscos) {
   const glowR = R * (1.4 + 0.06 * abscos);
   const g = ctx.createRadialGradient(CX, CY, R * 0.4, CX, CY, glowR);
-  g.addColorStop(0,   `rgba(0,255,255,${(0.065 * abscos).toFixed(4)})`);
-  g.addColorStop(0.5, 'rgba(0,255,255,0.014)');
+  g.addColorStop(0,   `rgba(0,255,255,${(0.09 * abscos * breathe).toFixed(4)})`);
+  g.addColorStop(0.5, `rgba(0,255,255,${(0.022 * breathe).toFixed(4)})`);
   g.addColorStop(1,   'rgba(0,0,0,0)');
   ctx.fillStyle = g;
   ctx.fillRect(0, 0, W, H);
@@ -195,7 +195,7 @@ function drawFace(faceZ, spinA, tiltA, isFront, faceAlpha, isNear) {
 
   if (isNear && faceAlpha > 0.60) {
     ctx.shadowColor = 'rgba(0,255,255,0.60)';
-    ctx.shadowBlur  = 13 * faceAlpha;
+    ctx.shadowBlur  = 18 * faceAlpha * breathe;
   }
 
   // ── Rim circle (the thick outer border) ──
@@ -351,6 +351,7 @@ function drawGlitch(intensity) {
 
 // ── Render loop ───────────────────────────────────────────────────────────
 let t0 = 0, prevTs = 0;
+let breathe = 1;
 
 function loop(ts) {
   if (!t0) { t0 = ts; prevTs = ts; }
@@ -361,6 +362,9 @@ function loop(ts) {
   // Decay glitch
   if (glitchT > 0) glitchT = Math.max(0, glitchT - dt);
   const glitchI = glitchT / GLITCH_DUR;   // 1 → 0 during glitch
+
+  // Slow breathing pulse — ~10.5s period, range 0.68 → 1.0
+  breathe = 0.68 + 0.32 * (0.5 + 0.5 * Math.sin(time * 0.6));
 
   // Gentle spin stutter — low frequency so rapid clicks stay comfortable
   const stutter = glitchI > 0 ? Math.sin(time * 28) * 0.18 * glitchI * glitchI : 0;
