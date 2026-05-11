@@ -70,12 +70,11 @@ function resize() {
 resize();
 window.addEventListener('resize', resize);
 
-// ── Mouse ────────────────────────────────────────────────────────────────
-let mxN = 0, myN = 0;
-window.addEventListener('mousemove', e => {
-  mxN = (e.clientX - W / 2) / (W / 2);
-  myN = (e.clientY - H / 2) / (H / 2);
-});
+// ── Glitch state ──────────────────────────────────────────────────────────
+let glitchT = 0;
+const GLITCH_DUR = 0.75;
+
+canvas.addEventListener('click', () => { glitchT = GLITCH_DUR; });
 
 // ── 3D math ──────────────────────────────────────────────────────────────
 function rotY(x, y, z, a) {
@@ -318,50 +317,76 @@ function drawEdge(spinA, tiltA) {
   }
 }
 
+// ── Glitch overlay ────────────────────────────────────────────────────────
+function drawGlitch(intensity) {
+  // Horizontal interference bands
+  const bands = Math.floor(4 + intensity * 12);
+  for (let i = 0; i < bands; i++) {
+    const y = Math.random() * H;
+    const h = 1 + Math.random() * 7;
+    const roll = Math.random();
+    let colour;
+    if (roll < 0.55)      colour = `rgba(0,255,255,${(0.08 + Math.random() * 0.28 * intensity).toFixed(3)})`;
+    else if (roll < 0.80) colour = `rgba(255,255,255,${(0.04 + Math.random() * 0.12 * intensity).toFixed(3)})`;
+    else                  colour = `rgba(0,0,0,${(Math.random() * 0.55 * intensity).toFixed(3)})`;
+    ctx.fillStyle = colour;
+    ctx.fillRect(0, y, W, h);
+  }
+
+  // Brief full-screen cyan flash right at the click moment
+  if (intensity > 0.88) {
+    ctx.fillStyle = `rgba(0,255,255,${((intensity - 0.88) * 4 * 0.18).toFixed(3)})`;
+    ctx.fillRect(0, 0, W, H);
+  }
+}
+
 // ── Render loop ───────────────────────────────────────────────────────────
-let t0 = 0;
-let smoothTilt = 0;
+let t0 = 0, prevTs = 0;
 
 function loop(ts) {
-  if (!t0) t0 = ts;
+  if (!t0) { t0 = ts; prevTs = ts; }
   const time = (ts - t0) / 1000;
+  const dt   = Math.min((ts - prevTs) / 1000, 0.05);
+  prevTs = ts;
 
-  smoothTilt += (myN * 0.22 - smoothTilt) * 0.05;
+  // Decay glitch
+  if (glitchT > 0) glitchT = Math.max(0, glitchT - dt);
+  const glitchI = glitchT / GLITCH_DUR;   // 1 → 0 during glitch
 
-  const spinA   = 0.74 * time + mxN * 0.45;
-  const tiltA   = smoothTilt;
+  // Auto-spin with glitch stutter (rapid jitter decaying to 0)
+  const stutter = glitchI > 0 ? Math.sin(time * 60) * 0.55 * glitchI * glitchI : 0;
+  const spinA   = 0.74 * time + stutter;
+
+  // Gentle organic auto-tilt — no mouse control
+  const tiltA   = 0.07 * Math.sin(time * 0.55);
+
   const cosSpin = Math.cos(spinA);
   const abscos  = Math.abs(cosSpin);
 
   ctx.clearRect(0, 0, W, H);
   drawGlow(abscos);
 
-  // Each face has two alpha values:
-  //   nearAlpha  — face is pointing toward camera (dominant, bright)
-  //   ghostAlpha — face is pointing away, visible as ghost through open coin
-  //
-  // Face F (front in coin-local, z=+T/2): nearAlpha when cosSpin > 0
-  // Face B (back  in coin-local, z=−T/2): nearAlpha when cosSpin < 0
-  const fF_near  = Math.max(0,  cosSpin);
-  const fF_ghost = Math.max(0, -cosSpin) * 0.30;
-  const fF_alpha = fF_near + fF_ghost;   // exactly one is non-zero
+  const fF_near   = Math.max(0,  cosSpin);
+  const fF_ghost  = Math.max(0, -cosSpin) * 0.30;
+  const fF_alpha  = fF_near + fF_ghost;
   const fF_isNear = cosSpin >= 0;
 
-  const fB_near  = Math.max(0, -cosSpin);
-  const fB_ghost = Math.max(0,  cosSpin) * 0.30;
-  const fB_alpha = fB_near + fB_ghost;
+  const fB_near   = Math.max(0, -cosSpin);
+  const fB_ghost  = Math.max(0,  cosSpin) * 0.30;
+  const fB_alpha  = fB_near + fB_ghost;
   const fB_isNear = cosSpin < 0;
 
-  // Draw order: far face ghost → all edge quads (rim + eye walls) → near face bright
   if (cosSpin >= 0) {
-    drawFace(ZB, spinA, tiltA, false, fB_alpha, fB_isNear); // far (ghost)
+    drawFace(ZB, spinA, tiltA, false, fB_alpha, fB_isNear);
     drawEdge(spinA, tiltA);
-    drawFace(ZF, spinA, tiltA, true,  fF_alpha, fF_isNear); // near (bright)
+    drawFace(ZF, spinA, tiltA, true,  fF_alpha, fF_isNear);
   } else {
-    drawFace(ZF, spinA, tiltA, true,  fF_alpha, fF_isNear); // far (ghost)
+    drawFace(ZF, spinA, tiltA, true,  fF_alpha, fF_isNear);
     drawEdge(spinA, tiltA);
-    drawFace(ZB, spinA, tiltA, false, fB_alpha, fB_isNear); // near (bright)
+    drawFace(ZB, spinA, tiltA, false, fB_alpha, fB_isNear);
   }
+
+  if (glitchI > 0) drawGlitch(glitchI);
 
   requestAnimationFrame(loop);
 }
