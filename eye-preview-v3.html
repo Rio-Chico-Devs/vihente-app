@@ -144,7 +144,7 @@ const IRIS_PTS  = circlePts(80 * S, 56);
 const PUPIL_PTS = circlePts(35 * S, 40);
 const RIM_PTS   = circlePts(1.0, 96);
 
-const THICKNESS = 0.14;
+const THICKNESS = 0.22;
 const ZF =  THICKNESS / 2;
 const ZB = -THICKNESS / 2;
 
@@ -190,8 +190,8 @@ function drawFace(faceZ, spinA, tiltA, isFront, faceAlpha, isNear) {
   // Near face: full brightness + glow
   // Far face (ghost): muted, no glow
   const ea   = Math.min(1, faceAlpha * (isNear ? 1.3 : 0.85));
-  const lwRim = isNear ? (5.5 + faceAlpha * 4.5)  : (2.5 + faceAlpha * 2.5);
-  const lwEye = isNear ? (3.5 + faceAlpha * 4.5)  : (1.8 + faceAlpha * 2.0);
+  const lwRim = isNear ? (9.0 + faceAlpha * 7.0) : (4.0 + faceAlpha * 4.0);
+  const lwEye = isNear ? (6.0 + faceAlpha * 7.0) : (3.0 + faceAlpha * 3.0);
 
   if (isNear && faceAlpha > 0.60) {
     ctx.shadowColor = 'rgba(0,255,255,0.60)';
