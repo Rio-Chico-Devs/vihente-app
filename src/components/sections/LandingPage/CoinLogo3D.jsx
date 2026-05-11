@@ -98,7 +98,7 @@ export default function CoinLogo3D({ onCoinClick, colorR = 0, colorG = 255, colo
       return pts;
     }
 
-    const EYE_PTS   = eyeSegs.flatMap(s => sampleBezier(s, 20)); // 80 pts (was 112)
+    const EYE_PTS   = eyeSegs.flatMap(s => sampleBezier(s, 20));
 
     function circlePts(r, n) {
       return Array.from({ length: n + 1 }, (_, i) => {
@@ -107,11 +107,40 @@ export default function CoinLogo3D({ onCoinClick, colorR = 0, colorG = 255, colo
       });
     }
 
-    const IRIS_PTS  = circlePts(80 * S, 44); // was 56
-    const PUPIL_PTS = circlePts(35 * S, 28); // was 40
-    const RIM_PTS   = circlePts(1.0, 72);    // was 96
+    const IRIS_R  = 80 * S;
+    const PUPIL_R = 35 * S;
 
-    const THICKNESS = 0.22;
+    const IRIS_PTS  = circlePts(IRIS_R,  44);
+    const PUPIL_PTS = circlePts(PUPIL_R, 28);
+    const RIM_PTS   = circlePts(1.0, 72);
+
+    const THICKNESS = 0.30;
+
+    // Half-band widths (normalised coin units) — each element gets an inner
+    // and outer cylindrical wall so it looks like a real extruded band.
+    const RIM_HB  = 0.044;
+    const EYE_HB  = 0.036;
+    const IRIS_HB = 0.028;
+    const PUP_HB  = 0.022;
+
+    const RIM_OUTER  = circlePts(1.0      + RIM_HB,  72);
+    const RIM_INNER  = circlePts(1.0      - RIM_HB,  72);
+    const IRIS_OUTER = circlePts(IRIS_R   + IRIS_HB, 44);
+    const IRIS_INNER = circlePts(IRIS_R   - IRIS_HB, 44);
+    const PUP_OUTER  = circlePts(PUPIL_R  + PUP_HB,  28);
+    const PUP_INNER  = circlePts(PUPIL_R  - PUP_HB,  28);
+
+    // Eye path inner/outer: radial offset at each point
+    function offsetEyePts(delta) {
+      return EYE_PTS.map(([x, y]) => {
+        const r = Math.sqrt(x * x + y * y);
+        if (r < 0.001) return [x, y];
+        const f = (r + delta) / r;
+        return [x * f, y * f];
+      });
+    }
+    const EYE_OUTER = offsetEyePts( EYE_HB);
+    const EYE_INNER = offsetEyePts(-EYE_HB);
     const ZF =  THICKNESS / 2;
     const ZB = -THICKNESS / 2;
 
@@ -147,7 +176,6 @@ export default function CoinLogo3D({ onCoinClick, colorR = 0, colorG = 255, colo
       const lwEye = isNear ? (6.0 + faceAlpha * 7.0) : (3.0 + faceAlpha * 3.0);
 
       // Fake rim glow: one wide+faint pass before the main stroke.
-      // Far cheaper than shadowBlur (no Gaussian blur pass on the GPU).
       if (isNear && faceAlpha > 0.45) {
         ctx.lineWidth   = lwRim * 2.6;
         ctx.strokeStyle = `rgba(${CR},${CG},${CB},${(ea * 0.09 * breathe).toFixed(3)})`;
@@ -174,7 +202,9 @@ export default function CoinLogo3D({ onCoinClick, colorR = 0, colorG = 255, colo
     }
 
     // ── Filled quad walls ─────────────────────────────────────────────────────
-    function buildPathQuads(pts, spinA, tiltA, closed) {
+    // inward=true flips the outward normal so inner cylindrical walls are
+    // camera-facing from the inside (needed for ring interiors).
+    function buildPathQuads(pts, spinA, tiltA, closed, inward = false) {
       const quads = [];
       const n     = pts.length;
       const count = closed ? n : n - 1;
@@ -184,7 +214,8 @@ export default function CoinLogo3D({ onCoinClick, colorR = 0, colorG = 255, colo
         const mx = (px0 + px1) / 2, my = (py0 + py1) / 2;
         const mlen = Math.sqrt(mx * mx + my * my);
         if (mlen < 0.001) continue;
-        const nx = mx / mlen, ny = my / mlen;
+        const nx = inward ? -(mx / mlen) : (mx / mlen);
+        const ny = inward ? -(my / mlen) : (my / mlen);
         const normalCamZ = -nx * Math.sin(spinA);
         const c1 = xfm(px0, py0, ZF, spinA, tiltA);
         const c2 = xfm(px1, py1, ZF, spinA, tiltA);
@@ -199,32 +230,27 @@ export default function CoinLogo3D({ onCoinClick, colorR = 0, colorG = 255, colo
       return quads;
     }
 
+    // Each ring element (rim, eye outline, iris, pupil) gets two cylindrical
+    // walls: outer (faces outward) and inner (faces inward). Together they
+    // give the ring a visible band height when seen edge-on.
     function drawEdge(spinA, tiltA) {
-      const N = 72, quads = []; // was 96
-
-      for (let i = 0; i < N; i++) {
-        const a1 = (i / N) * Math.PI * 2, a2 = ((i + 1) / N) * Math.PI * 2;
-        const am = (a1 + a2) / 2;
-        const nx = Math.cos(am), ny = Math.sin(am);
-        const normalCamZ = -nx * Math.sin(spinA);
-        if (normalCamZ <= 0) continue; // skip back-facing — halves fill calls
-        const c1 = xfm(Math.cos(a1), Math.sin(a1), ZF, spinA, tiltA);
-        const c2 = xfm(Math.cos(a2), Math.sin(a2), ZF, spinA, tiltA);
-        const c3 = xfm(Math.cos(a2), Math.sin(a2), ZB, spinA, tiltA);
-        const c4 = xfm(Math.cos(a1), Math.sin(a1), ZB, spinA, tiltA);
-        if (!c1 || !c2 || !c3 || !c4) continue;
-        const avgZ    = (c1[2] + c2[2] + c3[2] + c4[2]) / 4;
-        const diffuse = Math.max(0, ny * 0.85 + normalCamZ * 0.32);
-        const shade   = (0.10 + diffuse * 0.50) * Math.abs(normalCamZ);
-        quads.push({ c1, c2, c3, c4, shade, avgZ });
+      const quads = [];
+      const walls = [
+        [RIM_OUTER,  false, false],
+        [RIM_INNER,  false, true ],
+        [EYE_OUTER,  true,  false],
+        [EYE_INNER,  true,  true ],
+        [IRIS_OUTER, false, false],
+        [IRIS_INNER, false, true ],
+        [PUP_OUTER,  false, false],
+        [PUP_INNER,  false, true ],
+      ];
+      for (const [pts, closed, inward] of walls) {
+        for (const q of buildPathQuads(pts, spinA, tiltA, closed, inward)) {
+          if (q.normalCamZ > 0) quads.push(q);
+        }
       }
-
-      for (const q of buildPathQuads(EYE_PTS,   spinA, tiltA, true))  { if (q.normalCamZ > 0) quads.push(q); }
-      for (const q of buildPathQuads(IRIS_PTS,  spinA, tiltA, false)) { if (q.normalCamZ > 0) quads.push(q); }
-      for (const q of buildPathQuads(PUPIL_PTS, spinA, tiltA, false)) { if (q.normalCamZ > 0) quads.push(q); }
-
       quads.sort((a, b) => a.avgZ - b.avgZ);
-
       for (const { c1, c2, c3, c4, shade } of quads) {
         const s = Math.min(1, shade);
         ctx.fillStyle = `rgb(${Math.round(s*CR*0.70)},${Math.round(s*CG*0.63)},${Math.round(s*CB*0.82)})`;

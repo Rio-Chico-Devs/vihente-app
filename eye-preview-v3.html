@@ -140,13 +140,39 @@ function circlePts(r, n) {
   });
 }
 
-const IRIS_PTS  = circlePts(80 * S, 44);
-const PUPIL_PTS = circlePts(35 * S, 28);
-const RIM_PTS   = circlePts(1.0, 72);
+const IRIS_R  = 80 * S;
+const PUPIL_R = 35 * S;
 
-const THICKNESS = 0.22;
+const IRIS_PTS  = circlePts(IRIS_R,  44);
+const PUPIL_PTS = circlePts(PUPIL_R, 28);
+const RIM_PTS   = circlePts(1.0,     72);
+
+const THICKNESS = 0.30;
 const ZF =  THICKNESS / 2;
 const ZB = -THICKNESS / 2;
+
+const RIM_HB  = 0.044;
+const EYE_HB  = 0.036;
+const IRIS_HB = 0.028;
+const PUP_HB  = 0.022;
+
+const RIM_OUTER  = circlePts(1.0      + RIM_HB,  72);
+const RIM_INNER  = circlePts(1.0      - RIM_HB,  72);
+const IRIS_OUTER = circlePts(IRIS_R   + IRIS_HB, 44);
+const IRIS_INNER = circlePts(IRIS_R   - IRIS_HB, 44);
+const PUP_OUTER  = circlePts(PUPIL_R  + PUP_HB,  28);
+const PUP_INNER  = circlePts(PUPIL_R  - PUP_HB,  28);
+
+function offsetEyePts(delta) {
+  return EYE_PTS.map(([x, y]) => {
+    const r = Math.sqrt(x * x + y * y);
+    if (r < 0.001) return [x, y];
+    const f = (r + delta) / r;
+    return [x * f, y * f];
+  });
+}
+const EYE_OUTER = offsetEyePts( EYE_HB);
+const EYE_INNER = offsetEyePts(-EYE_HB);
 
 // ── Helpers ───────────────────────────────────────────────────────────────
 function polyPath(pts, faceZ, spinA, tiltA, mirrorX) {
@@ -224,13 +250,9 @@ function drawFace(faceZ, spinA, tiltA, isFront, faceAlpha, isNear) {
 }
 
 // ── Build filled quads for any path's Z-wall ─────────────────────────────
-//
-// Outward normal at each segment ≈ direction of the segment midpoint from
-// origin. Exact for circles; good approximation for the eye outline.
-//
-// closed=true wraps the last point back to the first (needed for EYE_PTS
-// which has no duplicate endpoint, unlike the circle arrays).
-function buildPathQuads(pts, spinA, tiltA, closed) {
+// inward=true flips the outward normal so inner cylindrical walls are
+// camera-facing from the inside (needed for ring interiors).
+function buildPathQuads(pts, spinA, tiltA, closed, inward = false) {
   const quads = [];
   const n = pts.length;
   const count = closed ? n : n - 1;
@@ -241,8 +263,8 @@ function buildPathQuads(pts, spinA, tiltA, closed) {
     const my = (py0 + py1) / 2;
     const mlen = Math.sqrt(mx * mx + my * my);
     if (mlen < 0.001) continue;
-    const nx = mx / mlen;
-    const ny = my / mlen;
+    const nx = inward ? -(mx / mlen) : (mx / mlen);
+    const ny = inward ? -(my / mlen) : (my / mlen);
     const normalCamZ = -nx * Math.sin(spinA);
     const c1 = xfm(px0, py0, ZF, spinA, tiltA);
     const c2 = xfm(px1, py1, ZF, spinA, tiltA);
@@ -257,43 +279,30 @@ function buildPathQuads(pts, spinA, tiltA, closed) {
   return quads;
 }
 
-// ── Coin edge (the cylindrical wall — the only solid part) ────────────────
-//
-// Draws all edge quads sorted back-to-front.
-// Front-facing quads: opaque fill + bright stroke.
-// Back-facing quads: very faint fill + dim stroke (visible through open face).
-//
+// ── Coin edge ─────────────────────────────────────────────────────────────
+// Each ring element gets an outer wall (faces outward) and an inner wall
+// (faces inward), giving each band real visible height when seen edge-on.
 function drawEdge(spinA, tiltA) {
-  const N = 72; // was 96
   const quads = [];
-
-  for (let i = 0; i < N; i++) {
-    const a1 = (i / N) * Math.PI * 2;
-    const a2 = ((i + 1) / N) * Math.PI * 2;
-    const am = (a1 + a2) / 2;
-    const nx = Math.cos(am), ny = Math.sin(am);
-    const normalCamZ = -nx * Math.sin(spinA);
-    if (normalCamZ <= 0) continue; // skip back-facing — halves fill calls
-    const c1 = xfm(Math.cos(a1), Math.sin(a1), ZF, spinA, tiltA);
-    const c2 = xfm(Math.cos(a2), Math.sin(a2), ZF, spinA, tiltA);
-    const c3 = xfm(Math.cos(a2), Math.sin(a2), ZB, spinA, tiltA);
-    const c4 = xfm(Math.cos(a1), Math.sin(a1), ZB, spinA, tiltA);
-    if (!c1 || !c2 || !c3 || !c4) continue;
-    const avgZ    = (c1[2] + c2[2] + c3[2] + c4[2]) / 4;
-    const diffuse = Math.max(0, ny * 0.85 + normalCamZ * 0.32);
-    const shade   = (0.10 + diffuse * 0.50) * Math.abs(normalCamZ);
-    quads.push({ c1, c2, c3, c4, shade, avgZ });
+  const walls = [
+    [RIM_OUTER,  false, false],
+    [RIM_INNER,  false, true ],
+    [EYE_OUTER,  true,  false],
+    [EYE_INNER,  true,  true ],
+    [IRIS_OUTER, false, false],
+    [IRIS_INNER, false, true ],
+    [PUP_OUTER,  false, false],
+    [PUP_INNER,  false, true ],
+  ];
+  for (const [pts, closed, inward] of walls) {
+    for (const q of buildPathQuads(pts, spinA, tiltA, closed, inward)) {
+      if (q.normalCamZ > 0) quads.push(q);
+    }
   }
-
-  for (const q of buildPathQuads(EYE_PTS,   spinA, tiltA, true))  { if (q.normalCamZ > 0) quads.push(q); }
-  for (const q of buildPathQuads(IRIS_PTS,  spinA, tiltA, false)) { if (q.normalCamZ > 0) quads.push(q); }
-  for (const q of buildPathQuads(PUPIL_PTS, spinA, tiltA, false)) { if (q.normalCamZ > 0) quads.push(q); }
-
   quads.sort((a, b) => a.avgZ - b.avgZ);
-
   for (const { c1, c2, c3, c4, shade } of quads) {
-    const s  = Math.min(1, shade);
-    ctx.fillStyle = `rgb(0,${Math.round(s * 160)},${Math.round(s * 210)})`;
+    const s = Math.min(1, shade);
+    ctx.fillStyle = `rgb(0,${Math.round(s * 161)},${Math.round(s * 209)})`;
     ctx.beginPath();
     ctx.moveTo(c1[0], c1[1]);
     ctx.lineTo(c2[0], c2[1]);
