@@ -108,32 +108,9 @@ export default function CoinLogo3D({ onCoinClick, colorR = 0, colorG = 255, colo
       });
     }
 
-    const THICKNESS = 0.22;
+    const THICKNESS = 0.14;
     const ZF =  THICKNESS / 2;
     const ZB = -THICKNESS / 2;
-
-    const RIM_HB  = 0.044;
-    const EYE_HB  = 0.036;
-    const IRIS_HB = 0.028;
-    const PUP_HB  = 0.022;
-
-    const RIM_OUTER  = circlePts(1.0    + RIM_HB,  96);
-    const RIM_INNER  = circlePts(1.0    - RIM_HB,  96);
-    const IRIS_OUTER = circlePts(80*S   + IRIS_HB, 56);
-    const IRIS_INNER = circlePts(80*S   - IRIS_HB, 56);
-    const PUP_OUTER  = circlePts(35*S   + PUP_HB,  40);
-    const PUP_INNER  = circlePts(35*S   - PUP_HB,  40);
-
-    function offsetEyePts(delta) {
-      return EYE_PTS.map(([x, y]) => {
-        const r = Math.sqrt(x*x + y*y);
-        if (r < 0.001) return [x, y];
-        const f = (r + delta) / r;
-        return [x*f, y*f];
-      });
-    }
-    const EYE_OUTER = offsetEyePts( EYE_HB);
-    const EYE_INNER = offsetEyePts(-EYE_HB);
 
     // ── Helpers ───────────────────────────────────────────────────────────────
     function polyPath(pts, faceZ, spinA, tiltA, mirrorX) {
@@ -192,7 +169,7 @@ export default function CoinLogo3D({ onCoinClick, colorR = 0, colorG = 255, colo
     }
 
     // ── Volumetric wall quads ─────────────────────────────────────────────────
-    function buildPathQuads(pts, spinA, tiltA, closed, inward = false) {
+    function buildPathQuads(pts, spinA, tiltA, closed) {
       const quads = [];
       const n = pts.length;
       const count = closed ? n : n - 1;
@@ -203,8 +180,8 @@ export default function CoinLogo3D({ onCoinClick, colorR = 0, colorG = 255, colo
         const my = (py0 + py1) / 2;
         const mlen = Math.sqrt(mx * mx + my * my);
         if (mlen < 0.001) continue;
-        const nx = inward ? -(mx / mlen) : (mx / mlen);
-        const ny = inward ? -(my / mlen) : (my / mlen);
+        const nx = mx / mlen;
+        const ny = my / mlen;
         const normalCamZ = -nx * Math.sin(spinA);
         const c1 = xfm(px0, py0, ZF, spinA, tiltA);
         const c2 = xfm(px1, py1, ZF, spinA, tiltA);
@@ -219,56 +196,31 @@ export default function CoinLogo3D({ onCoinClick, colorR = 0, colorG = 255, colo
       return quads;
     }
 
-    // Flat annular caps at ZF/ZB close each extruded band into a solid washer
-    function buildCapQuads(outerPts, innerPts, faceZ, spinA, tiltA, closed = false) {
-      const sign      = faceZ > 0 ? 1 : -1;
-      const faceNormZ = sign * Math.cos(spinA) * Math.cos(tiltA);
-      if (faceNormZ <= 0) return [];
-      const shade = faceNormZ * 0.60;
-      const n     = Math.min(outerPts.length, innerPts.length);
-      const count = closed ? n : n - 1;
-      const quads = [];
-      for (let i = 0; i < count; i++) {
-        const j  = (i + 1) % n;
-        const c1 = xfm(outerPts[i][0], outerPts[i][1], faceZ, spinA, tiltA);
-        const c2 = xfm(outerPts[j][0], outerPts[j][1], faceZ, spinA, tiltA);
-        const c3 = xfm(innerPts[j][0], innerPts[j][1], faceZ, spinA, tiltA);
-        const c4 = xfm(innerPts[i][0], innerPts[i][1], faceZ, spinA, tiltA);
-        if (!c1 || !c2 || !c3 || !c4) continue;
-        const avgZ = (c1[2] + c2[2] + c3[2] + c4[2]) / 4;
-        quads.push({ c1, c2, c3, c4, normalCamZ: faceNormZ, shade, avgZ });
-      }
-      return quads;
-    }
-
-    // ── Coin edge (extruded bands, depth-sorted) ──────────────────────────────
+    // ── Coin edge ─────────────────────────────────────────────────────────────
     function drawEdge(spinA, tiltA) {
+      const N = 96;
       const quads = [];
 
-      const walls = [
-        [RIM_OUTER,  false, false],
-        [RIM_INNER,  false, true ],
-        [EYE_OUTER,  true,  false],
-        [EYE_INNER,  true,  true ],
-        [IRIS_OUTER, false, false],
-        [IRIS_INNER, false, true ],
-        [PUP_OUTER,  false, false],
-        [PUP_INNER,  false, true ],
-      ];
-      for (const [pts, closed, inward] of walls)
-        for (const q of buildPathQuads(pts, spinA, tiltA, closed, inward))
-          quads.push(q);
-
-      const caps = [
-        [RIM_OUTER,  RIM_INNER,  false],
-        [EYE_OUTER,  EYE_INNER,  true ],
-        [IRIS_OUTER, IRIS_INNER, false],
-        [PUP_OUTER,  PUP_INNER,  false],
-      ];
-      for (const [outer, inner, closed] of caps) {
-        for (const q of buildCapQuads(outer, inner, ZF, spinA, tiltA, closed)) quads.push(q);
-        for (const q of buildCapQuads(outer, inner, ZB, spinA, tiltA, closed)) quads.push(q);
+      for (let i = 0; i < N; i++) {
+        const a1 = (i / N) * Math.PI * 2;
+        const a2 = ((i + 1) / N) * Math.PI * 2;
+        const am = (a1 + a2) / 2;
+        const nx = Math.cos(am), ny = Math.sin(am);
+        const normalCamZ = -nx * Math.sin(spinA);
+        const c1 = xfm(Math.cos(a1), Math.sin(a1), ZF, spinA, tiltA);
+        const c2 = xfm(Math.cos(a2), Math.sin(a2), ZF, spinA, tiltA);
+        const c3 = xfm(Math.cos(a2), Math.sin(a2), ZB, spinA, tiltA);
+        const c4 = xfm(Math.cos(a1), Math.sin(a1), ZB, spinA, tiltA);
+        if (!c1 || !c2 || !c3 || !c4) continue;
+        const avgZ    = (c1[2] + c2[2] + c3[2] + c4[2]) / 4;
+        const diffuse = Math.max(0, ny * 0.85 + normalCamZ * 0.32);
+        const shade   = (0.10 + diffuse * 0.50) * Math.abs(normalCamZ);
+        quads.push({ c1, c2, c3, c4, normalCamZ, shade, avgZ });
       }
+
+      for (const q of buildPathQuads(EYE_PTS,   spinA, tiltA, true))  quads.push(q);
+      for (const q of buildPathQuads(IRIS_PTS,  spinA, tiltA, false)) quads.push(q);
+      for (const q of buildPathQuads(PUPIL_PTS, spinA, tiltA, false)) quads.push(q);
 
       quads.sort((a, b) => a.avgZ - b.avgZ);
 
@@ -289,7 +241,7 @@ export default function CoinLogo3D({ onCoinClick, colorR = 0, colorG = 255, colo
       }
     }
 
-    // ── Glitch overlay (clipped to coin area) ─────────────────────────────────
+    // ── Glitch overlay ─────────────────────────────────────────────────────────
     function drawGlitch(intensity) {
       ctx.save();
       ctx.beginPath();
