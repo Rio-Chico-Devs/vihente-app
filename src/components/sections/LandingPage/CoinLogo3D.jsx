@@ -5,10 +5,9 @@ import { useEffect, useRef } from 'react';
 // Props: onCoinClick (called on click for easter-egg counter),
 //        colorR/G/B  (primary colour, 0-255 each)
 export default function CoinLogo3D({ onCoinClick, colorR = 0, colorG = 255, colorB = 255 }) {
-  const canvasRef      = useRef(null);
-  const onClickRef     = useRef(onCoinClick);
+  const canvasRef  = useRef(null);
+  const onClickRef = useRef(onCoinClick);
 
-  // Keep callback ref current without restarting animation
   useEffect(() => { onClickRef.current = onCoinClick; }, [onCoinClick]);
 
   useEffect(() => {
@@ -24,7 +23,6 @@ export default function CoinLogo3D({ onCoinClick, colorR = 0, colorG = 255, colo
     let glitchT = 0;
     const GLITCH_DUR = 0.75;
     let alive = true;
-    let breathe = 1; // slow glow pulse, updated each frame
 
     // ── Sizing ──────────────────────────────────────────────────────────────
     function resize() {
@@ -98,7 +96,10 @@ export default function CoinLogo3D({ onCoinClick, colorR = 0, colorG = 255, colo
       return pts;
     }
 
-    const EYE_PTS   = eyeSegs.flatMap(s => sampleBezier(s, 20));
+    const EYE_PTS   = eyeSegs.flatMap(s => sampleBezier(s, 28));
+    const IRIS_PTS  = circlePts(80 * S, 56);
+    const PUPIL_PTS = circlePts(35 * S, 40);
+    const RIM_PTS   = circlePts(1.0,    96);
 
     function circlePts(r, n) {
       return Array.from({ length: n + 1 }, (_, i) => {
@@ -107,76 +108,123 @@ export default function CoinLogo3D({ onCoinClick, colorR = 0, colorG = 255, colo
       });
     }
 
-    const IRIS_R  = 80 * S;
-    const PUPIL_R = 35 * S;
+    const THICKNESS = 0.22;
+    const ZF =  THICKNESS / 2;
+    const ZB = -THICKNESS / 2;
 
-    const THICKNESS = 0.30;
-
-    // Half-band widths (normalised coin units) — each element gets an inner
-    // and outer cylindrical wall so it looks like a real extruded band.
     const RIM_HB  = 0.044;
     const EYE_HB  = 0.036;
     const IRIS_HB = 0.028;
     const PUP_HB  = 0.022;
 
-    const RIM_OUTER  = circlePts(1.0      + RIM_HB,  72);
-    const RIM_INNER  = circlePts(1.0      - RIM_HB,  72);
-    const IRIS_OUTER = circlePts(IRIS_R   + IRIS_HB, 44);
-    const IRIS_INNER = circlePts(IRIS_R   - IRIS_HB, 44);
-    const PUP_OUTER  = circlePts(PUPIL_R  + PUP_HB,  28);
-    const PUP_INNER  = circlePts(PUPIL_R  - PUP_HB,  28);
+    const RIM_OUTER  = circlePts(1.0    + RIM_HB,  96);
+    const RIM_INNER  = circlePts(1.0    - RIM_HB,  96);
+    const IRIS_OUTER = circlePts(80*S   + IRIS_HB, 56);
+    const IRIS_INNER = circlePts(80*S   - IRIS_HB, 56);
+    const PUP_OUTER  = circlePts(35*S   + PUP_HB,  40);
+    const PUP_INNER  = circlePts(35*S   - PUP_HB,  40);
 
-    // Eye path inner/outer: radial offset at each point
     function offsetEyePts(delta) {
       return EYE_PTS.map(([x, y]) => {
-        const r = Math.sqrt(x * x + y * y);
+        const r = Math.sqrt(x*x + y*y);
         if (r < 0.001) return [x, y];
         const f = (r + delta) / r;
-        return [x * f, y * f];
+        return [x*f, y*f];
       });
     }
     const EYE_OUTER = offsetEyePts( EYE_HB);
     const EYE_INNER = offsetEyePts(-EYE_HB);
-    const ZF =  THICKNESS / 2;
-    const ZB = -THICKNESS / 2;
 
-    // ── Ambient glow (modulated by breathe) ──────────────────────────────────
+    // ── Helpers ───────────────────────────────────────────────────────────────
+    function polyPath(pts, faceZ, spinA, tiltA, mirrorX) {
+      ctx.beginPath();
+      let started = false;
+      for (const [px, py] of pts) {
+        const p = xfm(px * mirrorX, py, faceZ, spinA, tiltA);
+        if (!p) continue;
+        if (!started) { ctx.moveTo(p[0], p[1]); started = true; }
+        else ctx.lineTo(p[0], p[1]);
+      }
+    }
+
+    // ── Ambient glow ──────────────────────────────────────────────────────────
     function drawGlow(abscos) {
-      const glowR = R * (1.35 + 0.05 * abscos);
+      const glowR = R * (1.4 + 0.06 * abscos);
       const g = ctx.createRadialGradient(CX, CY, R * 0.4, CX, CY, glowR);
-      g.addColorStop(0,   `rgba(${CR},${CG},${CB},${(0.055 * abscos * breathe).toFixed(4)})`);
-      g.addColorStop(0.5, `rgba(${CR},${CG},${CB},${(0.013 * breathe).toFixed(4)})`);
+      g.addColorStop(0,   `rgba(${CR},${CG},${CB},${(0.065 * abscos).toFixed(4)})`);
+      g.addColorStop(0.5, `rgba(${CR},${CG},${CB},0.014)`);
       g.addColorStop(1,   'rgba(0,0,0,0)');
       ctx.fillStyle = g;
       ctx.fillRect(0, 0, W, H);
     }
 
-    // ── Filled quad walls ─────────────────────────────────────────────────────
-    // Shading is handled by a shared gradient in drawEdge — only positions
-    // and depth value needed here.
-    function buildPathQuads(pts, spinA, tiltA, closed) {
+    // ── Coin face strokes ─────────────────────────────────────────────────────
+    function drawFace(faceZ, spinA, tiltA, isFront, faceAlpha, isNear) {
+      if (faceAlpha < 0.015) return;
+      const mirrorX = isFront ? 1 : -1;
+      const ea    = Math.min(1, faceAlpha * (isNear ? 1.3 : 0.85));
+      const lwRim = isNear ? (5.5 + faceAlpha * 4.5) : (2.5 + faceAlpha * 2.5);
+      const lwEye = isNear ? (3.5 + faceAlpha * 4.5) : (1.8 + faceAlpha * 2.0);
+
+      if (isNear && faceAlpha > 0.60) {
+        ctx.shadowColor = `rgba(${CR},${CG},${CB},0.60)`;
+        ctx.shadowBlur  = 13 * faceAlpha;
+      }
+
+      ctx.strokeStyle = `rgba(${CR},${CG},${CB},${ea.toFixed(3)})`;
+      ctx.lineWidth   = lwRim;
+      polyPath(RIM_PTS, faceZ, spinA, tiltA, 1);
+      ctx.closePath(); ctx.stroke();
+
+      ctx.lineWidth = lwEye;
+      polyPath(EYE_PTS, faceZ, spinA, tiltA, mirrorX);
+      ctx.closePath(); ctx.stroke();
+
+      ctx.lineWidth = lwEye * 0.84;
+      polyPath(IRIS_PTS, faceZ, spinA, tiltA, mirrorX);
+      ctx.closePath(); ctx.stroke();
+
+      ctx.lineWidth = lwEye * 0.68;
+      polyPath(PUPIL_PTS, faceZ, spinA, tiltA, mirrorX);
+      ctx.closePath(); ctx.stroke();
+
+      ctx.shadowBlur = 0;
+    }
+
+    // ── Volumetric wall quads ─────────────────────────────────────────────────
+    function buildPathQuads(pts, spinA, tiltA, closed, inward = false) {
       const quads = [];
-      const n     = pts.length;
+      const n = pts.length;
       const count = closed ? n : n - 1;
       for (let i = 0; i < count; i++) {
         const [px0, py0] = pts[i];
         const [px1, py1] = pts[(i + 1) % n];
+        const mx = (px0 + px1) / 2;
+        const my = (py0 + py1) / 2;
+        const mlen = Math.sqrt(mx * mx + my * my);
+        if (mlen < 0.001) continue;
+        const nx = inward ? -(mx / mlen) : (mx / mlen);
+        const ny = inward ? -(my / mlen) : (my / mlen);
+        const normalCamZ = -nx * Math.sin(spinA);
         const c1 = xfm(px0, py0, ZF, spinA, tiltA);
         const c2 = xfm(px1, py1, ZF, spinA, tiltA);
         const c3 = xfm(px1, py1, ZB, spinA, tiltA);
         const c4 = xfm(px0, py0, ZB, spinA, tiltA);
         if (!c1 || !c2 || !c3 || !c4) continue;
-        const avgZ = (c1[2] + c2[2] + c3[2] + c4[2]) / 4;
-        quads.push({ c1, c2, c3, c4, avgZ });
+        const avgZ    = (c1[2] + c2[2] + c3[2] + c4[2]) / 4;
+        const diffuse = Math.max(0, ny * 0.85 + normalCamZ * 0.32);
+        const shade   = (0.10 + diffuse * 0.50) * Math.abs(normalCamZ);
+        quads.push({ c1, c2, c3, c4, normalCamZ, shade, avgZ });
       }
       return quads;
     }
 
-    // Annular cap faces at ZF or ZB.
+    // Flat annular caps at ZF/ZB close each extruded band into a solid washer
     function buildCapQuads(outerPts, innerPts, faceZ, spinA, tiltA, closed = false) {
       const sign      = faceZ > 0 ? 1 : -1;
       const faceNormZ = sign * Math.cos(spinA) * Math.cos(tiltA);
       if (faceNormZ <= 0) return [];
+      const shade = faceNormZ * 0.60;
       const n     = Math.min(outerPts.length, innerPts.length);
       const count = closed ? n : n - 1;
       const quads = [];
@@ -188,56 +236,28 @@ export default function CoinLogo3D({ onCoinClick, colorR = 0, colorG = 255, colo
         const c4 = xfm(innerPts[i][0], innerPts[i][1], faceZ, spinA, tiltA);
         if (!c1 || !c2 || !c3 || !c4) continue;
         const avgZ = (c1[2] + c2[2] + c3[2] + c4[2]) / 4;
-        quads.push({ c1, c2, c3, c4, avgZ });
+        quads.push({ c1, c2, c3, c4, normalCamZ: faceNormZ, shade, avgZ });
       }
       return quads;
     }
 
-    // All wall quads share ONE linear gradient per frame → adjacent quads sample
-    // the same continuous value at their shared edge = zero visible seams.
-    // Cap quads share a radial gradient → natural face glow, also seam-free.
+    // ── Coin edge (extruded bands, depth-sorted) ──────────────────────────────
     function drawEdge(spinA, tiltA) {
-      const rc      = v => Math.round(v);
-      const sinA    = Math.sin(spinA);
-      const cosSpin = Math.cos(spinA);
-      const cosTilt = Math.cos(tiltA);
-
-      // Linear gradient: bright on near side, dim on far side
-      const brightX  = sinA > 0 ? CX - R : CX + R;
-      const dimX     = sinA > 0 ? CX + R : CX - R;
-      const sMax     = 0.15 + 0.32 * Math.abs(sinA);
-      const sAmb     = 0.055;
-      const wc       = s => `rgb(${rc(s*CR*0.50)},${rc(s*CG)},${rc(s*CB)})`;
-      const wallGrad = ctx.createLinearGradient(brightX, 0, dimX, 0);
-      wallGrad.addColorStop(0,    wc(sMax));
-      wallGrad.addColorStop(0.45, wc(sAmb));
-      wallGrad.addColorStop(1,    wc(sAmb));
-
-      // Radial gradient for flat cap faces — breathe-modulated glow
-      const faceVis = Math.abs(cosSpin * cosTilt) * breathe;
-      const capPeak = faceVis * 0.90;
-      const cc      = s => `rgb(${rc(s*CR*0.45)},${rc(s*CG)},${rc(s*CB)})`;
-      const capGrad = ctx.createRadialGradient(CX, CY, R * 0.05, CX, CY, R);
-      capGrad.addColorStop(0,   cc(capPeak * 1.15));
-      capGrad.addColorStop(0.5, cc(capPeak));
-      capGrad.addColorStop(1,   cc(capPeak * 0.30));
-
       const quads = [];
 
       const walls = [
-        [RIM_OUTER,  false],
-        [RIM_INNER,  false],
-        [EYE_OUTER,  true ],
-        [EYE_INNER,  true ],
-        [IRIS_OUTER, false],
-        [IRIS_INNER, false],
-        [PUP_OUTER,  false],
-        [PUP_INNER,  false],
+        [RIM_OUTER,  false, false],
+        [RIM_INNER,  false, true ],
+        [EYE_OUTER,  true,  false],
+        [EYE_INNER,  true,  true ],
+        [IRIS_OUTER, false, false],
+        [IRIS_INNER, false, true ],
+        [PUP_OUTER,  false, false],
+        [PUP_INNER,  false, true ],
       ];
-      for (const [pts, closed] of walls) {
-        for (const q of buildPathQuads(pts, spinA, tiltA, closed))
-          quads.push({ ...q, isWall: true });
-      }
+      for (const [pts, closed, inward] of walls)
+        for (const q of buildPathQuads(pts, spinA, tiltA, closed, inward))
+          quads.push(q);
 
       const caps = [
         [RIM_OUTER,  RIM_INNER,  false],
@@ -246,34 +266,27 @@ export default function CoinLogo3D({ onCoinClick, colorR = 0, colorG = 255, colo
         [PUP_OUTER,  PUP_INNER,  false],
       ];
       for (const [outer, inner, closed] of caps) {
-        for (const q of buildCapQuads(outer, inner, ZF, spinA, tiltA, closed)) quads.push({ ...q, isWall: false });
-        for (const q of buildCapQuads(outer, inner, ZB, spinA, tiltA, closed)) quads.push({ ...q, isWall: false });
+        for (const q of buildCapQuads(outer, inner, ZF, spinA, tiltA, closed)) quads.push(q);
+        for (const q of buildCapQuads(outer, inner, ZB, spinA, tiltA, closed)) quads.push(q);
       }
 
       quads.sort((a, b) => a.avgZ - b.avgZ);
-      for (const { c1, c2, c3, c4, isWall } of quads) {
-        ctx.fillStyle = isWall ? wallGrad : capGrad;
+
+      for (const { c1, c2, c3, c4, normalCamZ, shade } of quads) {
         ctx.beginPath();
-        ctx.moveTo(c1[0], c1[1]); ctx.lineTo(c2[0], c2[1]);
-        ctx.lineTo(c3[0], c3[1]); ctx.lineTo(c4[0], c4[1]);
+        ctx.moveTo(c1[0], c1[1]);
+        ctx.lineTo(c2[0], c2[1]);
+        ctx.lineTo(c3[0], c3[1]);
+        ctx.lineTo(c4[0], c4[1]);
         ctx.closePath();
+        if (normalCamZ > 0) {
+          const s = Math.min(1, shade);
+          ctx.fillStyle = `rgb(${Math.round(s*CR*0.55)},${Math.round(s*CG*0.63)},${Math.round(s*CB*0.82)})`;
+        } else {
+          ctx.fillStyle = `rgba(${Math.round(CR*0.04)},${Math.round(CG*0.08)},${Math.round(CB*0.11)},0.70)`;
+        }
         ctx.fill();
       }
-    }
-
-    // Soft radial glow on the coin face — visible when face is toward camera,
-    // fades away edge-on, breathe-modulated.
-    function drawFaceGlow(spinA, tiltA) {
-      const faceNormZ = Math.abs(Math.cos(spinA) * Math.cos(tiltA));
-      if (faceNormZ < 0.04) return;
-      const a  = (faceNormZ * 0.26 * breathe).toFixed(3);
-      const a2 = (faceNormZ * 0.07 * breathe).toFixed(3);
-      const g  = ctx.createRadialGradient(CX, CY, 0, CX, CY, R);
-      g.addColorStop(0,   `rgba(${CR},${CG},${CB},${a})`);
-      g.addColorStop(0.5, `rgba(${CR},${CG},${CB},${a2})`);
-      g.addColorStop(1,   'rgba(0,0,0,0)');
-      ctx.fillStyle = g;
-      ctx.fillRect(0, 0, W, H);
     }
 
     // ── Glitch overlay (clipped to coin area) ─────────────────────────────────
@@ -283,10 +296,10 @@ export default function CoinLogo3D({ onCoinClick, colorR = 0, colorG = 255, colo
       ctx.arc(CX, CY, R * 1.38, 0, Math.PI * 2);
       ctx.clip();
 
-      const xL     = CX - R * 1.4;
+      const xL      = CX - R * 1.4;
       const glitchW = R * 2.8;
-      const yMin   = CY - R * 1.3;
-      const yRange = R * 2.6;
+      const yMin    = CY - R * 1.3;
+      const yRange  = R * 2.6;
 
       const bands = Math.floor(2 + intensity * 6);
       for (let i = 0; i < bands; i++) {
@@ -315,9 +328,6 @@ export default function CoinLogo3D({ onCoinClick, colorR = 0, colorG = 255, colo
       if (glitchT > 0) glitchT = Math.max(0, glitchT - dt);
       const glitchI = glitchT / GLITCH_DUR;
 
-      // Slow breathing pulse — ~10.5s period, range 0.68 → 1.0
-      breathe = 0.68 + 0.32 * (0.5 + 0.5 * Math.sin(time * 0.6));
-
       const stutter = glitchI > 0 ? Math.sin(time * 28) * 0.18 * glitchI * glitchI : 0;
       const spinA   = 0.74 * time + stutter;
       const tiltA   = 0.07 * Math.sin(time * 0.55);
@@ -326,8 +336,21 @@ export default function CoinLogo3D({ onCoinClick, colorR = 0, colorG = 255, colo
 
       ctx.clearRect(0, 0, W, H);
       drawGlow(abscos);
-      drawEdge(spinA, tiltA);
-      drawFaceGlow(spinA, tiltA);
+
+      const fF_alpha  = Math.max(0, cosSpin) + Math.max(0, -cosSpin) * 0.30;
+      const fF_isNear = cosSpin >= 0;
+      const fB_alpha  = Math.max(0, -cosSpin) + Math.max(0, cosSpin) * 0.30;
+      const fB_isNear = cosSpin < 0;
+
+      if (cosSpin >= 0) {
+        drawFace(ZB, spinA, tiltA, false, fB_alpha, fB_isNear);
+        drawEdge(spinA, tiltA);
+        drawFace(ZF, spinA, tiltA, true,  fF_alpha, fF_isNear);
+      } else {
+        drawFace(ZF, spinA, tiltA, true,  fF_alpha, fF_isNear);
+        drawEdge(spinA, tiltA);
+        drawFace(ZB, spinA, tiltA, false, fB_alpha, fB_isNear);
+      }
 
       if (glitchI > 0) drawGlitch(glitchI);
       requestAnimationFrame(loop);
@@ -340,7 +363,7 @@ export default function CoinLogo3D({ onCoinClick, colorR = 0, colorG = 255, colo
       ro.disconnect();
       canvas.removeEventListener('click', handleClick);
     };
-  }, [colorR, colorG, colorB]); // restarts only on theme change
+  }, [colorR, colorG, colorB]);
 
   return (
     <canvas
