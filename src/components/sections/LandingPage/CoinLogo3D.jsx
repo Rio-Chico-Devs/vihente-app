@@ -23,6 +23,8 @@ export default function CoinLogo3D({ onCoinClick, colorR = 0, colorG = 255, colo
     let glitchT = 0;
     const GLITCH_DUR = 0.75;
     let alive = true;
+    let rafId = null;
+    let isVisible = true; // false → skip rendering, no RAF rescheduled
 
     // ── Sizing ──────────────────────────────────────────────────────────────
     function resize() {
@@ -41,6 +43,29 @@ export default function CoinLogo3D({ onCoinClick, colorR = 0, colorG = 255, colo
     const ro = new ResizeObserver(resize);
     ro.observe(canvas);
     resize();
+
+    // Pause RAF when canvas scrolls out of view or tab is hidden; resume on return
+    let isIntersecting = true;
+
+    function resumeLoop() {
+      if (alive && isVisible && !rafId) rafId = requestAnimationFrame(loop);
+    }
+
+    const io = new IntersectionObserver(
+      ([entry]) => {
+        isIntersecting = entry.isIntersecting;
+        isVisible = isIntersecting && !document.hidden;
+        if (isVisible) resumeLoop();
+      },
+      { threshold: 0.01 }
+    );
+    io.observe(canvas);
+
+    const handleVisibility = () => {
+      isVisible = isIntersecting && !document.hidden;
+      if (isVisible) resumeLoop();
+    };
+    document.addEventListener('visibilitychange', handleVisibility);
 
     function handleClick() {
       glitchT = GLITCH_DUR;
@@ -271,7 +296,9 @@ export default function CoinLogo3D({ onCoinClick, colorR = 0, colorG = 255, colo
 
     // ── Render loop ───────────────────────────────────────────────────────────
     function loop(ts) {
+      rafId = null;
       if (!alive) return;
+      if (!isVisible) return; // stays stopped until resumeLoop() is called
       if (!t0) { t0 = ts; prevTs = ts; }
       const time = (ts - t0) / 1000;
       const dt   = Math.min((ts - prevTs) / 1000, 0.05);
@@ -305,14 +332,17 @@ export default function CoinLogo3D({ onCoinClick, colorR = 0, colorG = 255, colo
       }
 
       if (glitchI > 0) drawGlitch(glitchI);
-      requestAnimationFrame(loop);
+      rafId = requestAnimationFrame(loop);
     }
 
-    requestAnimationFrame(loop);
+    rafId = requestAnimationFrame(loop);
 
     return () => {
       alive = false;
+      if (rafId) cancelAnimationFrame(rafId);
       ro.disconnect();
+      io.disconnect();
+      document.removeEventListener('visibilitychange', handleVisibility);
       canvas.removeEventListener('click', handleClick);
     };
   }, [colorR, colorG, colorB]);
