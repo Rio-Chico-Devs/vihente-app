@@ -1,4 +1,4 @@
-import { useState, lazy, Suspense } from 'react';
+import { useState, useEffect, lazy, Suspense } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import ThemeProvider from './contexts/ThemeProvider';
 import { GuideProvider } from './contexts/GuideContext';
@@ -6,28 +6,24 @@ import { SettingsProvider } from './contexts/SettingsContext';
 import { TourProvider } from './contexts/TourContext';
 import ErrorBoundary from './components/ErrorBoundary/ErrorBoundary';
 import Navbar from './components/sections/Navbar/Navbar';
-import Iris from './components/Iris/Iris';
 import Footer from './components/sections/Footer/Footer';
 import CustomCursor from './components/sections/Cursor/CustomCursor';
 import ThemeToggle from './components/ThemeToggle/ThemeToggle';
 import ScrollingHeader from './components/ScrollingHeader';
-import CookieConsentBanner from './components/global/CookieConsent/CookieConsent';
 import PageTransition from './components/PageTransition/PageTransition';
-import SiteSoundtrack from './components/SiteSoundtrack/SiteSoundtrack';
-import TourOverlay from './components/Tour/TourOverlay';
+
+// 🏠 EAGER: la home è l'ingresso principale — import diretto evita lo spinner al primo accesso
+import LandingPage from './components/sections/LandingPage/LandingPage';
+
+// 🌙 LAZY OVERLAYS: non critici per il First Paint, montati via <Suspense fallback={null}>
+const Iris = lazy(() => import('./components/Iris/Iris'));
+const TourOverlay = lazy(() => import('./components/Tour/TourOverlay'));
+const SiteSoundtrack = lazy(() => import('./components/SiteSoundtrack/SiteSoundtrack'));
+const CookieConsentBanner = lazy(() => import('./components/global/CookieConsent/CookieConsent'));
 
 // 🚀 LAZY LOADING - Carica componenti solo quando necessario
-const LandingPage = lazy(() => import('./components/sections/LandingPage/LandingPage'));
 const MyStory = lazy(() => import('./components/sections/MyStory/MyStory'));
-const ServicesPage = lazy(() => {
-  console.log('📦 [LAZY] Starting to load ServicesPage chunk...');
-  const start = performance.now();
-  return import('./components/sections/ServicesPage/ServicesPage').then(module => {
-    const duration = performance.now() - start;
-    console.log(`✅ [LAZY] ServicesPage chunk loaded in ${duration.toFixed(2)}ms`);
-    return module;
-  });
-});
+const ServicesPage = lazy(() => import('./components/sections/ServicesPage/ServicesPage'));
 const ConsulenzePage = lazy(() => import('./components/sections/ConsulenzePage/ConsulenzePage'));
 const SitiWebPage = lazy(() => import('./components/sections/SitiWebPage/SitiWebPage'));
 const PresenzaOnlinePage = lazy(() => import('./components/sections/PresenzaOnline/PresenzaOnlinePage'));
@@ -55,7 +51,6 @@ const Settings = lazy(() => import('./components/sections/Settings/Settings'));
 
 // 🎨 Loading Spinner Component
 const LoadingSpinner = () => {
-  console.log('⏳ [SUSPENSE] LoadingSpinner shown - Lazy loading in progress...');
   return (
     <div style={{
       minHeight: '100dvh',
@@ -94,6 +89,24 @@ const LoadingSpinner = () => {
 function App() {
   const [startTime] = useState(Date.now());
 
+  // 🔮 Prefetch delle route più probabili dopo il First Paint, in idle time.
+  // I chunk vengono scaricati e cachati dal browser, quindi la navigazione successiva è istantanea.
+  useEffect(() => {
+    const idle = window.requestIdleCallback || ((cb) => setTimeout(cb, 1500));
+    const handle = idle(() => {
+      import('./components/sections/MyStory/MyStory');
+      import('./components/sections/ServicesPage/ServicesPage');
+      import('./components/sections/Portfolio/Portfolio');
+      import('./components/sections/Contacts/Contacts');
+      import('./components/sections/Showroom/Showroom');
+    });
+    return () => {
+      if (window.cancelIdleCallback && typeof handle === 'number') {
+        window.cancelIdleCallback(handle);
+      }
+    };
+  }, []);
+
   return (
     <ErrorBoundary>
       <ThemeProvider>
@@ -102,11 +115,15 @@ function App() {
       <GuideProvider>
         <BrowserRouter basename={import.meta.env.DEV ? '/' : '/vihente-app'}>
           <CustomCursor />
-          <Iris />
-          <TourOverlay />
-          <SiteSoundtrack />
           <ThemeToggle />
-          <CookieConsentBanner isBooting={false} />
+
+          {/* Overlay non critici: caricati in background, niente spinner */}
+          <Suspense fallback={null}>
+            <Iris />
+            <TourOverlay />
+            <SiteSoundtrack />
+            <CookieConsentBanner isBooting={false} />
+          </Suspense>
 
           <>
             <Navbar />
