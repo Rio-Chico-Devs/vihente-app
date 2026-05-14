@@ -367,6 +367,9 @@ const LandingPageOldEye = ({ startTime }) => {
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
     function draw() {
+      // Skip draw quando il tab è nascosto: zero CPU/batteria sprecati.
+      if (document.hidden) return;
+
       ctx.fillStyle = theme === 'light' ? 'rgba(8, 6, 4, 0.05)' : 'rgba(0, 0, 0, 0.05)';
       ctx.fillRect(0, 0, canvas.width, canvas.height);
 
