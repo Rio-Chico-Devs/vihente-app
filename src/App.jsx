@@ -1,4 +1,4 @@
-import { useState, useEffect, lazy, Suspense } from 'react';
+import { useState, lazy, Suspense } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import ThemeProvider from './contexts/ThemeProvider';
 import { GuideProvider } from './contexts/GuideContext';
@@ -89,23 +89,8 @@ const LoadingSpinner = () => {
 function App() {
   const [startTime] = useState(Date.now());
 
-  // 🔮 Prefetch delle route più probabili dopo il First Paint, in idle time.
-  // I chunk vengono scaricati e cachati dal browser, quindi la navigazione successiva è istantanea.
-  useEffect(() => {
-    const idle = window.requestIdleCallback || ((cb) => setTimeout(cb, 1500));
-    const handle = idle(() => {
-      import('./components/sections/MyStory/MyStory');
-      import('./components/sections/ServicesPage/ServicesPage');
-      import('./components/sections/Portfolio/Portfolio');
-      import('./components/sections/Contacts/Contacts');
-      import('./components/sections/Showroom/Showroom');
-    });
-    return () => {
-      if (window.cancelIdleCallback && typeof handle === 'number') {
-        window.cancelIdleCallback(handle);
-      }
-    };
-  }, []);
+  // 🔮 Il prefetch on-intent vive nella Navbar: hover-prefetch su desktop,
+  // pointerdown-prefetch su mobile. Vedi src/components/sections/Navbar/Navbar.jsx.
 
   return (
     <ErrorBoundary>
