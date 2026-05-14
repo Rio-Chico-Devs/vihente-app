@@ -17,6 +17,7 @@ const ComponentShowcase = () => {
     'dashboard':       'Pannello analytics con grafici SVG, KPI, metriche ECG scrollanti e selezione periodo.',
     'image-checker':   'componente per analizzare immagini, con lente per focalizzare piccoli dettagli',
     'booking':         'Sistema di prenotazione con calendario interattivo e gestione disponibilità.',
+    'backgrounds':     '5 shader wallpaper WebGL interattivi — il cursore è l\'unico protagonista.',
   };
 
   // Icona lente di ingrandimento SVG (stile consulenze)
@@ -190,6 +191,23 @@ const ComponentShowcase = () => {
           </div>
           <div className="mini-checker-image">
             <div className="mini-checker-lens"></div>
+          </div>
+        </div>
+      )
+    },
+    {
+      id: 'backgrounds',
+      title: 'Shader Wallpapers',
+      description: '5 sfondi WebGL interattivi — cursore come unico focus point',
+      path: '/portfolio/componenti/backgrounds',
+      preview: (
+        <div className="mini-backgrounds">
+          <div className="mini-bg-dots" />
+          <div className="mini-bg-glow" />
+          <div className="mini-bg-chips">
+            {['#FFC061','#8DEAFF','#B3FF73','#FF4080','#4DA0FF'].map((c, i) => (
+              <div key={i} className="mini-bg-chip" style={{ background: c, boxShadow: `0 0 6px ${c}` }} />
+            ))}
           </div>
         </div>
       )

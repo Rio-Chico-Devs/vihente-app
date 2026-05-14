@@ -45,6 +45,7 @@ const FemosBlackMarketPage = lazy(() => import('./components/sections/Portfolio/
 const DashboardPage = lazy(() => import('./components/sections/Portfolio/ComponentShowcase/DashboardPage/DashboardPage'));
 const ImageCheckerPage = lazy(() => import('./components/sections/Portfolio/ComponentShowcase/ImageCheckerPage/ImageCheckerPage'));
 const BookingPage = lazy(() => import('./components/sections/Portfolio/ComponentShowcase/BookingPage/BookingPage'));
+const BackgroundsPage = lazy(() => import('./components/sections/Portfolio/ComponentShowcase/BackgroundsPage/BackgroundsPage'));
 const Showroom = lazy(() => import('./components/sections/Showroom/Showroom'));
 const Contacts = lazy(() => import('./components/sections/Contacts/Contacts'));
 const PrivacyPolicy = lazy(() => import('./components/sections/PrivacyPolicy/PrivacyPolicy'));
@@ -138,6 +139,7 @@ function App() {
                     <Route path="/portfolio/componenti/dashboard" element={<DashboardPage />} />
                     <Route path="/portfolio/componenti/image-checker" element={<ImageCheckerPage />} />
                     <Route path="/portfolio/componenti/booking" element={<BookingPage />} />
+                    <Route path="/portfolio/componenti/backgrounds" element={<BackgroundsPage />} />
                     <Route path="/showroom" element={<Showroom />} />
                     <Route path="/contatti" element={<Contacts />} />
                     <Route path="/privacy-policy" element={<PrivacyPolicy />} />

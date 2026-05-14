@@ -27,6 +27,7 @@ const PAGE_GUIDES = {
   '/portfolio/componenti/black-market':   "Femo's Black Market — negozio cyberpunk con carrello simulato.",
   '/portfolio/componenti/dashboard':      'Analytics Dashboard — metriche e grafici in tempo reale.',
   '/portfolio/componenti/booking':        'Booking System — prenota sessioni scegliendo data e orario.',
+  '/portfolio/componenti/backgrounds':   'Shader Wallpapers — 5 sfondi WebGL interattivi controllati dal cursore.',
   '/portfolio/componenti/music-player':   'Music Player — riproduttore con equalizzatore e playlist.',
   '/portfolio/componenti/crud-simulator': 'Gestionale Logistico — magazzino con form CRUD.',
   '/portfolio/componenti/slider':         'Expanding Gallery — pannelli espandibili con lightbox.',

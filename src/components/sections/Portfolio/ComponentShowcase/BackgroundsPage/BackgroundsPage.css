@@ -1,0 +1,369 @@
+/* ═══════════════════════════════════════════════════════════════
+   BACKGROUNDS PAGE — Shader Wallpapers
+   Full-viewport WebGL canvas + minimal dark UI overlay.
+   z-index budget: canvas 0 → ui 50 → navbar 100
+═══════════════════════════════════════════════════════════════ */
+
+/* ── Page shell ───────────────────────────────────────────────── */
+
+.bgp-page {
+  position: relative;
+  min-height: 100dvh;
+  background: #000;
+  overflow: hidden;
+}
+
+/* ── WebGL Canvas ─────────────────────────────────────────────── */
+
+.bgp-canvas {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  z-index: 0;
+}
+
+/* ── Error state ──────────────────────────────────────────────── */
+
+.bgp-error {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 5;
+  color: rgba(255,255,255,0.45);
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 0.85rem;
+  letter-spacing: 0.1em;
+  pointer-events: none;
+}
+
+/* ── UI overlay ───────────────────────────────────────────────── */
+
+.bgp-ui {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  display: flex;
+  flex-direction: column;
+  pointer-events: none;
+}
+
+/* ── Top bar ──────────────────────────────────────────────────── */
+
+.bgp-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1rem 1.5rem;
+  padding-top: calc(1rem + 76px); /* clear fixed navbar */
+  background: linear-gradient(to bottom, rgba(0,0,0,0.65) 0%, transparent 100%);
+  pointer-events: auto;
+}
+
+.bgp-back {
+  background: transparent;
+  border: 1px solid rgba(255,255,255,0.18);
+  color: rgba(255,255,255,0.7);
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 0.7rem;
+  letter-spacing: 0.18em;
+  padding: 0.45rem 0.85rem;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: border-color 0.2s, color 0.2s;
+  flex-shrink: 0;
+}
+
+.bgp-back:hover {
+  border-color: rgba(255,255,255,0.5);
+  color: #fff;
+}
+
+.bgp-title-group {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.15rem;
+}
+
+.bgp-section-label {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: rgba(255,255,255,0.5);
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+}
+
+.bgp-active-name {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 1.4rem;
+  font-weight: 900;
+  letter-spacing: 0.3em;
+  text-shadow: 0 0 18px currentColor;
+  transition: color 0.3s ease;
+}
+
+.bgp-tweaks-toggle {
+  background: rgba(0,0,0,0.4);
+  border: 1px solid rgba(255,255,255,0.2);
+  color: rgba(255,255,255,0.65);
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 0.7rem;
+  letter-spacing: 0.15em;
+  padding: 0.45rem 0.85rem;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: border-color 0.2s, color 0.2s, background 0.2s;
+  flex-shrink: 0;
+}
+
+.bgp-tweaks-toggle:hover,
+.bgp-tweaks-toggle.open {
+  border-color: rgba(255,255,255,0.5);
+  color: #fff;
+  background: rgba(0,0,0,0.6);
+}
+
+/* ── Tweaks panel ─────────────────────────────────────────────── */
+
+.bgp-tweaks-panel {
+  margin: 0.5rem 1.5rem 0;
+  background: rgba(0,0,0,0.72);
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 6px;
+  padding: 0.9rem 1.2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+  pointer-events: auto;
+  max-width: 380px;
+
+  /* Collapsed by default */
+  max-height: 0;
+  overflow: hidden;
+  opacity: 0;
+  padding-top: 0;
+  padding-bottom: 0;
+  border-width: 0;
+  transition: max-height 0.35s ease, opacity 0.25s ease, padding 0.25s ease, border-width 0.1s;
+}
+
+.bgp-tweaks-panel.visible {
+  max-height: 260px;
+  opacity: 1;
+  padding: 0.9rem 1.2rem;
+  border-width: 1px;
+}
+
+.bgp-tweak-row {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.bgp-tweak-row label {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 0.62rem;
+  letter-spacing: 0.2em;
+  color: rgba(255,255,255,0.55);
+  width: 58px;
+  flex-shrink: 0;
+}
+
+.bgp-tweak-row input[type="range"] {
+  flex: 1;
+  -webkit-appearance: none;
+  height: 3px;
+  background: rgba(255,255,255,0.15);
+  border-radius: 2px;
+  outline: none;
+  cursor: pointer;
+}
+
+.bgp-tweak-row input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: #fff;
+  cursor: pointer;
+  box-shadow: 0 0 6px rgba(255,255,255,0.4);
+}
+
+.bgp-tweak-row input[type="range"]::-moz-range-thumb {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: #fff;
+  cursor: pointer;
+  border: none;
+}
+
+.bgp-tweak-row span {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 0.62rem;
+  color: rgba(255,255,255,0.5);
+  width: 32px;
+  text-align: right;
+  flex-shrink: 0;
+}
+
+.bgp-tweak-row--mono {
+  padding-top: 0.1rem;
+  border-top: 1px solid rgba(255,255,255,0.07);
+  margin-top: 0.1rem;
+}
+
+.bgp-mono-btn {
+  background: rgba(255,255,255,0.07);
+  border: 1px solid rgba(255,255,255,0.18);
+  color: rgba(255,255,255,0.55);
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 0.62rem;
+  letter-spacing: 0.15em;
+  padding: 0.3rem 0.7rem;
+  border-radius: 3px;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+}
+
+.bgp-mono-btn.on {
+  background: rgba(255,255,255,0.9);
+  color: #000;
+  border-color: #fff;
+}
+
+/* ── Spacer ───────────────────────────────────────────────────── */
+
+.bgp-spacer { flex: 1; }
+
+/* ── Wallpaper selector ───────────────────────────────────────── */
+
+.bgp-selector {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  padding: 0.8rem 1.5rem;
+  pointer-events: auto;
+}
+
+.bgp-chip {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  background: rgba(0,0,0,0.55);
+  border: 1px solid rgba(255,255,255,0.15);
+  color: rgba(255,255,255,0.6);
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 0.68rem;
+  letter-spacing: 0.16em;
+  padding: 0.5rem 0.9rem;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: border-color 0.22s, color 0.22s, background 0.22s, box-shadow 0.22s;
+  white-space: nowrap;
+}
+
+.bgp-chip-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--chip-accent, #fff);
+  flex-shrink: 0;
+  box-shadow: 0 0 6px var(--chip-accent, #fff);
+  opacity: 0.65;
+  transition: opacity 0.2s;
+}
+
+.bgp-chip:hover {
+  border-color: var(--chip-accent, rgba(255,255,255,0.5));
+  color: #fff;
+  background: rgba(0,0,0,0.7);
+}
+
+.bgp-chip.active {
+  border-color: var(--chip-accent, #fff);
+  color: #fff;
+  background: rgba(0,0,0,0.75);
+  box-shadow: 0 0 14px rgba(255,255,255,0.06), inset 0 0 8px rgba(255,255,255,0.03);
+}
+
+.bgp-chip.active .bgp-chip-dot {
+  opacity: 1;
+}
+
+/* ── Description strip ────────────────────────────────────────── */
+
+.bgp-desc {
+  text-align: center;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 0.68rem;
+  color: rgba(255,255,255,0.38);
+  letter-spacing: 0.05em;
+  line-height: 1.5;
+  padding: 0 1.5rem 1.4rem;
+  margin: 0;
+  pointer-events: none;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   RESPONSIVE
+═══════════════════════════════════════════════════════════════ */
+
+@media (max-width: 768px) {
+  .bgp-topbar {
+    padding-top: calc(0.8rem + 70px);
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+
+  .bgp-active-name {
+    font-size: 1.1rem;
+  }
+
+  .bgp-tweaks-panel {
+    margin: 0.5rem 1rem 0;
+    max-width: none;
+  }
+
+  .bgp-selector {
+    gap: 0.4rem;
+    padding: 0.7rem 0.75rem;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .bgp-chip {
+    font-size: 0.62rem;
+    padding: 0.45rem 0.7rem;
+  }
+
+  .bgp-section-label {
+    font-size: 0.62rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .bgp-chip-name {
+    display: none;
+  }
+
+  .bgp-chip {
+    padding: 0.5rem;
+    width: 36px;
+    height: 36px;
+    justify-content: center;
+    border-radius: 50%;
+  }
+
+  .bgp-chip-dot {
+    width: 10px;
+    height: 10px;
+  }
+}
