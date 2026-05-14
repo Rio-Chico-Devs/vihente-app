@@ -50,7 +50,7 @@ void main() {
   vec2 p = vec2(uv.x * aspect, uv.y);
   vec2 m = vec2(u_mouse.x * aspect, u_mouse.y);
 
-  float n = u_density * 8.0 + 1.0;
+  float n = u_density * 20.0 + 1.0;
   float bandY = uv.y * n;
   float bi    = floor(bandY);
   float bf    = fract(bandY);
@@ -90,7 +90,7 @@ void main() {
   vec2 p = vec2(uv.x * aspect, uv.y);
   vec2 m = vec2(u_mouse.x * aspect, u_mouse.y);
 
-  float spacing = 0.1 / u_density;
+  float spacing = 0.055 / u_density;
   vec2 gp = p / spacing;
   vec2 gi = floor(gp);
   vec2 gf = fract(gp) - 0.5;
@@ -112,7 +112,7 @@ void main() {
 
   vec2  ck      = vec2(u_click.x * aspect, u_click.y);
   float ckd     = distance(p, ck);
-  float ripple  = sin(ckd * 22.0 - u_click.z * 10.0);
+  float ripple  = sin(ckd * 36.0 - u_click.z * 10.0);
   float ripEnv  = exp(-ckd * 4.0) * exp(-u_click.z * 1.8);
   col += acc * max(0.0, ripple) * ripEnv * u_glow * 0.35;
 
@@ -152,13 +152,13 @@ void main() {
   vec2 p = vec2(uv.x * aspect, uv.y);
   vec2 m = vec2(u_mouse.x * aspect, u_mouse.y);
 
-  float h = fbm(p * u_density * 2.2 + vec2(5.3, 1.7));
+  float h = fbm(p * u_density * 5.0 + vec2(5.3, 1.7));
 
   float cm    = distance(p, m);
   float mound = exp(-cm * cm * 10.0) * 0.35 * u_glow;
   h += mound;
 
-  float cf    = 9.0;
+  float cf    = 12.0;
   float bands = fract(h * cf);
   float line  = 1.0 - smoothstep(0.0, 0.06, min(bands, 1.0 - bands));
 
@@ -186,7 +186,7 @@ void main() {
   vec2 p = vec2(uv.x * aspect, uv.y);
   vec2 m = vec2(u_mouse.x * aspect, u_mouse.y);
 
-  float sc  = u_density * 6.0;
+  float sc  = u_density * 18.0;
   vec2  q   = p * sc;
   vec2  qi  = floor(q);
   vec2  qf  = fract(q);
@@ -249,12 +249,12 @@ void main() {
   float force   = 0.018 * u_glow / (md * md + 0.04);
   vec2  bent    = p + toMouse * force;
 
-  float spacing = 1.0 / (u_density * 9.0);
+  float spacing = 1.0 / (u_density * 18.0);
   vec2  gf      = fract(bent / spacing);
 
   float hLine = abs(gf.y - 0.5);
   float vLine = abs(gf.x - 0.5);
-  float lw    = 0.04;
+  float lw    = 0.055;
   float grid  = 1.0 - smoothstep(0.0, lw, min(hLine, vLine));
   float cross_= (1.0 - smoothstep(0.0, lw * 1.5, hLine)) *
                 (1.0 - smoothstep(0.0, lw * 1.5, vLine));
@@ -270,7 +270,7 @@ void main() {
 
   vec2  ck      = vec2(u_click.x * aspect, u_click.y);
   float ckd     = distance(p, ck);
-  float wave    = sin(ckd * 24.0 - u_click.z * 10.0);
+  float wave    = sin(ckd * 38.0 - u_click.z * 10.0);
   float waveEnv = exp(-ckd * 3.5) * exp(-u_click.z * 1.5);
   col += acc * max(0.0, wave * waveEnv) * u_glow * 0.4;
 
