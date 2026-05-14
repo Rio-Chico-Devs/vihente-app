@@ -1,6 +1,15 @@
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useGuide } from '../../../contexts/GuideContext';
+
+const SIM_ROUTES = {
+  psicologo: '/showroom/psicologo',
+  avvocati:  '/showroom/avvocati',
+  campagna:  '/showroom/campagna',
+  ecommerce: '/showroom/ecommerce',
+  salone:    '/showroom/salone',
+  fotografo: '/showroom/fotografo',
+};
 import './Showroom.css';
 
 const templates = [
@@ -285,8 +294,16 @@ const Showroom = () => {
                 onMouseEnter={() => setGuide(tpl.guide)}
                 onMouseLeave={clearGuide}
               >
-                <div className="sr-preview-wrap">
+                <div
+                  className="sr-preview-wrap sr-preview-wrap--clickable"
+                  onClick={() => navigate(SIM_ROUTES[tpl.id])}
+                  role="button"
+                  tabIndex={0}
+                  aria-label={`Anteprima interattiva: ${tpl.title}`}
+                  onKeyDown={e => e.key === 'Enter' && navigate(SIM_ROUTES[tpl.id])}
+                >
                   <Preview />
+                  <div className="sr-preview-badge">Anteprima interattiva →</div>
                 </div>
                 <div className="sr-card-body">
                   <span className="sr-sector">{tpl.sector}</span>
@@ -297,12 +314,20 @@ const Showroom = () => {
                     ))}
                   </div>
                   <p className="sr-card-desc">{tpl.description}</p>
-                  <button
-                    className="sr-cta-btn"
-                    onClick={e => handleChoose(e, tpl.id)}
-                  >
-                    Scegli questo modello →
-                  </button>
+                  <div className="sr-card-actions">
+                    <button
+                      className="sr-preview-btn"
+                      onClick={() => navigate(SIM_ROUTES[tpl.id])}
+                    >
+                      Anteprima →
+                    </button>
+                    <button
+                      className="sr-cta-btn"
+                      onClick={e => handleChoose(e, tpl.id)}
+                    >
+                      Scegli modello
+                    </button>
+                  </div>
                 </div>
               </article>
             );

@@ -146,6 +146,68 @@
   overflow: hidden;
 }
 
+/* ── CLICKABLE PREVIEW ────────────────────────────────────────── */
+
+.sr-preview-wrap--clickable {
+  cursor: pointer;
+  transition: filter 0.22s;
+}
+
+.sr-preview-wrap--clickable:hover {
+  filter: brightness(1.06);
+}
+
+.sr-preview-badge {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(0, 0, 0, 0.62);
+  backdrop-filter: blur(4px);
+  color: var(--color-primary, #0ff);
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 0.65rem;
+  letter-spacing: 0.18em;
+  text-align: center;
+  padding: 0.45rem 1rem;
+  transform: translateY(100%);
+  transition: transform 0.22s ease;
+  border-top: 1px solid var(--color-primary-15, rgba(0, 255, 255, 0.15));
+}
+
+.sr-preview-wrap--clickable:hover .sr-preview-badge {
+  transform: translateY(0);
+}
+
+/* ── CARD ACTIONS ─────────────────────────────────────────────── */
+
+.sr-card-actions {
+  display: flex;
+  gap: 0.6rem;
+  margin-top: 0.6rem;
+  flex-wrap: wrap;
+}
+
+.sr-preview-btn {
+  background: transparent;
+  border: 1px solid var(--color-primary-28, rgba(0, 255, 255, 0.28));
+  color: var(--color-primary-65, rgba(0, 255, 255, 0.65));
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 0.72rem;
+  letter-spacing: 0.12em;
+  padding: 0.52rem 0.85rem;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background 0.22s ease, color 0.22s ease, border-color 0.22s ease;
+  text-transform: uppercase;
+}
+
+.sr-preview-btn:hover {
+  background: var(--color-primary-08, rgba(0, 255, 255, 0.08));
+  color: var(--color-primary, #0ff);
+  border-color: var(--color-primary-55, rgba(0, 255, 255, 0.55));
+}
+
 /* ── CARD BODY ────────────────────────────────────────────────── */
 
 .sr-card-body {
@@ -199,7 +261,6 @@
 }
 
 .sr-cta-btn {
-  margin-top: 0.6rem;
   background: transparent;
   border: 1px solid var(--color-primary-38, rgba(0, 255, 255, 0.38));
   color: var(--color-primary, #0ff);

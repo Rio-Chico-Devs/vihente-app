@@ -43,6 +43,12 @@ const ImageCheckerPage = lazy(() => import('./components/sections/Portfolio/Comp
 const BookingPage = lazy(() => import('./components/sections/Portfolio/ComponentShowcase/BookingPage/BookingPage'));
 const BackgroundsPage = lazy(() => import('./components/sections/Portfolio/ComponentShowcase/BackgroundsPage/BackgroundsPage'));
 const Showroom = lazy(() => import('./components/sections/Showroom/Showroom'));
+const PsicologoSim = lazy(() => import('./components/sections/Showroom/SimPages/PsicologoSim'));
+const AvvocatiSim = lazy(() => import('./components/sections/Showroom/SimPages/AvvocatiSim'));
+const CampagnaSim = lazy(() => import('./components/sections/Showroom/SimPages/CampagnaSim'));
+const EcommerceSim = lazy(() => import('./components/sections/Showroom/SimPages/EcommerceSim'));
+const SaloneSim = lazy(() => import('./components/sections/Showroom/SimPages/SaloneSim'));
+const FotografoSim = lazy(() => import('./components/sections/Showroom/SimPages/FotografoSim'));
 const Contacts = lazy(() => import('./components/sections/Contacts/Contacts'));
 const PrivacyPolicy = lazy(() => import('./components/sections/PrivacyPolicy/PrivacyPolicy'));
 const CookiePolicy = lazy(() => import('./components/sections/CookiePolicy/CookiePolicy'));
@@ -143,6 +149,12 @@ function App() {
                     <Route path="/portfolio/componenti/booking" element={<BookingPage />} />
                     <Route path="/portfolio/componenti/backgrounds" element={<BackgroundsPage />} />
                     <Route path="/showroom" element={<Showroom />} />
+                    <Route path="/showroom/psicologo" element={<PsicologoSim />} />
+                    <Route path="/showroom/avvocati" element={<AvvocatiSim />} />
+                    <Route path="/showroom/campagna" element={<CampagnaSim />} />
+                    <Route path="/showroom/ecommerce" element={<EcommerceSim />} />
+                    <Route path="/showroom/salone" element={<SaloneSim />} />
+                    <Route path="/showroom/fotografo" element={<FotografoSim />} />
                     <Route path="/contatti" element={<Contacts />} />
                     <Route path="/privacy-policy" element={<PrivacyPolicy />} />
                     <Route path="/cookie-policy" element={<CookiePolicy />} />
