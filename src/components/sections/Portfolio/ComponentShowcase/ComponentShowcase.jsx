@@ -17,7 +17,6 @@ const ComponentShowcase = () => {
     'dashboard':       'Pannello analytics con grafici SVG, KPI, metriche ECG scrollanti e selezione periodo.',
     'image-checker':   'componente per analizzare immagini, con lente per focalizzare piccoli dettagli',
     'booking':         'Sistema di prenotazione con calendario interattivo e gestione disponibilità.',
-    'style-room':      'Showroom di 6 template professionali: psicologo, avvocati, campagna politica, e-commerce, salone, fotografo.',
   };
 
   // Icona lente di ingrandimento SVG (stile consulenze)
@@ -191,37 +190,6 @@ const ComponentShowcase = () => {
           </div>
           <div className="mini-checker-image">
             <div className="mini-checker-lens"></div>
-          </div>
-        </div>
-      )
-    },
-    {
-      id: 'style-room',
-      title: 'Style Room',
-      description: '6 template professionali per settori diversi — scegli il tuo modello',
-      path: '/portfolio/componenti/style-room',
-      preview: (
-        <div className="mini-style-room">
-          <div className="mini-sr-label">TEMPLATE CATALOG</div>
-          <div className="mini-sr-grid">
-            <div className="mini-sr-card" style={{ background: '#FFF9F0', borderColor: '#5C7A6B' }}>
-              <div className="mini-sr-bar" style={{ background: '#5C7A6B' }} />
-            </div>
-            <div className="mini-sr-card" style={{ background: '#0F1F3D', borderColor: '#B8922B' }}>
-              <div className="mini-sr-bar" style={{ background: '#B8922B' }} />
-            </div>
-            <div className="mini-sr-card" style={{ background: '#0A1628', borderColor: '#C41E3A' }}>
-              <div className="mini-sr-bar" style={{ background: '#C41E3A' }} />
-            </div>
-            <div className="mini-sr-card" style={{ background: '#FFFFFF', borderColor: '#222' }}>
-              <div className="mini-sr-bar" style={{ background: '#222' }} />
-            </div>
-            <div className="mini-sr-card" style={{ background: '#FAF7F2', borderColor: '#C9A96E' }}>
-              <div className="mini-sr-bar" style={{ background: '#C9A96E' }} />
-            </div>
-            <div className="mini-sr-card" style={{ background: '#0A0A0A', borderColor: '#E8D5B7' }}>
-              <div className="mini-sr-bar" style={{ background: '#E8D5B7' }} />
-            </div>
           </div>
         </div>
       )

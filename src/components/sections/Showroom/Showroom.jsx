@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useGuide } from '../../../../../contexts/GuideContext';
-import './StyleRoom.css';
+import { useGuide } from '../../../contexts/GuideContext';
+import './Showroom.css';
 
 const templates = [
   {
@@ -214,7 +214,7 @@ const PREVIEWS = {
 
 /* ─── Main Component ──────────────────────────────────────────────────────── */
 
-const StyleRoom = () => {
+const Showroom = () => {
   const navigate = useNavigate();
   const { setGuide, clearGuide } = useGuide();
 
@@ -269,7 +269,7 @@ const StyleRoom = () => {
       <div className="sr-content">
         <header className="sr-header">
           <p className="sr-header__eyebrow">VIHENTE / TEMPLATE CATALOG</p>
-          <h1 className="sr-header__title">Style Room</h1>
+          <h1 className="sr-header__title">Showroom</h1>
           <p className="sr-header__subtitle">
             Scegli il modello per la tua attività. Lo perfezioniamo insieme e lo consegniamo in tempi record.
           </p>
@@ -313,4 +313,4 @@ const StyleRoom = () => {
   );
 };
 
-export default StyleRoom;
+export default Showroom;

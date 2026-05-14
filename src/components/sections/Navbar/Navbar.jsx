@@ -33,6 +33,7 @@ const PAGE_GUIDES = {
   '/portfolio/componenti/text-sampler':   'Text Sampler — effetti tipografici in CSS puro.',
   '/portfolio/componenti/cubo-3d':        '3D Model — cubo interattivo, zero librerie esterne.',
   '/portfolio/componenti/image-checker':  "Image Checker — lente d'ingrandimento su immagini.",
+  '/showroom':                            'Showroom — 6 template professionali per settori diversi. Scegli il tuo modello.',
   '/contatti':                            'Contatti — scrivi un messaggio o richiedi un preventivo!',
   '/impostazioni':                        'Impostazioni — personalizza volumi e gestisci i dati di navigazione.',
 };
@@ -162,9 +163,10 @@ const Navbar = () => {
     { id: 'landing',      label: 'Home',          path: '/',             number: '01' },
     { id: 'services',     label: 'Servizi',        path: '/services',     number: '02' },
     { id: 'portfolio',    label: 'Portfolio',      path: '/portfolio',    number: '03' },
-    { id: 'storia',       label: 'La Mia Storia',  path: '/storia',       number: '04' },
-    { id: 'contatti',     label: 'Contatti',       path: '/contatti',     number: '05' },
-    { id: 'impostazioni', label: 'Impostazioni',   path: '/impostazioni', number: '06' },
+    { id: 'showroom',     label: 'Showroom',       path: '/showroom',     number: '04' },
+    { id: 'storia',       label: 'La Mia Storia',  path: '/storia',       number: '05' },
+    { id: 'contatti',     label: 'Contatti',       path: '/contatti',     number: '06' },
+    { id: 'impostazioni', label: 'Impostazioni',   path: '/impostazioni', number: '07' },
   ];
 
   // Improved transition with proper navigation timing
@@ -553,6 +555,19 @@ const Navbar = () => {
               onMouseLeave={clearGuide}
             >
               <span className="nav-link-text">Portfolio</span>
+              <div className="nav-link-underline" />
+            </Link>
+
+            <Link
+              to="/showroom"
+              className={`nav-link ${isActive('/showroom') ? 'active' : ''}`}
+              aria-label="Vai allo Showroom"
+              aria-current={isActive('/showroom') ? 'page' : undefined}
+              onClick={(e) => handleDesktopNavClick(e, '/showroom')}
+              onMouseEnter={() => setGuide('Showroom — scegli il template per la tua attività: psicologo, avvocati, e-commerce e altri.')}
+              onMouseLeave={clearGuide}
+            >
+              <span className="nav-link-text">Showroom</span>
               <div className="nav-link-underline" />
             </Link>
 
