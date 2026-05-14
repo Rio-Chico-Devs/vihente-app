@@ -328,17 +328,18 @@
 ═══════════════════════════════════════════════════════════════ */
 
 @media (max-width: 768px) {
-  /* On mobile the scrolling header is hidden → chrome = navbar only (~70px).
-     Footer is slimmer on mobile (~65px). */
+  /* On mobile the scrolling header is hidden → chrome top = navbar only (~70px).
+     Footer on mobile is TALLER than desktop because footer-bottom becomes a
+     2-row column (copyright + legal-small). Empirically ~85px → use 90px buffer. */
   .bgp-page {
-    height: calc(100dvh - 70px - 65px);
+    height: calc(100dvh - 70px - 90px);
   }
 
   .bgp-canvas,
   .bgp-error,
   .bgp-ui {
     top: 70px;
-    bottom: 65px;
+    bottom: 90px;
   }
 
   .bgp-topbar {
