@@ -20,12 +20,16 @@
 
 /* ── WebGL Canvas ─────────────────────────────────────────────── */
 
+/* Canvas is a replaced element — top/right/bottom/left alone do NOT
+   auto-stretch it the way they would a <div>. It would fall back to
+   the 300×150 default. Explicit width/height + position:fixed forces
+   the canvas to fill the usable area. */
 .bgp-canvas {
   position: fixed;
   top: 140px;
   left: 0;
-  right: 0;
-  bottom: 80px;
+  width: 100vw;
+  height: calc(100dvh - 140px - 80px);
   display: block;
   z-index: 0;
 }
@@ -335,7 +339,11 @@
     height: calc(100dvh - 70px - 90px);
   }
 
-  .bgp-canvas,
+  .bgp-canvas {
+    top: 70px;
+    height: calc(100dvh - 70px - 90px);
+  }
+
   .bgp-error,
   .bgp-ui {
     top: 70px;
