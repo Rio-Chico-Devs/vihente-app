@@ -12,10 +12,7 @@
   overflow-y: auto;
   overflow-x: hidden;
   cursor: auto;
-  isolation: isolate;          /* seal stacking context cleanly */
   -webkit-overflow-scrolling: touch;
-  /* respect mobile home-indicator / safe area */
-  padding-bottom: env(safe-area-inset-bottom);
 }
 
 .simwrap * {
@@ -82,6 +79,22 @@ body.sim-fullscreen-active .iris-container {
 .simwrap-body {
   min-height: 100dvh;
   position: relative;
+  /* Mobile safe-area buffer so the last line of the sim's own footer
+     is never hidden behind the iOS home indicator. */
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+/* Each sim site is the root block of its own page — make sure its
+   stacking context is well-defined so position:sticky inner navs
+   don't accidentally paint over later sections. */
+.simwrap-body > .psi-site,
+.simwrap-body > .avv-site,
+.simwrap-body > .fot-site,
+.simwrap-body > .sal-site,
+.simwrap-body > .eco-site,
+.simwrap-body > .cam-site {
+  position: relative;
+  z-index: 0;
 }
 
 /* ── Top-left close cluster ────────────────────────────────────── */
