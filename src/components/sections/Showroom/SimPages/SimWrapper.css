@@ -7,12 +7,15 @@
 .simwrap {
   position: fixed;
   inset: 0;
-  z-index: 99990;
+  z-index: 1000050;            /* above CookieConsent (1000000) */
   background: #000;
   overflow-y: auto;
   overflow-x: hidden;
   cursor: auto;
+  isolation: isolate;          /* seal stacking context cleanly */
   -webkit-overflow-scrolling: touch;
+  /* respect mobile home-indicator / safe area */
+  padding-bottom: env(safe-area-inset-bottom);
 }
 
 .simwrap * {
@@ -60,6 +63,17 @@ body.sim-fullscreen-active textarea {
 
 body.sim-fullscreen-active .custom-cursor-dot,
 body.sim-fullscreen-active .custom-cursor-ring {
+  display: none !important;
+}
+
+/* ── Hide VIHENTE chrome completely while a sim is active ──────── */
+/* z-index alone wasn't enough: backdrop-filter on navbar/footer
+   creates rendering quirks (esp. mobile Safari) that can leak the
+   bottom bar through. Just remove them from the layout. */
+body.sim-fullscreen-active .navbar,
+body.sim-fullscreen-active .footer,
+body.sim-fullscreen-active .scrolling-header,
+body.sim-fullscreen-active .iris-container {
   display: none !important;
 }
 
