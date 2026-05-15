@@ -34,12 +34,32 @@
 }
 
 /* ── Restore native cursor on body while a sim is active ───────── */
+/* index.css has `* { cursor: none !important }`.
+   A bare `body.sim-fullscreen-active { cursor: auto }` loses that battle.
+   `body.sim-fullscreen-active *` has higher specificity AND !important → wins. */
 
-body.sim-fullscreen-active {
+body.sim-fullscreen-active,
+body.sim-fullscreen-active * {
   cursor: auto !important;
 }
 
-body.sim-fullscreen-active .custom-cursor-dot {
+body.sim-fullscreen-active button,
+body.sim-fullscreen-active a,
+body.sim-fullscreen-active [role="button"],
+body.sim-fullscreen-active input[type="submit"],
+body.sim-fullscreen-active input[type="button"],
+body.sim-fullscreen-active input[type="range"],
+body.sim-fullscreen-active select {
+  cursor: pointer !important;
+}
+
+body.sim-fullscreen-active input:not([type="submit"]):not([type="button"]):not([type="range"]),
+body.sim-fullscreen-active textarea {
+  cursor: text !important;
+}
+
+body.sim-fullscreen-active .custom-cursor-dot,
+body.sim-fullscreen-active .custom-cursor-ring {
   display: none !important;
 }
 
