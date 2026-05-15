@@ -4,7 +4,7 @@ import './AvvocatiSim.css';
 
 const AREE = [
   { nome: 'Diritto Civile', desc: 'Contratti, responsabilità civile, risarcimento danni e tutela dei diritti reali.' },
-  { nome: 'Diritto Penale', desc: 'Difesa in giudizio, assistenza nella fase delle indagini e procedimenti d'appello.' },
+  { nome: 'Diritto Penale', desc: "Difesa in giudizio, assistenza nella fase delle indagini e procedimenti d'appello." },
   { nome: 'Diritto del Lavoro', desc: 'Licenziamenti, controversie sindacali, contratti di assunzione e mobbing.' },
   { nome: 'Diritto di Famiglia', desc: 'Separazioni, divorzi, affidamento dei minori e regolamentazione patrimoniale.' },
   { nome: 'Diritto Societario', desc: 'Costituzione, fusioni, joint venture, governance aziendale e contratti commerciali.' },
