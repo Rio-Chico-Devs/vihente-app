@@ -207,6 +207,7 @@
 
 .eco-product {
   cursor: pointer;
+  cursor: zoom-in;
 }
 
 .eco-product-img {
@@ -227,13 +228,35 @@
   background: rgba(0, 0, 0, 0);
   display: flex;
   align-items: flex-end;
-  padding: 1rem;
+  gap: 0.4rem;
+  padding: 0.75rem;
   transition: background 0.22s;
 }
 
 .eco-product:hover .eco-product-overlay {
-  background: rgba(0, 0, 0, 0.18);
+  background: rgba(0, 0, 0, 0.22);
 }
+
+.eco-zoom-btn {
+  background: rgba(0, 0, 0, 0.65);
+  color: #fff;
+  border: none;
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  padding: 0.42rem 0.7rem;
+  border-radius: 1px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  opacity: 0;
+  transition: opacity 0.22s, background 0.18s;
+  flex-shrink: 0;
+}
+
+.eco-product:hover .eco-zoom-btn { opacity: 1; }
+.eco-zoom-btn:hover { background: rgba(0,0,0,0.85); }
 
 .eco-add-btn {
   background: #fff;
@@ -245,7 +268,7 @@
   padding: 0.48rem 0.9rem;
   border-radius: 1px;
   cursor: pointer;
-  width: 100%;
+  flex: 1;
   opacity: 0;
   transition: opacity 0.22s, background 0.18s;
 }
@@ -469,6 +492,235 @@
 
 .eco-checkout-btn:hover { background: #2D2D2D; }
 
+/* ── PRODUCT DETAIL MODAL ── */
+
+.eco-pmodal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.55);
+  z-index: 910;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+}
+
+.eco-pmodal {
+  background: #fff;
+  max-width: 900px;
+  width: 100%;
+  max-height: 90dvh;
+  overflow-y: auto;
+  position: relative;
+  box-shadow: 0 32px 80px rgba(0, 0, 0, 0.25);
+}
+
+.eco-pmodal-close {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: none;
+  border: none;
+  font-size: 1rem;
+  cursor: pointer;
+  color: rgba(0, 0, 0, 0.4);
+  z-index: 5;
+  line-height: 1;
+  padding: 0.25rem;
+  transition: color 0.15s;
+}
+
+.eco-pmodal-close:hover { color: #111; }
+
+.eco-pmodal-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+/* ── Magnifier area ── */
+
+.eco-pmodal-img-col {
+  min-height: 440px;
+}
+
+.eco-magnify-wrap {
+  width: 100%;
+  height: 100%;
+  min-height: 440px;
+  position: relative;
+  overflow: hidden;
+  cursor: crosshair;
+  background-size: 12px 12px, cover;
+}
+
+.eco-magnify-hint {
+  position: absolute;
+  bottom: 1rem;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: rgba(255, 255, 255, 0.84);
+  backdrop-filter: blur(6px);
+  padding: 0.35rem 0.75rem;
+  border-radius: 20px;
+  font-size: 0.68rem;
+  color: rgba(0, 0, 0, 0.55);
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+  pointer-events: none;
+  transition: opacity 0.3s;
+}
+
+.eco-magnify-wrap:hover .eco-magnify-hint {
+  opacity: 0;
+}
+
+.eco-magnifier-lens {
+  position: absolute;
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  border: 2px solid rgba(0, 0, 0, 0.18);
+  pointer-events: none;
+  box-shadow:
+    0 0 0 1px rgba(255,255,255,0.6) inset,
+    0 8px 28px rgba(0, 0, 0, 0.22);
+  transform: translate(-50%, -50%);
+  background-size: 34px 34px, 250%;
+  background-repeat: repeat, no-repeat;
+}
+
+/* ── Product info column ── */
+
+.eco-pmodal-info-col {
+  padding: 2.5rem 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+}
+
+.eco-pmodal-cat {
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  color: rgba(0, 0, 0, 0.4);
+  text-transform: uppercase;
+  margin: 0;
+}
+
+.eco-pmodal-nome {
+  font-size: 1.65rem;
+  font-weight: 700;
+  color: #111;
+  letter-spacing: -0.01em;
+  line-height: 1.15;
+  margin: 0;
+}
+
+.eco-pmodal-prezzo {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #111;
+  margin: 0;
+}
+
+.eco-pmodal-desc {
+  font-size: 0.92rem;
+  line-height: 1.72;
+  color: rgba(0, 0, 0, 0.62);
+  margin: 0.4rem 0 0;
+}
+
+.eco-pmodal-material {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  padding: 0.7rem 0;
+  border-top: 1px solid rgba(0, 0, 0, 0.07);
+  font-size: 0.84rem;
+  color: rgba(0, 0, 0, 0.6);
+  line-height: 1.55;
+}
+
+.eco-pmodal-detail-label {
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  color: rgba(0, 0, 0, 0.36);
+  text-transform: uppercase;
+  display: block;
+  margin-bottom: 0.15rem;
+}
+
+.eco-pmodal-taglie {
+  padding: 0.7rem 0;
+  border-top: 1px solid rgba(0, 0, 0, 0.07);
+}
+
+.eco-pmodal-taglia-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-top: 0.5rem;
+}
+
+.eco-taglia-btn {
+  background: none;
+  border: 1px solid rgba(0, 0, 0, 0.22);
+  color: #111;
+  font-size: 0.78rem;
+  font-weight: 600;
+  padding: 0.35rem 0.7rem;
+  border-radius: 1px;
+  cursor: pointer;
+  letter-spacing: 0.04em;
+  transition: background 0.15s, border-color 0.15s;
+  min-width: 40px;
+  text-align: center;
+}
+
+.eco-taglia-btn:hover {
+  background: rgba(0,0,0,0.05);
+  border-color: rgba(0,0,0,0.5);
+}
+
+.eco-taglia-btn--sel {
+  background: #111;
+  color: #fff;
+  border-color: #111;
+}
+
+.eco-pmodal-add {
+  background: #111;
+  color: #fff;
+  border: none;
+  font-size: 0.88rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  padding: 0.95rem;
+  cursor: pointer;
+  margin-top: 0.4rem;
+  transition: background 0.2s;
+  text-transform: uppercase;
+}
+
+.eco-pmodal-add:hover { background: #2D2D2D; }
+.eco-pmodal-add--done { background: #2D7A4F; }
+
+.eco-pmodal-ship {
+  font-size: 0.75rem;
+  color: rgba(0, 0, 0, 0.4);
+  letter-spacing: 0.04em;
+  margin: 0;
+  padding-top: 0.4rem;
+  border-top: 1px solid rgba(0,0,0,0.07);
+}
+
 /* ── RESPONSIVE ── */
 
 @media (max-width: 900px) {
@@ -483,4 +735,10 @@
   .eco-products-grid { grid-template-columns: repeat(2, 1fr); gap: 1rem; }
   .eco-product-img { height: 180px; }
   .eco-add-btn { opacity: 1; }
+  .eco-zoom-btn { opacity: 1; }
+  .eco-pmodal-layout { grid-template-columns: 1fr; }
+  .eco-magnify-wrap { min-height: 280px; }
+  .eco-pmodal-img-col { min-height: 280px; }
+  .eco-pmodal-info-col { padding: 1.5rem 1.2rem; }
+  .eco-pmodal-nome { font-size: 1.3rem; }
 }
