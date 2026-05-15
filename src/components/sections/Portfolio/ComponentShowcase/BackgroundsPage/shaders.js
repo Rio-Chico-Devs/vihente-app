@@ -50,7 +50,7 @@ void main() {
   vec2 p = vec2(uv.x * aspect, uv.y);
   vec2 m = vec2(u_mouse.x * aspect, u_mouse.y);
 
-  float n = u_density * 20.0 + 1.0;
+  float n = u_density * 12.0 + 1.0;
   float bandY = uv.y * n;
   float bi    = floor(bandY);
   float bf    = fract(bandY);
@@ -90,7 +90,7 @@ void main() {
   vec2 p = vec2(uv.x * aspect, uv.y);
   vec2 m = vec2(u_mouse.x * aspect, u_mouse.y);
 
-  float spacing = 0.055 / u_density;
+  float spacing = 0.072 / u_density;
   vec2 gp = p / spacing;
   vec2 gi = floor(gp);
   vec2 gf = fract(gp) - 0.5;
@@ -152,7 +152,7 @@ void main() {
   vec2 p = vec2(uv.x * aspect, uv.y);
   vec2 m = vec2(u_mouse.x * aspect, u_mouse.y);
 
-  float h = fbm(p * u_density * 5.0 + vec2(5.3, 1.7));
+  float h = fbm(p * u_density * 3.5 + vec2(5.3, 1.7));
 
   float cm    = distance(p, m);
   float mound = exp(-cm * cm * 10.0) * 0.35 * u_glow;
@@ -186,7 +186,7 @@ void main() {
   vec2 p = vec2(uv.x * aspect, uv.y);
   vec2 m = vec2(u_mouse.x * aspect, u_mouse.y);
 
-  float sc  = u_density * 18.0;
+  float sc  = u_density * 9.0;
   vec2  q   = p * sc;
   vec2  qi  = floor(q);
   vec2  qf  = fract(q);
@@ -249,7 +249,7 @@ void main() {
   float force   = 0.018 * u_glow / (md * md + 0.04);
   vec2  bent    = p + toMouse * force;
 
-  float spacing = 1.0 / (u_density * 18.0);
+  float spacing = 1.0 / (u_density * 13.0);
   vec2  gf      = fract(bent / spacing);
 
   float hLine = abs(gf.y - 0.5);
