@@ -84,6 +84,13 @@ body.sim-fullscreen-active .iris-container {
   padding-bottom: env(safe-area-inset-bottom);
 }
 
+/* Neutralize global bare `footer { position: fixed }` rules from
+   other pages' CSS files (e.g. ServicesPage.css) that leak site-wide.
+   Keeps every sim's own <footer> in normal document flow. */
+.simwrap-body footer {
+  position: static;
+}
+
 /* Each sim site is the root block of its own page — make sure its
    stacking context is well-defined so position:sticky inner navs
    don't accidentally paint over later sections. */
