@@ -223,7 +223,7 @@ body.services-page-body {
     animation: gridFlash 0.5s ease-out;
 }
 
-.services-page-wrapper header {
+header {
     position: fixed;
     top: 85px;
     width: 100%;
@@ -252,7 +252,7 @@ body.services-page-body {
 }
 
 @media (max-width: 1024px) and (min-width: 769px){
-    .services-page-wrapper header{
+    header{
         display:none !important;
     }
 
@@ -429,14 +429,14 @@ body.services-page-body {
         letter-spacing: 0.2em;
     }
 
-    .services-page-wrapper footer {
+    footer {
         padding: 1rem 0;
     }
-
+    
     .footer-content {
         padding: 0 1rem;
     }
-
+    
     .footer-text {
         font-size: 0.75rem;
         letter-spacing: 0.1em;
@@ -444,15 +444,15 @@ body.services-page-body {
 }
 
 @media (max-width: 768px) {
-
-    .services-page-wrapper header {
+        
+    header {
         display:none !important;
     }
 
     .header-content {
         padding: 0.75rem 1rem;
     }
-
+    
     .logo {
         font-size: 1.5rem;
         letter-spacing: 0.2em;
@@ -460,7 +460,7 @@ body.services-page-body {
 }
 
 @media (max-width: 480px) {
-    .services-page-wrapper header {
+    header {
         display:none !important;
     }
 
@@ -470,7 +470,7 @@ body.services-page-body {
     }
 }
 
-.services-page-wrapper footer {
+footer {
     position: fixed;
     bottom: 0;
     width: 100%;
@@ -495,14 +495,14 @@ body.services-page-body {
 }
 
 @media (max-width: 768px) {
-    .services-page-wrapper footer {
+    footer {
         padding: 1rem 0;
     }
-
+    
     .footer-content {
         padding: 0 1rem;
     }
-
+    
     .footer-text {
         font-size: 0.75rem;
         letter-spacing: 0.1em;
@@ -690,14 +690,14 @@ body.services-page-body {
         letter-spacing: 0.2em;
     }
 
-    .services-page-wrapper footer {
+    footer {
         padding: 1rem 0;
     }
-
+    
     .footer-content {
         padding: 0 1rem;
     }
-
+    
     .footer-text {
         font-size: 0.75rem;
         letter-spacing: 0.1em;
