@@ -223,7 +223,7 @@ body.services-page-body {
     animation: gridFlash 0.5s ease-out;
 }
 
-header {
+.services-page-wrapper header {
     position: fixed;
     top: 85px;
     width: 100%;
@@ -252,7 +252,7 @@ header {
 }
 
 @media (max-width: 1024px) and (min-width: 769px){
-    header{
+    .services-page-wrapper header{
         display:none !important;
     }
 
@@ -429,14 +429,14 @@ header {
         letter-spacing: 0.2em;
     }
 
-    footer {
+    .services-page-wrapper footer {
         padding: 1rem 0;
     }
-    
+
     .footer-content {
         padding: 0 1rem;
     }
-    
+
     .footer-text {
         font-size: 0.75rem;
         letter-spacing: 0.1em;
@@ -444,15 +444,15 @@ header {
 }
 
 @media (max-width: 768px) {
-        
-    header {
+
+    .services-page-wrapper header {
         display:none !important;
     }
 
     .header-content {
         padding: 0.75rem 1rem;
     }
-    
+
     .logo {
         font-size: 1.5rem;
         letter-spacing: 0.2em;
@@ -460,7 +460,7 @@ header {
 }
 
 @media (max-width: 480px) {
-    header {
+    .services-page-wrapper header {
         display:none !important;
     }
 
@@ -470,7 +470,7 @@ header {
     }
 }
 
-footer {
+.services-page-wrapper footer {
     position: fixed;
     bottom: 0;
     width: 100%;
@@ -495,14 +495,14 @@ footer {
 }
 
 @media (max-width: 768px) {
-    footer {
+    .services-page-wrapper footer {
         padding: 1rem 0;
     }
-    
+
     .footer-content {
         padding: 0 1rem;
     }
-    
+
     .footer-text {
         font-size: 0.75rem;
         letter-spacing: 0.1em;
@@ -690,14 +690,14 @@ footer {
         letter-spacing: 0.2em;
     }
 
-    footer {
+    .services-page-wrapper footer {
         padding: 1rem 0;
     }
-    
+
     .footer-content {
         padding: 0 1rem;
     }
-    
+
     .footer-text {
         font-size: 0.75rem;
         letter-spacing: 0.1em;
