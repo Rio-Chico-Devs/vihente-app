@@ -1,0 +1,1138 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sim Design Directions — VIHENTE</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600&family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,700;1,9..144,300;1,9..144,400;1,9..144,600&family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,700;1,6..96,400;1,6..96,700;1,6..96,900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600;700&family=Jost:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Libre+Franklin:ital,wght@0,400;0,600;0,700;0,900;1,400&display=swap" rel="stylesheet">
+<style>
+
+/* ── Reset ── */
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+button { cursor: pointer; font: inherit; }
+
+body {
+  background: #080808;
+  color: #fff;
+  font-family: 'Inter', sans-serif;
+}
+
+/* ── Page header ── */
+.page-header {
+  padding: 2.4rem 4rem 2rem;
+  border-bottom: 1px solid rgba(255,255,255,0.07);
+  display: flex;
+  align-items: baseline;
+  gap: 2rem;
+}
+.page-header h1 {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.65rem;
+  font-weight: 600;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.35);
+}
+.page-header p {
+  font-size: 0.62rem;
+  color: rgba(255,255,255,0.2);
+  letter-spacing: 0.08em;
+}
+
+/* ── Sim wrapper ── */
+.sim { border-bottom: 1px solid rgba(255,255,255,0.05); }
+
+.sim-tag {
+  padding: 0.55rem 4rem;
+  font-size: 0.6rem;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.25);
+  background: #0A0A0A;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+
+/* ── Meta bar ── */
+.meta {
+  background: #0C0C0C;
+  padding: 1.2rem 4rem;
+  display: flex;
+  gap: 3rem;
+  align-items: center;
+  flex-wrap: wrap;
+  border-top: 1px solid rgba(255,255,255,0.05);
+}
+.meta-palette { display: flex; gap: 0.5rem; align-items: center; }
+.swatch {
+  width: 24px; height: 24px;
+  border-radius: 50%;
+  border: 1px solid rgba(255,255,255,0.12);
+  flex-shrink: 0;
+}
+.meta-fonts { display: flex; flex-direction: column; gap: 0.22rem; }
+.meta-fonts div {
+  font-size: 0.62rem;
+  color: rgba(255,255,255,0.3);
+  letter-spacing: 0.08em;
+}
+.meta-fonts span { color: rgba(255,255,255,0.7); }
+.meta-firma {
+  font-size: 0.61rem;
+  color: rgba(255,255,255,0.28);
+  font-style: italic;
+  max-width: 360px;
+  line-height: 1.6;
+}
+
+/* ════════════════════════════════════════════
+   01 · AVVOCATI
+════════════════════════════════════════════ */
+
+.avv {
+  background: #0B1733;
+  background: radial-gradient(ellipse 80% 60% at 50% -10%, #17295A 0%, #0B1733 65%);
+  display: flex;
+  flex-direction: column;
+}
+
+.avv-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 3.5rem;
+  height: 74px;
+  background: rgba(10, 21, 46, 0.88);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(201, 169, 113, 0.14);
+  flex-shrink: 0;
+}
+.avv-brand { display: flex; flex-direction: column; gap: 0.1rem; }
+.avv-brand-name {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 0.92rem;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  color: #C9A971;
+  text-transform: uppercase;
+}
+.avv-brand-sub {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.52rem;
+  letter-spacing: 0.22em;
+  color: rgba(232, 223, 201, 0.38);
+  text-transform: uppercase;
+}
+.avv-nav-links {
+  display: flex; gap: 2rem;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.72rem;
+  letter-spacing: 0.06em;
+  color: rgba(232, 223, 201, 0.55);
+}
+.avv-nav-cta {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.7rem;
+  letter-spacing: 0.08em;
+  color: #C9A971;
+  border: 1px solid rgba(201, 169, 113, 0.45);
+  padding: 0.42rem 1rem;
+  background: transparent;
+}
+
+.avv-hero {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 3.5rem 3rem 2rem;
+  gap: 1.4rem;
+}
+.avv-line {
+  width: 1px;
+  height: 44px;
+  background: linear-gradient(to bottom, transparent, rgba(201,169,113,0.6), transparent);
+}
+.avv-hero h1 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(2.4rem, 4.5vw, 3.8rem);
+  font-weight: 500;
+  line-height: 1.12;
+  color: #E8DFC9;
+}
+.avv-hero h1 em {
+  font-style: italic;
+  color: #C9A971;
+  font-weight: 400;
+}
+.avv-sub {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.88rem;
+  color: rgba(232, 223, 201, 0.5);
+  line-height: 1.75;
+  max-width: 520px;
+}
+.avv-btns { display: flex; gap: 1rem; margin-top: 0.3rem; }
+.avv-btn-g {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.76rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  padding: 0.72rem 1.7rem;
+  background: #C9A971;
+  color: #0B1733;
+  border: none;
+}
+.avv-btn-o {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.76rem;
+  letter-spacing: 0.05em;
+  padding: 0.72rem 1.7rem;
+  background: transparent;
+  color: rgba(232, 223, 201, 0.65);
+  border: 1px solid rgba(232, 223, 201, 0.18);
+}
+
+.avv-hairline {
+  width: 100%;
+  height: 1px;
+  background: linear-gradient(to right, transparent, rgba(201,169,113,0.35) 20%, rgba(201,169,113,0.35) 80%, transparent);
+}
+.avv-stats { display: flex; }
+.avv-stat {
+  flex: 1;
+  padding: 1.5rem 0;
+  text-align: center;
+  border-right: 1px solid rgba(201,169,113,0.1);
+}
+.avv-stat:last-child { border-right: none; }
+.avv-stat-n {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 2rem;
+  font-weight: 600;
+  color: #C9A971;
+  line-height: 1;
+}
+.avv-stat-l {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.56rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: rgba(232, 223, 201, 0.38);
+  margin-top: 0.35rem;
+}
+
+/* ════════════════════════════════════════════
+   02 · PSICOLOGO
+════════════════════════════════════════════ */
+
+.psi {
+  background: linear-gradient(180deg, #FFF9F0 0%, rgba(92,122,107,0.05) 100%);
+  display: flex;
+  flex-direction: column;
+}
+
+.psi-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 3.5rem;
+  height: 68px;
+  background: rgba(255,249,240,0.94);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid rgba(92,122,107,0.12);
+  flex-shrink: 0;
+}
+.psi-logo {
+  font-family: 'Fraunces', serif;
+  font-style: italic;
+  font-size: 1.08rem;
+  font-weight: 600;
+  color: #475D5F;
+}
+.psi-nav-links {
+  display: flex; gap: 2rem;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.78rem;
+  color: #5C7A6B;
+  letter-spacing: 0.02em;
+}
+.psi-cta {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.78rem;
+  background: #5C7A6B;
+  color: #fff;
+  border: none;
+  padding: 0.44rem 1.1rem;
+  border-radius: 4px;
+}
+
+.psi-hero {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 3.5rem 3rem;
+  gap: 1.2rem;
+}
+.psi-eyebrow {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.66rem;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: #5C7A6B;
+  opacity: 0.8;
+}
+.psi-hero h1 {
+  font-family: 'Fraunces', serif;
+  font-size: clamp(2.2rem, 4.5vw, 3.4rem);
+  font-weight: 600;
+  line-height: 1.15;
+  color: #2C3A3B;
+  max-width: 600px;
+}
+.psi-hero h1 em {
+  font-style: italic;
+  color: #5C7A6B;
+  font-weight: 400;
+}
+.psi-hero p {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.92rem;
+  color: #6B7C7D;
+  line-height: 1.75;
+  max-width: 460px;
+}
+.psi-btns { display: flex; gap: 0.75rem; margin-top: 0.4rem; }
+.psi-btn-m {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.82rem;
+  padding: 0.65rem 1.5rem;
+  background: #5C7A6B;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+}
+.psi-btn-o {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.82rem;
+  padding: 0.65rem 1.5rem;
+  background: transparent;
+  color: #5C7A6B;
+  border: 1px solid rgba(92,122,107,0.28);
+  border-radius: 4px;
+}
+
+/* ════════════════════════════════════════════
+   03 · FOTOGRAFO
+════════════════════════════════════════════ */
+
+.fot {
+  background: #0A0A0A;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  min-height: 540px;
+}
+
+.fot-left {
+  padding: 3rem 3.5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.fot-nav-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.fot-logo-text {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.62rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: rgba(232,213,183,0.65);
+}
+.fot-nav-links {
+  display: flex; gap: 1.5rem;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.62rem;
+  letter-spacing: 0.15em;
+  color: rgba(232,213,183,0.38);
+  text-transform: uppercase;
+}
+.fot-main { flex: 1; display: flex; flex-direction: column; justify-content: center; padding: 2.5rem 0; }
+.fot-main h1 {
+  font-family: 'Bodoni Moda', serif;
+  font-style: italic;
+  font-size: clamp(3.5rem, 7vw, 6.5rem);
+  font-weight: 400;
+  line-height: 0.92;
+  color: #E8D5B7;
+  margin-bottom: 2rem;
+  /* optical size for display use */
+  font-variation-settings: 'opsz' 96;
+}
+.fot-desc {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.8rem;
+  color: rgba(232,213,183,0.42);
+  line-height: 1.75;
+  max-width: 320px;
+  margin-bottom: 2rem;
+}
+.fot-cta-btn {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.68rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: #E8D5B7;
+  background: none;
+  border: 1px solid rgba(232,213,183,0.25);
+  padding: 0.65rem 1.3rem;
+  width: fit-content;
+}
+.fot-footer-txt {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.58rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(232,213,183,0.2);
+}
+
+.fot-right {
+  background: linear-gradient(150deg, #1C1712 0%, #0D0D0D 100%);
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  padding: 2.5rem;
+  overflow: hidden;
+}
+.fot-texture {
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    -50deg,
+    transparent,
+    transparent 48px,
+    rgba(232,213,183,0.018) 48px,
+    rgba(232,213,183,0.018) 49px
+  );
+}
+.fot-caption {
+  position: relative;
+  z-index: 1;
+  font-family: 'Bodoni Moda', serif;
+  font-style: italic;
+  font-size: 0.75rem;
+  color: rgba(232,213,183,0.45);
+  letter-spacing: 0.04em;
+  font-variation-settings: 'opsz' 14;
+}
+
+/* ════════════════════════════════════════════
+   04 · SALONE
+════════════════════════════════════════════ */
+
+.sal {
+  background: #FAF7F2;
+  display: flex;
+  flex-direction: column;
+}
+
+.sal-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 3.5rem;
+  height: 64px;
+  background: rgba(250,247,242,0.96);
+  border-bottom: 1px solid rgba(201,169,110,0.18);
+  flex-shrink: 0;
+}
+.sal-logo {
+  font-family: 'Fraunces', serif;
+  font-style: italic;
+  font-size: 1.25rem;
+  font-weight: 400;
+  color: #2A2A2A;
+}
+.sal-nav-links {
+  display: flex; gap: 2rem;
+  font-family: 'Jost', sans-serif;
+  font-size: 0.72rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(42,42,42,0.55);
+}
+.sal-book {
+  font-family: 'Jost', sans-serif;
+  font-size: 0.7rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  background: transparent;
+  color: #2A2A2A;
+  border: 1px solid rgba(201,169,110,0.55);
+  padding: 0.4rem 0.9rem;
+}
+
+.sal-hero {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  min-height: 440px;
+}
+.sal-hero-text {
+  padding: 4rem 3.5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 1.3rem;
+}
+.sal-eyebrow {
+  font-family: 'Jost', sans-serif;
+  font-size: 0.62rem;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  color: #C9A96E;
+}
+.sal-hero-text h1 {
+  font-family: 'Fraunces', serif;
+  font-style: italic;
+  font-size: clamp(1.9rem, 3.8vw, 3rem);
+  font-weight: 400;
+  line-height: 1.18;
+  color: #2A2A2A;
+}
+.sal-hairline {
+  width: 80px;
+  height: 1px;
+  background: rgba(201,169,110,0.4);
+}
+.sal-hero-text p {
+  font-family: 'Jost', sans-serif;
+  font-size: 0.88rem;
+  color: rgba(42,42,42,0.58);
+  line-height: 1.8;
+  max-width: 340px;
+}
+.sal-cta {
+  font-family: 'Jost', sans-serif;
+  font-size: 0.7rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  background: #2A2A2A;
+  color: #FAF7F2;
+  border: none;
+  padding: 0.78rem 1.7rem;
+  width: fit-content;
+}
+
+.sal-hero-img {
+  background: linear-gradient(145deg, #E4DDD2, #D8CFC2);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+}
+.sal-img-tag {
+  font-family: 'Jost', sans-serif;
+  font-size: 0.62rem;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: rgba(42,42,42,0.35);
+}
+.sal-img-glyph {
+  font-family: 'Fraunces', serif;
+  font-style: italic;
+  font-size: 5rem;
+  color: rgba(42,42,42,0.1);
+  font-weight: 300;
+  line-height: 1;
+}
+
+/* ════════════════════════════════════════════
+   05 · ECOMMERCE
+════════════════════════════════════════════ */
+
+.eco {
+  background: #F5F2EE;
+  display: flex;
+  flex-direction: column;
+}
+
+.eco-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 3.5rem;
+  height: 60px;
+  background: rgba(245,242,238,0.97);
+  border-bottom: 1px solid rgba(0,0,0,0.07);
+  flex-shrink: 0;
+}
+.eco-logo {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 1rem;
+  font-weight: 800;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: #1A1A1A;
+}
+.eco-nav-links {
+  display: flex; gap: 2rem;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 0.76rem;
+  color: rgba(26,26,26,0.55);
+}
+.eco-cart-btn {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 0.76rem;
+  color: #1A1A1A;
+  background: none;
+  border: 1px solid rgba(0,0,0,0.14);
+  padding: 0.4rem 0.9rem;
+}
+
+.eco-body {
+  flex: 1;
+  padding: 3rem 3.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2.5rem;
+  align-items: center;
+}
+.eco-hero-text { text-align: center; }
+.eco-eyebrow {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 0.62rem;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: rgba(26,26,26,0.38);
+  margin-bottom: 1rem;
+}
+.eco-hero-text h1 {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: clamp(2rem, 4vw, 3.2rem);
+  font-weight: 800;
+  line-height: 1.08;
+  color: #1A1A1A;
+  margin-bottom: 0.8rem;
+}
+.eco-hero-text p {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 0.88rem;
+  color: rgba(26,26,26,0.5);
+  line-height: 1.7;
+}
+
+.eco-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+  width: 100%;
+  max-width: 860px;
+}
+.eco-card {
+  background: #fff;
+  border-radius: 2px;
+  overflow: hidden;
+}
+.eco-card-img {
+  aspect-ratio: 3/4;
+  background: linear-gradient(135deg, #E8E0D8, #D8D0C8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 0.56rem;
+  letter-spacing: 0.22em;
+  color: rgba(26,26,26,0.18);
+  text-transform: uppercase;
+}
+.eco-card-info { padding: 0.9rem 1rem; }
+.eco-card-name {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: #1A1A1A;
+  margin-bottom: 0.2rem;
+}
+.eco-card-detail {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.68rem;
+  color: rgba(26,26,26,0.42);
+  margin-bottom: 0.5rem;
+}
+.eco-card-bottom {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.eco-card-price {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: #1A1A1A;
+}
+.eco-badge-sale {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.58rem;
+  font-weight: 700;
+  color: #fff;
+  background: #C41E3A;
+  padding: 0.1rem 0.32rem;
+  letter-spacing: 0.06em;
+}
+.eco-badge-stock {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.58rem;
+  font-weight: 600;
+  color: #2D7A4F;
+  letter-spacing: 0.06em;
+}
+
+/* ════════════════════════════════════════════
+   06 · CAMPAGNA
+════════════════════════════════════════════ */
+
+.cam {
+  background: #0A1628;
+  display: flex;
+  flex-direction: column;
+}
+
+.cam-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 3.5rem;
+  height: 64px;
+  background: rgba(10,22,40,0.96);
+  border-bottom: 1px solid rgba(196,30,58,0.22);
+  flex-shrink: 0;
+}
+.cam-logo {
+  font-family: 'Libre Franklin', sans-serif;
+  font-size: 0.88rem;
+  font-weight: 900;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #F8F9FA;
+}
+.cam-nav-links {
+  display: flex; gap: 2rem;
+  font-family: 'Libre Franklin', sans-serif;
+  font-size: 0.72rem;
+  letter-spacing: 0.05em;
+  color: rgba(248,249,250,0.5);
+}
+.cam-nav-cta {
+  font-family: 'Libre Franklin', sans-serif;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  background: #C41E3A;
+  color: #fff;
+  border: none;
+  padding: 0.44rem 1rem;
+}
+
+.cam-body {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  padding: 3.5rem 3.5rem;
+  gap: 5rem;
+}
+
+.cam-text { flex: 1; }
+.cam-eyebrow {
+  font-family: 'Libre Franklin', sans-serif;
+  font-size: 0.66rem;
+  font-weight: 600;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: #C41E3A;
+  margin-bottom: 1.2rem;
+}
+.cam-text h1 {
+  font-family: 'Libre Franklin', sans-serif;
+  font-size: clamp(2.6rem, 5.5vw, 4.5rem);
+  font-weight: 900;
+  line-height: 1.02;
+  color: #F8F9FA;
+  margin-bottom: 0.4rem;
+}
+.cam-red-line {
+  width: 100%;
+  height: 3px;
+  background: #C41E3A;
+  margin-bottom: 1.8rem;
+}
+.cam-quote {
+  font-family: 'Fraunces', serif;
+  font-style: italic;
+  font-size: 1.05rem;
+  color: rgba(248,249,250,0.68);
+  border-left: 2px solid rgba(196,30,58,0.7);
+  padding-left: 1rem;
+  line-height: 1.55;
+  margin-bottom: 1.6rem;
+}
+.cam-text p {
+  font-family: 'Libre Franklin', sans-serif;
+  font-size: 0.9rem;
+  color: rgba(248,249,250,0.55);
+  line-height: 1.72;
+  max-width: 500px;
+  margin-bottom: 1.8rem;
+}
+.cam-btns { display: flex; gap: 0.75rem; }
+.cam-btn-r {
+  font-family: 'Libre Franklin', sans-serif;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  background: #C41E3A;
+  color: #fff;
+  border: none;
+  padding: 0.78rem 1.7rem;
+}
+.cam-btn-o {
+  font-family: 'Libre Franklin', sans-serif;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  background: transparent;
+  color: rgba(248,249,250,0.6);
+  border: 1px solid rgba(248,249,250,0.18);
+  padding: 0.78rem 1.7rem;
+}
+
+.cam-stats {
+  display: flex;
+  flex-direction: column;
+  gap: 1.8rem;
+  flex-shrink: 0;
+}
+.cam-stat { border-left: 3px solid #C41E3A; padding-left: 1.1rem; }
+.cam-stat-n {
+  font-family: 'Libre Franklin', sans-serif;
+  font-size: 2.4rem;
+  font-weight: 900;
+  color: #F8F9FA;
+  line-height: 1;
+  margin-bottom: 0.3rem;
+}
+.cam-stat-l {
+  font-family: 'Libre Franklin', sans-serif;
+  font-size: 0.62rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(248,249,250,0.38);
+}
+
+</style>
+</head>
+<body>
+
+<header class="page-header">
+  <h1>VIHENTE · Sim Design Directions</h1>
+  <p>Preview font pairing + palette + trattamento grafico · solo per valutazione, non produzione</p>
+</header>
+
+<!-- ══════════════ 01 · AVVOCATI ══════════════ -->
+<div class="sim">
+  <div class="sim-tag">01 · Avvocati · Studio Legale</div>
+
+  <div class="avv">
+    <nav class="avv-nav">
+      <div class="avv-brand">
+        <div class="avv-brand-name">Rossi & Associati</div>
+        <div class="avv-brand-sub">Studio Legale dal MCMXCVIII</div>
+      </div>
+      <div class="avv-nav-links">
+        <span>Studio</span><span>Aree di Pratica</span><span>I Soci</span><span>Casi</span>
+      </div>
+      <button class="avv-nav-cta">Consulenza Riservata</button>
+    </nav>
+
+    <div class="avv-hero">
+      <div class="avv-line"></div>
+      <h1>Difendiamo <em>i vostri diritti</em><br>con autorevolezza.</h1>
+      <p class="avv-sub">Un approccio rigoroso, una strategia su misura, un team che ha rappresentato clienti davanti alle più alte corti italiane ed europee.</p>
+      <div class="avv-btns">
+        <button class="avv-btn-g">Prenota consulenza</button>
+        <button class="avv-btn-o">Scopri lo studio</button>
+      </div>
+    </div>
+
+    <div class="avv-hairline"></div>
+    <div class="avv-stats">
+      <div class="avv-stat"><div class="avv-stat-n">2.400+</div><div class="avv-stat-l">Casi gestiti</div></div>
+      <div class="avv-stat"><div class="avv-stat-n">96%</div><div class="avv-stat-l">Tasso di successo</div></div>
+      <div class="avv-stat"><div class="avv-stat-n">XXV</div><div class="avv-stat-l">Anni di studio</div></div>
+      <div class="avv-stat"><div class="avv-stat-n">III</div><div class="avv-stat-l">Sedi europee</div></div>
+    </div>
+  </div>
+
+  <div class="meta">
+    <div class="meta-palette">
+      <div class="swatch" style="background:#0B1733"></div>
+      <div class="swatch" style="background:#C9A971"></div>
+      <div class="swatch" style="background:#E8DFC9"></div>
+    </div>
+    <div class="meta-fonts">
+      <div>Display: <span>Cormorant Garamond</span> — italic 500/600</div>
+      <div>UI + body: <span>Inter</span> — 400/600</div>
+    </div>
+    <div class="meta-firma">radial-gradient navy→navy+8% sull'hero. Hairline oro 1px al posto di ogni decoro. Bilancia rimossa.</div>
+  </div>
+</div>
+
+<!-- ══════════════ 02 · PSICOLOGO ══════════════ -->
+<div class="sim">
+  <div class="sim-tag">02 · Psicologo · Studio di Psicologia</div>
+
+  <div class="psi">
+    <nav class="psi-nav">
+      <div class="psi-logo">Dr.ssa Elena Mancini</div>
+      <div class="psi-nav-links"><span>Chi sono</span><span>Specializzazioni</span><span>Tariffe</span></div>
+      <button class="psi-cta">Prenota</button>
+    </nav>
+
+    <div class="psi-hero">
+      <div class="psi-eyebrow">Psicologia Clinica · Milano</div>
+      <h1>Un percorso verso<br><em>il tuo equilibrio</em>.</h1>
+      <p>Ogni persona porta con sé una storia unica. Insieme troviamo le risorse per affrontarla con più serenità e consapevolezza.</p>
+      <div class="psi-btns">
+        <button class="psi-btn-m">Prenota una consulenza</button>
+        <button class="psi-btn-o">Scopri il percorso</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="meta">
+    <div class="meta-palette">
+      <div class="swatch" style="background:#FFF9F0; border-color:rgba(0,0,0,0.15)"></div>
+      <div class="swatch" style="background:#5C7A6B"></div>
+      <div class="swatch" style="background:#2C3A3B"></div>
+    </div>
+    <div class="meta-fonts">
+      <div>Display: <span>Fraunces</span> — 600 + italic 400 (optical-size aware)</div>
+      <div>UI + body: <span>Inter</span> — 400</div>
+    </div>
+    <div class="meta-firma">gradient cream→sage 4% sull'hero. Card prezzi: bordo rgba sage 0.18, niente shadow.</div>
+  </div>
+</div>
+
+<!-- ══════════════ 03 · FOTOGRAFO ══════════════ -->
+<div class="sim">
+  <div class="sim-tag">03 · Fotografo · Portfolio</div>
+
+  <div class="fot">
+    <div class="fot-left">
+      <div class="fot-nav-row">
+        <div class="fot-logo-text">Luca Ferretti</div>
+        <div class="fot-nav-links"><span>Portfolio</span><span>About</span><span>Contact</span></div>
+      </div>
+      <div class="fot-main">
+        <h1>Luce.<br>Forma.<br>Silenzio.</h1>
+        <p class="fot-desc">Fotografo editoriale e di reportage. Racconto storie attraverso la luce naturale e il dettaglio autentico.</p>
+        <button class="fot-cta-btn">Sfoglia il portfolio</button>
+      </div>
+      <div class="fot-footer-txt">Milano · Roma · © 2025</div>
+    </div>
+    <div class="fot-right">
+      <div class="fot-texture"></div>
+      <div class="fot-caption">Serie Urbana No. 04 — 2024</div>
+    </div>
+  </div>
+
+  <div class="meta">
+    <div class="meta-palette">
+      <div class="swatch" style="background:#0A0A0A"></div>
+      <div class="swatch" style="background:#E8D5B7"></div>
+    </div>
+    <div class="meta-fonts">
+      <div>Display: <span>Bodoni Moda</span> — italic 400 (opsz 96, display-grade)</div>
+      <div>UI + body: <span>Inter</span> — 400/300</div>
+    </div>
+    <div class="meta-firma">heading italic oversize clamp(4rem, 10vw, 8rem). Layout 50/50 rigido. Caption sepia su dark.</div>
+  </div>
+</div>
+
+<!-- ══════════════ 04 · SALONE ══════════════ -->
+<div class="sim">
+  <div class="sim-tag">04 · Salone · Beauty & Hair</div>
+
+  <div class="sal">
+    <nav class="sal-nav">
+      <div class="sal-logo">Atelier Rosé</div>
+      <div class="sal-nav-links"><span>Servizi</span><span>Gallery</span><span>Team</span></div>
+      <button class="sal-book">Prenota ora</button>
+    </nav>
+
+    <div class="sal-hero">
+      <div class="sal-hero-text">
+        <div class="sal-eyebrow">Hair · Skin · Beauty · Milano</div>
+        <h1>L'arte di prendersi<br>cura di sé.</h1>
+        <div class="sal-hairline"></div>
+        <p>Un salone dove ogni servizio è un rituale. Trattamenti personalizzati, prodotti selezionati, un'ora solo per te.</p>
+        <button class="sal-cta">Prenota il tuo rituale</button>
+      </div>
+      <div class="sal-hero-img">
+        <div class="sal-img-tag">Atelier Rosé</div>
+        <div class="sal-img-glyph">✦</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="meta">
+    <div class="meta-palette">
+      <div class="swatch" style="background:#FAF7F2; border-color:rgba(0,0,0,0.12)"></div>
+      <div class="swatch" style="background:#C9A96E"></div>
+      <div class="swatch" style="background:#2A2A2A"></div>
+    </div>
+    <div class="meta-fonts">
+      <div>Display: <span>Fraunces</span> — italic 400 (leggerissimo, zero weight)</div>
+      <div>UI + body: <span>Jost</span> — 400/500</div>
+    </div>
+    <div class="meta-firma">hairline 80px champagne rgba 0.4 tra sezioni. Nessun box-shadow ovunque. Gallery aspect-ratio 4/5–3/4 alternati.</div>
+  </div>
+</div>
+
+<!-- ══════════════ 05 · ECOMMERCE ══════════════ -->
+<div class="sim">
+  <div class="sim-tag">05 · E-commerce · LUMIÈRE</div>
+
+  <div class="eco">
+    <nav class="eco-nav">
+      <div class="eco-logo">Lumière</div>
+      <div class="eco-nav-links"><span>Collezione</span><span>Novità</span><span>Sale</span><span>Brand</span></div>
+      <button class="eco-cart-btn">Carrello (0)</button>
+    </nav>
+
+    <div class="eco-body">
+      <div class="eco-hero-text">
+        <div class="eco-eyebrow">Nuova Collezione · Primavera 2025</div>
+        <h1>Stile che<br>dura nel tempo.</h1>
+        <p>Capi selezionati, materiali sostenibili, design senza tempo. Ogni pezzo è pensato per restare.</p>
+      </div>
+
+      <div class="eco-grid">
+        <div class="eco-card">
+          <div class="eco-card-img">immagine</div>
+          <div class="eco-card-info">
+            <div class="eco-card-name">Giacca Lino</div>
+            <div class="eco-card-detail">Beige naturale · S/M/L/XL</div>
+            <div class="eco-card-bottom"><span class="eco-card-price">€ 289</span></div>
+          </div>
+        </div>
+        <div class="eco-card">
+          <div class="eco-card-img">immagine</div>
+          <div class="eco-card-info">
+            <div class="eco-card-name">Camicia Oxford</div>
+            <div class="eco-card-detail">Bianco · Taglia unica</div>
+            <div class="eco-card-bottom">
+              <span class="eco-card-price">€ 116</span>
+              <span class="eco-badge-sale">−20%</span>
+            </div>
+          </div>
+        </div>
+        <div class="eco-card">
+          <div class="eco-card-img">immagine</div>
+          <div class="eco-card-info">
+            <div class="eco-card-name">Pantaloni Wide</div>
+            <div class="eco-card-detail">Grigio ardesia · S/M/L</div>
+            <div class="eco-card-bottom">
+              <span class="eco-card-price">€ 198</span>
+              <span class="eco-badge-stock">In stock</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="meta">
+    <div class="meta-palette">
+      <div class="swatch" style="background:#F5F2EE; border-color:rgba(0,0,0,0.12)"></div>
+      <div class="swatch" style="background:#1A1A1A"></div>
+      <div class="swatch" style="background:#C41E3A"></div>
+      <div class="swatch" style="background:#2D7A4F"></div>
+    </div>
+    <div class="meta-fonts">
+      <div>Display + body: <span>Plus Jakarta Sans</span> — 400/600/800</div>
+      <div>Micro-UI (prezzi, badge): <span>Inter</span> — 400/600</div>
+    </div>
+    <div class="meta-firma">card senza border-box, solo immagine + 3 righe. Rosso esclusivamente per badge SALE. Verde solo per in-stock.</div>
+  </div>
+</div>
+
+<!-- ══════════════ 06 · CAMPAGNA ══════════════ -->
+<div class="sim">
+  <div class="sim-tag">06 · Campagna · Politica</div>
+
+  <div class="cam">
+    <nav class="cam-nav">
+      <div class="cam-logo">Marco Rossi · Sindaco</div>
+      <div class="cam-nav-links"><span>Programma</span><span>Valori</span><span>Team</span><span>News</span></div>
+      <button class="cam-nav-cta">Sostieni</button>
+    </nav>
+
+    <div class="cam-body">
+      <div class="cam-text">
+        <div class="cam-eyebrow">Elezioni Comunali 2025 · Milano</div>
+        <h1>Una città<br>per tutti.</h1>
+        <div class="cam-red-line"></div>
+        <div class="cam-quote">"La politica vera si misura nei quartieri, non nei palazzi."</div>
+        <p>Un programma concreto, costruito con i cittadini. Mobilità, verde urbano, lavoro, sicurezza. Senza promesse vuote.</p>
+        <div class="cam-btns">
+          <button class="cam-btn-r">Sostieni la campagna</button>
+          <button class="cam-btn-o">Leggi il programma</button>
+        </div>
+      </div>
+
+      <div class="cam-stats">
+        <div class="cam-stat">
+          <div class="cam-stat-n">12.847</div>
+          <div class="cam-stat-l">Firme raccolte</div>
+        </div>
+        <div class="cam-stat">
+          <div class="cam-stat-n">38</div>
+          <div class="cam-stat-l">Quartieri coinvolti</div>
+        </div>
+        <div class="cam-stat">
+          <div class="cam-stat-n">97%</div>
+          <div class="cam-stat-l">Promesse mantenute</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="meta">
+    <div class="meta-palette">
+      <div class="swatch" style="background:#0A1628"></div>
+      <div class="swatch" style="background:#F8F9FA"></div>
+      <div class="swatch" style="background:#C41E3A"></div>
+    </div>
+    <div class="meta-fonts">
+      <div>Display + body: <span>Libre Franklin</span> — 400/700/900</div>
+      <div>Citazioni candidato: <span>Fraunces</span> — italic 400</div>
+    </div>
+    <div class="meta-firma">H2 con underline 3px rosso. Numeri Franklin 900. Fraunces italic solo per citazioni. Verde solo per conferme azioni.</div>
+  </div>
+</div>
+
+</body>
+</html>
