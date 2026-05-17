@@ -53,7 +53,10 @@ const SaloneSim = () => {
 
         {/* ── HERO ── */}
         <section className="sal-hero">
-          <div className="sal-hero-bg" />
+          <div className="sal-hero-bg">
+            <img src="" alt="" className="sim-photo-img" />
+            <span className="sim-photo-hint">hero · salone / beauty interior</span>
+          </div>
           <div className="sal-hero-content">
             <p className="sal-eyebrow">Salone di Bellezza · Milano, Brera</p>
             <h1 className="sal-h1">La bellezza<br />è un'arte.</h1>
@@ -103,7 +106,9 @@ const SaloneSim = () => {
             <div className="sal-team-grid">
               {TEAM.map(m => (
                 <div key={m.nome} className="sal-member-card">
-                  <div className="sal-member-avatar">
+                  <div className="sal-member-avatar sim-photo-slot">
+                    <img src="" alt={m.nome} className="sim-photo-img" />
+                    <span className="sim-photo-hint">{m.nome.split(' ')[0]}</span>
                     <svg viewBox="0 0 80 100" width="52" height="65">
                       <circle cx="40" cy="28" r="16" fill="#C9A96E" opacity="0.45" />
                       <path d="M5 100 Q5 64 40 64 Q75 64 75 100" fill="#C9A96E" opacity="0.3" />
@@ -128,7 +133,10 @@ const SaloneSim = () => {
                 '#E8DDD0', '#D8CFC2', '#C8BFB0',
                 '#EAE0D4', '#D2C8BC', '#E0D6CA',
               ].map((c, i) => (
-                <div key={i} className="sal-gallery-item" style={{ background: `linear-gradient(145deg, ${c}, ${c}BB)` }} />
+                <div key={i} className="sal-gallery-item sim-photo-slot" style={{ background: `linear-gradient(145deg, ${c}, ${c}BB)` }}>
+                  <img src="" alt="" className="sim-photo-img" />
+                  <span className="sim-photo-hint">gallery · {i + 1}</span>
+                </div>
               ))}
             </div>
           </div>

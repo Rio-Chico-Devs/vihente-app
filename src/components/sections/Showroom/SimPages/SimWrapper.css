@@ -259,3 +259,53 @@ body.sim-fullscreen-active .iris-container {
     display: none;
   }
 }
+
+/* ── Photo placeholder slot system ─────────────────────────────────
+   Aggiungi `sim-photo-slot` al container, `sim-photo-img` all'<img>,
+   `sim-photo-hint` allo <span> di etichetta.
+   Quando src è vuoto: img nascosta, hint visibile come indicatore.
+   Quando src è valorizzato: img copre tutto, hint scompare sotto.
+─────────────────────────────────────────────────────────────────── */
+
+.sim-photo-slot {
+  position: relative;
+  overflow: hidden;
+}
+
+/* img nascosta di default (src vuoto) */
+.sim-photo-img {
+  display: none;
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  z-index: 5;
+}
+
+/* img visibile solo quando src è valorizzato */
+.sim-photo-img[src]:not([src=""]) {
+  display: block;
+}
+
+/* etichetta placeholder — z-index sotto l'img, scompare sotto la foto */
+.sim-photo-hint {
+  position: absolute;
+  bottom: 6px;
+  right: 8px;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 0.48rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.72);
+  background: rgba(0, 0, 0, 0.48);
+  padding: 0.18rem 0.44rem;
+  border-radius: 2px;
+  pointer-events: none;
+  z-index: 4;
+  line-height: 1.4;
+  text-align: right;
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+}

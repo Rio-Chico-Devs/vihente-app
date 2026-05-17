@@ -292,6 +292,8 @@ const EcommerceSim = () => {
         {/* ── HERO BANNER ── */}
         <section className="eco-hero">
           <div className="eco-hero-bg">
+            <img src="" alt="" className="sim-photo-img" />
+            <span className="sim-photo-hint">hero · moda / collezione</span>
             <div className="eco-hero-overlay" />
           </div>
           <div className="eco-hero-content">
@@ -326,6 +328,8 @@ const EcommerceSim = () => {
                     style={{ background: `linear-gradient(145deg, ${p.colore}, ${p.colore2})` }}
                     onClick={() => setDetailProd(p)}
                   >
+                    <img src="" alt={p.nome} className="sim-photo-img" />
+                    <span className="sim-photo-hint">{p.nome}</span>
                     <div className="eco-product-overlay">
                       <button className="eco-zoom-btn" onClick={e => { e.stopPropagation(); setDetailProd(p); }}>
                         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2" strokeLinecap="round">

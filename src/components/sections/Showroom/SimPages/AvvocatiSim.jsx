@@ -161,42 +161,48 @@ const AvvocatiSim = () => {
 
         {/* ── HERO ── */}
         <section className="avv-hero">
-          <div className="avv-hero-emblem">
-            <svg viewBox="0 0 60 60" width="50" height="50">
-              <g stroke="#B89B5E" strokeWidth="1" fill="none" strokeLinecap="round">
-                <line x1="30" y1="8" x2="30" y2="50" />
-                <line x1="14" y1="16" x2="46" y2="16" />
-                <path d="M14 16 L10 28 Q10 31 14 31 Q18 31 18 28 Z" />
-                <path d="M46 16 L42 28 Q42 31 46 31 Q50 31 50 28 Z" />
-                <circle cx="30" cy="50" r="2.6" />
-                <path d="M22 50 L38 50" />
-              </g>
-            </svg>
+          <div className="avv-hero-photobg">
+            <img src="" alt="" className="sim-photo-img" />
+            <span className="sim-photo-hint">hero · architettura / marmo</span>
           </div>
-          <div className="avv-hero-rule" />
-          <p className="avv-hero-eyebrow">XXV anni — Difesa giuridica di prim'ordine</p>
-          <h1 className="avv-h1">
-            <em>Difendiamo</em> i vostri diritti<br />
-            con <em>autorevolezza</em> e precisione.
-          </h1>
-          <p className="avv-hero-desc">
-            Un approccio rigoroso, una strategia su misura, un team che ha rappresentato
-            clienti privati e istituzioni davanti alle più alte corti italiane ed europee.
-          </p>
-          <div className="avv-hero-actions">
-            <button className="avv-btn-gold" onClick={() => setModalOpen(true)}>
-              Prenota una consulenza riservata
-            </button>
-            <button className="avv-btn-ghost">Scopri lo studio</button>
-          </div>
-          <div className="avv-hero-stats">
-            <div className="avv-stat"><strong>2.400+</strong><span>casi gestiti</span></div>
-            <div className="avv-stat-divider" />
-            <div className="avv-stat"><strong>96%</strong><span>tasso di successo</span></div>
-            <div className="avv-stat-divider" />
-            <div className="avv-stat"><strong>XXV</strong><span>anni di studio</span></div>
-            <div className="avv-stat-divider" />
-            <div className="avv-stat"><strong>III</strong><span>sedi europee</span></div>
+          <div className="avv-hero-inner">
+            <div className="avv-hero-emblem">
+              <svg viewBox="0 0 60 60" width="50" height="50">
+                <g stroke="#B89B5E" strokeWidth="1" fill="none" strokeLinecap="round">
+                  <line x1="30" y1="8" x2="30" y2="50" />
+                  <line x1="14" y1="16" x2="46" y2="16" />
+                  <path d="M14 16 L10 28 Q10 31 14 31 Q18 31 18 28 Z" />
+                  <path d="M46 16 L42 28 Q42 31 46 31 Q50 31 50 28 Z" />
+                  <circle cx="30" cy="50" r="2.6" />
+                  <path d="M22 50 L38 50" />
+                </g>
+              </svg>
+            </div>
+            <div className="avv-hero-rule" />
+            <p className="avv-hero-eyebrow">XXV anni — Difesa giuridica di prim'ordine</p>
+            <h1 className="avv-h1">
+              <em>Difendiamo</em> i vostri diritti<br />
+              con <em>autorevolezza</em> e precisione.
+            </h1>
+            <p className="avv-hero-desc">
+              Un approccio rigoroso, una strategia su misura, un team che ha rappresentato
+              clienti privati e istituzioni davanti alle più alte corti italiane ed europee.
+            </p>
+            <div className="avv-hero-actions">
+              <button className="avv-btn-gold" onClick={() => setModalOpen(true)}>
+                Prenota una consulenza riservata
+              </button>
+              <button className="avv-btn-ghost">Scopri lo studio</button>
+            </div>
+            <div className="avv-hero-stats">
+              <div className="avv-stat"><strong>2.400+</strong><span>casi gestiti</span></div>
+              <div className="avv-stat-divider" />
+              <div className="avv-stat"><strong>96%</strong><span>tasso di successo</span></div>
+              <div className="avv-stat-divider" />
+              <div className="avv-stat"><strong>XXV</strong><span>anni di studio</span></div>
+              <div className="avv-stat-divider" />
+              <div className="avv-stat"><strong>III</strong><span>sedi europee</span></div>
+            </div>
           </div>
         </section>
 
@@ -241,7 +247,9 @@ const AvvocatiSim = () => {
               {SOCI.map(s => (
                 <div key={s.nome} className="avv-socio-card">
                   <div className="avv-socio-portrait">
-                    <div className="avv-portrait-frame">
+                    <div className="avv-portrait-frame sim-photo-slot">
+                      <img src="" alt={s.nome} className="sim-photo-img" />
+                      <span className="sim-photo-hint">ritratto · {s.init}</span>
                       <div className="avv-portrait-init">{s.init}</div>
                     </div>
                   </div>

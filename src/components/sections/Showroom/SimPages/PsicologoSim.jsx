@@ -62,7 +62,9 @@ const PsicologoSim = () => {
               <button className="psi-btn-ghost">Scopri il mio approccio</button>
             </div>
           </div>
-          <div className="psi-hero-photo">
+          <div className="psi-hero-photo sim-photo-slot">
+            <img src="" alt="" className="sim-photo-img" />
+            <span className="sim-photo-hint">dottoressa · ritratto hero</span>
             <div className="psi-photo-placeholder">
               <svg viewBox="0 0 100 130" width="90" height="117">
                 <circle cx="50" cy="34" r="22" fill="#8FAF8A" opacity="0.55" />
@@ -94,7 +96,9 @@ const PsicologoSim = () => {
         {/* ── CHI SONO ── */}
         <section className="psi-about" id="chi-sono">
           <div className="psi-about-inner">
-            <div className="psi-about-photo">
+            <div className="psi-about-photo sim-photo-slot">
+              <img src="" alt="" className="sim-photo-img" />
+              <span className="sim-photo-hint">dottoressa · about</span>
               <div className="psi-about-photo-placeholder">
                 <svg viewBox="0 0 80 100" width="72" height="90">
                   <circle cx="40" cy="28" r="18" fill="#8FAF8A" opacity="0.5" />

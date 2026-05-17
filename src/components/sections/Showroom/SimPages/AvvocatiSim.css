@@ -161,6 +161,19 @@
   max-width: 940px;
   margin: 0 auto;
   position: relative;
+  overflow: hidden;
+}
+
+.avv-hero-photobg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.avv-hero-inner {
+  position: relative;
+  z-index: 1;
 }
 
 .avv-hero::before {
