@@ -582,6 +582,7 @@ const Navbar = () => {
             <Link
               to="/showroom"
               className={`nav-link ${isActive('/showroom') ? 'active' : ''}`}
+              data-tour="nav-showroom"
               aria-label="Vai allo Showroom"
               aria-current={isActive('/showroom') ? 'page' : undefined}
               onClick={(e) => handleDesktopNavClick(e, '/showroom')}

@@ -33,6 +33,12 @@ export const TOUR_STEPS = [
     audio:  '/audio/iris/iris-tour-portfolio.ogg',
   },
   {
+    id:     'showroom',
+    target: 'nav-showroom',
+    text:   'Abbiamo anche uno Showroom: sei template professionali completi, ognuno pensato per un settore diverso. Clicca l\'anteprima per navigare il sito simulato come se fosse già il tuo.',
+    audio:  '/audio/iris/iris-tour-showroom.ogg',
+  },
+  {
     id:     'storia',
     target: 'nav-storia',
     text:   'In questa sezione puoi trovare più informazioni su chi ha creato questo sito.',
