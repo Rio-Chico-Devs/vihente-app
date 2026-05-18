@@ -47,7 +47,7 @@ const FotografoSim = () => {
         {/* ── HERO ── */}
         <section className="fot-hero">
           <div className="fot-hero-bg">
-            <img src="" alt="" className="sim-photo-img" />
+            <img alt="" className="sim-photo-img" />
             <span className="sim-photo-hint">hero · mood / fotografia</span>
           </div>
           <div className="fot-hero-content">
@@ -86,7 +86,7 @@ const FotografoSim = () => {
                   style={{ background: item.gradient }}
                   onClick={() => setLightboxItem(item)}
                 >
-                  <img src="" alt={item.label} className="sim-photo-img" />
+                  <img alt={item.label} className="sim-photo-img" />
                   <span className="sim-photo-hint">{item.label}</span>
                   <div className="fot-thumb-overlay">
                     <span className="fot-thumb-label">{item.label}</span>
@@ -102,7 +102,7 @@ const FotografoSim = () => {
         <section className="fot-about">
           <div className="fot-about-inner">
             <div className="fot-about-photo sim-photo-slot">
-              <img src="" alt="" className="sim-photo-img" />
+              <img alt="" className="sim-photo-img" />
               <span className="sim-photo-hint">fotografo · ritratto about</span>
               <svg viewBox="0 0 100 130" width="72" height="94">
                 <circle cx="50" cy="34" r="20" fill="#E8D5B7" opacity="0.35" />

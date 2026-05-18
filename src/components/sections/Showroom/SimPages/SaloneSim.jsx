@@ -54,7 +54,7 @@ const SaloneSim = () => {
         {/* ── HERO ── */}
         <section className="sal-hero">
           <div className="sal-hero-bg">
-            <img src="" alt="" className="sim-photo-img" />
+            <img alt="" className="sim-photo-img" />
             <span className="sim-photo-hint">hero · salone / beauty interior</span>
           </div>
           <div className="sal-hero-content">
@@ -107,7 +107,7 @@ const SaloneSim = () => {
               {TEAM.map(m => (
                 <div key={m.nome} className="sal-member-card">
                   <div className="sal-member-avatar sim-photo-slot">
-                    <img src="" alt={m.nome} className="sim-photo-img" />
+                    <img alt={m.nome} className="sim-photo-img" />
                     <span className="sim-photo-hint">{m.nome.split(' ')[0]}</span>
                     <svg viewBox="0 0 80 100" width="52" height="65">
                       <circle cx="40" cy="28" r="16" fill="#C9A96E" opacity="0.45" />
@@ -134,7 +134,7 @@ const SaloneSim = () => {
                 '#EAE0D4', '#D2C8BC', '#E0D6CA',
               ].map((c, i) => (
                 <div key={i} className="sal-gallery-item sim-photo-slot" style={{ background: `linear-gradient(145deg, ${c}, ${c}BB)` }}>
-                  <img src="" alt="" className="sim-photo-img" />
+                  <img alt="" className="sim-photo-img" />
                   <span className="sim-photo-hint">gallery · {i + 1}</span>
                 </div>
               ))}

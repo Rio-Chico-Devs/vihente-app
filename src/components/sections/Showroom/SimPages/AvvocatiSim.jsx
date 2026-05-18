@@ -162,7 +162,7 @@ const AvvocatiSim = () => {
         {/* ── HERO ── */}
         <section className="avv-hero">
           <div className="avv-hero-photobg">
-            <img src="" alt="" className="sim-photo-img" />
+            <img alt="" className="sim-photo-img" />
             <span className="sim-photo-hint">hero · architettura / marmo</span>
           </div>
           <div className="avv-hero-inner">
@@ -248,7 +248,7 @@ const AvvocatiSim = () => {
                 <div key={s.nome} className="avv-socio-card">
                   <div className="avv-socio-portrait">
                     <div className="avv-portrait-frame sim-photo-slot">
-                      <img src="" alt={s.nome} className="sim-photo-img" />
+                      <img alt={s.nome} className="sim-photo-img" />
                       <span className="sim-photo-hint">ritratto · {s.init}</span>
                       <div className="avv-portrait-init">{s.init}</div>
                     </div>
