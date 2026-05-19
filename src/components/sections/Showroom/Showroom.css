@@ -947,6 +947,182 @@
 }
 
 
+/* ─── 7. BARBIERE ─── editorial yellow/black magazine ────────── */
+
+.sr-barbiere {
+  background: #F8F6F1;
+  font-family: 'Barlow Condensed', 'Impact', sans-serif;
+}
+
+.sr-b-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 12px;
+  height: 26px;
+  background: #F8F6F1;
+  border-bottom: 1.5px solid #0A0A0A;
+  flex-shrink: 0;
+}
+
+.sr-b-logo {
+  font-size: 9.5px;
+  font-weight: 900;
+  color: #0A0A0A;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  line-height: 1;
+}
+.sr-b-logo span { color: #F2C11E; }
+
+.sr-b-nav-links {
+  display: flex;
+  gap: 8px;
+}
+.sr-b-nav-links i {
+  display: block;
+  width: 14px;
+  height: 4px;
+  background: rgba(10, 10, 10, 0.22);
+  border-radius: 1px;
+}
+
+.sr-b-book {
+  background: #F2C11E;
+  border: 1.5px solid #0A0A0A;
+  font-size: 6px;
+  font-weight: 900;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: #0A0A0A;
+  padding: 3px 7px;
+}
+
+.sr-b-hero {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  flex: 1;
+  overflow: hidden;
+  border-bottom: 1.5px solid #0A0A0A;
+}
+
+.sr-b-hero-left {
+  padding: 8px 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  background: #F8F6F1;
+  border-right: 1.5px solid #0A0A0A;
+}
+
+.sr-b-num {
+  font-size: 26px;
+  font-weight: 900;
+  line-height: 1;
+  color: transparent;
+  -webkit-text-stroke: 1px #0A0A0A;
+  letter-spacing: -0.02em;
+  user-select: none;
+}
+
+.sr-b-h1-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  margin-top: 2px;
+}
+.sr-b-h1 {
+  height: 8px;
+  background: #0A0A0A;
+  border-radius: 1px;
+  width: 100%;
+  opacity: 0.88;
+}
+.sr-b-h1--2 { width: 78%; opacity: 0.88; }
+.sr-b-h1--accent {
+  height: 8px;
+  width: 60%;
+  background: #F2C11E;
+  border-radius: 1px;
+}
+
+.sr-b-hero-photo {
+  background: linear-gradient(160deg, #D0C8C0, #B8B0A8);
+  position: relative;
+  overflow: hidden;
+}
+.sr-b-hero-photo::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -20%;
+  width: 44%;
+  height: 100%;
+  background: #F2C11E;
+  clip-path: polygon(30% 0%, 100% 0%, 70% 100%, 0% 100%);
+  mix-blend-mode: multiply;
+  opacity: 0.75;
+}
+
+.sr-b-ticker {
+  background: #F2C11E;
+  border-bottom: 1.5px solid #0A0A0A;
+  overflow: hidden;
+  height: 18px;
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+.sr-b-tick-inner {
+  display: flex;
+  flex-shrink: 0;
+  animation: srBTickerMove 10s linear infinite;
+}
+.sr-b-tick-item {
+  font-size: 7px;
+  font-weight: 800;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: #0A0A0A;
+  white-space: nowrap;
+  padding: 0 18px;
+  flex-shrink: 0;
+}
+
+@keyframes srBTickerMove {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
+.sr-b-svc-row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  background: #0A0A0A;
+  flex-shrink: 0;
+}
+.sr-b-svc {
+  padding: 5px 6px 4px;
+  border-right: 1px solid rgba(248,246,241,.1);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.sr-b-svc:last-child { border-right: none; }
+.sr-b-svc-num {
+  font-size: 14px;
+  font-weight: 900;
+  color: transparent;
+  -webkit-text-stroke: 0.8px #F2C11E;
+  line-height: 1;
+  letter-spacing: -0.02em;
+}
+.sr-b-svc-bar {
+  height: 3px;
+  background: rgba(248,246,241,.18);
+  border-radius: 1px;
+}
+
+
 /* ═══════════════════════════════════════════════════════════════
    LIGHT MODE OVERRIDES (Vihente amber night mode)
 ═══════════════════════════════════════════════════════════════ */

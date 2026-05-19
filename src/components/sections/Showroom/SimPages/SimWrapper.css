@@ -99,7 +99,8 @@ body.sim-fullscreen-active .iris-container {
 .simwrap-body > .fot-site,
 .simwrap-body > .sal-site,
 .simwrap-body > .eco-site,
-.simwrap-body > .cam-site {
+.simwrap-body > .cam-site,
+.simwrap-body > .bar-site {
   position: relative;
   z-index: 0;
 }

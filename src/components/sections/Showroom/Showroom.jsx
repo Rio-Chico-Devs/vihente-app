@@ -9,6 +9,7 @@ const SIM_ROUTES = {
   ecommerce: '/showroom/ecommerce',
   salone:    '/showroom/salone',
   fotografo: '/showroom/fotografo',
+  barbiere:  '/showroom/barbiere',
 };
 import './Showroom.css';
 
@@ -60,6 +61,14 @@ const templates = [
     description: 'Portfolio visivo puro: fullscreen hero, gallery masonry, approccio minimalista e contatto essenziale.',
     tags: ['Visuale', 'Minimale', 'Impatto'],
     guide: 'Template fotografo. Full-dark, gallery-first, tipografia minimal uppercase — la fotografia è protagonista assoluta.',
+  },
+  {
+    id: 'barbiere',
+    sector: 'BARBERSHOP',
+    title: 'Barbiere',
+    description: 'Design editoriale magazine: hero split, ticker animato, griglia servizi con prenotazione rapida e galleria asimmetrica.',
+    tags: ['Editoriale', 'Bold', 'Maschile'],
+    guide: 'Template barbershop. Palette giallo/nero, Barlow Condensed 900, layout magazine con outline numbers — identità forte e prenotazione integrata.',
   },
 ];
 
@@ -212,6 +221,42 @@ const FotografoPreview = () => (
   </div>
 );
 
+const BarbierePreview = () => (
+  <div className="sr-preview sr-barbiere">
+    <nav className="sr-b-nav">
+      <span className="sr-b-logo">BL<span>A</span>DE</span>
+      <div className="sr-b-nav-links"><i /><i /><i /></div>
+      <div className="sr-b-book">Prenota</div>
+    </nav>
+    <div className="sr-b-hero">
+      <div className="sr-b-hero-left">
+        <div className="sr-b-num">01</div>
+        <div className="sr-b-h1-wrap">
+          <div className="sr-b-h1" />
+          <div className="sr-b-h1 sr-b-h1--2" />
+          <div className="sr-b-h1--accent" />
+        </div>
+      </div>
+      <div className="sr-b-hero-photo" />
+    </div>
+    <div className="sr-b-ticker">
+      <div className="sr-b-tick-inner">
+        {['Taglio · Barba · Fade · Blade', 'Taglio · Barba · Fade · Blade'].map((t, i) => (
+          <span key={i} className="sr-b-tick-item">{t}</span>
+        ))}
+      </div>
+    </div>
+    <div className="sr-b-svc-row">
+      {[1,2,3,4].map(n => (
+        <div key={n} className="sr-b-svc">
+          <div className="sr-b-svc-num">0{n}</div>
+          <div className="sr-b-svc-bar" />
+        </div>
+      ))}
+    </div>
+  </div>
+);
+
 const PREVIEWS = {
   psicologo: PsicologoPreview,
   avvocati: AvvocatiPreview,
@@ -219,6 +264,7 @@ const PREVIEWS = {
   ecommerce: EcommercePreview,
   salone: SalonePreview,
   fotografo: FotografoPreview,
+  barbiere: BarbierePreview,
 };
 
 /* ─── Main Component ──────────────────────────────────────────────────────── */
