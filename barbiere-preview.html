@@ -89,29 +89,19 @@ nav{
 
 .ticker{
   background:var(--y);border-bottom:2px solid var(--bk);
-  overflow:hidden;padding:0;
-  display:flex;flex-direction:column;gap:0;
+  overflow:hidden;padding:1.35rem 0;
 }
-.ticker-row{
-  display:flex;white-space:nowrap;
-  padding:.95rem 0;
-  border-bottom:1px solid rgba(10,10,10,.12);
-}
-.ticker-row:last-child{border-bottom:none;}
-.ticker-row--rev{animation-direction:reverse;}
-
+.ticker-row{display:flex;white-space:nowrap;}
 .ticker-inner{
   display:flex;gap:0;white-space:nowrap;flex-shrink:0;
-  animation:tickerMove 22s linear infinite;
+  animation:tickerMove 26s linear infinite;
 }
-.ticker-row--rev .ticker-inner{animation-direction:reverse;animation-duration:26s;}
-
 .ticker-item{
-  font-family:var(--cond);font-size:1.05rem;font-weight:800;
-  letter-spacing:.22em;text-transform:uppercase;color:var(--bk);
-  padding:0 2.8rem;flex-shrink:0;
+  font-family:var(--cond);font-size:1.15rem;font-weight:800;
+  letter-spacing:.2em;text-transform:uppercase;color:var(--bk);
+  padding:0 3rem;flex-shrink:0;
 }
-.ticker-sep{font-size:.9rem;font-weight:900;color:var(--bk);opacity:.3;padding:0 .3rem;flex-shrink:0;}
+.ticker-sep{font-size:.95rem;font-weight:900;color:var(--bk);opacity:.35;padding:0 .2rem;flex-shrink:0;}
 
 @keyframes tickerMove{from{transform:translateX(0);}to{transform:translateX(-50%);}}
 
@@ -132,8 +122,8 @@ nav{
   line-height:1;flex-shrink:0;letter-spacing:-.02em;
 }
 .banner-info-text{}
-.banner-info-label{font-family:var(--cond);font-size:.55rem;font-weight:700;letter-spacing:.32em;text-transform:uppercase;color:rgba(248,246,241,.35);margin-bottom:.3rem;}
-.banner-info-value{font-family:var(--cond);font-size:.88rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--wh);line-height:1.4;}
+.banner-info-label{font-family:var(--cond);font-size:.62rem;font-weight:700;letter-spacing:.28em;text-transform:uppercase;color:rgba(248,246,241,.5);margin-bottom:.35rem;}
+.banner-info-value{font-family:var(--cond);font-size:.95rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--wh);line-height:1.45;}
 
 /* ─── SERVICES ───────────────────────────────────────────── */
 .services{padding:5.5rem 3.5rem;background:var(--wh);border-bottom:2px solid var(--bk);}
@@ -151,8 +141,8 @@ nav{
 .svc-num{position:absolute;top:1rem;left:1rem;font-family:var(--cond);font-size:3.5rem;font-weight:900;color:transparent;-webkit-text-stroke:1.5px var(--y);z-index:2;line-height:1;letter-spacing:-.02em;}
 .svc-body{position:absolute;bottom:0;left:0;right:0;padding:1.4rem;z-index:2;}
 .svc-name{font-family:var(--cond);font-size:1.5rem;font-weight:900;text-transform:uppercase;letter-spacing:.04em;color:var(--wh);line-height:1;margin-bottom:.4rem;}
-.svc-desc{font-family:var(--body);font-size:.68rem;color:rgba(248,246,241,.6);line-height:1.55;margin-bottom:.7rem;}
-.svc-price{font-family:var(--cond);font-size:.76rem;font-weight:800;letter-spacing:.2em;color:var(--y);text-transform:uppercase;}
+.svc-desc{font-family:var(--body);font-size:.78rem;color:rgba(248,246,241,.72);line-height:1.6;margin-bottom:.8rem;}
+.svc-price{font-family:var(--cond);font-size:.82rem;font-weight:800;letter-spacing:.18em;color:var(--y);text-transform:uppercase;}
 .svc-card::before{content:'';position:absolute;inset:0;background:var(--y);opacity:0;transition:opacity .35s;z-index:1;mix-blend-mode:multiply;}
 .svc-card:hover::before{opacity:.22;}
 .svc-book-hover{
@@ -169,7 +159,7 @@ nav{
 .stat-item{padding:2.8rem 2.5rem;border-right:1px solid rgba(248,246,241,.08);display:flex;flex-direction:column;gap:.4rem;}
 .stat-item:last-child{border-right:none;}
 .stat-num{font-family:var(--cond);font-size:4rem;font-weight:900;color:var(--y);line-height:.88;letter-spacing:-.02em;}
-.stat-label{font-family:var(--cond);font-size:.6rem;font-weight:700;letter-spacing:.3em;text-transform:uppercase;color:rgba(248,246,241,.38);}
+.stat-label{font-family:var(--cond);font-size:.65rem;font-weight:700;letter-spacing:.28em;text-transform:uppercase;color:rgba(248,246,241,.55);}
 
 /* ─── SPREAD ─────────────────────────────────────────────── */
 .spread{display:grid;grid-template-columns:1fr 1fr;min-height:72vh;border-bottom:2px solid var(--bk);}
@@ -185,7 +175,7 @@ nav{
 .spread-big-num{font-family:var(--cond);font-size:8rem;font-weight:900;color:transparent;-webkit-text-stroke:2px var(--gr);line-height:.85;letter-spacing:-.04em;user-select:none;pointer-events:none;}
 .spread-h2{font-family:var(--cond);font-size:3.8rem;font-weight:900;text-transform:uppercase;line-height:.9;letter-spacing:-.02em;}
 .spread-h2 em{font-family:var(--serif);font-style:italic;font-size:2.8rem;color:var(--mid);display:block;margin-top:.4rem;}
-.spread-body{font-size:.86rem;line-height:1.78;color:var(--mid);max-width:42ch;columns:2;gap:1.5rem;}
+.spread-body{font-size:.92rem;line-height:1.82;color:#4A4540;max-width:42ch;}
 .spread-signature{font-family:var(--cond);font-size:.6rem;font-weight:700;letter-spacing:.28em;text-transform:uppercase;color:var(--bk);display:flex;align-items:center;gap:1rem;}
 .spread-signature::before{content:'';display:block;width:2.5rem;height:2px;background:var(--y);}
 .section-meta{display:flex;align-items:center;gap:1rem;margin-bottom:.5rem;}
@@ -217,9 +207,9 @@ nav{
 .team-photo-wrap img{height:100%;}
 .team-card-tag{position:absolute;top:1rem;right:1rem;background:var(--y);border:1.5px solid var(--bk);font-family:var(--cond);font-size:.54rem;font-weight:800;letter-spacing:.25em;text-transform:uppercase;padding:.22rem .6rem;z-index:2;color:var(--bk);}
 .team-info{padding:1.4rem;background:var(--wh);}
-.team-role{font-family:var(--cond);font-size:.56rem;font-weight:800;letter-spacing:.3em;text-transform:uppercase;color:var(--y);margin-bottom:.4rem;}
-.team-name{font-family:var(--cond);font-size:1.65rem;font-weight:900;text-transform:uppercase;letter-spacing:.04em;line-height:1;margin-bottom:.4rem;}
-.team-spec{font-size:.73rem;color:var(--mid);line-height:1.6;}
+.team-role{font-family:var(--cond);font-size:.64rem;font-weight:800;letter-spacing:.28em;text-transform:uppercase;color:var(--y);margin-bottom:.45rem;}
+.team-name{font-family:var(--cond);font-size:1.65rem;font-weight:900;text-transform:uppercase;letter-spacing:.04em;line-height:1;margin-bottom:.5rem;}
+.team-spec{font-size:.82rem;color:#4A4540;line-height:1.65;}
 
 /* ─── BOOKING CTA STRIP ───────────────────────────────────── */
 .booking-strip{
@@ -233,7 +223,7 @@ nav{
   text-transform:uppercase;line-height:.88;letter-spacing:-.02em;color:var(--wh);
 }
 .booking-strip-h2 span{color:var(--y);}
-.booking-strip-sub{font-size:.82rem;color:rgba(248,246,241,.45);line-height:1.65;max-width:44ch;}
+.booking-strip-sub{font-size:.88rem;color:rgba(248,246,241,.62);line-height:1.7;max-width:44ch;}
 .booking-strip-right{display:flex;flex-direction:column;align-items:flex-end;gap:1.2rem;flex-shrink:0;}
 .booking-strip-time{
   font-family:var(--cond);font-size:.62rem;font-weight:700;letter-spacing:.28em;
@@ -386,10 +376,10 @@ footer{
   </div>
 </section>
 
-<!-- Banner block: yellow ticker (2 rows) + black info bar -->
+<!-- Banner block: ticker + info bar -->
 <div class="banner-block">
 
-  <!-- Yellow ticker — 2 rows, opposite directions -->
+  <!-- Yellow ticker — una riga -->
   <div class="ticker">
     <div class="ticker-row">
       <div class="ticker-inner">
@@ -398,37 +388,22 @@ footer{
         <span class="ticker-item">Rasatura con rasoio</span><span class="ticker-sep">✦</span>
         <span class="ticker-item">Trattamenti capelli</span><span class="ticker-sep">✦</span>
         <span class="ticker-item">Colorazione</span><span class="ticker-sep">✦</span>
-        <span class="ticker-item">Appuntamento online</span><span class="ticker-sep">✦</span>
-        <span class="ticker-item">Milano · Brera</span><span class="ticker-sep">✦</span>
+        <span class="ticker-item">Skin fade</span><span class="ticker-sep">✦</span>
+        <span class="ticker-item">Beard design</span><span class="ticker-sep">✦</span>
+        <span class="ticker-item">Hot towel shave</span><span class="ticker-sep">✦</span>
+        <span class="ticker-item">Milano · Brera · Dal 2008</span><span class="ticker-sep">✦</span>
         <span class="ticker-item">Taglio uomo</span><span class="ticker-sep">✦</span>
         <span class="ticker-item">Barba tradizionale</span><span class="ticker-sep">✦</span>
         <span class="ticker-item">Rasatura con rasoio</span><span class="ticker-sep">✦</span>
         <span class="ticker-item">Trattamenti capelli</span><span class="ticker-sep">✦</span>
         <span class="ticker-item">Colorazione</span><span class="ticker-sep">✦</span>
-        <span class="ticker-item">Appuntamento online</span><span class="ticker-sep">✦</span>
-        <span class="ticker-item">Milano · Brera</span><span class="ticker-sep">✦</span>
-      </div>
-    </div>
-    <div class="ticker-row ticker-row--rev">
-      <div class="ticker-inner">
-        <span class="ticker-item">Skin fade</span><span class="ticker-sep">◆</span>
-        <span class="ticker-item">Afro &amp; texture</span><span class="ticker-sep">◆</span>
-        <span class="ticker-item">Beard design</span><span class="ticker-sep">◆</span>
-        <span class="ticker-item">Keratin treatment</span><span class="ticker-sep">◆</span>
-        <span class="ticker-item">Hot towel shave</span><span class="ticker-sep">◆</span>
-        <span class="ticker-item">Hair color</span><span class="ticker-sep">◆</span>
-        <span class="ticker-item">Since 2008</span><span class="ticker-sep">◆</span>
-        <span class="ticker-item">Skin fade</span><span class="ticker-sep">◆</span>
-        <span class="ticker-item">Afro &amp; texture</span><span class="ticker-sep">◆</span>
-        <span class="ticker-item">Beard design</span><span class="ticker-sep">◆</span>
-        <span class="ticker-item">Keratin treatment</span><span class="ticker-sep">◆</span>
-        <span class="ticker-item">Hot towel shave</span><span class="ticker-sep">◆</span>
-        <span class="ticker-item">Hair color</span><span class="ticker-sep">◆</span>
-        <span class="ticker-item">Since 2008</span><span class="ticker-sep">◆</span>
+        <span class="ticker-item">Skin fade</span><span class="ticker-sep">✦</span>
+        <span class="ticker-item">Beard design</span><span class="ticker-sep">✦</span>
+        <span class="ticker-item">Hot towel shave</span><span class="ticker-sep">✦</span>
+        <span class="ticker-item">Milano · Brera · Dal 2008</span><span class="ticker-sep">✦</span>
       </div>
     </div>
   </div>
-
   <!-- Black info bar — counterweight to ticker -->
   <div class="banner-info">
     <div class="banner-info-cell">
