@@ -1,0 +1,1207 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BARBIERE — Design Preview · Stile Editoriale</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,400;0,700;0,800;0,900;1,700&family=Barlow:wght@300;400;500&family=Playfair+Display:ital@1&display=swap" rel="stylesheet">
+<style>
+/* ─── RESET & BASE ─────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --y:   #F2C11E;    /* yellow accent */
+  --ydk: #C9980A;    /* yellow dark */
+  --bk:  #0A0A0A;    /* near-black */
+  --wh:  #F8F6F1;    /* off-white */
+  --gr:  #E2DED6;    /* light grey */
+  --mid: #6B6560;    /* mid grey */
+  --cond: 'Barlow Condensed', sans-serif;
+  --body: 'Barlow', sans-serif;
+  --serif: 'Playfair Display', serif;
+}
+html { scroll-behavior: smooth; }
+body { background: var(--wh); color: var(--bk); font-family: var(--body); overflow-x: hidden; }
+img { display: block; width: 100%; height: 100%; object-fit: cover; filter: grayscale(100%) contrast(1.05); }
+a { text-decoration: none; color: inherit; }
+
+/* ─── UTILITY ──────────────────────────────────────────────── */
+.yellow        { color: var(--y); }
+.yellow-bg     { background: var(--y); }
+.black-bg      { background: var(--bk); color: var(--wh); }
+.eyebrow {
+  font-family: var(--cond);
+  font-size: .7rem;
+  font-weight: 700;
+  letter-spacing: .3em;
+  text-transform: uppercase;
+}
+
+/* ─── LABEL STRIP (top of page) ────────────────────────────── */
+.label-strip {
+  background: var(--bk);
+  color: var(--wh);
+  font-family: var(--cond);
+  font-size: .62rem;
+  font-weight: 700;
+  letter-spacing: .35em;
+  text-transform: uppercase;
+  padding: .55rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.label-strip span { opacity: .5; }
+
+/* ─── NAV ───────────────────────────────────────────────────── */
+nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.1rem 3rem;
+  background: var(--wh);
+  border-bottom: 1.5px solid var(--bk);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+.nav-logo {
+  font-family: var(--cond);
+  font-size: 1.65rem;
+  font-weight: 900;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  line-height: 1;
+}
+.nav-logo span { color: var(--y); }
+.nav-links {
+  display: flex;
+  gap: 2.4rem;
+  font-family: var(--cond);
+  font-size: .75rem;
+  font-weight: 700;
+  letter-spacing: .22em;
+  text-transform: uppercase;
+}
+.nav-links a { position: relative; }
+.nav-links a::after {
+  content:'';
+  position:absolute;
+  left:0; bottom:-3px;
+  width:0; height:1.5px;
+  background: var(--y);
+  transition: width .25s;
+}
+.nav-links a:hover::after { width:100%; }
+.nav-book {
+  background: var(--y);
+  color: var(--bk);
+  font-family: var(--cond);
+  font-size: .72rem;
+  font-weight: 800;
+  letter-spacing: .22em;
+  text-transform: uppercase;
+  padding: .65rem 1.5rem;
+  border: 2px solid var(--bk);
+  cursor: pointer;
+  transition: background .2s, color .2s;
+}
+.nav-book:hover { background: var(--bk); color: var(--y); }
+
+/* ─── HERO (MAGAZINE COVER) ─────────────────────────────────── */
+.hero {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  min-height: 88vh;
+  position: relative;
+  overflow: hidden;
+  border-bottom: 2px solid var(--bk);
+}
+
+/* Left panel */
+.hero-left {
+  background: var(--wh);
+  padding: 3.5rem 3rem 3.5rem 3.5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  position: relative;
+  z-index: 2;
+}
+.hero-issue {
+  display: flex;
+  align-items: baseline;
+  gap: 1rem;
+}
+.hero-issue-num {
+  font-family: var(--cond);
+  font-size: 7.5rem;
+  font-weight: 900;
+  line-height: .85;
+  color: transparent;
+  -webkit-text-stroke: 2px var(--bk);
+  letter-spacing: -.02em;
+  user-select: none;
+}
+.hero-issue-meta {
+  display: flex;
+  flex-direction: column;
+  gap: .35rem;
+}
+.hero-issue-meta p {
+  font-family: var(--cond);
+  font-size: .62rem;
+  font-weight: 700;
+  letter-spacing: .3em;
+  text-transform: uppercase;
+  color: var(--mid);
+  line-height: 1.4;
+}
+.hero-main-text { flex: 1; display: flex; flex-direction: column; justify-content: center; gap: 1.2rem; padding: 2.5rem 0; }
+.hero-h1 {
+  font-family: var(--cond);
+  font-size: 6.8rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  line-height: .88;
+  letter-spacing: -.02em;
+}
+.hero-h1-accent { color: var(--y); display: block; }
+.hero-diag-rule {
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(90deg, var(--y) 55%, transparent 100%);
+  margin: .6rem 0;
+}
+.hero-sub {
+  font-family: var(--cond);
+  font-size: 1.05rem;
+  font-weight: 400;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--mid);
+  max-width: 28ch;
+  line-height: 1.5;
+}
+.hero-bottom-row {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1rem;
+}
+.hero-name {
+  font-family: var(--cond);
+  font-size: 1.7rem;
+  font-weight: 900;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  line-height: 1;
+}
+.hero-name span { display: block; font-size: .6rem; font-weight: 700; letter-spacing: .3em; color: var(--mid); margin-bottom: .35rem; }
+.hero-address {
+  font-family: var(--cond);
+  font-size: .6rem;
+  font-weight: 700;
+  letter-spacing: .22em;
+  text-transform: uppercase;
+  color: var(--mid);
+  line-height: 1.8;
+  text-align: right;
+}
+
+/* Right panel — photo */
+.hero-right {
+  position: relative;
+  overflow: hidden;
+}
+.hero-photo-wrap {
+  position: absolute;
+  inset: 0;
+}
+/* Yellow diagonal slash over photo */
+.hero-right::after {
+  content: '';
+  position: absolute;
+  top: 0; left: -18%;
+  width: 42%;
+  height: 100%;
+  background: var(--y);
+  clip-path: polygon(30% 0%, 100% 0%, 70% 100%, 0% 100%);
+  z-index: 1;
+  mix-blend-mode: multiply;
+  opacity: .85;
+}
+
+/* ─── TICKER ───────────────────────────────────────────────── */
+.ticker {
+  background: var(--y);
+  border-top: 2px solid var(--bk);
+  border-bottom: 2px solid var(--bk);
+  overflow: hidden;
+  padding: .7rem 0;
+}
+.ticker-inner {
+  display: flex;
+  gap: 0;
+  white-space: nowrap;
+  animation: tickerMove 18s linear infinite;
+}
+.ticker-item {
+  font-family: var(--cond);
+  font-size: .78rem;
+  font-weight: 800;
+  letter-spacing: .25em;
+  text-transform: uppercase;
+  color: var(--bk);
+  padding: 0 2.5rem;
+  flex-shrink: 0;
+}
+.ticker-sep {
+  font-size: .78rem;
+  font-weight: 900;
+  color: var(--bk);
+  opacity: .4;
+  flex-shrink: 0;
+  padding: 0 .5rem;
+}
+@keyframes tickerMove { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+/* ─── SERVICES ─────────────────────────────────────────────── */
+.services {
+  padding: 5.5rem 3.5rem;
+  background: var(--wh);
+  border-bottom: 2px solid var(--bk);
+}
+.services-header {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: baseline;
+  margin-bottom: 3.5rem;
+  gap: 2rem;
+  border-bottom: 1.5px solid var(--bk);
+  padding-bottom: 1.2rem;
+}
+.services-title {
+  font-family: var(--cond);
+  font-size: 5rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  line-height: .88;
+  letter-spacing: -.02em;
+}
+.services-count {
+  font-family: var(--cond);
+  font-size: .68rem;
+  font-weight: 700;
+  letter-spacing: .3em;
+  text-transform: uppercase;
+  color: var(--mid);
+  white-space: nowrap;
+}
+.services-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0;
+  border: 1.5px solid var(--bk);
+}
+.svc-card {
+  position: relative;
+  overflow: hidden;
+  border-right: 1.5px solid var(--bk);
+  background: var(--gr);
+  aspect-ratio: 3/4;
+}
+.svc-card:last-child { border-right: none; }
+.svc-photo { position: absolute; inset: 0; }
+.svc-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(10,10,10,.9) 45%, transparent 100%);
+  z-index: 1;
+}
+.svc-num {
+  position: absolute;
+  top: 1rem; left: 1rem;
+  font-family: var(--cond);
+  font-size: 3.5rem;
+  font-weight: 900;
+  color: transparent;
+  -webkit-text-stroke: 1.5px var(--y);
+  z-index: 2;
+  line-height: 1;
+  letter-spacing: -.02em;
+}
+.svc-body {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  padding: 1.4rem;
+  z-index: 2;
+}
+.svc-name {
+  font-family: var(--cond);
+  font-size: 1.5rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: .04em;
+  color: var(--wh);
+  line-height: 1;
+  margin-bottom: .5rem;
+}
+.svc-desc {
+  font-family: var(--body);
+  font-size: .7rem;
+  color: rgba(248,246,241,.65);
+  line-height: 1.55;
+  margin-bottom: .8rem;
+}
+.svc-price {
+  font-family: var(--cond);
+  font-size: .78rem;
+  font-weight: 800;
+  letter-spacing: .2em;
+  color: var(--y);
+  text-transform: uppercase;
+}
+/* hover effect */
+.svc-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--y);
+  opacity: 0;
+  transition: opacity .35s;
+  z-index: 1;
+  mix-blend-mode: multiply;
+}
+.svc-card:hover::before { opacity: .25; }
+
+/* ─── EDITORIAL SPREAD ─────────────────────────────────────── */
+.spread {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  min-height: 75vh;
+  border-bottom: 2px solid var(--bk);
+}
+.spread-photo {
+  position: relative;
+  overflow: hidden;
+  border-right: 2px solid var(--bk);
+  min-height: 550px;
+}
+.spread-photo-wrap { position: absolute; inset: 0; }
+/* Yellow banner "SEE" style */
+.spread-photo-banner {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  background: var(--y);
+  padding: 1rem 2rem;
+  z-index: 2;
+  display: flex;
+  align-items: baseline;
+  gap: 1.5rem;
+  border-top: 2px solid var(--bk);
+}
+.spread-photo-big-word {
+  font-family: var(--cond);
+  font-size: 4rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  line-height: .88;
+  letter-spacing: -.02em;
+  color: var(--bk);
+}
+.spread-photo-tagline {
+  font-family: var(--cond);
+  font-size: .68rem;
+  font-weight: 700;
+  letter-spacing: .28em;
+  text-transform: uppercase;
+  color: var(--bk);
+  opacity: .55;
+  max-width: 22ch;
+  line-height: 1.55;
+}
+.spread-content {
+  padding: 3.5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 2rem;
+  background: var(--wh);
+}
+.spread-eyebrow-row {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+.spread-eyebrow-line {
+  flex: 1;
+  height: 1.5px;
+  background: var(--bk);
+}
+.spread-big-num {
+  font-family: var(--cond);
+  font-size: 8rem;
+  font-weight: 900;
+  color: transparent;
+  -webkit-text-stroke: 2px var(--gr);
+  line-height: .85;
+  letter-spacing: -.04em;
+  user-select: none;
+  pointer-events: none;
+}
+.spread-h2 {
+  font-family: var(--cond);
+  font-size: 3.8rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  line-height: .9;
+  letter-spacing: -.02em;
+}
+.spread-h2 em {
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 2.8rem;
+  color: var(--mid);
+  display: block;
+  margin-top: .4rem;
+}
+.spread-body {
+  font-size: .88rem;
+  line-height: 1.75;
+  color: var(--mid);
+  max-width: 42ch;
+  columns: 2;
+  gap: 1.5rem;
+}
+.spread-signature {
+  font-family: var(--cond);
+  font-size: .62rem;
+  font-weight: 700;
+  letter-spacing: .28em;
+  text-transform: uppercase;
+  color: var(--bk);
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+.spread-signature::before {
+  content: '';
+  display: block;
+  width: 2.5rem;
+  height: 2px;
+  background: var(--y);
+}
+
+/* ─── STATS BAR ────────────────────────────────────────────── */
+.stats-bar {
+  background: var(--bk);
+  border-bottom: 2px solid var(--y);
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+}
+.stat-item {
+  padding: 2.5rem 2rem;
+  border-right: 1px solid rgba(248,246,241,.1);
+  display: flex;
+  flex-direction: column;
+  gap: .4rem;
+}
+.stat-item:last-child { border-right: none; }
+.stat-num {
+  font-family: var(--cond);
+  font-size: 3.8rem;
+  font-weight: 900;
+  color: var(--y);
+  line-height: .9;
+  letter-spacing: -.02em;
+}
+.stat-label {
+  font-family: var(--cond);
+  font-size: .62rem;
+  font-weight: 700;
+  letter-spacing: .3em;
+  text-transform: uppercase;
+  color: rgba(248,246,241,.45);
+}
+
+/* ─── GALLERY EDITORIAL ────────────────────────────────────── */
+.gallery-section {
+  padding: 5rem 3.5rem;
+  background: var(--wh);
+  border-bottom: 2px solid var(--bk);
+}
+.gallery-header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: 3rem;
+  gap: 2rem;
+}
+.gallery-title {
+  font-family: var(--cond);
+  font-size: 4.5rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  line-height: .88;
+  letter-spacing: -.02em;
+}
+.gallery-view-all {
+  font-family: var(--cond);
+  font-size: .68rem;
+  font-weight: 800;
+  letter-spacing: .28em;
+  text-transform: uppercase;
+  color: var(--bk);
+  display: flex;
+  align-items: center;
+  gap: .6rem;
+  white-space: nowrap;
+}
+.gallery-view-all::after { content: '→'; font-size: 1rem; }
+
+/* Magazine-style editorial grid */
+.gallery-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr;
+  grid-template-rows: 280px 280px;
+  gap: 2px;
+  border: 1.5px solid var(--bk);
+}
+.gallery-item {
+  position: relative;
+  overflow: hidden;
+  background: var(--gr);
+}
+.gallery-item:first-child {
+  grid-row: 1 / 3;
+}
+.gallery-photo { position: absolute; inset: 0; }
+.gallery-item-label {
+  position: absolute;
+  top: 1rem; left: 1rem;
+  background: var(--y);
+  border: 1.5px solid var(--bk);
+  font-family: var(--cond);
+  font-size: .58rem;
+  font-weight: 800;
+  letter-spacing: .28em;
+  text-transform: uppercase;
+  color: var(--bk);
+  padding: .25rem .7rem;
+  z-index: 2;
+}
+.gallery-item:hover img { filter: grayscale(0%) contrast(1); transition: filter .4s; }
+.gallery-item img { transition: filter .4s; }
+/* number overlay on gallery items */
+.gallery-item-num {
+  position: absolute;
+  bottom: .6rem; right: .8rem;
+  font-family: var(--cond);
+  font-size: 4rem;
+  font-weight: 900;
+  color: transparent;
+  -webkit-text-stroke: 1px rgba(248,246,241,.25);
+  z-index: 2;
+  line-height: 1;
+  letter-spacing: -.02em;
+}
+
+/* ─── BOOKING CTA ─────────────────────────────────────────── */
+.booking {
+  background: var(--bk);
+  border-bottom: 2px solid var(--y);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  min-height: 38vh;
+}
+.booking-text {
+  padding: 4rem 3.5rem;
+  border-right: 1px solid rgba(248,246,241,.1);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 1.5rem;
+}
+.booking-h2 {
+  font-family: var(--cond);
+  font-size: 4.2rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  line-height: .88;
+  letter-spacing: -.02em;
+  color: var(--wh);
+}
+.booking-h2 span { color: var(--y); display: block; }
+.booking-sub {
+  font-size: .82rem;
+  color: rgba(248,246,241,.5);
+  line-height: 1.7;
+  max-width: 38ch;
+}
+.booking-action {
+  padding: 4rem 3.5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 2rem;
+}
+.booking-form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+.booking-input {
+  background: transparent;
+  border: 1.5px solid rgba(248,246,241,.2);
+  color: var(--wh);
+  font-family: var(--cond);
+  font-size: .75rem;
+  font-weight: 700;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  padding: .85rem 1rem;
+  outline: none;
+  transition: border-color .2s;
+  width: 100%;
+}
+.booking-input::placeholder { color: rgba(248,246,241,.3); }
+.booking-input:focus { border-color: var(--y); }
+.booking-select {
+  grid-column: 1 / -1;
+  background: transparent;
+  border: 1.5px solid rgba(248,246,241,.2);
+  color: rgba(248,246,241,.3);
+  font-family: var(--cond);
+  font-size: .75rem;
+  font-weight: 700;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  padding: .85rem 1rem;
+  outline: none;
+  width: 100%;
+}
+.booking-btn {
+  background: var(--y);
+  border: 2px solid var(--y);
+  color: var(--bk);
+  font-family: var(--cond);
+  font-size: .82rem;
+  font-weight: 900;
+  letter-spacing: .28em;
+  text-transform: uppercase;
+  padding: 1rem 2.5rem;
+  cursor: pointer;
+  align-self: flex-start;
+  transition: background .2s, color .2s;
+  display: flex;
+  align-items: center;
+  gap: .8rem;
+}
+.booking-btn::after { content: '→'; }
+.booking-btn:hover { background: transparent; color: var(--y); }
+
+/* ─── TEAM STRIP ────────────────────────────────────────────── */
+.team {
+  background: var(--wh);
+  border-bottom: 2px solid var(--bk);
+  padding: 4.5rem 3.5rem;
+}
+.team-header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  border-bottom: 1.5px solid var(--bk);
+  padding-bottom: 1.2rem;
+  margin-bottom: 3rem;
+}
+.team-title {
+  font-family: var(--cond);
+  font-size: 3.8rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: -.02em;
+  line-height: .88;
+}
+.team-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0;
+  border: 1.5px solid var(--bk);
+}
+.team-card {
+  border-right: 1.5px solid var(--bk);
+  overflow: hidden;
+}
+.team-card:last-child { border-right: none; }
+.team-photo-wrap {
+  aspect-ratio: 3/4;
+  position: relative;
+  overflow: hidden;
+  border-bottom: 1.5px solid var(--bk);
+}
+.team-photo-wrap img { height: 100%; }
+/* yellow tag on hover */
+.team-card-tag {
+  position: absolute;
+  top: 1rem; right: 1rem;
+  background: var(--y);
+  border: 1.5px solid var(--bk);
+  font-family: var(--cond);
+  font-size: .55rem;
+  font-weight: 800;
+  letter-spacing: .25em;
+  text-transform: uppercase;
+  padding: .22rem .65rem;
+  z-index: 2;
+  color: var(--bk);
+}
+.team-info {
+  padding: 1.4rem;
+  background: var(--wh);
+}
+.team-role {
+  font-family: var(--cond);
+  font-size: .58rem;
+  font-weight: 800;
+  letter-spacing: .3em;
+  text-transform: uppercase;
+  color: var(--y);
+  margin-bottom: .4rem;
+}
+.team-name {
+  font-family: var(--cond);
+  font-size: 1.65rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: .04em;
+  line-height: 1;
+  margin-bottom: .5rem;
+}
+.team-spec {
+  font-size: .75rem;
+  color: var(--mid);
+  line-height: 1.6;
+}
+
+/* ─── ORARI / INFO ROW ─────────────────────────────────────── */
+.info-row {
+  background: var(--y);
+  border-bottom: 2px solid var(--bk);
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+}
+.info-cell {
+  padding: 2rem 2.5rem;
+  border-right: 1.5px solid var(--bk);
+}
+.info-cell:last-child { border-right: none; }
+.info-label {
+  font-family: var(--cond);
+  font-size: .6rem;
+  font-weight: 800;
+  letter-spacing: .32em;
+  text-transform: uppercase;
+  color: var(--bk);
+  opacity: .55;
+  margin-bottom: .8rem;
+}
+.info-value {
+  font-family: var(--cond);
+  font-size: 1.15rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  color: var(--bk);
+  line-height: 1.45;
+}
+
+/* ─── FOOTER ────────────────────────────────────────────────── */
+footer {
+  background: var(--bk);
+  color: var(--wh);
+  padding: 3rem 3.5rem;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 2rem;
+}
+.footer-logo {
+  font-family: var(--cond);
+  font-size: 2rem;
+  font-weight: 900;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+}
+.footer-logo span { color: var(--y); }
+.footer-center {
+  text-align: center;
+  font-family: var(--cond);
+  font-size: .58rem;
+  font-weight: 700;
+  letter-spacing: .3em;
+  text-transform: uppercase;
+  color: rgba(248,246,241,.35);
+  line-height: 1.8;
+}
+.footer-socials {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1.5rem;
+}
+.footer-social {
+  font-family: var(--cond);
+  font-size: .65rem;
+  font-weight: 800;
+  letter-spacing: .22em;
+  text-transform: uppercase;
+  color: rgba(248,246,241,.4);
+  transition: color .2s;
+}
+.footer-social:hover { color: var(--y); }
+
+/* ─── META LABELS (page decorations) ───────────────────────── */
+.section-meta {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1.2rem;
+}
+.section-meta-line { flex:1; max-width: 3rem; height:1.5px; background: var(--bk); }
+</style>
+</head>
+<body>
+
+<!-- ── Label strip ── -->
+<div class="label-strip">
+  <span>BLADE BARBERSHOP — TEMPLATE PREVIEW · VIHENTE</span>
+  <span>STILE EDITORIALE / MAGAZINE</span>
+</div>
+
+<!-- ── Nav ── -->
+<nav>
+  <div class="nav-logo">BL<span>A</span>DE</div>
+  <div class="nav-links">
+    <a href="#">Servizi</a>
+    <a href="#">Il Nostro Lavoro</a>
+    <a href="#">Il Team</a>
+    <a href="#">Contatti</a>
+  </div>
+  <button class="nav-book">Prenota ora</button>
+</nav>
+
+<!-- ── Hero (Magazine Cover) ── -->
+<section class="hero">
+  <div class="hero-left">
+    <div class="hero-issue">
+      <div class="hero-issue-num">01</div>
+      <div class="hero-issue-meta">
+        <p>THE ISSUE</p>
+        <p>L'arte del taglio perfetto</p>
+        <p>—</p>
+        <p>DAL <strong>2008</strong></p>
+        <p>MILANO, BRERA</p>
+      </div>
+    </div>
+    <div class="hero-main-text">
+      <h1 class="hero-h1">NON<br>SOLO UN<br><span class="hero-h1-accent">TAGLIO.</span></h1>
+      <div class="hero-diag-rule"></div>
+      <p class="hero-sub">Ogni visita è un rituale. Ogni dettaglio racconta chi sei.</p>
+    </div>
+    <div class="hero-bottom-row">
+      <div class="hero-name">
+        <span>Master Barber</span>
+        MARCO NERI
+      </div>
+      <div class="hero-address">
+        VIA BRERA 14<br>
+        MILANO<br>
+        +39 02 1234567
+      </div>
+    </div>
+  </div>
+  <div class="hero-right">
+    <div class="hero-photo-wrap">
+      <img src="https://loremflickr.com/900/1100/man,portrait,face?lock=41" alt="hero">
+    </div>
+  </div>
+</section>
+
+<!-- ── Ticker ── -->
+<div class="ticker">
+  <div class="ticker-inner">
+    <span class="ticker-item">Taglio uomo</span><span class="ticker-sep">✦</span>
+    <span class="ticker-item">Barba tradizionale</span><span class="ticker-sep">✦</span>
+    <span class="ticker-item">Rasatura con rasoio</span><span class="ticker-sep">✦</span>
+    <span class="ticker-item">Trattamenti capelli</span><span class="ticker-sep">✦</span>
+    <span class="ticker-item">Colorazione</span><span class="ticker-sep">✦</span>
+    <span class="ticker-item">Appuntamento online</span><span class="ticker-sep">✦</span>
+    <span class="ticker-item">Milano · Brera</span><span class="ticker-sep">✦</span>
+    <!-- duplicate for seamless loop -->
+    <span class="ticker-item">Taglio uomo</span><span class="ticker-sep">✦</span>
+    <span class="ticker-item">Barba tradizionale</span><span class="ticker-sep">✦</span>
+    <span class="ticker-item">Rasatura con rasoio</span><span class="ticker-sep">✦</span>
+    <span class="ticker-item">Trattamenti capelli</span><span class="ticker-sep">✦</span>
+    <span class="ticker-item">Colorazione</span><span class="ticker-sep">✦</span>
+    <span class="ticker-item">Appuntamento online</span><span class="ticker-sep">✦</span>
+    <span class="ticker-item">Milano · Brera</span><span class="ticker-sep">✦</span>
+  </div>
+</div>
+
+<!-- ── Services ── -->
+<section class="services">
+  <div class="services-header">
+    <h2 class="services-title">I NOSTRI<br>SERVIZI</h2>
+    <span class="services-count eyebrow">04 categorie disponibili</span>
+  </div>
+  <div class="services-grid">
+    <div class="svc-card">
+      <div class="svc-photo">
+        <img src="https://loremflickr.com/400/550/haircut,man?lock=11" alt="Taglio">
+      </div>
+      <div class="svc-overlay"></div>
+      <div class="svc-num">01</div>
+      <div class="svc-body">
+        <div class="svc-name">Taglio Uomo</div>
+        <div class="svc-desc">Taglio personalizzato, lavaggio, asciugatura e finishing professionale.</div>
+        <div class="svc-price">Da € 28 · 40 min</div>
+      </div>
+    </div>
+    <div class="svc-card">
+      <div class="svc-photo">
+        <img src="https://loremflickr.com/400/550/beard,man?lock=22" alt="Barba">
+      </div>
+      <div class="svc-overlay"></div>
+      <div class="svc-num">02</div>
+      <div class="svc-body">
+        <div class="svc-name">Barba Tradizionale</div>
+        <div class="svc-desc">Rasatura con rasoio a mano libera, asciugamano caldo e oli essenziali.</div>
+        <div class="svc-price">Da € 22 · 30 min</div>
+      </div>
+    </div>
+    <div class="svc-card">
+      <div class="svc-photo">
+        <img src="https://loremflickr.com/400/550/barber,style?lock=33" alt="Combo">
+      </div>
+      <div class="svc-overlay"></div>
+      <div class="svc-num">03</div>
+      <div class="svc-body">
+        <div class="svc-name">Taglio + Barba</div>
+        <div class="svc-desc">Il pacchetto completo: taglio su misura e rifinitura barba professionale.</div>
+        <div class="svc-price">Da € 45 · 65 min</div>
+      </div>
+    </div>
+    <div class="svc-card">
+      <div class="svc-photo">
+        <img src="https://loremflickr.com/400/550/hairstyle,salon?lock=44" alt="Trattamento">
+      </div>
+      <div class="svc-overlay"></div>
+      <div class="svc-num">04</div>
+      <div class="svc-body">
+        <div class="svc-name">Trattamento Cuoio</div>
+        <div class="svc-desc">Maschera nutriente, massaggio capillare e trattamento anti-caduta.</div>
+        <div class="svc-price">Da € 38 · 50 min</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Stats bar ── -->
+<div class="stats-bar">
+  <div class="stat-item">
+    <div class="stat-num">16+</div>
+    <div class="stat-label">Anni di attività</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-num">4.8K</div>
+    <div class="stat-label">Clienti fidelizzati</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-num">3</div>
+    <div class="stat-label">Master Barber nel team</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-num">98%</div>
+    <div class="stat-label">Clienti soddisfatti</div>
+  </div>
+</div>
+
+<!-- ── Editorial Spread ── -->
+<section class="spread">
+  <div class="spread-photo">
+    <div class="spread-photo-wrap">
+      <img src="https://loremflickr.com/800/900/barbershop,interior?lock=55" alt="shop">
+    </div>
+    <div class="spread-photo-banner">
+      <div class="spread-photo-big-word">CUT.</div>
+      <div class="spread-photo-tagline">L'ambiente, gli strumenti, la cura — tutto pensato per te.</div>
+    </div>
+  </div>
+  <div class="spread-content">
+    <div class="section-meta">
+      <div class="section-meta-line"></div>
+      <span class="eyebrow">La nostra filosofia</span>
+    </div>
+    <div class="spread-big-num">02</div>
+    <h2 class="spread-h2">L'ARTE<br>CHE NON<br>SEGUE<br><em>le mode.</em></h2>
+    <p class="spread-body">
+      Blade nasce da una passione per il mestiere del barbiere nel senso più classico del termine. Strumenti affilati, mani esperte, prodotti selezionati.
+      Ogni cliente entra con una richiesta e ne esce con un'identità. Non seguiamo le tendenze — le osserviamo, le interpretiamo e le adattiamo a chi hai davanti.
+    </p>
+    <div class="spread-signature">MARCO NERI — MASTER BARBER &amp; FONDATORE</div>
+  </div>
+</section>
+
+<!-- ── Gallery Editorial ── -->
+<section class="gallery-section">
+  <div class="gallery-header">
+    <h2 class="gallery-title">IL NOSTRO<br>LAVORO</h2>
+    <span class="gallery-view-all eyebrow">Vedi tutta la galleria</span>
+  </div>
+  <div class="gallery-grid">
+    <div class="gallery-item">
+      <div class="gallery-photo">
+        <img src="https://loremflickr.com/700/600/haircut,portrait,man?lock=61" alt="">
+      </div>
+      <div class="gallery-item-label">FEATURED</div>
+      <div class="gallery-item-num">01</div>
+    </div>
+    <div class="gallery-item">
+      <div class="gallery-photo">
+        <img src="https://loremflickr.com/400/280/barber,fade?lock=62" alt="">
+      </div>
+      <div class="gallery-item-label">FADE</div>
+      <div class="gallery-item-num">02</div>
+    </div>
+    <div class="gallery-item">
+      <div class="gallery-photo">
+        <img src="https://loremflickr.com/400/280/beard,style?lock=63" alt="">
+      </div>
+      <div class="gallery-item-label">BEARD</div>
+      <div class="gallery-item-num">03</div>
+    </div>
+    <div class="gallery-item">
+      <div class="gallery-photo">
+        <img src="https://loremflickr.com/400/280/hair,men?lock=64" alt="">
+      </div>
+      <div class="gallery-item-label">CLASSIC</div>
+      <div class="gallery-item-num">04</div>
+    </div>
+    <div class="gallery-item">
+      <div class="gallery-photo">
+        <img src="https://loremflickr.com/400/280/hairstyle,man?lock=65" alt="">
+      </div>
+      <div class="gallery-item-label">TEXTURE</div>
+      <div class="gallery-item-num">05</div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Team ── -->
+<section class="team">
+  <div class="team-header">
+    <h2 class="team-title">IL TEAM</h2>
+    <span class="eyebrow" style="color:var(--mid);">3 Master Barber</span>
+  </div>
+  <div class="team-grid">
+    <div class="team-card">
+      <div class="team-photo-wrap">
+        <img src="https://loremflickr.com/500/660/man,portrait,barber?lock=71" alt="Marco">
+        <span class="team-card-tag">Fondatore</span>
+      </div>
+      <div class="team-info">
+        <div class="team-role">Master Barber</div>
+        <div class="team-name">Marco Neri</div>
+        <div class="team-spec">Specializzato in tagli classici e rasatura tradizionale. 16 anni di esperienza.</div>
+      </div>
+    </div>
+    <div class="team-card">
+      <div class="team-photo-wrap">
+        <img src="https://loremflickr.com/500/660/man,face,young?lock=72" alt="Luca">
+        <span class="team-card-tag">Fade Specialist</span>
+      </div>
+      <div class="team-info">
+        <div class="team-role">Senior Barber</div>
+        <div class="team-name">Luca Ferretti</div>
+        <div class="team-spec">Esperto di fade, skin fade e tagli moderni. Appassionato di freestyle cutting.</div>
+      </div>
+    </div>
+    <div class="team-card">
+      <div class="team-photo-wrap">
+        <img src="https://loremflickr.com/500/660/man,dark,portrait?lock=73" alt="Andrea">
+        <span class="team-card-tag">Beard Expert</span>
+      </div>
+      <div class="team-info">
+        <div class="team-role">Barber &amp; Stylist</div>
+        <div class="team-name">Andrea Russo</div>
+        <div class="team-spec">Specialista in trattamenti barba, design e colorazione. Formazione Londra.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Booking ── -->
+<section class="booking">
+  <div class="booking-text">
+    <div class="section-meta">
+      <div class="section-meta-line" style="background:rgba(248,246,241,.2)"></div>
+      <span class="eyebrow" style="color:rgba(248,246,241,.4)">Prenota il tuo posto</span>
+    </div>
+    <h2 class="booking-h2">SCEGLI<br>IL TUO<br><span>MOMENTO.</span></h2>
+    <p class="booking-sub">
+      Niente attese, niente sorprese. Prenota online in 30 secondi e scegli il barber che preferisci.
+    </p>
+  </div>
+  <div class="booking-action">
+    <div class="booking-form-row">
+      <input class="booking-input" type="text" placeholder="Il tuo nome">
+      <input class="booking-input" type="tel" placeholder="Telefono">
+    </div>
+    <select class="booking-select">
+      <option value="">Seleziona un servizio</option>
+      <option>Taglio Uomo — € 28</option>
+      <option>Barba Tradizionale — € 22</option>
+      <option>Taglio + Barba — € 45</option>
+      <option>Trattamento Cuoio — € 38</option>
+    </select>
+    <div class="booking-form-row">
+      <input class="booking-input" type="text" placeholder="Data preferita">
+      <input class="booking-input" type="text" placeholder="Orario preferito">
+    </div>
+    <button class="booking-btn">Conferma prenotazione</button>
+  </div>
+</section>
+
+<!-- ── Info Row ── -->
+<div class="info-row">
+  <div class="info-cell">
+    <div class="info-label">Orari</div>
+    <div class="info-value">Lun–Sab<br>09:00 – 20:00</div>
+  </div>
+  <div class="info-cell">
+    <div class="info-label">Dove siamo</div>
+    <div class="info-value">Via Brera 14<br>Milano, MI 20121</div>
+  </div>
+  <div class="info-cell">
+    <div class="info-label">Contatti</div>
+    <div class="info-value">+39 02 1234567<br>info@blade.it</div>
+  </div>
+</div>
+
+<!-- ── Footer ── -->
+<footer>
+  <div class="footer-logo">BL<span>A</span>DE</div>
+  <div class="footer-center">
+    © 2026 Blade Barbershop S.r.l.<br>
+    P.IVA 01234567890 · Milano
+  </div>
+  <div class="footer-socials">
+    <a class="footer-social" href="#">Instagram</a>
+    <a class="footer-social" href="#">Facebook</a>
+    <a class="footer-social" href="#">Google</a>
+  </div>
+</footer>
+
+</body>
+</html>
