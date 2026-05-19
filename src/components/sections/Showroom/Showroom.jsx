@@ -58,9 +58,9 @@ const templates = [
     id: 'fotografo',
     sector: 'PORTFOLIO VISIVO',
     title: 'Fotografo',
-    description: 'Portfolio visivo puro: fullscreen hero, gallery masonry, approccio minimalista e contatto essenziale.',
-    tags: ['Visuale', 'Minimale', 'Impatto'],
-    guide: 'Template fotografo. Full-dark, gallery-first, tipografia minimal uppercase — la fotografia è protagonista assoluta.',
+    description: 'Estetica editoriale magazine: hero split con outline number, galleria filtrata, spread Fabien Baron e quote section.',
+    tags: ['Editoriale', 'Magazine', 'Raffinato'],
+    guide: 'Template fotografo. Palette off-white + dusty rose, Cormorant Garamond + Barlow Condensed — estetica fashion magazine con giant letter spread e gallery filtrata per categoria.',
   },
   {
     id: 'barbiere',
@@ -204,19 +204,36 @@ const SalonePreview = () => (
 const FotografoPreview = () => (
   <div className="sr-preview sr-fotografo">
     <nav className="sr-f-nav">
-      <span className="sr-f-logo">LUCA FERRARI</span>
+      <span className="sr-f-logo"><em>Luca Ferrari</em></span>
       <div className="sr-f-nav-links"><i /><i /><i /></div>
     </nav>
     <div className="sr-f-hero">
-      <div className="sr-f-caption">WEDDING · PORTRAITS · EDITORIAL</div>
-    </div>
-    <div className="sr-f-gallery">
-      <div className="sr-f-thumb sr-f-thumb--tall" />
-      <div className="sr-f-col">
-        <div className="sr-f-thumb" />
-        <div className="sr-f-thumb sr-f-thumb--wide" />
+      <div className="sr-f-hero-photo">
+        <div className="sr-f-hero-banner">
+          <span className="sr-f-banner-word">LIGHT.</span>
+        </div>
       </div>
-      <div className="sr-f-thumb" />
+      <div className="sr-f-hero-right">
+        <div className="sr-f-big-num">01</div>
+        <div className="sr-f-h1-group">
+          <div className="sr-f-h1" />
+          <div className="sr-f-h1 sr-f-h1--2" />
+          <div className="sr-f-h1--accent" />
+        </div>
+      </div>
+    </div>
+    <div className="sr-f-port-strip">
+      <span className="sr-f-port-title">IL PORTFOLIO</span>
+      <div className="sr-f-cats">
+        <span>TUTTI</span><span>WEDDING</span><span>PORTRAIT</span>
+      </div>
+    </div>
+    <div className="sr-f-grid">
+      {[0,1,2,3].map(i => (
+        <div key={i} className={`sr-f-gtile${i===0?' sr-f-gtile--tall':''}`}>
+          {i===0 && <div className="sr-f-pink-dot" />}
+        </div>
+      ))}
     </div>
   </div>
 );
