@@ -3,883 +3,345 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>BARBIERE — Design Preview · Stile Editoriale</title>
+<title>BLADE — Barbershop Preview · Stile Editoriale v2</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,400;0,700;0,800;0,900;1,700&family=Barlow:wght@300;400;500&family=Playfair+Display:ital@1&display=swap" rel="stylesheet">
 <style>
-/* ─── RESET & BASE ─────────────────────────────────────────── */
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-:root {
-  --y:   #F2C11E;    /* yellow accent */
-  --ydk: #C9980A;    /* yellow dark */
-  --bk:  #0A0A0A;    /* near-black */
-  --wh:  #F8F6F1;    /* off-white */
-  --gr:  #E2DED6;    /* light grey */
-  --mid: #6B6560;    /* mid grey */
-  --cond: 'Barlow Condensed', sans-serif;
-  --body: 'Barlow', sans-serif;
-  --serif: 'Playfair Display', serif;
+/* ─── RESET ─────────────────────────────────────────────── */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --y:#F2C11E; --ydk:#C9980A;
+  --bk:#0A0A0A; --wh:#F8F6F1; --gr:#E2DED6; --mid:#6B6560;
+  --cond:'Barlow Condensed',sans-serif;
+  --body:'Barlow',sans-serif;
+  --serif:'Playfair Display',serif;
 }
-html { scroll-behavior: smooth; }
-body { background: var(--wh); color: var(--bk); font-family: var(--body); overflow-x: hidden; }
-img { display: block; width: 100%; height: 100%; object-fit: cover; filter: grayscale(100%) contrast(1.05); }
-a { text-decoration: none; color: inherit; }
+html{scroll-behavior:smooth;}
+body{background:var(--wh);color:var(--bk);font-family:var(--body);overflow-x:hidden;}
+img{display:block;width:100%;height:100%;object-fit:cover;filter:grayscale(100%) contrast(1.05);}
+a{text-decoration:none;color:inherit;}
+.eyebrow{font-family:var(--cond);font-size:.68rem;font-weight:700;letter-spacing:.32em;text-transform:uppercase;}
 
-/* ─── UTILITY ──────────────────────────────────────────────── */
-.yellow        { color: var(--y); }
-.yellow-bg     { background: var(--y); }
-.black-bg      { background: var(--bk); color: var(--wh); }
-.eyebrow {
-  font-family: var(--cond);
-  font-size: .7rem;
-  font-weight: 700;
-  letter-spacing: .3em;
-  text-transform: uppercase;
+/* ─── LABEL STRIP ───────────────────────────────────────── */
+.label-strip{
+  background:var(--bk);color:var(--wh);
+  font-family:var(--cond);font-size:.6rem;font-weight:700;
+  letter-spacing:.35em;text-transform:uppercase;
+  padding:.6rem 3rem;
+  display:flex;justify-content:space-between;align-items:center;
 }
+.label-strip span{opacity:.4;}
 
-/* ─── LABEL STRIP (top of page) ────────────────────────────── */
-.label-strip {
-  background: var(--bk);
-  color: var(--wh);
-  font-family: var(--cond);
-  font-size: .62rem;
-  font-weight: 700;
-  letter-spacing: .35em;
-  text-transform: uppercase;
-  padding: .55rem 2rem;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+/* ─── NAV ───────────────────────────────────────────────── */
+nav{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:1rem 3rem;background:var(--wh);
+  border-bottom:2px solid var(--bk);position:sticky;top:0;z-index:200;
 }
-.label-strip span { opacity: .5; }
+.nav-logo{font-family:var(--cond);font-size:1.6rem;font-weight:900;letter-spacing:.06em;text-transform:uppercase;line-height:1;}
+.nav-logo span{color:var(--y);}
+.nav-links{display:flex;gap:2.2rem;font-family:var(--cond);font-size:.72rem;font-weight:700;letter-spacing:.22em;text-transform:uppercase;}
+.nav-links a{position:relative;}
+.nav-links a::after{content:'';position:absolute;left:0;bottom:-3px;width:0;height:1.5px;background:var(--y);transition:width .25s;}
+.nav-links a:hover::after{width:100%;}
+.nav-book{
+  background:var(--y);border:2px solid var(--bk);color:var(--bk);
+  font-family:var(--cond);font-size:.7rem;font-weight:900;letter-spacing:.22em;text-transform:uppercase;
+  padding:.6rem 1.4rem;cursor:pointer;transition:background .2s,color .2s;
+}
+.nav-book:hover{background:var(--bk);color:var(--y);}
 
-/* ─── NAV ───────────────────────────────────────────────────── */
-nav {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 1.1rem 3rem;
-  background: var(--wh);
-  border-bottom: 1.5px solid var(--bk);
-  position: sticky;
-  top: 0;
-  z-index: 100;
+/* ─── HERO ───────────────────────────────────────────────── */
+.hero{display:grid;grid-template-columns:1fr 1fr;min-height:88vh;border-bottom:2px solid var(--bk);overflow:hidden;}
+.hero-left{
+  background:var(--wh);padding:3.5rem 3rem 3.5rem 3.5rem;
+  display:flex;flex-direction:column;justify-content:space-between;position:relative;z-index:2;
 }
-.nav-logo {
-  font-family: var(--cond);
-  font-size: 1.65rem;
-  font-weight: 900;
-  letter-spacing: .08em;
-  text-transform: uppercase;
-  line-height: 1;
+.hero-issue{display:flex;align-items:baseline;gap:1.2rem;}
+.hero-issue-num{
+  font-family:var(--cond);font-size:7.5rem;font-weight:900;line-height:.85;
+  color:transparent;-webkit-text-stroke:2px var(--bk);letter-spacing:-.02em;user-select:none;
 }
-.nav-logo span { color: var(--y); }
-.nav-links {
-  display: flex;
-  gap: 2.4rem;
-  font-family: var(--cond);
-  font-size: .75rem;
-  font-weight: 700;
-  letter-spacing: .22em;
-  text-transform: uppercase;
-}
-.nav-links a { position: relative; }
-.nav-links a::after {
-  content:'';
-  position:absolute;
-  left:0; bottom:-3px;
-  width:0; height:1.5px;
-  background: var(--y);
-  transition: width .25s;
-}
-.nav-links a:hover::after { width:100%; }
-.nav-book {
-  background: var(--y);
-  color: var(--bk);
-  font-family: var(--cond);
-  font-size: .72rem;
-  font-weight: 800;
-  letter-spacing: .22em;
-  text-transform: uppercase;
-  padding: .65rem 1.5rem;
-  border: 2px solid var(--bk);
-  cursor: pointer;
-  transition: background .2s, color .2s;
-}
-.nav-book:hover { background: var(--bk); color: var(--y); }
-
-/* ─── HERO (MAGAZINE COVER) ─────────────────────────────────── */
-.hero {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  min-height: 88vh;
-  position: relative;
-  overflow: hidden;
-  border-bottom: 2px solid var(--bk);
+.hero-issue-meta{display:flex;flex-direction:column;gap:.3rem;}
+.hero-issue-meta p{font-family:var(--cond);font-size:.6rem;font-weight:700;letter-spacing:.3em;text-transform:uppercase;color:var(--mid);line-height:1.45;}
+.hero-issue-meta strong{color:var(--bk);}
+.hero-main-text{flex:1;display:flex;flex-direction:column;justify-content:center;gap:1.2rem;padding:2.5rem 0;}
+.hero-h1{font-family:var(--cond);font-size:7rem;font-weight:900;text-transform:uppercase;line-height:.85;letter-spacing:-.02em;}
+.hero-h1-accent{color:var(--y);display:block;}
+.hero-diag-rule{width:100%;height:2px;background:linear-gradient(90deg,var(--y) 55%,transparent 100%);margin:.5rem 0;}
+.hero-sub{font-family:var(--cond);font-size:1rem;font-weight:400;letter-spacing:.1em;text-transform:uppercase;color:var(--mid);max-width:30ch;line-height:1.55;}
+.hero-bottom-row{display:flex;align-items:flex-end;justify-content:space-between;}
+.hero-name{font-family:var(--cond);font-size:1.6rem;font-weight:900;letter-spacing:.1em;text-transform:uppercase;line-height:1;}
+.hero-name span{display:block;font-size:.58rem;font-weight:700;letter-spacing:.3em;color:var(--mid);margin-bottom:.3rem;}
+.hero-address{font-family:var(--cond);font-size:.58rem;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:var(--mid);line-height:1.85;text-align:right;}
+.hero-right{position:relative;overflow:hidden;}
+.hero-photo-wrap{position:absolute;inset:0;}
+.hero-right::after{
+  content:'';position:absolute;top:0;left:-18%;width:42%;height:100%;
+  background:var(--y);clip-path:polygon(30% 0%,100% 0%,70% 100%,0% 100%);
+  z-index:1;mix-blend-mode:multiply;opacity:.82;
 }
 
-/* Left panel */
-.hero-left {
-  background: var(--wh);
-  padding: 3.5rem 3rem 3.5rem 3.5rem;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  position: relative;
-  z-index: 2;
-}
-.hero-issue {
-  display: flex;
-  align-items: baseline;
-  gap: 1rem;
-}
-.hero-issue-num {
-  font-family: var(--cond);
-  font-size: 7.5rem;
-  font-weight: 900;
-  line-height: .85;
-  color: transparent;
-  -webkit-text-stroke: 2px var(--bk);
-  letter-spacing: -.02em;
-  user-select: none;
-}
-.hero-issue-meta {
-  display: flex;
-  flex-direction: column;
-  gap: .35rem;
-}
-.hero-issue-meta p {
-  font-family: var(--cond);
-  font-size: .62rem;
-  font-weight: 700;
-  letter-spacing: .3em;
-  text-transform: uppercase;
-  color: var(--mid);
-  line-height: 1.4;
-}
-.hero-main-text { flex: 1; display: flex; flex-direction: column; justify-content: center; gap: 1.2rem; padding: 2.5rem 0; }
-.hero-h1 {
-  font-family: var(--cond);
-  font-size: 6.8rem;
-  font-weight: 900;
-  text-transform: uppercase;
-  line-height: .88;
-  letter-spacing: -.02em;
-}
-.hero-h1-accent { color: var(--y); display: block; }
-.hero-diag-rule {
-  width: 100%;
-  height: 2px;
-  background: linear-gradient(90deg, var(--y) 55%, transparent 100%);
-  margin: .6rem 0;
-}
-.hero-sub {
-  font-family: var(--cond);
-  font-size: 1.05rem;
-  font-weight: 400;
-  letter-spacing: .1em;
-  text-transform: uppercase;
-  color: var(--mid);
-  max-width: 28ch;
-  line-height: 1.5;
-}
-.hero-bottom-row {
-  display: flex;
-  align-items: flex-end;
-  justify-content: space-between;
-  gap: 1rem;
-}
-.hero-name {
-  font-family: var(--cond);
-  font-size: 1.7rem;
-  font-weight: 900;
-  letter-spacing: .1em;
-  text-transform: uppercase;
-  line-height: 1;
-}
-.hero-name span { display: block; font-size: .6rem; font-weight: 700; letter-spacing: .3em; color: var(--mid); margin-bottom: .35rem; }
-.hero-address {
-  font-family: var(--cond);
-  font-size: .6rem;
-  font-weight: 700;
-  letter-spacing: .22em;
-  text-transform: uppercase;
-  color: var(--mid);
-  line-height: 1.8;
-  text-align: right;
-}
+/* ─── BANNER BLOCK (ticker + info) ──────────────────────── */
+/* Two-layer: yellow scrolling band (visual weight) + black info bar (counterweight) */
+.banner-block{border-bottom:2px solid var(--bk);}
 
-/* Right panel — photo */
-.hero-right {
-  position: relative;
-  overflow: hidden;
+.ticker{
+  background:var(--y);border-bottom:2px solid var(--bk);
+  overflow:hidden;padding:0;
+  display:flex;flex-direction:column;gap:0;
 }
-.hero-photo-wrap {
-  position: absolute;
-  inset: 0;
+.ticker-row{
+  display:flex;white-space:nowrap;
+  padding:.95rem 0;
+  border-bottom:1px solid rgba(10,10,10,.12);
 }
-/* Yellow diagonal slash over photo */
-.hero-right::after {
-  content: '';
-  position: absolute;
-  top: 0; left: -18%;
-  width: 42%;
-  height: 100%;
-  background: var(--y);
-  clip-path: polygon(30% 0%, 100% 0%, 70% 100%, 0% 100%);
-  z-index: 1;
-  mix-blend-mode: multiply;
-  opacity: .85;
-}
+.ticker-row:last-child{border-bottom:none;}
+.ticker-row--rev{animation-direction:reverse;}
 
-/* ─── TICKER ───────────────────────────────────────────────── */
-.ticker {
-  background: var(--y);
-  border-top: 2px solid var(--bk);
-  border-bottom: 2px solid var(--bk);
-  overflow: hidden;
-  padding: .7rem 0;
+.ticker-inner{
+  display:flex;gap:0;white-space:nowrap;flex-shrink:0;
+  animation:tickerMove 22s linear infinite;
 }
-.ticker-inner {
-  display: flex;
-  gap: 0;
-  white-space: nowrap;
-  animation: tickerMove 18s linear infinite;
-}
-.ticker-item {
-  font-family: var(--cond);
-  font-size: .78rem;
-  font-weight: 800;
-  letter-spacing: .25em;
-  text-transform: uppercase;
-  color: var(--bk);
-  padding: 0 2.5rem;
-  flex-shrink: 0;
-}
-.ticker-sep {
-  font-size: .78rem;
-  font-weight: 900;
-  color: var(--bk);
-  opacity: .4;
-  flex-shrink: 0;
-  padding: 0 .5rem;
-}
-@keyframes tickerMove { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+.ticker-row--rev .ticker-inner{animation-direction:reverse;animation-duration:26s;}
 
-/* ─── SERVICES ─────────────────────────────────────────────── */
-.services {
-  padding: 5.5rem 3.5rem;
-  background: var(--wh);
-  border-bottom: 2px solid var(--bk);
+.ticker-item{
+  font-family:var(--cond);font-size:1.05rem;font-weight:800;
+  letter-spacing:.22em;text-transform:uppercase;color:var(--bk);
+  padding:0 2.8rem;flex-shrink:0;
 }
-.services-header {
-  display: grid;
-  grid-template-columns: 1fr auto;
-  align-items: baseline;
-  margin-bottom: 3.5rem;
-  gap: 2rem;
-  border-bottom: 1.5px solid var(--bk);
-  padding-bottom: 1.2rem;
-}
-.services-title {
-  font-family: var(--cond);
-  font-size: 5rem;
-  font-weight: 900;
-  text-transform: uppercase;
-  line-height: .88;
-  letter-spacing: -.02em;
-}
-.services-count {
-  font-family: var(--cond);
-  font-size: .68rem;
-  font-weight: 700;
-  letter-spacing: .3em;
-  text-transform: uppercase;
-  color: var(--mid);
-  white-space: nowrap;
-}
-.services-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 0;
-  border: 1.5px solid var(--bk);
-}
-.svc-card {
-  position: relative;
-  overflow: hidden;
-  border-right: 1.5px solid var(--bk);
-  background: var(--gr);
-  aspect-ratio: 3/4;
-}
-.svc-card:last-child { border-right: none; }
-.svc-photo { position: absolute; inset: 0; }
-.svc-overlay {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(to top, rgba(10,10,10,.9) 45%, transparent 100%);
-  z-index: 1;
-}
-.svc-num {
-  position: absolute;
-  top: 1rem; left: 1rem;
-  font-family: var(--cond);
-  font-size: 3.5rem;
-  font-weight: 900;
-  color: transparent;
-  -webkit-text-stroke: 1.5px var(--y);
-  z-index: 2;
-  line-height: 1;
-  letter-spacing: -.02em;
-}
-.svc-body {
-  position: absolute;
-  bottom: 0; left: 0; right: 0;
-  padding: 1.4rem;
-  z-index: 2;
-}
-.svc-name {
-  font-family: var(--cond);
-  font-size: 1.5rem;
-  font-weight: 900;
-  text-transform: uppercase;
-  letter-spacing: .04em;
-  color: var(--wh);
-  line-height: 1;
-  margin-bottom: .5rem;
-}
-.svc-desc {
-  font-family: var(--body);
-  font-size: .7rem;
-  color: rgba(248,246,241,.65);
-  line-height: 1.55;
-  margin-bottom: .8rem;
-}
-.svc-price {
-  font-family: var(--cond);
-  font-size: .78rem;
-  font-weight: 800;
-  letter-spacing: .2em;
-  color: var(--y);
-  text-transform: uppercase;
-}
-/* hover effect */
-.svc-card::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: var(--y);
-  opacity: 0;
-  transition: opacity .35s;
-  z-index: 1;
-  mix-blend-mode: multiply;
-}
-.svc-card:hover::before { opacity: .25; }
+.ticker-sep{font-size:.9rem;font-weight:900;color:var(--bk);opacity:.3;padding:0 .3rem;flex-shrink:0;}
 
-/* ─── EDITORIAL SPREAD ─────────────────────────────────────── */
-.spread {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  min-height: 75vh;
-  border-bottom: 2px solid var(--bk);
-}
-.spread-photo {
-  position: relative;
-  overflow: hidden;
-  border-right: 2px solid var(--bk);
-  min-height: 550px;
-}
-.spread-photo-wrap { position: absolute; inset: 0; }
-/* Yellow banner "SEE" style */
-.spread-photo-banner {
-  position: absolute;
-  bottom: 0; left: 0; right: 0;
-  background: var(--y);
-  padding: 1rem 2rem;
-  z-index: 2;
-  display: flex;
-  align-items: baseline;
-  gap: 1.5rem;
-  border-top: 2px solid var(--bk);
-}
-.spread-photo-big-word {
-  font-family: var(--cond);
-  font-size: 4rem;
-  font-weight: 900;
-  text-transform: uppercase;
-  line-height: .88;
-  letter-spacing: -.02em;
-  color: var(--bk);
-}
-.spread-photo-tagline {
-  font-family: var(--cond);
-  font-size: .68rem;
-  font-weight: 700;
-  letter-spacing: .28em;
-  text-transform: uppercase;
-  color: var(--bk);
-  opacity: .55;
-  max-width: 22ch;
-  line-height: 1.55;
-}
-.spread-content {
-  padding: 3.5rem;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  gap: 2rem;
-  background: var(--wh);
-}
-.spread-eyebrow-row {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-}
-.spread-eyebrow-line {
-  flex: 1;
-  height: 1.5px;
-  background: var(--bk);
-}
-.spread-big-num {
-  font-family: var(--cond);
-  font-size: 8rem;
-  font-weight: 900;
-  color: transparent;
-  -webkit-text-stroke: 2px var(--gr);
-  line-height: .85;
-  letter-spacing: -.04em;
-  user-select: none;
-  pointer-events: none;
-}
-.spread-h2 {
-  font-family: var(--cond);
-  font-size: 3.8rem;
-  font-weight: 900;
-  text-transform: uppercase;
-  line-height: .9;
-  letter-spacing: -.02em;
-}
-.spread-h2 em {
-  font-family: var(--serif);
-  font-style: italic;
-  font-size: 2.8rem;
-  color: var(--mid);
-  display: block;
-  margin-top: .4rem;
-}
-.spread-body {
-  font-size: .88rem;
-  line-height: 1.75;
-  color: var(--mid);
-  max-width: 42ch;
-  columns: 2;
-  gap: 1.5rem;
-}
-.spread-signature {
-  font-family: var(--cond);
-  font-size: .62rem;
-  font-weight: 700;
-  letter-spacing: .28em;
-  text-transform: uppercase;
-  color: var(--bk);
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-}
-.spread-signature::before {
-  content: '';
-  display: block;
-  width: 2.5rem;
-  height: 2px;
-  background: var(--y);
-}
+@keyframes tickerMove{from{transform:translateX(0);}to{transform:translateX(-50%);}}
 
-/* ─── STATS BAR ────────────────────────────────────────────── */
-.stats-bar {
-  background: var(--bk);
-  border-bottom: 2px solid var(--y);
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
+/* Black info bar — mirrors ticker height for visual balance */
+.banner-info{
+  background:var(--bk);
+  display:grid;grid-template-columns:repeat(3,1fr);
 }
-.stat-item {
-  padding: 2.5rem 2rem;
-  border-right: 1px solid rgba(248,246,241,.1);
-  display: flex;
-  flex-direction: column;
-  gap: .4rem;
+.banner-info-cell{
+  padding:1.55rem 3rem;
+  border-right:1px solid rgba(248,246,241,.08);
+  display:flex;align-items:center;gap:1.4rem;
 }
-.stat-item:last-child { border-right: none; }
-.stat-num {
-  font-family: var(--cond);
-  font-size: 3.8rem;
-  font-weight: 900;
-  color: var(--y);
-  line-height: .9;
-  letter-spacing: -.02em;
+.banner-info-cell:last-child{border-right:none;}
+.banner-info-icon{
+  font-family:var(--cond);font-size:1.9rem;font-weight:900;
+  color:transparent;-webkit-text-stroke:1px var(--y);
+  line-height:1;flex-shrink:0;letter-spacing:-.02em;
 }
-.stat-label {
-  font-family: var(--cond);
-  font-size: .62rem;
-  font-weight: 700;
-  letter-spacing: .3em;
-  text-transform: uppercase;
-  color: rgba(248,246,241,.45);
-}
+.banner-info-text{}
+.banner-info-label{font-family:var(--cond);font-size:.55rem;font-weight:700;letter-spacing:.32em;text-transform:uppercase;color:rgba(248,246,241,.35);margin-bottom:.3rem;}
+.banner-info-value{font-family:var(--cond);font-size:.88rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--wh);line-height:1.4;}
 
-/* ─── GALLERY EDITORIAL ────────────────────────────────────── */
-.gallery-section {
-  padding: 5rem 3.5rem;
-  background: var(--wh);
-  border-bottom: 2px solid var(--bk);
+/* ─── SERVICES ───────────────────────────────────────────── */
+.services{padding:5.5rem 3.5rem;background:var(--wh);border-bottom:2px solid var(--bk);}
+.services-header{
+  display:grid;grid-template-columns:1fr auto;align-items:baseline;
+  margin-bottom:3.5rem;gap:2rem;border-bottom:1.5px solid var(--bk);padding-bottom:1.2rem;
 }
-.gallery-header {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  margin-bottom: 3rem;
-  gap: 2rem;
+.services-title{font-family:var(--cond);font-size:5rem;font-weight:900;text-transform:uppercase;line-height:.88;letter-spacing:-.02em;}
+.services-count{font-family:var(--cond);font-size:.66rem;font-weight:700;letter-spacing:.3em;text-transform:uppercase;color:var(--mid);white-space:nowrap;}
+.services-grid{display:grid;grid-template-columns:repeat(4,1fr);border:1.5px solid var(--bk);}
+.svc-card{position:relative;overflow:hidden;border-right:1.5px solid var(--bk);background:var(--gr);aspect-ratio:3/4;}
+.svc-card:last-child{border-right:none;}
+.svc-photo{position:absolute;inset:0;}
+.svc-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(10,10,10,.92) 42%,transparent 100%);z-index:1;}
+.svc-num{position:absolute;top:1rem;left:1rem;font-family:var(--cond);font-size:3.5rem;font-weight:900;color:transparent;-webkit-text-stroke:1.5px var(--y);z-index:2;line-height:1;letter-spacing:-.02em;}
+.svc-body{position:absolute;bottom:0;left:0;right:0;padding:1.4rem;z-index:2;}
+.svc-name{font-family:var(--cond);font-size:1.5rem;font-weight:900;text-transform:uppercase;letter-spacing:.04em;color:var(--wh);line-height:1;margin-bottom:.4rem;}
+.svc-desc{font-family:var(--body);font-size:.68rem;color:rgba(248,246,241,.6);line-height:1.55;margin-bottom:.7rem;}
+.svc-price{font-family:var(--cond);font-size:.76rem;font-weight:800;letter-spacing:.2em;color:var(--y);text-transform:uppercase;}
+.svc-card::before{content:'';position:absolute;inset:0;background:var(--y);opacity:0;transition:opacity .35s;z-index:1;mix-blend-mode:multiply;}
+.svc-card:hover::before{opacity:.22;}
+.svc-book-hover{
+  position:absolute;bottom:1.4rem;right:1.4rem;z-index:3;
+  background:var(--y);border:1.5px solid var(--bk);
+  font-family:var(--cond);font-size:.6rem;font-weight:900;letter-spacing:.22em;text-transform:uppercase;
+  color:var(--bk);padding:.4rem .9rem;cursor:pointer;
+  opacity:0;transform:translateY(4px);transition:opacity .25s,transform .25s;
 }
-.gallery-title {
-  font-family: var(--cond);
-  font-size: 4.5rem;
-  font-weight: 900;
-  text-transform: uppercase;
-  line-height: .88;
-  letter-spacing: -.02em;
-}
-.gallery-view-all {
-  font-family: var(--cond);
-  font-size: .68rem;
-  font-weight: 800;
-  letter-spacing: .28em;
-  text-transform: uppercase;
-  color: var(--bk);
-  display: flex;
-  align-items: center;
-  gap: .6rem;
-  white-space: nowrap;
-}
-.gallery-view-all::after { content: '→'; font-size: 1rem; }
+.svc-card:hover .svc-book-hover{opacity:1;transform:translateY(0);}
 
-/* Magazine-style editorial grid */
-.gallery-grid {
-  display: grid;
-  grid-template-columns: 2fr 1fr 1fr;
-  grid-template-rows: 280px 280px;
-  gap: 2px;
-  border: 1.5px solid var(--bk);
-}
-.gallery-item {
-  position: relative;
-  overflow: hidden;
-  background: var(--gr);
-}
-.gallery-item:first-child {
-  grid-row: 1 / 3;
-}
-.gallery-photo { position: absolute; inset: 0; }
-.gallery-item-label {
-  position: absolute;
-  top: 1rem; left: 1rem;
-  background: var(--y);
-  border: 1.5px solid var(--bk);
-  font-family: var(--cond);
-  font-size: .58rem;
-  font-weight: 800;
-  letter-spacing: .28em;
-  text-transform: uppercase;
-  color: var(--bk);
-  padding: .25rem .7rem;
-  z-index: 2;
-}
-.gallery-item:hover img { filter: grayscale(0%) contrast(1); transition: filter .4s; }
-.gallery-item img { transition: filter .4s; }
-/* number overlay on gallery items */
-.gallery-item-num {
-  position: absolute;
-  bottom: .6rem; right: .8rem;
-  font-family: var(--cond);
-  font-size: 4rem;
-  font-weight: 900;
-  color: transparent;
-  -webkit-text-stroke: 1px rgba(248,246,241,.25);
-  z-index: 2;
-  line-height: 1;
-  letter-spacing: -.02em;
-}
+/* ─── STATS BAR ───────────────────────────────────────────── */
+.stats-bar{background:var(--bk);border-bottom:2px solid var(--y);display:grid;grid-template-columns:repeat(4,1fr);}
+.stat-item{padding:2.8rem 2.5rem;border-right:1px solid rgba(248,246,241,.08);display:flex;flex-direction:column;gap:.4rem;}
+.stat-item:last-child{border-right:none;}
+.stat-num{font-family:var(--cond);font-size:4rem;font-weight:900;color:var(--y);line-height:.88;letter-spacing:-.02em;}
+.stat-label{font-family:var(--cond);font-size:.6rem;font-weight:700;letter-spacing:.3em;text-transform:uppercase;color:rgba(248,246,241,.38);}
 
-/* ─── BOOKING CTA ─────────────────────────────────────────── */
-.booking {
-  background: var(--bk);
-  border-bottom: 2px solid var(--y);
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  min-height: 38vh;
+/* ─── SPREAD ─────────────────────────────────────────────── */
+.spread{display:grid;grid-template-columns:1fr 1fr;min-height:72vh;border-bottom:2px solid var(--bk);}
+.spread-photo{position:relative;overflow:hidden;border-right:2px solid var(--bk);min-height:520px;}
+.spread-photo-wrap{position:absolute;inset:0;}
+.spread-photo-banner{
+  position:absolute;bottom:0;left:0;right:0;background:var(--y);
+  padding:1.1rem 2.5rem;z-index:2;display:flex;align-items:baseline;gap:1.5rem;border-top:2px solid var(--bk);
 }
-.booking-text {
-  padding: 4rem 3.5rem;
-  border-right: 1px solid rgba(248,246,241,.1);
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  gap: 1.5rem;
-}
-.booking-h2 {
-  font-family: var(--cond);
-  font-size: 4.2rem;
-  font-weight: 900;
-  text-transform: uppercase;
-  line-height: .88;
-  letter-spacing: -.02em;
-  color: var(--wh);
-}
-.booking-h2 span { color: var(--y); display: block; }
-.booking-sub {
-  font-size: .82rem;
-  color: rgba(248,246,241,.5);
-  line-height: 1.7;
-  max-width: 38ch;
-}
-.booking-action {
-  padding: 4rem 3.5rem;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  gap: 2rem;
-}
-.booking-form-row {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 1rem;
-}
-.booking-input {
-  background: transparent;
-  border: 1.5px solid rgba(248,246,241,.2);
-  color: var(--wh);
-  font-family: var(--cond);
-  font-size: .75rem;
-  font-weight: 700;
-  letter-spacing: .18em;
-  text-transform: uppercase;
-  padding: .85rem 1rem;
-  outline: none;
-  transition: border-color .2s;
-  width: 100%;
-}
-.booking-input::placeholder { color: rgba(248,246,241,.3); }
-.booking-input:focus { border-color: var(--y); }
-.booking-select {
-  grid-column: 1 / -1;
-  background: transparent;
-  border: 1.5px solid rgba(248,246,241,.2);
-  color: rgba(248,246,241,.3);
-  font-family: var(--cond);
-  font-size: .75rem;
-  font-weight: 700;
-  letter-spacing: .18em;
-  text-transform: uppercase;
-  padding: .85rem 1rem;
-  outline: none;
-  width: 100%;
-}
-.booking-btn {
-  background: var(--y);
-  border: 2px solid var(--y);
-  color: var(--bk);
-  font-family: var(--cond);
-  font-size: .82rem;
-  font-weight: 900;
-  letter-spacing: .28em;
-  text-transform: uppercase;
-  padding: 1rem 2.5rem;
-  cursor: pointer;
-  align-self: flex-start;
-  transition: background .2s, color .2s;
-  display: flex;
-  align-items: center;
-  gap: .8rem;
-}
-.booking-btn::after { content: '→'; }
-.booking-btn:hover { background: transparent; color: var(--y); }
+.spread-photo-big-word{font-family:var(--cond);font-size:4.2rem;font-weight:900;text-transform:uppercase;line-height:.88;letter-spacing:-.02em;color:var(--bk);}
+.spread-photo-tagline{font-family:var(--cond);font-size:.65rem;font-weight:700;letter-spacing:.28em;text-transform:uppercase;color:var(--bk);opacity:.5;max-width:22ch;line-height:1.6;}
+.spread-content{padding:4rem 3.5rem;display:flex;flex-direction:column;justify-content:center;gap:1.8rem;background:var(--wh);}
+.spread-big-num{font-family:var(--cond);font-size:8rem;font-weight:900;color:transparent;-webkit-text-stroke:2px var(--gr);line-height:.85;letter-spacing:-.04em;user-select:none;pointer-events:none;}
+.spread-h2{font-family:var(--cond);font-size:3.8rem;font-weight:900;text-transform:uppercase;line-height:.9;letter-spacing:-.02em;}
+.spread-h2 em{font-family:var(--serif);font-style:italic;font-size:2.8rem;color:var(--mid);display:block;margin-top:.4rem;}
+.spread-body{font-size:.86rem;line-height:1.78;color:var(--mid);max-width:42ch;columns:2;gap:1.5rem;}
+.spread-signature{font-family:var(--cond);font-size:.6rem;font-weight:700;letter-spacing:.28em;text-transform:uppercase;color:var(--bk);display:flex;align-items:center;gap:1rem;}
+.spread-signature::before{content:'';display:block;width:2.5rem;height:2px;background:var(--y);}
+.section-meta{display:flex;align-items:center;gap:1rem;margin-bottom:.5rem;}
+.section-meta-line{flex:1;max-width:3rem;height:1.5px;background:var(--bk);}
 
-/* ─── TEAM STRIP ────────────────────────────────────────────── */
-.team {
-  background: var(--wh);
-  border-bottom: 2px solid var(--bk);
-  padding: 4.5rem 3.5rem;
-}
-.team-header {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  border-bottom: 1.5px solid var(--bk);
-  padding-bottom: 1.2rem;
-  margin-bottom: 3rem;
-}
-.team-title {
-  font-family: var(--cond);
-  font-size: 3.8rem;
-  font-weight: 900;
-  text-transform: uppercase;
-  letter-spacing: -.02em;
-  line-height: .88;
-}
-.team-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 0;
-  border: 1.5px solid var(--bk);
-}
-.team-card {
-  border-right: 1.5px solid var(--bk);
-  overflow: hidden;
-}
-.team-card:last-child { border-right: none; }
-.team-photo-wrap {
-  aspect-ratio: 3/4;
-  position: relative;
-  overflow: hidden;
-  border-bottom: 1.5px solid var(--bk);
-}
-.team-photo-wrap img { height: 100%; }
-/* yellow tag on hover */
-.team-card-tag {
-  position: absolute;
-  top: 1rem; right: 1rem;
-  background: var(--y);
-  border: 1.5px solid var(--bk);
-  font-family: var(--cond);
-  font-size: .55rem;
-  font-weight: 800;
-  letter-spacing: .25em;
-  text-transform: uppercase;
-  padding: .22rem .65rem;
-  z-index: 2;
-  color: var(--bk);
-}
-.team-info {
-  padding: 1.4rem;
-  background: var(--wh);
-}
-.team-role {
-  font-family: var(--cond);
-  font-size: .58rem;
-  font-weight: 800;
-  letter-spacing: .3em;
-  text-transform: uppercase;
-  color: var(--y);
-  margin-bottom: .4rem;
-}
-.team-name {
-  font-family: var(--cond);
-  font-size: 1.65rem;
-  font-weight: 900;
-  text-transform: uppercase;
-  letter-spacing: .04em;
-  line-height: 1;
-  margin-bottom: .5rem;
-}
-.team-spec {
-  font-size: .75rem;
-  color: var(--mid);
-  line-height: 1.6;
-}
+/* ─── GALLERY ─────────────────────────────────────────────── */
+.gallery-section{padding:5rem 3.5rem;background:var(--wh);border-bottom:2px solid var(--bk);}
+.gallery-header{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:3rem;gap:2rem;}
+.gallery-title{font-family:var(--cond);font-size:4.5rem;font-weight:900;text-transform:uppercase;line-height:.88;letter-spacing:-.02em;}
+.gallery-view-all{font-family:var(--cond);font-size:.66rem;font-weight:800;letter-spacing:.28em;text-transform:uppercase;white-space:nowrap;display:flex;align-items:center;gap:.5rem;}
+.gallery-view-all::after{content:'→';font-size:1rem;}
+.gallery-grid{display:grid;grid-template-columns:2fr 1fr 1fr;grid-template-rows:290px 290px;gap:3px;border:1.5px solid var(--bk);}
+.gallery-item{position:relative;overflow:hidden;background:var(--gr);}
+.gallery-item:first-child{grid-row:1/3;}
+.gallery-photo{position:absolute;inset:0;}
+.gallery-item-label{position:absolute;top:1rem;left:1rem;background:var(--y);border:1.5px solid var(--bk);font-family:var(--cond);font-size:.56rem;font-weight:800;letter-spacing:.28em;text-transform:uppercase;color:var(--bk);padding:.22rem .7rem;z-index:2;}
+.gallery-item:hover img{filter:grayscale(0%) contrast(1);transition:filter .4s;}
+.gallery-item img{transition:filter .4s;}
+.gallery-item-num{position:absolute;bottom:.5rem;right:.8rem;font-family:var(--cond);font-size:4rem;font-weight:900;color:transparent;-webkit-text-stroke:1px rgba(248,246,241,.22);z-index:2;line-height:1;letter-spacing:-.02em;}
 
-/* ─── ORARI / INFO ROW ─────────────────────────────────────── */
-.info-row {
-  background: var(--y);
-  border-bottom: 2px solid var(--bk);
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-}
-.info-cell {
-  padding: 2rem 2.5rem;
-  border-right: 1.5px solid var(--bk);
-}
-.info-cell:last-child { border-right: none; }
-.info-label {
-  font-family: var(--cond);
-  font-size: .6rem;
-  font-weight: 800;
-  letter-spacing: .32em;
-  text-transform: uppercase;
-  color: var(--bk);
-  opacity: .55;
-  margin-bottom: .8rem;
-}
-.info-value {
-  font-family: var(--cond);
-  font-size: 1.15rem;
-  font-weight: 900;
-  text-transform: uppercase;
-  letter-spacing: .08em;
-  color: var(--bk);
-  line-height: 1.45;
-}
+/* ─── TEAM ────────────────────────────────────────────────── */
+.team{background:var(--wh);border-bottom:2px solid var(--bk);padding:5rem 3.5rem;}
+.team-header{display:flex;align-items:baseline;justify-content:space-between;border-bottom:1.5px solid var(--bk);padding-bottom:1.2rem;margin-bottom:3rem;}
+.team-title{font-family:var(--cond);font-size:3.8rem;font-weight:900;text-transform:uppercase;letter-spacing:-.02em;line-height:.88;}
+.team-grid{display:grid;grid-template-columns:repeat(3,1fr);border:1.5px solid var(--bk);}
+.team-card{border-right:1.5px solid var(--bk);overflow:hidden;}
+.team-card:last-child{border-right:none;}
+.team-photo-wrap{aspect-ratio:3/4;position:relative;overflow:hidden;border-bottom:1.5px solid var(--bk);}
+.team-photo-wrap img{height:100%;}
+.team-card-tag{position:absolute;top:1rem;right:1rem;background:var(--y);border:1.5px solid var(--bk);font-family:var(--cond);font-size:.54rem;font-weight:800;letter-spacing:.25em;text-transform:uppercase;padding:.22rem .6rem;z-index:2;color:var(--bk);}
+.team-info{padding:1.4rem;background:var(--wh);}
+.team-role{font-family:var(--cond);font-size:.56rem;font-weight:800;letter-spacing:.3em;text-transform:uppercase;color:var(--y);margin-bottom:.4rem;}
+.team-name{font-family:var(--cond);font-size:1.65rem;font-weight:900;text-transform:uppercase;letter-spacing:.04em;line-height:1;margin-bottom:.4rem;}
+.team-spec{font-size:.73rem;color:var(--mid);line-height:1.6;}
 
-/* ─── FOOTER ────────────────────────────────────────────────── */
-footer {
-  background: var(--bk);
-  color: var(--wh);
-  padding: 3rem 3.5rem;
-  display: grid;
-  grid-template-columns: 1fr auto 1fr;
-  align-items: center;
-  gap: 2rem;
+/* ─── BOOKING CTA STRIP ───────────────────────────────────── */
+.booking-strip{
+  background:var(--bk);border-bottom:2px solid var(--y);
+  display:flex;align-items:center;justify-content:space-between;
+  padding:3.5rem 3.5rem;gap:3rem;
 }
-.footer-logo {
-  font-family: var(--cond);
-  font-size: 2rem;
-  font-weight: 900;
-  letter-spacing: .06em;
-  text-transform: uppercase;
+.booking-strip-text{display:flex;flex-direction:column;gap:.8rem;}
+.booking-strip-h2{
+  font-family:var(--cond);font-size:4.5rem;font-weight:900;
+  text-transform:uppercase;line-height:.88;letter-spacing:-.02em;color:var(--wh);
 }
-.footer-logo span { color: var(--y); }
-.footer-center {
-  text-align: center;
-  font-family: var(--cond);
-  font-size: .58rem;
-  font-weight: 700;
-  letter-spacing: .3em;
-  text-transform: uppercase;
-  color: rgba(248,246,241,.35);
-  line-height: 1.8;
+.booking-strip-h2 span{color:var(--y);}
+.booking-strip-sub{font-size:.82rem;color:rgba(248,246,241,.45);line-height:1.65;max-width:44ch;}
+.booking-strip-right{display:flex;flex-direction:column;align-items:flex-end;gap:1.2rem;flex-shrink:0;}
+.booking-strip-time{
+  font-family:var(--cond);font-size:.62rem;font-weight:700;letter-spacing:.28em;
+  text-transform:uppercase;color:rgba(248,246,241,.3);text-align:right;line-height:1.8;
 }
-.footer-socials {
-  display: flex;
-  justify-content: flex-end;
-  gap: 1.5rem;
+.booking-cta-btn{
+  background:var(--y);border:2px solid var(--y);color:var(--bk);
+  font-family:var(--cond);font-size:.88rem;font-weight:900;letter-spacing:.22em;text-transform:uppercase;
+  padding:1.2rem 2.8rem;cursor:pointer;transition:background .2s,color .2s,border-color .2s;
+  display:flex;align-items:center;gap:.8rem;white-space:nowrap;
 }
-.footer-social {
-  font-family: var(--cond);
-  font-size: .65rem;
-  font-weight: 800;
-  letter-spacing: .22em;
-  text-transform: uppercase;
-  color: rgba(248,246,241,.4);
-  transition: color .2s;
-}
-.footer-social:hover { color: var(--y); }
+.booking-cta-btn::after{content:'→';font-size:1.1rem;}
+.booking-cta-btn:hover{background:transparent;color:var(--y);}
 
-/* ─── META LABELS (page decorations) ───────────────────────── */
-.section-meta {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  margin-bottom: 1.2rem;
+/* ─── BOOKING MODAL ───────────────────────────────────────── */
+.modal-overlay{
+  position:fixed;inset:0;background:rgba(10,10,10,.78);
+  z-index:500;display:flex;align-items:center;justify-content:center;
+  opacity:0;pointer-events:none;transition:opacity .3s;
+  backdrop-filter:blur(3px);
 }
-.section-meta-line { flex:1; max-width: 3rem; height:1.5px; background: var(--bk); }
+.modal-overlay.open{opacity:1;pointer-events:all;}
+.modal{
+  background:var(--wh);border:2px solid var(--bk);
+  width:100%;max-width:480px;position:relative;
+  transform:translateY(16px);transition:transform .3s;
+}
+.modal-overlay.open .modal{transform:translateY(0);}
+.modal-header{
+  background:var(--bk);padding:1.4rem 2rem;
+  display:flex;justify-content:space-between;align-items:center;
+  border-bottom:2px solid var(--y);
+}
+.modal-title{font-family:var(--cond);font-size:1.6rem;font-weight:900;text-transform:uppercase;letter-spacing:.06em;color:var(--wh);}
+.modal-close{
+  background:none;border:none;color:rgba(248,246,241,.5);
+  font-family:var(--cond);font-size:1rem;cursor:pointer;padding:.2rem .4rem;
+  transition:color .2s;line-height:1;
+}
+.modal-close:hover{color:var(--y);}
+.modal-body{padding:2rem;}
+.modal-body-success{
+  padding:3rem 2rem;text-align:center;
+  display:flex;flex-direction:column;align-items:center;gap:1rem;
+}
+.modal-success-icon{
+  width:60px;height:60px;border-radius:50%;
+  background:var(--y);border:2px solid var(--bk);
+  display:flex;align-items:center;justify-content:center;
+  font-family:var(--cond);font-size:1.8rem;font-weight:900;color:var(--bk);
+  margin-bottom:.5rem;
+}
+.modal-success-title{font-family:var(--cond);font-size:2rem;font-weight:900;text-transform:uppercase;letter-spacing:.06em;}
+.modal-success-sub{font-size:.8rem;color:var(--mid);line-height:1.6;max-width:28ch;text-align:center;}
+.modal-field{margin-bottom:1.2rem;}
+.modal-label{font-family:var(--cond);font-size:.6rem;font-weight:800;letter-spacing:.3em;text-transform:uppercase;color:var(--bk);display:block;margin-bottom:.5rem;}
+.modal-select{
+  width:100%;background:var(--wh);border:1.5px solid var(--bk);
+  color:var(--bk);font-family:var(--cond);font-size:.82rem;font-weight:700;
+  letter-spacing:.08em;text-transform:uppercase;padding:.8rem 1rem;
+  outline:none;cursor:pointer;appearance:none;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%230A0A0A' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;background-position:right 1rem center;
+  transition:border-color .2s;
+}
+.modal-select:focus{border-color:var(--y);}
+.modal-select option{font-weight:700;}
+.modal-row{display:grid;grid-template-columns:1fr 1fr;gap:1rem;}
+.modal-confirm{
+  width:100%;background:var(--y);border:2px solid var(--bk);color:var(--bk);
+  font-family:var(--cond);font-size:.82rem;font-weight:900;letter-spacing:.22em;text-transform:uppercase;
+  padding:1rem;cursor:pointer;margin-top:.5rem;
+  transition:background .2s,color .2s;display:flex;align-items:center;justify-content:center;gap:.6rem;
+}
+.modal-confirm::after{content:'→';}
+.modal-confirm:hover{background:var(--bk);color:var(--y);}
+.modal-confirm:disabled{opacity:.35;cursor:not-allowed;}
+.modal-confirm:disabled:hover{background:var(--y);color:var(--bk);}
+
+/* ─── INFO ROW ────────────────────────────────────────────── */
+.info-row{background:var(--y);border-bottom:2px solid var(--bk);display:grid;grid-template-columns:repeat(3,1fr);}
+.info-cell{padding:2rem 2.5rem;border-right:1.5px solid var(--bk);}
+.info-cell:last-child{border-right:none;}
+.info-label{font-family:var(--cond);font-size:.58rem;font-weight:800;letter-spacing:.32em;text-transform:uppercase;color:var(--bk);opacity:.5;margin-bottom:.7rem;}
+.info-value{font-family:var(--cond);font-size:1.1rem;font-weight:900;text-transform:uppercase;letter-spacing:.06em;color:var(--bk);line-height:1.5;}
+
+/* ─── FOOTER ──────────────────────────────────────────────── */
+footer{
+  background:var(--bk);color:var(--wh);padding:2.8rem 3.5rem;
+  display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:2rem;
+}
+.footer-logo{font-family:var(--cond);font-size:2rem;font-weight:900;letter-spacing:.06em;text-transform:uppercase;}
+.footer-logo span{color:var(--y);}
+.footer-center{text-align:center;font-family:var(--cond);font-size:.56rem;font-weight:700;letter-spacing:.28em;text-transform:uppercase;color:rgba(248,246,241,.3);line-height:1.8;}
+.footer-socials{display:flex;justify-content:flex-end;gap:1.5rem;}
+.footer-social{font-family:var(--cond);font-size:.64rem;font-weight:800;letter-spacing:.22em;text-transform:uppercase;color:rgba(248,246,241,.35);transition:color .2s;}
+.footer-social:hover{color:var(--y);}
 </style>
 </head>
 <body>
 
-<!-- ── Label strip ── -->
+<!-- Label strip -->
 <div class="label-strip">
-  <span>BLADE BARBERSHOP — TEMPLATE PREVIEW · VIHENTE</span>
-  <span>STILE EDITORIALE / MAGAZINE</span>
+  <span>BLADE BARBERSHOP — TEMPLATE PREVIEW · VIHENTE STUDIO</span>
+  <span>STILE EDITORIALE / MAGAZINE · V2</span>
 </div>
 
-<!-- ── Nav ── -->
+<!-- Nav -->
 <nav>
   <div class="nav-logo">BL<span>A</span>DE</div>
   <div class="nav-links">
@@ -888,10 +350,10 @@ footer {
     <a href="#">Il Team</a>
     <a href="#">Contatti</a>
   </div>
-  <button class="nav-book">Prenota ora</button>
+  <button class="nav-book" onclick="openModal()">Prenota ora</button>
 </nav>
 
-<!-- ── Hero (Magazine Cover) ── -->
+<!-- Hero -->
 <section class="hero">
   <div class="hero-left">
     <div class="hero-issue">
@@ -901,7 +363,7 @@ footer {
         <p>L'arte del taglio perfetto</p>
         <p>—</p>
         <p>DAL <strong>2008</strong></p>
-        <p>MILANO, BRERA</p>
+        <p>MILANO · BRERA</p>
       </div>
     </div>
     <div class="hero-main-text">
@@ -914,42 +376,86 @@ footer {
         <span>Master Barber</span>
         MARCO NERI
       </div>
-      <div class="hero-address">
-        VIA BRERA 14<br>
-        MILANO<br>
-        +39 02 1234567
-      </div>
+      <div class="hero-address">VIA BRERA 14<br>MILANO<br>+39 02 1234567</div>
     </div>
   </div>
   <div class="hero-right">
     <div class="hero-photo-wrap">
-      <img src="https://loremflickr.com/900/1100/man,portrait,face?lock=41" alt="hero">
+      <img src="https://loremflickr.com/900/1100/man,portrait,face?lock=41" alt="">
     </div>
   </div>
 </section>
 
-<!-- ── Ticker ── -->
-<div class="ticker">
-  <div class="ticker-inner">
-    <span class="ticker-item">Taglio uomo</span><span class="ticker-sep">✦</span>
-    <span class="ticker-item">Barba tradizionale</span><span class="ticker-sep">✦</span>
-    <span class="ticker-item">Rasatura con rasoio</span><span class="ticker-sep">✦</span>
-    <span class="ticker-item">Trattamenti capelli</span><span class="ticker-sep">✦</span>
-    <span class="ticker-item">Colorazione</span><span class="ticker-sep">✦</span>
-    <span class="ticker-item">Appuntamento online</span><span class="ticker-sep">✦</span>
-    <span class="ticker-item">Milano · Brera</span><span class="ticker-sep">✦</span>
-    <!-- duplicate for seamless loop -->
-    <span class="ticker-item">Taglio uomo</span><span class="ticker-sep">✦</span>
-    <span class="ticker-item">Barba tradizionale</span><span class="ticker-sep">✦</span>
-    <span class="ticker-item">Rasatura con rasoio</span><span class="ticker-sep">✦</span>
-    <span class="ticker-item">Trattamenti capelli</span><span class="ticker-sep">✦</span>
-    <span class="ticker-item">Colorazione</span><span class="ticker-sep">✦</span>
-    <span class="ticker-item">Appuntamento online</span><span class="ticker-sep">✦</span>
-    <span class="ticker-item">Milano · Brera</span><span class="ticker-sep">✦</span>
+<!-- Banner block: yellow ticker (2 rows) + black info bar -->
+<div class="banner-block">
+
+  <!-- Yellow ticker — 2 rows, opposite directions -->
+  <div class="ticker">
+    <div class="ticker-row">
+      <div class="ticker-inner">
+        <span class="ticker-item">Taglio uomo</span><span class="ticker-sep">✦</span>
+        <span class="ticker-item">Barba tradizionale</span><span class="ticker-sep">✦</span>
+        <span class="ticker-item">Rasatura con rasoio</span><span class="ticker-sep">✦</span>
+        <span class="ticker-item">Trattamenti capelli</span><span class="ticker-sep">✦</span>
+        <span class="ticker-item">Colorazione</span><span class="ticker-sep">✦</span>
+        <span class="ticker-item">Appuntamento online</span><span class="ticker-sep">✦</span>
+        <span class="ticker-item">Milano · Brera</span><span class="ticker-sep">✦</span>
+        <span class="ticker-item">Taglio uomo</span><span class="ticker-sep">✦</span>
+        <span class="ticker-item">Barba tradizionale</span><span class="ticker-sep">✦</span>
+        <span class="ticker-item">Rasatura con rasoio</span><span class="ticker-sep">✦</span>
+        <span class="ticker-item">Trattamenti capelli</span><span class="ticker-sep">✦</span>
+        <span class="ticker-item">Colorazione</span><span class="ticker-sep">✦</span>
+        <span class="ticker-item">Appuntamento online</span><span class="ticker-sep">✦</span>
+        <span class="ticker-item">Milano · Brera</span><span class="ticker-sep">✦</span>
+      </div>
+    </div>
+    <div class="ticker-row ticker-row--rev">
+      <div class="ticker-inner">
+        <span class="ticker-item">Skin fade</span><span class="ticker-sep">◆</span>
+        <span class="ticker-item">Afro &amp; texture</span><span class="ticker-sep">◆</span>
+        <span class="ticker-item">Beard design</span><span class="ticker-sep">◆</span>
+        <span class="ticker-item">Keratin treatment</span><span class="ticker-sep">◆</span>
+        <span class="ticker-item">Hot towel shave</span><span class="ticker-sep">◆</span>
+        <span class="ticker-item">Hair color</span><span class="ticker-sep">◆</span>
+        <span class="ticker-item">Since 2008</span><span class="ticker-sep">◆</span>
+        <span class="ticker-item">Skin fade</span><span class="ticker-sep">◆</span>
+        <span class="ticker-item">Afro &amp; texture</span><span class="ticker-sep">◆</span>
+        <span class="ticker-item">Beard design</span><span class="ticker-sep">◆</span>
+        <span class="ticker-item">Keratin treatment</span><span class="ticker-sep">◆</span>
+        <span class="ticker-item">Hot towel shave</span><span class="ticker-sep">◆</span>
+        <span class="ticker-item">Hair color</span><span class="ticker-sep">◆</span>
+        <span class="ticker-item">Since 2008</span><span class="ticker-sep">◆</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Black info bar — counterweight to ticker -->
+  <div class="banner-info">
+    <div class="banner-info-cell">
+      <div class="banner-info-icon">09</div>
+      <div class="banner-info-text">
+        <div class="banner-info-label">Orari di apertura</div>
+        <div class="banner-info-value">Lun – Sab · 09:00 – 20:00</div>
+      </div>
+    </div>
+    <div class="banner-info-cell">
+      <div class="banner-info-icon">14</div>
+      <div class="banner-info-text">
+        <div class="banner-info-label">Dove siamo</div>
+        <div class="banner-info-value">Via Brera 14, Milano</div>
+      </div>
+    </div>
+    <div class="banner-info-cell">
+      <div class="banner-info-icon">↗</div>
+      <div class="banner-info-text">
+        <div class="banner-info-label">Prenota ora</div>
+        <div class="banner-info-value" style="cursor:pointer;color:var(--y);" onclick="openModal()">Slot disponibili oggi →</div>
+      </div>
+    </div>
   </div>
 </div>
 
-<!-- ── Services ── -->
+<!-- Services -->
 <section class="services">
   <div class="services-header">
     <h2 class="services-title">I NOSTRI<br>SERVIZI</h2>
@@ -957,9 +463,7 @@ footer {
   </div>
   <div class="services-grid">
     <div class="svc-card">
-      <div class="svc-photo">
-        <img src="https://loremflickr.com/400/550/haircut,man?lock=11" alt="Taglio">
-      </div>
+      <div class="svc-photo"><img src="https://loremflickr.com/400/550/haircut,man?lock=11" alt=""></div>
       <div class="svc-overlay"></div>
       <div class="svc-num">01</div>
       <div class="svc-body">
@@ -967,11 +471,10 @@ footer {
         <div class="svc-desc">Taglio personalizzato, lavaggio, asciugatura e finishing professionale.</div>
         <div class="svc-price">Da € 28 · 40 min</div>
       </div>
+      <button class="svc-book-hover" onclick="openModal()">Prenota</button>
     </div>
     <div class="svc-card">
-      <div class="svc-photo">
-        <img src="https://loremflickr.com/400/550/beard,man?lock=22" alt="Barba">
-      </div>
+      <div class="svc-photo"><img src="https://loremflickr.com/400/550/beard,man?lock=22" alt=""></div>
       <div class="svc-overlay"></div>
       <div class="svc-num">02</div>
       <div class="svc-body">
@@ -979,11 +482,10 @@ footer {
         <div class="svc-desc">Rasatura con rasoio a mano libera, asciugamano caldo e oli essenziali.</div>
         <div class="svc-price">Da € 22 · 30 min</div>
       </div>
+      <button class="svc-book-hover" onclick="openModal()">Prenota</button>
     </div>
     <div class="svc-card">
-      <div class="svc-photo">
-        <img src="https://loremflickr.com/400/550/barber,style?lock=33" alt="Combo">
-      </div>
+      <div class="svc-photo"><img src="https://loremflickr.com/400/550/barber,style?lock=33" alt=""></div>
       <div class="svc-overlay"></div>
       <div class="svc-num">03</div>
       <div class="svc-body">
@@ -991,11 +493,10 @@ footer {
         <div class="svc-desc">Il pacchetto completo: taglio su misura e rifinitura barba professionale.</div>
         <div class="svc-price">Da € 45 · 65 min</div>
       </div>
+      <button class="svc-book-hover" onclick="openModal()">Prenota</button>
     </div>
     <div class="svc-card">
-      <div class="svc-photo">
-        <img src="https://loremflickr.com/400/550/hairstyle,salon?lock=44" alt="Trattamento">
-      </div>
+      <div class="svc-photo"><img src="https://loremflickr.com/400/550/hairstyle,salon?lock=44" alt=""></div>
       <div class="svc-overlay"></div>
       <div class="svc-num">04</div>
       <div class="svc-body">
@@ -1003,35 +504,24 @@ footer {
         <div class="svc-desc">Maschera nutriente, massaggio capillare e trattamento anti-caduta.</div>
         <div class="svc-price">Da € 38 · 50 min</div>
       </div>
+      <button class="svc-book-hover" onclick="openModal()">Prenota</button>
     </div>
   </div>
 </section>
 
-<!-- ── Stats bar ── -->
+<!-- Stats -->
 <div class="stats-bar">
-  <div class="stat-item">
-    <div class="stat-num">16+</div>
-    <div class="stat-label">Anni di attività</div>
-  </div>
-  <div class="stat-item">
-    <div class="stat-num">4.8K</div>
-    <div class="stat-label">Clienti fidelizzati</div>
-  </div>
-  <div class="stat-item">
-    <div class="stat-num">3</div>
-    <div class="stat-label">Master Barber nel team</div>
-  </div>
-  <div class="stat-item">
-    <div class="stat-num">98%</div>
-    <div class="stat-label">Clienti soddisfatti</div>
-  </div>
+  <div class="stat-item"><div class="stat-num">16+</div><div class="stat-label">Anni di attività</div></div>
+  <div class="stat-item"><div class="stat-num">4.8K</div><div class="stat-label">Clienti fidelizzati</div></div>
+  <div class="stat-item"><div class="stat-num">3</div><div class="stat-label">Master Barber nel team</div></div>
+  <div class="stat-item"><div class="stat-num">98%</div><div class="stat-label">Clienti soddisfatti</div></div>
 </div>
 
-<!-- ── Editorial Spread ── -->
+<!-- Spread -->
 <section class="spread">
   <div class="spread-photo">
     <div class="spread-photo-wrap">
-      <img src="https://loremflickr.com/800/900/barbershop,interior?lock=55" alt="shop">
+      <img src="https://loremflickr.com/800/900/barbershop,interior?lock=55" alt="">
     </div>
     <div class="spread-photo-banner">
       <div class="spread-photo-big-word">CUT.</div>
@@ -1045,15 +535,12 @@ footer {
     </div>
     <div class="spread-big-num">02</div>
     <h2 class="spread-h2">L'ARTE<br>CHE NON<br>SEGUE<br><em>le mode.</em></h2>
-    <p class="spread-body">
-      Blade nasce da una passione per il mestiere del barbiere nel senso più classico del termine. Strumenti affilati, mani esperte, prodotti selezionati.
-      Ogni cliente entra con una richiesta e ne esce con un'identità. Non seguiamo le tendenze — le osserviamo, le interpretiamo e le adattiamo a chi hai davanti.
-    </p>
+    <p class="spread-body">Blade nasce da una passione per il mestiere del barbiere nel senso più classico del termine. Strumenti affilati, mani esperte, prodotti selezionati. Ogni cliente entra con una richiesta e ne esce con un'identità. Non seguiamo le tendenze — le osserviamo, le interpretiamo e le adattiamo.</p>
     <div class="spread-signature">MARCO NERI — MASTER BARBER &amp; FONDATORE</div>
   </div>
 </section>
 
-<!-- ── Gallery Editorial ── -->
+<!-- Gallery -->
 <section class="gallery-section">
   <div class="gallery-header">
     <h2 class="gallery-title">IL NOSTRO<br>LAVORO</h2>
@@ -1061,53 +548,43 @@ footer {
   </div>
   <div class="gallery-grid">
     <div class="gallery-item">
-      <div class="gallery-photo">
-        <img src="https://loremflickr.com/700/600/haircut,portrait,man?lock=61" alt="">
-      </div>
+      <div class="gallery-photo"><img src="https://loremflickr.com/700/600/haircut,portrait,man?lock=61" alt=""></div>
       <div class="gallery-item-label">FEATURED</div>
       <div class="gallery-item-num">01</div>
     </div>
     <div class="gallery-item">
-      <div class="gallery-photo">
-        <img src="https://loremflickr.com/400/280/barber,fade?lock=62" alt="">
-      </div>
+      <div class="gallery-photo"><img src="https://loremflickr.com/400/290/barber,fade?lock=62" alt=""></div>
       <div class="gallery-item-label">FADE</div>
       <div class="gallery-item-num">02</div>
     </div>
     <div class="gallery-item">
-      <div class="gallery-photo">
-        <img src="https://loremflickr.com/400/280/beard,style?lock=63" alt="">
-      </div>
+      <div class="gallery-photo"><img src="https://loremflickr.com/400/290/beard,style?lock=63" alt=""></div>
       <div class="gallery-item-label">BEARD</div>
       <div class="gallery-item-num">03</div>
     </div>
     <div class="gallery-item">
-      <div class="gallery-photo">
-        <img src="https://loremflickr.com/400/280/hair,men?lock=64" alt="">
-      </div>
+      <div class="gallery-photo"><img src="https://loremflickr.com/400/290/hair,men?lock=64" alt=""></div>
       <div class="gallery-item-label">CLASSIC</div>
       <div class="gallery-item-num">04</div>
     </div>
     <div class="gallery-item">
-      <div class="gallery-photo">
-        <img src="https://loremflickr.com/400/280/hairstyle,man?lock=65" alt="">
-      </div>
+      <div class="gallery-photo"><img src="https://loremflickr.com/400/290/hairstyle,man?lock=65" alt=""></div>
       <div class="gallery-item-label">TEXTURE</div>
       <div class="gallery-item-num">05</div>
     </div>
   </div>
 </section>
 
-<!-- ── Team ── -->
+<!-- Team -->
 <section class="team">
   <div class="team-header">
     <h2 class="team-title">IL TEAM</h2>
-    <span class="eyebrow" style="color:var(--mid);">3 Master Barber</span>
+    <span class="eyebrow" style="color:var(--mid)">3 Master Barber</span>
   </div>
   <div class="team-grid">
     <div class="team-card">
       <div class="team-photo-wrap">
-        <img src="https://loremflickr.com/500/660/man,portrait,barber?lock=71" alt="Marco">
+        <img src="https://loremflickr.com/500/660/man,portrait,barber?lock=71" alt="">
         <span class="team-card-tag">Fondatore</span>
       </div>
       <div class="team-info">
@@ -1118,7 +595,7 @@ footer {
     </div>
     <div class="team-card">
       <div class="team-photo-wrap">
-        <img src="https://loremflickr.com/500/660/man,face,young?lock=72" alt="Luca">
+        <img src="https://loremflickr.com/500/660/man,face,young?lock=72" alt="">
         <span class="team-card-tag">Fade Specialist</span>
       </div>
       <div class="team-info">
@@ -1129,7 +606,7 @@ footer {
     </div>
     <div class="team-card">
       <div class="team-photo-wrap">
-        <img src="https://loremflickr.com/500/660/man,dark,portrait?lock=73" alt="Andrea">
+        <img src="https://loremflickr.com/500/660/man,dark,portrait?lock=73" alt="">
         <span class="team-card-tag">Beard Expert</span>
       </div>
       <div class="team-info">
@@ -1141,47 +618,34 @@ footer {
   </div>
 </section>
 
-<!-- ── Booking ── -->
-<section class="booking">
-  <div class="booking-text">
+<!-- Booking CTA strip -->
+<section class="booking-strip">
+  <div class="booking-strip-text">
     <div class="section-meta">
-      <div class="section-meta-line" style="background:rgba(248,246,241,.2)"></div>
-      <span class="eyebrow" style="color:rgba(248,246,241,.4)">Prenota il tuo posto</span>
+      <div class="section-meta-line" style="background:rgba(248,246,241,.15)"></div>
+      <span class="eyebrow" style="color:rgba(248,246,241,.35)">Prenota il tuo posto</span>
     </div>
-    <h2 class="booking-h2">SCEGLI<br>IL TUO<br><span>MOMENTO.</span></h2>
-    <p class="booking-sub">
-      Niente attese, niente sorprese. Prenota online in 30 secondi e scegli il barber che preferisci.
-    </p>
+    <h2 class="booking-strip-h2">SCEGLI<br>IL TUO<br><span>MOMENTO.</span></h2>
+    <p class="booking-strip-sub">Niente attese, niente sorprese. Prenota online in meno di un minuto e scegli il barber che preferisci.</p>
   </div>
-  <div class="booking-action">
-    <div class="booking-form-row">
-      <input class="booking-input" type="text" placeholder="Il tuo nome">
-      <input class="booking-input" type="tel" placeholder="Telefono">
+  <div class="booking-strip-right">
+    <div class="booking-strip-time">
+      Disponibile oggi<br>
+      3 slot liberi
     </div>
-    <select class="booking-select">
-      <option value="">Seleziona un servizio</option>
-      <option>Taglio Uomo — € 28</option>
-      <option>Barba Tradizionale — € 22</option>
-      <option>Taglio + Barba — € 45</option>
-      <option>Trattamento Cuoio — € 38</option>
-    </select>
-    <div class="booking-form-row">
-      <input class="booking-input" type="text" placeholder="Data preferita">
-      <input class="booking-input" type="text" placeholder="Orario preferito">
-    </div>
-    <button class="booking-btn">Conferma prenotazione</button>
+    <button class="booking-cta-btn" onclick="openModal()">Prenota ora</button>
   </div>
 </section>
 
-<!-- ── Info Row ── -->
+<!-- Info row -->
 <div class="info-row">
   <div class="info-cell">
     <div class="info-label">Orari</div>
-    <div class="info-value">Lun–Sab<br>09:00 – 20:00</div>
+    <div class="info-value">Lun – Sab<br>09:00 – 20:00</div>
   </div>
   <div class="info-cell">
     <div class="info-label">Dove siamo</div>
-    <div class="info-value">Via Brera 14<br>Milano, MI 20121</div>
+    <div class="info-value">Via Brera 14<br>Milano, 20121</div>
   </div>
   <div class="info-cell">
     <div class="info-label">Contatti</div>
@@ -1189,13 +653,10 @@ footer {
   </div>
 </div>
 
-<!-- ── Footer ── -->
+<!-- Footer -->
 <footer>
   <div class="footer-logo">BL<span>A</span>DE</div>
-  <div class="footer-center">
-    © 2026 Blade Barbershop S.r.l.<br>
-    P.IVA 01234567890 · Milano
-  </div>
+  <div class="footer-center">© 2026 Blade Barbershop S.r.l.<br>P.IVA 01234567890 · Milano</div>
   <div class="footer-socials">
     <a class="footer-social" href="#">Instagram</a>
     <a class="footer-social" href="#">Facebook</a>
@@ -1203,5 +664,117 @@ footer {
   </div>
 </footer>
 
+<!-- Booking Modal -->
+<div class="modal-overlay" id="bookingModal" onclick="handleOverlayClick(event)">
+  <div class="modal" onclick="event.stopPropagation()">
+
+    <!-- Normal state -->
+    <div id="modalNormal">
+      <div class="modal-header">
+        <span class="modal-title">Prenota</span>
+        <button class="modal-close" onclick="closeModal()">✕ chiudi</button>
+      </div>
+      <div class="modal-body">
+        <div class="modal-field">
+          <label class="modal-label">Servizio</label>
+          <select class="modal-select" id="selService" onchange="checkReady()">
+            <option value="">Seleziona un servizio</option>
+            <option>Taglio Uomo — € 28 · 40 min</option>
+            <option>Barba Tradizionale — € 22 · 30 min</option>
+            <option>Taglio + Barba — € 45 · 65 min</option>
+            <option>Trattamento Cuoio — € 38 · 50 min</option>
+          </select>
+        </div>
+        <div class="modal-field">
+          <label class="modal-label">Barber</label>
+          <select class="modal-select" id="selBarber" onchange="checkReady()">
+            <option value="">Scegli il barber</option>
+            <option>Marco Neri — Master Barber</option>
+            <option>Luca Ferretti — Fade Specialist</option>
+            <option>Andrea Russo — Beard Expert</option>
+          </select>
+        </div>
+        <div class="modal-row">
+          <div class="modal-field">
+            <label class="modal-label">Data</label>
+            <select class="modal-select" id="selData" onchange="checkReady()">
+              <option value="">Seleziona</option>
+              <option>Lun 23 Giugno</option>
+              <option>Mar 24 Giugno</option>
+              <option>Mer 25 Giugno</option>
+              <option>Gio 26 Giugno</option>
+              <option>Ven 27 Giugno</option>
+              <option>Sab 28 Giugno</option>
+            </select>
+          </div>
+          <div class="modal-field">
+            <label class="modal-label">Orario</label>
+            <select class="modal-select" id="selOra" onchange="checkReady()">
+              <option value="">Seleziona</option>
+              <option>09:00</option>
+              <option>09:30</option>
+              <option>10:00</option>
+              <option>10:30</option>
+              <option>11:00</option>
+              <option>14:00</option>
+              <option>14:30</option>
+              <option>15:00</option>
+              <option>16:00</option>
+              <option>17:00</option>
+            </select>
+          </div>
+        </div>
+        <button class="modal-confirm" id="confirmBtn" disabled onclick="confirmBooking()">Conferma prenotazione</button>
+      </div>
+    </div>
+
+    <!-- Success state -->
+    <div id="modalSuccess" style="display:none">
+      <div class="modal-header">
+        <span class="modal-title">Confermato</span>
+        <button class="modal-close" onclick="closeModal()">✕ chiudi</button>
+      </div>
+      <div class="modal-body-success">
+        <div class="modal-success-icon">✓</div>
+        <div class="modal-success-title">Appuntamento<br>confermato!</div>
+        <div class="modal-success-sub">Riceverai una conferma via SMS. A presto da Blade.</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+function openModal(){
+  document.getElementById('bookingModal').classList.add('open');
+  document.body.style.overflow='hidden';
+}
+function closeModal(){
+  const m=document.getElementById('bookingModal');
+  m.classList.remove('open');
+  document.body.style.overflow='';
+  setTimeout(()=>{
+    document.getElementById('modalNormal').style.display='';
+    document.getElementById('modalSuccess').style.display='none';
+    ['selService','selBarber','selData','selOra'].forEach(id=>{
+      document.getElementById(id).value='';
+    });
+    document.getElementById('confirmBtn').disabled=true;
+  },300);
+}
+function handleOverlayClick(e){
+  if(e.target===document.getElementById('bookingModal')) closeModal();
+}
+function checkReady(){
+  const ok=['selService','selBarber','selData','selOra'].every(id=>document.getElementById(id).value!=='');
+  document.getElementById('confirmBtn').disabled=!ok;
+}
+function confirmBooking(){
+  document.getElementById('modalNormal').style.display='none';
+  document.getElementById('modalSuccess').style.display='';
+  setTimeout(closeModal, 2800);
+}
+document.addEventListener('keydown',e=>{if(e.key==='Escape') closeModal();});
+</script>
 </body>
 </html>
