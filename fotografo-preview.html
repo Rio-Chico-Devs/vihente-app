@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FERRARI STUDIO — Fotografo Preview · Stile Editoriale</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,600;1,300;1,600&family=Barlow+Condensed:wght@700;800;900&family=Barlow:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+/* ─── RESET ─────────────────────────────────────────────── */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --wh:#FAFAF8; --bk:#111111;
+  --rose:#C8968A; --pale:#F0E4E0; --warm:#E8D0C8;
+  --grey:#9A9490; --mid:#6A6560; --dark:#2A2520;
+  --disp:'Cormorant Garamond',Georgia,serif;
+  --cond:'Barlow Condensed',sans-serif;
+  --body:'Barlow',sans-serif;
+}
+html{scroll-behavior:smooth;}
+body{background:var(--wh);color:var(--bk);font-family:var(--body);overflow-x:hidden;}
+img{display:block;width:100%;height:100%;object-fit:cover;filter:grayscale(100%) contrast(1.08);}
+a{text-decoration:none;color:inherit;}
+.eyebrow{font-family:var(--cond);font-size:.6rem;font-weight:700;letter-spacing:.35em;text-transform:uppercase;color:var(--grey);}
+
+/* ─── LABEL STRIP ───────────────────────────────────────── */
+.label-strip{
+  background:var(--bk);color:var(--wh);
+  font-family:var(--cond);font-size:.58rem;font-weight:700;
+  letter-spacing:.35em;text-transform:uppercase;
+  padding:.55rem 3rem;
+  display:flex;justify-content:space-between;align-items:center;
+}
+.label-strip span{opacity:.4;}
+
+/* ─── NAV ───────────────────────────────────────────────── */
+nav{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:1rem 3rem;background:var(--wh);
+  border-bottom:1px solid var(--bk);position:sticky;top:0;z-index:200;
+}
+.nav-logo{font-family:var(--disp);font-style:italic;font-size:1.3rem;font-weight:300;color:var(--bk);letter-spacing:.02em;}
+.nav-links{display:flex;gap:2rem;font-family:var(--cond);font-size:.68rem;font-weight:700;letter-spacing:.22em;text-transform:uppercase;}
+.nav-links a{cursor:pointer;color:var(--mid);position:relative;transition:color .2s;}
+.nav-links a::after{content:'';position:absolute;left:0;bottom:-3px;width:0;height:1px;background:var(--rose);transition:width .25s;}
+.nav-links a:hover{color:var(--bk);}
+.nav-links a:hover::after{width:100%;}
+.nav-social{display:flex;gap:1.2rem;font-family:var(--cond);font-size:.64rem;font-weight:800;letter-spacing:.12em;color:var(--grey);}
+.nav-social span{cursor:pointer;transition:color .2s;}
+.nav-social span:hover{color:var(--rose);}
+
+/* ─── HERO ───────────────────────────────────────────────── */
+.hero{display:grid;grid-template-columns:1fr 1fr;min-height:88vh;border-bottom:1px solid var(--bk);overflow:hidden;}
+
+.hero-photo{position:relative;overflow:hidden;border-right:1px solid var(--bk);min-height:480px;background:linear-gradient(145deg,#D8CCC8,#B8A8A4);}
+.hero-photo-banner{
+  position:absolute;bottom:0;left:0;right:0;
+  background:var(--rose);padding:1.1rem 2.5rem;z-index:2;
+  display:flex;align-items:baseline;gap:1.5rem;border-top:1px solid var(--bk);
+}
+.hero-photo-word{font-family:var(--cond);font-size:3.8rem;font-weight:900;text-transform:uppercase;color:var(--wh);line-height:.9;letter-spacing:-.02em;}
+.hero-photo-sub{font-family:var(--cond);font-size:.58rem;font-weight:700;letter-spacing:.25em;text-transform:uppercase;color:rgba(250,250,248,.65);max-width:22ch;line-height:1.6;}
+
+.hero-right{background:var(--wh);display:flex;overflow:hidden;}
+.hero-side-text{
+  writing-mode:vertical-rl;text-orientation:mixed;transform:rotate(180deg);
+  font-family:var(--cond);font-size:.52rem;font-weight:700;letter-spacing:.4em;text-transform:uppercase;
+  color:var(--grey);padding:2.5rem .8rem;border-left:1px solid rgba(0,0,0,.07);
+  flex-shrink:0;opacity:.55;user-select:none;
+}
+.hero-main{flex:1;padding:3.5rem 2.5rem 3.5rem 2rem;display:flex;flex-direction:column;justify-content:space-between;}
+.hero-issue{display:flex;align-items:baseline;gap:1rem;}
+.hero-num{
+  font-family:var(--cond);font-size:6rem;font-weight:900;
+  color:transparent;-webkit-text-stroke:1.5px var(--bk);
+  letter-spacing:-.02em;line-height:.88;user-select:none;
+}
+.hero-issue-meta{display:flex;flex-direction:column;gap:.3rem;}
+.hero-issue-meta p{font-family:var(--cond);font-size:.56rem;font-weight:700;letter-spacing:.28em;text-transform:uppercase;color:var(--grey);line-height:1.45;}
+.hero-issue-meta strong{color:var(--bk);}
+.hero-text{flex:1;display:flex;flex-direction:column;justify-content:center;gap:1.2rem;padding:2rem 0;}
+.hero-h1{font-family:var(--cond);font-size:clamp(4rem,7vw,6rem);font-weight:900;text-transform:uppercase;line-height:.85;letter-spacing:-.02em;}
+.hero-h1 em{font-family:var(--disp);font-style:italic;font-weight:300;font-size:.8em;text-transform:none;color:var(--rose);display:block;margin-top:.3rem;}
+.hero-rule{width:100%;height:1px;background:linear-gradient(90deg,var(--rose) 55%,transparent 100%);margin:.3rem 0;}
+.hero-sub{font-family:var(--cond);font-size:.9rem;font-weight:400;letter-spacing:.1em;text-transform:uppercase;color:var(--mid);max-width:30ch;line-height:1.55;}
+.hero-bottom{display:flex;align-items:flex-end;justify-content:space-between;}
+.hero-spec{font-family:var(--cond);font-size:.72rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;line-height:1.5;}
+.hero-spec span{display:block;font-size:.52rem;font-weight:700;letter-spacing:.3em;color:var(--grey);margin-bottom:.3rem;}
+.hero-location{font-family:var(--cond);font-size:.56rem;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:var(--grey);text-align:right;line-height:1.8;}
+
+/* ─── PORTFOLIO STRIP ────────────────────────────────────── */
+.port-strip{
+  background:var(--rose);border-bottom:1px solid var(--bk);
+  display:flex;align-items:center;justify-content:space-between;
+  padding:1rem 3rem;gap:2rem;
+}
+.port-title{font-family:var(--cond);font-size:1.2rem;font-weight:900;letter-spacing:.18em;text-transform:uppercase;color:var(--wh);}
+.port-cats{display:flex;gap:0;border:1px solid rgba(250,250,248,.35);}
+.port-cat{
+  background:transparent;border:none;border-right:1px solid rgba(250,250,248,.3);
+  color:rgba(250,250,248,.6);font-family:var(--cond);font-size:.6rem;font-weight:700;
+  letter-spacing:.2em;padding:.55rem 1.1rem;cursor:pointer;transition:background .2s,color .2s;text-transform:uppercase;
+}
+.port-cat:last-child{border-right:none;}
+.port-cat:hover,.port-cat.active{background:rgba(250,250,248,.2);color:var(--wh);}
+.port-count{font-family:var(--cond);font-size:.6rem;font-weight:700;letter-spacing:.3em;text-transform:uppercase;color:rgba(250,250,248,.5);white-space:nowrap;}
+
+/* ─── GALLERY ────────────────────────────────────────────── */
+.gallery-section{background:var(--wh);border-bottom:1px solid var(--bk);display:flex;padding:3rem 3rem 3rem 0;}
+.gallery-side{
+  writing-mode:vertical-rl;transform:rotate(180deg);
+  font-family:var(--cond);font-size:.5rem;font-weight:700;letter-spacing:.5em;text-transform:uppercase;
+  color:rgba(0,0,0,.12);padding:2rem 1.2rem;flex-shrink:0;user-select:none;
+  border-right:1px solid rgba(0,0,0,.06);
+}
+.gallery-grid{
+  flex:1;display:grid;
+  grid-template-columns:2fr 1fr 1fr;
+  grid-template-rows:260px 260px;
+  gap:3px;border:1px solid var(--bk);
+}
+.gal-item{position:relative;overflow:hidden;background:var(--pale);cursor:pointer;}
+.gal-item:first-child{grid-row:1/3;}
+.gal-item:hover img{filter:grayscale(0%) contrast(1);transition:filter .4s;}
+.gal-item img{transition:filter .4s;}
+.gal-pink{position:absolute;top:0;right:0;width:26px;height:26px;background:var(--rose);z-index:2;pointer-events:none;}
+.gal-overlay{position:absolute;inset:0;background:transparent;display:flex;align-items:flex-end;justify-content:space-between;padding:.8rem 1rem;transition:background .25s;}
+.gal-item:hover .gal-overlay{background:rgba(0,0,0,.25);}
+.gal-label{
+  font-family:var(--cond);font-size:.54rem;font-weight:800;letter-spacing:.28em;
+  text-transform:uppercase;background:var(--rose);color:var(--wh);padding:.2rem .6rem;
+  opacity:0;transition:opacity .25s;z-index:2;
+}
+.gal-item:hover .gal-label{opacity:1;}
+.gal-num{
+  position:absolute;bottom:.5rem;right:.8rem;
+  font-family:var(--cond);font-size:3rem;font-weight:900;
+  color:transparent;-webkit-text-stroke:1px rgba(250,250,248,.28);
+  z-index:2;line-height:1;letter-spacing:-.02em;
+}
+
+/* Placeholder tones for demo */
+.gal-bg-1{background:linear-gradient(145deg,#C8C0BC,#A8A09C);}
+.gal-bg-2{background:linear-gradient(145deg,#D4CCCA,#B8B0AC);}
+.gal-bg-3{background:linear-gradient(145deg,#BEB6B4,#A0999A);}
+.gal-bg-4{background:linear-gradient(145deg,#CCC4C2,#B0A8A6);}
+.gal-bg-5{background:linear-gradient(145deg,#D0C8C6,#B4ACAA);}
+
+/* ─── BARON SPREAD ───────────────────────────────────────── */
+.baron{display:grid;grid-template-columns:38% 1fr;min-height:62vh;border-bottom:1px solid var(--bk);overflow:hidden;}
+.baron-letter{background:var(--wh);border-right:1px solid var(--bk);position:relative;overflow:hidden;}
+.baron-letter-f{
+  font-family:var(--disp);font-style:italic;font-weight:600;
+  font-size:clamp(20rem,28vw,34rem);
+  color:transparent;-webkit-text-stroke:2px var(--bk);
+  line-height:.88;letter-spacing:-.04em;
+  position:absolute;right:-8%;top:50%;transform:translateY(-50%);
+  user-select:none;pointer-events:none;
+}
+.baron-photo{position:relative;overflow:hidden;min-height:420px;background:linear-gradient(145deg,#C4BAB6,#A8A09C);}
+.baron-caption{
+  position:absolute;bottom:0;left:0;right:0;
+  padding:1rem 2rem;background:rgba(10,10,10,.5);
+  display:flex;justify-content:space-between;align-items:center;
+  backdrop-filter:blur(4px);z-index:2;
+}
+.baron-caption-eye{font-family:var(--cond);font-size:.52rem;font-weight:700;letter-spacing:.28em;text-transform:uppercase;color:rgba(250,250,248,.55);}
+.baron-caption-num{font-family:var(--cond);font-size:.52rem;font-weight:700;letter-spacing:.22em;color:rgba(250,250,248,.32);}
+
+/* ─── ABOUT ──────────────────────────────────────────────── */
+.about{padding:5.5rem 3rem;background:var(--wh);border-bottom:1px solid var(--bk);}
+.about-inner{display:grid;grid-template-columns:1fr auto;gap:5rem;align-items:start;max-width:1100px;margin:0 auto;}
+.about-left{display:flex;flex-direction:column;gap:1.4rem;}
+.about-h2{font-family:var(--cond);font-size:clamp(3.5rem,6vw,5.5rem);font-weight:900;text-transform:uppercase;line-height:.88;letter-spacing:-.02em;margin-top:.5rem;}
+.about-h2 em{font-family:var(--disp);font-style:italic;font-weight:300;font-size:.72em;text-transform:none;color:var(--rose);display:block;margin-top:.3rem;}
+.about-body{font-size:.92rem;line-height:1.8;color:var(--mid);max-width:44ch;}
+.about-stats{display:flex;gap:3rem;padding-top:1.5rem;border-top:1px solid rgba(0,0,0,.1);}
+.stat{display:flex;flex-direction:column;gap:.3rem;}
+.stat strong{font-family:var(--cond);font-size:3rem;font-weight:900;color:var(--bk);line-height:.88;letter-spacing:-.02em;}
+.stat span{font-family:var(--cond);font-size:.58rem;font-weight:700;letter-spacing:.28em;text-transform:uppercase;color:var(--grey);}
+
+.about-photo-col{position:relative;flex-shrink:0;}
+.about-photo{width:280px;aspect-ratio:3/4;position:relative;overflow:hidden;border:1px solid var(--bk);background:linear-gradient(145deg,#C8C0BC,#A8A09C);}
+.about-tag{
+  position:absolute;bottom:1rem;right:1rem;background:var(--rose);
+  font-family:var(--cond);font-size:.5rem;font-weight:800;letter-spacing:.25em;
+  text-transform:uppercase;color:var(--wh);padding:.22rem .65rem;z-index:6;
+}
+.about-pink-block{position:absolute;bottom:-1.5rem;right:-1.5rem;width:80px;height:80px;background:var(--rose);z-index:-1;opacity:.38;}
+
+/* ─── QUOTE STRIP ────────────────────────────────────────── */
+.quote-strip{background:var(--bk);border-bottom:1px solid var(--rose);padding:4.5rem 3rem;text-align:center;position:relative;overflow:hidden;}
+.quote-mark{font-family:var(--disp);font-size:14rem;font-weight:300;color:rgba(200,150,138,.1);position:absolute;top:-2.5rem;left:3rem;line-height:1;user-select:none;pointer-events:none;}
+.quote-text{font-family:var(--disp);font-style:italic;font-size:clamp(1.8rem,4vw,3rem);font-weight:300;color:var(--wh);line-height:1.3;position:relative;z-index:1;margin-bottom:1.4rem;}
+.quote-text em{font-style:italic;color:var(--rose);font-weight:600;}
+.quote-source{font-family:var(--cond);font-size:.58rem;font-weight:700;letter-spacing:.38em;text-transform:uppercase;color:rgba(250,250,248,.32);position:relative;z-index:1;}
+
+/* ─── CONTACT ────────────────────────────────────────────── */
+.contact{background:var(--wh);border-bottom:1px solid var(--bk);display:grid;grid-template-columns:1fr 1fr;}
+.contact-left{padding:5rem 3rem;display:flex;flex-direction:column;gap:1.2rem;border-right:1px solid var(--bk);}
+.contact-h2{font-family:var(--cond);font-size:clamp(3rem,5vw,4.5rem);font-weight:900;text-transform:uppercase;line-height:.88;letter-spacing:-.02em;}
+.contact-h2 em{font-family:var(--disp);font-style:italic;font-weight:300;font-size:.8em;text-transform:none;color:var(--rose);display:block;margin-top:.3rem;}
+.contact-sub{font-size:.9rem;color:var(--mid);line-height:1.7;max-width:36ch;}
+.contact-form{display:flex;gap:0;margin-top:.5rem;}
+.contact-input{
+  flex:1;background:var(--wh);border:1.5px solid var(--bk);border-right:none;
+  color:var(--bk);font-family:var(--body);font-size:.88rem;padding:.8rem 1rem;
+  outline:none;transition:border-color .2s;
+}
+.contact-input:focus{border-color:var(--rose);}
+.contact-input::placeholder{color:var(--grey);opacity:.75;}
+.contact-btn{
+  background:var(--rose);border:1.5px solid var(--bk);color:var(--wh);
+  font-family:var(--cond);font-size:.75rem;font-weight:900;letter-spacing:.18em;text-transform:uppercase;
+  padding:.8rem 1.5rem;cursor:pointer;transition:background .2s;white-space:nowrap;
+}
+.contact-btn:hover{background:var(--bk);}
+.contact-right{padding:5rem 3rem;background:var(--pale);display:flex;align-items:center;justify-content:center;}
+.contact-info{display:flex;flex-direction:column;gap:2.2rem;}
+.info-item{display:flex;flex-direction:column;gap:.4rem;}
+.info-label{font-family:var(--cond);font-size:.56rem;font-weight:700;letter-spacing:.32em;text-transform:uppercase;color:var(--grey);}
+.info-value{font-family:var(--cond);font-size:.95rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--bk);}
+
+/* ─── FOOTER ──────────────────────────────────────────────── */
+footer{
+  background:var(--bk);color:var(--wh);padding:2.5rem 3rem;
+  display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:2rem;
+}
+.footer-logo{font-family:var(--disp);font-style:italic;font-size:1.5rem;font-weight:300;}
+.footer-center{text-align:center;font-family:var(--cond);font-size:.52rem;font-weight:700;letter-spacing:.28em;text-transform:uppercase;color:rgba(250,250,248,.3);line-height:1.8;}
+.footer-social{display:flex;justify-content:flex-end;gap:1.5rem;}
+.footer-social a{font-family:var(--cond);font-size:.6rem;font-weight:800;letter-spacing:.18em;text-transform:uppercase;color:rgba(250,250,248,.3);cursor:pointer;transition:color .2s;}
+.footer-social a:hover{color:var(--rose);}
+
+/* ─── MOBILE ─────────────────────────────────────────────── */
+@media(max-width:768px){
+  .label-strip{padding:.5rem 1.2rem;font-size:.5rem;}
+  .label-strip span:last-child{display:none;}
+  nav{padding:.8rem 1.2rem;}
+  .nav-links{display:none;}
+  .nav-logo{font-size:1.1rem;}
+
+  .hero{grid-template-columns:1fr;grid-template-rows:55vw 1fr;min-height:unset;}
+  .hero-photo{min-height:55vw;border-right:none;border-bottom:1px solid var(--bk);}
+  .hero-photo-word{font-size:2.8rem;}
+  .hero-right{grid-row:2;}
+  .hero-side-text{display:none;}
+  .hero-main{padding:2rem 1.4rem;}
+  .hero-num{font-size:3.8rem;}
+  .hero-h1{font-size:3.5rem;}
+  .hero-bottom{flex-direction:column;gap:.8rem;align-items:flex-start;}
+  .hero-location{text-align:left;}
+
+  .port-strip{padding:.8rem 1.2rem;flex-wrap:wrap;gap:.8rem;}
+  .port-title{font-size:1rem;}
+  .port-count{display:none;}
+
+  .gallery-section{padding:2rem 1.2rem 2rem 0;}
+  .gallery-grid{grid-template-columns:1fr 1fr;grid-template-rows:170px 170px;}
+  .gal-num{font-size:2rem;}
+
+  .baron{grid-template-columns:1fr;min-height:unset;}
+  .baron-letter{height:140px;border-right:none;border-bottom:1px solid var(--bk);overflow:hidden;}
+  .baron-letter-f{font-size:12rem;right:50%;transform:translateX(50%) translateY(-50%);}
+  .baron-photo{min-height:52vw;}
+
+  .about{padding:3rem 1.2rem;}
+  .about-inner{grid-template-columns:1fr;gap:2.5rem;}
+  .about-photo{width:100%;aspect-ratio:16/9;}
+  .about-pink-block{display:none;}
+  .about-h2{font-size:2.8rem;}
+  .about-stats{gap:2rem;}
+
+  .quote-strip{padding:3rem 1.5rem;}
+  .quote-mark{font-size:8rem;}
+  .quote-text{font-size:1.5rem;}
+
+  .contact{grid-template-columns:1fr;}
+  .contact-left{padding:3rem 1.4rem;border-right:none;border-bottom:1px solid var(--bk);}
+  .contact-right{padding:2.5rem 1.4rem;}
+  .contact-h2{font-size:2.8rem;}
+
+  footer{grid-template-columns:1fr;text-align:center;padding:2rem 1.4rem;}
+  .footer-social{justify-content:center;}
+}
+</style>
+</head>
+<body>
+
+<!-- Label strip -->
+<div class="label-strip">
+  <span>FERRARI STUDIO — PORTFOLIO 2026 · VIHENTE STUDIO</span>
+  <span>STILE EDITORIALE / MAGAZINE</span>
+</div>
+
+<!-- Nav -->
+<nav>
+  <div class="nav-logo"><em>Luca Ferrari</em></div>
+  <div class="nav-links">
+    <a href="#">Portfolio</a>
+    <a href="#">About</a>
+    <a href="#">Prints</a>
+    <a href="#">Contatti</a>
+  </div>
+  <div class="nav-social">
+    <span>IG</span>
+    <span>BE</span>
+  </div>
+</nav>
+
+<!-- Hero -->
+<section class="hero">
+  <div class="hero-photo">
+    <img src="https://loremflickr.com/900/1100/woman,portrait,fashion?lock=11" alt="">
+    <div class="hero-photo-banner">
+      <span class="hero-photo-word">LIGHT.</span>
+      <span class="hero-photo-sub">L'ambiente, la luce — tutto nella stessa posa.</span>
+    </div>
+  </div>
+  <div class="hero-right">
+    <div class="hero-side-text">FERRARI STUDIO</div>
+    <div class="hero-main">
+      <div class="hero-issue">
+        <div class="hero-num">01</div>
+        <div class="hero-issue-meta">
+          <p>THE BOOK</p>
+          <p>Racconto per immagini</p>
+          <p>—</p>
+          <p>DAL <strong>2012</strong></p>
+        </div>
+      </div>
+      <div class="hero-text">
+        <h1 class="hero-h1">OGNI<br>LUCE<br><em>dice.</em></h1>
+        <div class="hero-rule"></div>
+        <p class="hero-sub">Fotografia di matrimonio, ritratto e editorial. Estetica essenziale, momenti reali.</p>
+      </div>
+      <div class="hero-bottom">
+        <div class="hero-spec">
+          <span>Specializzazioni</span>
+          WEDDING · PORTRAIT · EDITORIAL
+        </div>
+        <div class="hero-location">Milano<br>Roma<br>+39 02 9876543</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Portfolio strip -->
+<div class="port-strip">
+  <span class="port-title">IL PORTFOLIO</span>
+  <div class="port-cats">
+    <button class="port-cat active">TUTTI</button>
+    <button class="port-cat">WEDDING</button>
+    <button class="port-cat">PORTRAIT</button>
+    <button class="port-cat">EDITORIAL</button>
+  </div>
+  <span class="port-count">08 lavori</span>
+</div>
+
+<!-- Gallery -->
+<section class="gallery-section">
+  <div class="gallery-side">PORTFOLIO</div>
+  <div class="gallery-grid">
+    <div class="gal-item gal-bg-1">
+      <img src="https://loremflickr.com/700/580/woman,portrait,face?lock=21" alt="">
+      <div class="gal-pink"></div>
+      <div class="gal-overlay">
+        <span class="gal-label">WEDDING</span>
+        <span class="gal-num">01</span>
+      </div>
+    </div>
+    <div class="gal-item gal-bg-2">
+      <img src="https://loremflickr.com/400/260/bride,wedding,dress?lock=22" alt="">
+      <div class="gal-overlay">
+        <span class="gal-label">WEDDING</span>
+        <span class="gal-num">02</span>
+      </div>
+    </div>
+    <div class="gal-item gal-bg-3">
+      <img src="https://loremflickr.com/400/260/portrait,woman,elegant?lock=23" alt="">
+      <div class="gal-overlay">
+        <span class="gal-label">PORTRAIT</span>
+        <span class="gal-num">03</span>
+      </div>
+    </div>
+    <div class="gal-item gal-bg-4">
+      <img src="https://loremflickr.com/400/260/fashion,editorial,studio?lock=24" alt="">
+      <div class="gal-overlay">
+        <span class="gal-label">EDITORIAL</span>
+        <span class="gal-num">04</span>
+      </div>
+    </div>
+    <div class="gal-item gal-bg-5">
+      <img src="https://loremflickr.com/400/260/woman,face,beauty?lock=25" alt="">
+      <div class="gal-overlay">
+        <span class="gal-label">PORTRAIT</span>
+        <span class="gal-num">05</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Baron spread -->
+<section class="baron">
+  <div class="baron-letter">
+    <div class="baron-letter-f">F</div>
+  </div>
+  <div class="baron-photo">
+    <img src="https://loremflickr.com/900/700/fashion,studio,woman?lock=31" alt="">
+    <div class="baron-caption">
+      <span class="baron-caption-eye">FERRARI STUDIO · EDITORIAL</span>
+      <span class="baron-caption-num">ISSUE 03 / 2026</span>
+    </div>
+  </div>
+</section>
+
+<!-- About -->
+<section class="about">
+  <div class="about-inner">
+    <div class="about-left">
+      <p class="eyebrow">IL FOTOGRAFO</p>
+      <h2 class="about-h2">Luca<br><em>Ferrari</em></h2>
+      <p class="about-body">
+        Fotografo professionista con oltre dodici anni di esperienza nel racconto per immagini.
+        Specializzato in wedding, ritrattistica e editorial per riviste internazionali.
+      </p>
+      <p class="about-body">
+        Il mio approccio: luce naturale, momenti autentici, estetica essenziale.
+        Ogni progetto è una collaborazione, non una commissione.
+      </p>
+      <div class="about-stats">
+        <div class="stat"><strong>340+</strong><span>matrimoni</span></div>
+        <div class="stat"><strong>12</strong><span>anni</span></div>
+        <div class="stat"><strong>18</strong><span>paesi</span></div>
+      </div>
+    </div>
+    <div class="about-photo-col">
+      <div class="about-photo">
+        <img src="https://loremflickr.com/500/660/man,photographer,portrait?lock=41" alt="">
+        <span class="about-tag">MASTER</span>
+      </div>
+      <div class="about-pink-block"></div>
+    </div>
+  </div>
+</section>
+
+<!-- Quote strip -->
+<div class="quote-strip">
+  <span class="quote-mark">"</span>
+  <p class="quote-text">La fotografia è il silenzio<br><em>che parla.</em></p>
+  <span class="quote-source">— LUCA FERRARI, MASTER PHOTOGRAPHER</span>
+</div>
+
+<!-- Contact -->
+<section class="contact">
+  <div class="contact-left">
+    <p class="eyebrow" style="color:var(--grey)">LAVORIAMO INSIEME</p>
+    <h2 class="contact-h2">Hai un<br><em>progetto?</em></h2>
+    <p class="contact-sub">Racconta la tua storia. Rispondo entro 24 ore.</p>
+    <div class="contact-form">
+      <input class="contact-input" type="email" placeholder="la tua email">
+      <button class="contact-btn">Scrivimi →</button>
+    </div>
+  </div>
+  <div class="contact-right">
+    <div class="contact-info">
+      <div class="info-item">
+        <div class="info-label">Studio</div>
+        <div class="info-value">Via Brera 28, Milano</div>
+      </div>
+      <div class="info-item">
+        <div class="info-label">Email</div>
+        <div class="info-value">luca@lucaferrari.it</div>
+      </div>
+      <div class="info-item">
+        <div class="info-label">Telefono</div>
+        <div class="info-value">+39 02 9876543</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer>
+  <div class="footer-logo"><em>Luca Ferrari</em></div>
+  <div class="footer-center">© 2026 Ferrari Studio · Milano<br>P.IVA 01234567890</div>
+  <div class="footer-social">
+    <a href="#">Instagram</a>
+    <a href="#">Behance</a>
+    <a href="#">Vimeo</a>
+  </div>
+</footer>
+
+<script>
+document.querySelectorAll('.port-cat').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    document.querySelectorAll('.port-cat').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+  });
+});
+</script>
+</body>
+</html>
