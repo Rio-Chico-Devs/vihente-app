@@ -1,0 +1,1322 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ALTROVE Travel Studio</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Plus+Jakarta+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #F8F4EE;
+    --ink: #1C1814;
+    --gold: #C8A96E;
+    --rule: #E6DFD5;
+    --grey: #8A8278;
+    --pale: #F0EAE0;
+    --wh: #FFFFFF;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-weight: 400;
+    font-size: 1rem;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* TYPOGRAPHY HELPERS */
+  .label {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-weight: 600;
+    font-size: .6rem;
+    letter-spacing: .3em;
+    text-transform: uppercase;
+    color: var(--grey);
+  }
+  .label-gold {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-weight: 600;
+    font-size: .6rem;
+    letter-spacing: .3em;
+    text-transform: uppercase;
+    color: var(--gold);
+  }
+  .dm { font-family: 'DM Serif Display', serif; }
+  .dm-italic { font-family: 'DM Serif Display', serif; font-style: italic; }
+
+  /* ===================== NAV ===================== */
+  nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(248, 244, 238, .92);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--rule);
+    padding: 0 3rem;
+    height: 3.5rem;
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+  }
+  .nav-left {
+    display: flex;
+    gap: 1.5rem;
+    align-items: center;
+  }
+  .nav-left a, .nav-right a {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-weight: 600;
+    font-size: .62rem;
+    letter-spacing: .2em;
+    text-transform: uppercase;
+    color: var(--grey);
+    text-decoration: none;
+    transition: color .2s;
+  }
+  .nav-left a:hover, .nav-right a:hover { color: var(--ink); }
+  .nav-center {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.4rem;
+    color: var(--ink);
+    letter-spacing: .04em;
+    text-align: center;
+  }
+  .nav-right {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 1.2rem;
+  }
+  .nav-pill {
+    background: var(--ink);
+    color: var(--wh) !important;
+    padding: .35rem .9rem;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-weight: 600;
+    font-size: .6rem;
+    letter-spacing: .2em;
+    text-transform: uppercase;
+    text-decoration: none;
+    border-radius: 2px;
+    transition: background .2s;
+  }
+  .nav-pill:hover { background: #3a3330 !important; color: var(--wh) !important; }
+
+  /* ===================== HERO ===================== */
+  .hero {
+    display: grid;
+    grid-template-columns: 58fr 42fr;
+    min-height: calc(100vh - 3.5rem);
+  }
+  .hero-left {
+    padding: 5rem 4rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    border-right: 1px solid var(--rule);
+  }
+  .hero-eyebrow { margin-bottom: 3rem; }
+  .hero-headline { flex: 1; display: flex; flex-direction: column; justify-content: center; }
+  .hero-h1-normal {
+    font-family: 'DM Serif Display', serif;
+    font-style: normal;
+    font-weight: 400;
+    font-size: clamp(3.5rem, 6vw, 5rem);
+    line-height: 1.05;
+    color: var(--ink);
+  }
+  .hero-h1-italic {
+    font-family: 'DM Serif Display', serif;
+    font-style: italic;
+    font-weight: 400;
+    font-size: clamp(5rem, 9vw, 8rem);
+    line-height: .9;
+    color: var(--ink);
+  }
+  .hero-rule {
+    width: 100%;
+    height: 1px;
+    background: var(--gold);
+    margin-top: 2rem;
+    margin-bottom: 1.5rem;
+  }
+  .hero-subtext {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-weight: 400;
+    font-size: .9rem;
+    line-height: 1.8;
+    color: var(--grey);
+    max-width: 44ch;
+  }
+  .hero-bottom { margin-top: 2rem; }
+  .hero-scroll-label {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-weight: 600;
+    font-size: .6rem;
+    letter-spacing: .3em;
+    text-transform: uppercase;
+    color: var(--gold);
+    text-decoration: none;
+  }
+
+  /* HERO RIGHT */
+  .hero-right {
+    background: var(--pale);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 4rem 3rem;
+    gap: 1.5rem;
+  }
+  .hero-form-label { margin-bottom: .5rem; }
+  .hero-selectors { display: flex; flex-direction: column; gap: 1.2rem; }
+  .hero-selector {
+    border: none;
+    border-bottom: 1px solid var(--ink);
+    padding: .6rem 0;
+    width: 100%;
+    background: transparent;
+    font-family: 'DM Serif Display', serif;
+    font-style: italic;
+    font-size: 1rem;
+    color: var(--ink);
+    appearance: none;
+    cursor: pointer;
+    outline: none;
+    position: relative;
+  }
+  .hero-selector-wrap {
+    position: relative;
+  }
+  .hero-selector-wrap::after {
+    content: '▾';
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: .7rem;
+    color: var(--grey);
+    pointer-events: none;
+  }
+  .hero-cta {
+    display: block;
+    width: 100%;
+    background: var(--ink);
+    color: var(--wh);
+    padding: .9rem;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-weight: 600;
+    font-size: .65rem;
+    letter-spacing: .25em;
+    text-transform: uppercase;
+    text-align: center;
+    text-decoration: none;
+    border: none;
+    border-radius: 2px;
+    cursor: pointer;
+    transition: background .2s;
+    margin-top: .5rem;
+  }
+  .hero-cta:hover { background: #3a3330; }
+
+  /* ===================== DESTINATION STRIP ===================== */
+  .dest-strip {
+    background: var(--pale);
+    border-top: 1px solid var(--rule);
+    border-bottom: 1px solid var(--rule);
+    padding: .8rem 3rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .dest-strip-filters {
+    display: flex;
+    gap: 1.5rem;
+    align-items: center;
+  }
+  .filter-tab {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-weight: 600;
+    font-size: .6rem;
+    letter-spacing: .2em;
+    text-transform: uppercase;
+    color: var(--grey);
+    cursor: pointer;
+    padding-bottom: 2px;
+    border-bottom: 2px solid transparent;
+    transition: color .2s, border-color .2s;
+    user-select: none;
+  }
+  .filter-tab.active {
+    color: var(--ink);
+    border-bottom-color: var(--gold);
+  }
+  .filter-tab:hover { color: var(--ink); }
+
+  /* ===================== DESTINATION GRID ===================== */
+  .dest-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2px;
+  }
+  .dest-card {
+    aspect-ratio: 5/4;
+    padding: 1.8rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    transition: filter .25s, outline .1s;
+  }
+  .dest-card::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 5px;
+  }
+  .dest-card.active {
+    outline: 3px solid var(--ink);
+    outline-offset: -3px;
+    filter: none !important;
+  }
+  .dest-card:not(.active) {
+    filter: brightness(.88) saturate(.7);
+  }
+  .dest-card:hover:not(.active) {
+    filter: brightness(.95) saturate(.85);
+  }
+  .card-native {
+    font-family: 'DM Serif Display', serif;
+    font-style: italic;
+    font-size: .85rem;
+    opacity: .45;
+    align-self: flex-start;
+  }
+  .card-bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+  }
+  .card-name {
+    font-family: 'DM Serif Display', serif;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 1.6rem;
+    color: #fff;
+    line-height: 1.1;
+  }
+  .card-tagline {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-weight: 400;
+    font-size: .7rem;
+    color: rgba(255,255,255,.7);
+    margin-top: .25rem;
+    max-width: 26ch;
+  }
+  .card-meta {
+    text-align: right;
+    display: flex;
+    flex-direction: column;
+    gap: .15rem;
+  }
+  .card-price, .card-nights {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-weight: 600;
+    font-size: .55rem;
+    letter-spacing: .15em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,.6);
+    white-space: nowrap;
+  }
+
+  /* ===================== COUNTRY STORY ===================== */
+  .country-story {
+    background: var(--wh);
+    border-top: 4px solid #BC002D;
+    transition: border-color .3s;
+  }
+  .story-inner {
+    display: grid;
+    grid-template-columns: 45fr 55fr;
+  }
+  .story-left {
+    padding: 4rem 3rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .story-watermark {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-family: 'DM Serif Display', serif;
+    font-style: italic;
+    font-size: clamp(5rem, 10vw, 8rem);
+    color: rgba(0,0,0,.05);
+    pointer-events: none;
+    white-space: nowrap;
+    z-index: 0;
+    transition: all .3s;
+  }
+  .story-content { position: relative; z-index: 1; }
+  .story-eyebrow { margin-bottom: 1.5rem; }
+  .story-country-name {
+    font-family: 'DM Serif Display', serif;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 3rem;
+    color: var(--ink);
+    line-height: 1.1;
+    margin-bottom: 1rem;
+    transition: all .3s;
+  }
+  .story-intro {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-weight: 400;
+    font-size: .9rem;
+    line-height: 1.8;
+    color: var(--grey);
+    max-width: 40ch;
+    margin-bottom: 1.5rem;
+    transition: all .3s;
+  }
+  .story-season-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: .4rem;
+    border: 1px solid var(--rule);
+    padding: .3rem .8rem;
+    border-radius: 2px;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-weight: 600;
+    font-size: .55rem;
+    letter-spacing: .2em;
+    text-transform: uppercase;
+    color: var(--grey);
+    margin-bottom: 1.5rem;
+  }
+  .story-moments-label { margin-bottom: .75rem; }
+  .story-moments {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: .6rem;
+  }
+  .story-moments li {
+    border-left: 2px solid var(--gold);
+    padding-left: .8rem;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: .85rem;
+    color: var(--ink);
+    line-height: 1.4;
+  }
+
+  /* STORY RIGHT */
+  .story-right {
+    padding: 0;
+    border-left: 1px solid var(--rule);
+  }
+  .story-photo-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2px;
+    height: 100%;
+  }
+  .altrove-photo-slot {
+    background: var(--pale);
+    aspect-ratio: 4/3;
+    position: relative;
+    overflow: hidden;
+  }
+  .altrove-photo-hint {
+    position: absolute;
+    bottom: .5rem;
+    left: .5rem;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-weight: 600;
+    font-size: .55rem;
+    line-height: 1;
+    letter-spacing: .2em;
+    text-transform: uppercase;
+    color: rgba(0,0,0,.5);
+    background: rgba(248,244,238,.85);
+    padding: .25rem .5rem;
+    transition: all .3s;
+  }
+
+  /* STORY BOTTOM STRIP */
+  .story-bottom-strip {
+    background: var(--pale);
+    border-top: 1px solid var(--rule);
+    padding: 2rem 3rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 2rem;
+  }
+
+  /* ===================== CURRENCY WIDGET ===================== */
+  .currency-widget {
+    display: flex;
+    flex-direction: column;
+    gap: .6rem;
+  }
+  .currency-row {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+  }
+  .currency-from, .currency-to {
+    display: flex;
+    align-items: baseline;
+    gap: .5rem;
+  }
+  .currency-code {
+    font-family: 'DM Serif Display', serif;
+    font-style: italic;
+    font-size: 2.5rem;
+    color: var(--ink);
+    line-height: 1;
+  }
+  .currency-input-wrap input[type="number"] {
+    font-family: 'DM Serif Display', serif;
+    font-style: normal;
+    font-size: 2rem;
+    color: var(--ink);
+    border: none;
+    border-bottom: 2px solid var(--ink);
+    background: transparent;
+    outline: none;
+    width: 8rem;
+    line-height: 1;
+    padding-bottom: .1rem;
+    appearance: textfield;
+    -moz-appearance: textfield;
+  }
+  .currency-input-wrap input[type="number"]::-webkit-inner-spin-button,
+  .currency-input-wrap input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+  }
+  .currency-arrow {
+    font-size: 2.5rem;
+    color: var(--gold);
+    line-height: 1;
+  }
+  .currency-result {
+    font-family: 'DM Serif Display', serif;
+    font-style: italic;
+    font-size: 2.5rem;
+    line-height: 1;
+    transition: color .3s;
+  }
+  .currency-rate-text {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-weight: 600;
+    font-size: .55rem;
+    letter-spacing: .2em;
+    text-transform: uppercase;
+    color: var(--grey);
+  }
+  .story-cta-btn {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-weight: 600;
+    font-size: .65rem;
+    letter-spacing: .2em;
+    text-transform: uppercase;
+    color: var(--ink);
+    text-decoration: none;
+    border: 1px solid var(--ink);
+    padding: .8rem 1.5rem;
+    border-radius: 2px;
+    white-space: nowrap;
+    transition: background .2s, color .2s;
+    cursor: pointer;
+    background: transparent;
+  }
+  .story-cta-btn:hover { background: var(--ink); color: var(--wh); }
+
+  /* ===================== PACKAGES ===================== */
+  .packages-section {
+    padding: 5rem 0 0;
+  }
+  .packages-header {
+    padding: 0 3rem 2.5rem;
+    border-bottom: 1px solid var(--rule);
+  }
+  .packages-header h2 {
+    font-family: 'DM Serif Display', serif;
+    font-style: italic;
+    font-size: 2.5rem;
+    color: var(--ink);
+    margin-top: .5rem;
+  }
+  .package-strip {
+    display: grid;
+    grid-template-columns: 35fr 65fr;
+    border-bottom: 1px solid var(--rule);
+    min-height: 16rem;
+  }
+  .package-photo {
+    aspect-ratio: 3/2;
+    background: var(--pale);
+    position: relative;
+    overflow: hidden;
+  }
+  .package-text {
+    padding: 3rem 4rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: .8rem;
+  }
+  .package-title {
+    font-family: 'DM Serif Display', serif;
+    font-style: italic;
+    font-size: 2rem;
+    color: var(--ink);
+    line-height: 1.2;
+  }
+  .package-meta {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+  .package-pill {
+    border: 1px solid var(--rule);
+    padding: .25rem .7rem;
+    border-radius: 2px;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-weight: 600;
+    font-size: .55rem;
+    letter-spacing: .15em;
+    text-transform: uppercase;
+    color: var(--grey);
+  }
+  .package-desc {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: .85rem;
+    color: var(--grey);
+    line-height: 1.75;
+    max-width: 55ch;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  .package-link {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-weight: 600;
+    font-size: .6rem;
+    letter-spacing: .25em;
+    text-transform: uppercase;
+    color: var(--gold);
+    text-decoration: none;
+    margin-top: .5rem;
+    display: inline-block;
+    transition: color .2s;
+  }
+  .package-link:hover { color: var(--ink); }
+
+  /* ===================== PERCHÉ ALTROVE ===================== */
+  .why-section {
+    background: var(--ink);
+    padding: 6rem 3rem;
+    color: var(--wh);
+  }
+  .why-header {
+    margin-bottom: 3rem;
+  }
+  .why-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 3rem;
+  }
+  .why-col {
+    border-top: 1px solid var(--gold);
+    padding-top: 1.5rem;
+  }
+  .why-title {
+    font-family: 'DM Serif Display', serif;
+    font-style: italic;
+    font-size: 1.6rem;
+    color: var(--wh);
+    line-height: 1.2;
+    margin-bottom: .8rem;
+  }
+  .why-text {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-weight: 400;
+    font-size: .85rem;
+    color: rgba(255,255,255,.6);
+    line-height: 1.75;
+  }
+
+  /* ===================== FOOTER ===================== */
+  footer {
+    background: var(--ink);
+    border-top: 1px solid rgba(255,255,255,.08);
+    padding: 1.8rem 3rem;
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+  }
+  .footer-brand {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.2rem;
+    color: rgba(255,255,255,.55);
+  }
+  .footer-copy {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-weight: 600;
+    font-size: .55rem;
+    letter-spacing: .2em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,.25);
+    text-align: center;
+  }
+  .footer-links {
+    display: flex;
+    gap: 1.2rem;
+    justify-content: flex-end;
+    align-items: center;
+  }
+  .footer-links a {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-weight: 600;
+    font-size: .6rem;
+    letter-spacing: .2em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,.4);
+    text-decoration: none;
+    transition: color .2s;
+  }
+  .footer-links a:hover { color: rgba(255,255,255,.75); }
+
+  /* ===================== MOBILE ===================== */
+  @media (max-width: 768px) {
+    nav {
+      padding: 0 1.5rem;
+      grid-template-columns: 1fr;
+      justify-items: center;
+    }
+    .nav-left, .nav-right { display: none; }
+    .hero {
+      grid-template-columns: 1fr;
+      min-height: auto;
+    }
+    .hero-left { padding: 3rem 1.5rem; }
+    .hero-right {
+      padding: 2rem 1.5rem;
+      border-top: 1px solid var(--rule);
+    }
+    .dest-strip {
+      padding: .8rem 1.5rem;
+      flex-wrap: wrap;
+      gap: .5rem;
+    }
+    .dest-strip-filters {
+      gap: .8rem;
+      flex-wrap: wrap;
+    }
+    .dest-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+    .story-inner {
+      grid-template-columns: 1fr;
+    }
+    .story-right { border-left: none; border-top: 1px solid var(--rule); }
+    .story-left { padding: 2.5rem 1.5rem; }
+    .story-bottom-strip {
+      flex-direction: column;
+      align-items: flex-start;
+      padding: 1.5rem;
+    }
+    .package-strip {
+      grid-template-columns: 1fr;
+    }
+    .package-photo { aspect-ratio: 16/9; }
+    .package-text { padding: 2rem 1.5rem; }
+    .why-grid {
+      grid-template-columns: 1fr;
+    }
+    .why-section { padding: 4rem 1.5rem; }
+    footer {
+      grid-template-columns: 1fr;
+      gap: 1rem;
+      padding: 2rem 1.5rem;
+      text-align: center;
+    }
+    .footer-links { justify-content: center; }
+    .packages-header { padding: 0 1.5rem 2rem; }
+    .packages-section { padding: 3rem 0 0; }
+    .currency-row { flex-wrap: wrap; gap: .8rem; }
+  }
+
+  @media (max-width: 480px) {
+    .dest-grid { grid-template-columns: 1fr; }
+    .hero-h1-normal { font-size: 2.8rem; }
+    .hero-h1-italic { font-size: 4rem; }
+    .story-country-name { font-size: 2.2rem; }
+    .currency-code { font-size: 2rem; }
+    .currency-result { font-size: 2rem; }
+    .currency-arrow { font-size: 2rem; }
+    .currency-input-wrap input[type="number"] { font-size: 1.7rem; width: 6rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ===================== NAV ===================== -->
+<nav>
+  <div class="nav-left">
+    <a href="#">Portfolio</a>
+    <a href="#">Destinazioni</a>
+    <a href="#">Chi Siamo</a>
+  </div>
+  <div class="nav-center">ALTROVE</div>
+  <div class="nav-right">
+    <a href="#">Consulenza</a>
+    <a href="#" class="nav-pill">CERCA →</a>
+  </div>
+</nav>
+
+<!-- ===================== HERO ===================== -->
+<section class="hero">
+  <div class="hero-left">
+    <div class="hero-eyebrow">
+      <span class="label">ALTROVE TRAVEL STUDIO · EST. 2018</span>
+    </div>
+    <div class="hero-headline">
+      <h1 class="hero-h1-normal">Il tuo prossimo</h1>
+      <h1 class="hero-h1-italic">altrove.</h1>
+      <div class="hero-rule"></div>
+      <p class="hero-subtext">Ogni viaggio inizia con una domanda. La nostra è: cosa stai cercando davvero?</p>
+    </div>
+    <div class="hero-bottom">
+      <a href="#destinazioni" class="hero-scroll-label">SCOPRI LE DESTINAZIONI ↓</a>
+    </div>
+  </div>
+  <div class="hero-right">
+    <span class="label">DOVE VUOI ANDARE?</span>
+    <div class="hero-selectors">
+      <div class="hero-selector-wrap">
+        <select class="hero-selector">
+          <option>Tipo di viaggio</option>
+          <option>Mare</option>
+          <option>Montagna</option>
+          <option>Città</option>
+          <option>Avventura</option>
+        </select>
+      </div>
+      <div class="hero-selector-wrap">
+        <select class="hero-selector">
+          <option>Quando partiresti</option>
+          <option>Entro 1 mese</option>
+          <option>Tra 1–3 mesi</option>
+          <option>Tra 3–6 mesi</option>
+          <option>Tra 6–12 mesi</option>
+        </select>
+      </div>
+      <div class="hero-selector-wrap">
+        <select class="hero-selector">
+          <option>Con chi</option>
+          <option>Solo</option>
+          <option>Coppia</option>
+          <option>Famiglia</option>
+          <option>Gruppo</option>
+        </select>
+      </div>
+    </div>
+    <button class="hero-cta">COSTRUISCI IL TUO VIAGGIO →</button>
+  </div>
+</section>
+
+<!-- ===================== DESTINATION STRIP ===================== -->
+<div id="destinazioni" class="dest-strip">
+  <span class="label">DESTINAZIONI CURATE</span>
+  <div class="dest-strip-filters">
+    <span class="filter-tab active" data-filter="tutte">TUTTE</span>
+    <span class="filter-tab" data-filter="mare">MARE</span>
+    <span class="filter-tab" data-filter="montagna">MONTAGNA</span>
+    <span class="filter-tab" data-filter="cultura">CULTURA</span>
+    <span class="filter-tab" data-filter="avventura">AVVENTURA</span>
+  </div>
+  <span class="label">06 destinazioni</span>
+</div>
+
+<!-- ===================== DESTINATION CARDS GRID ===================== -->
+<div class="dest-grid">
+
+  <!-- GIAPPONE -->
+  <div class="dest-card active"
+    data-id="giappone"
+    style="background:#BC002D;"
+    onclick="selectDestination('giappone')">
+    <style>.dest-card[data-id='giappone']::after { background: #FFFFFF; }</style>
+    <span class="card-native" style="color:rgba(255,255,255,.45);">日本</span>
+    <div class="card-bottom">
+      <div>
+        <div class="card-name">GIAPPONE</div>
+        <div class="card-tagline">Cerimonie silenziose e neon accecanti.</div>
+      </div>
+      <div class="card-meta">
+        <span class="card-price">€ 2.800+</span>
+        <span class="card-nights">10 – 16 notti</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- MAROCCO -->
+  <div class="dest-card"
+    data-id="marocco"
+    style="background:#C1272D;"
+    onclick="selectDestination('marocco')">
+    <style>.dest-card[data-id='marocco']::after { background: #006233; }</style>
+    <span class="card-native" style="color:rgba(255,255,255,.45);">المغرب</span>
+    <div class="card-bottom">
+      <div>
+        <div class="card-name">MAROCCO</div>
+        <div class="card-tagline">Spezie, mosaici e cieli senza confine.</div>
+      </div>
+      <div class="card-meta">
+        <span class="card-price">€ 1.400+</span>
+        <span class="card-nights">7 – 12 notti</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ISLANDA -->
+  <div class="dest-card"
+    data-id="islanda"
+    style="background:#003897;"
+    onclick="selectDestination('islanda')">
+    <style>.dest-card[data-id='islanda']::after { background: #D72828; }</style>
+    <span class="card-native" style="color:rgba(255,255,255,.45);">Ísland</span>
+    <div class="card-bottom">
+      <div>
+        <div class="card-name">ISLANDA</div>
+        <div class="card-tagline">Aurora boreale e paesaggi da un altro pianeta.</div>
+      </div>
+      <div class="card-meta">
+        <span class="card-price">€ 2.200+</span>
+        <span class="card-nights">7 – 10 notti</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- PERÙ -->
+  <div class="dest-card"
+    data-id="peru"
+    style="background:#D91023;"
+    onclick="selectDestination('peru')">
+    <style>.dest-card[data-id='peru']::after { background: #D91023; }</style>
+    <span class="card-native" style="color:rgba(255,255,255,.45);">Perú</span>
+    <div class="card-bottom">
+      <div>
+        <div class="card-name">PERÙ</div>
+        <div class="card-tagline">Civiltà perdute e cucina che cambia il mondo.</div>
+      </div>
+      <div class="card-meta">
+        <span class="card-price">€ 2.600+</span>
+        <span class="card-nights">12 – 18 notti</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- PORTOGALLO -->
+  <div class="dest-card"
+    data-id="portogallo"
+    style="background:#006600;"
+    onclick="selectDestination('portogallo')">
+    <style>.dest-card[data-id='portogallo']::after { background: #FF2400; }</style>
+    <span class="card-native" style="color:rgba(255,255,255,.45);">Portugal</span>
+    <div class="card-bottom">
+      <div>
+        <div class="card-name">PORTOGALLO</div>
+        <div class="card-tagline">Fado, azulejos e oceano Atlantico.</div>
+      </div>
+      <div class="card-meta">
+        <span class="card-price">€ 1.100+</span>
+        <span class="card-nights">7 – 10 notti</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- MALDIVE -->
+  <div class="dest-card"
+    data-id="maldive"
+    style="background:#007E3A;"
+    onclick="selectDestination('maldive')">
+    <style>.dest-card[data-id='maldive']::after { background: #D21034; }</style>
+    <span class="card-native" style="color:rgba(255,255,255,.45);">ދިވެހި</span>
+    <div class="card-bottom">
+      <div>
+        <div class="card-name">MALDIVE</div>
+        <div class="card-tagline">Acqua cristallina e notti sotto le stelle.</div>
+      </div>
+      <div class="card-meta">
+        <span class="card-price">€ 3.200+</span>
+        <span class="card-nights">7 – 14 notti</span>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ===================== COUNTRY STORY ===================== -->
+<section class="country-story" id="country-story">
+  <div class="story-inner">
+    <div class="story-left">
+      <div class="story-watermark" id="story-watermark">日本</div>
+      <div class="story-content">
+        <div class="story-eyebrow">
+          <span class="label-gold">SCOPRI LA DESTINAZIONE</span>
+        </div>
+        <h2 class="story-country-name" id="story-country-name">GIAPPONE</h2>
+        <p class="story-intro" id="story-intro">Un paese di contraddizioni perfette: dove il silenzio dei templi Zen incontra l'energia dei quartieri neon di Tokyo. Il Giappone non si visita — si abita per un momento.</p>
+        <div class="story-season-pill">
+          <span>⟡ MIGLIORE STAGIONE:</span>
+          <span id="story-season">Marzo – Maggio / Ottobre – Nov.</span>
+        </div>
+        <div class="story-moments-label">
+          <span class="label">I MOMENTI DA NON PERDERE</span>
+        </div>
+        <ul class="story-moments" id="story-moments">
+          <li>Cerimonia del tè, Kyoto</li>
+          <li>Mercati notturni di Osaka</li>
+          <li>Tempio Fushimi Inari</li>
+          <li>Shibuya all'alba</li>
+        </ul>
+      </div>
+    </div>
+    <div class="story-right">
+      <div class="story-photo-grid">
+        <div class="altrove-photo-slot">
+          <span class="altrove-photo-hint" id="photo-hint-0">Cerimonia del tè, Kyoto</span>
+        </div>
+        <div class="altrove-photo-slot">
+          <span class="altrove-photo-hint" id="photo-hint-1">Mercati notturni di Osaka</span>
+        </div>
+        <div class="altrove-photo-slot">
+          <span class="altrove-photo-hint" id="photo-hint-2">Tempio Fushimi Inari</span>
+        </div>
+        <div class="altrove-photo-slot">
+          <span class="altrove-photo-hint" id="photo-hint-3">Shibuya all'alba</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- STORY BOTTOM STRIP -->
+  <div class="story-bottom-strip">
+    <!-- CURRENCY WIDGET -->
+    <div class="currency-widget">
+      <span class="label">CAMBIO VALUTA · STIMA DI VIAGGIO</span>
+      <div class="currency-row">
+        <div class="currency-from">
+          <span class="currency-code">EUR</span>
+          <div class="currency-input-wrap">
+            <input type="number" id="eur-input" value="1000" min="0" />
+          </div>
+        </div>
+        <span class="currency-arrow">→</span>
+        <div class="currency-to">
+          <span class="currency-code" id="dest-code">JPY</span>
+          <span class="currency-result" id="dest-result" style="color:#BC002D;">163.400</span>
+        </div>
+      </div>
+      <span class="currency-rate-text" id="rate-text">1 EUR = 163,4 JPY · tasso indicativo</span>
+    </div>
+    <!-- CTA -->
+    <button class="story-cta-btn" id="story-cta-btn">
+      <span id="story-cta-text">Vedi i pacchetti per GIAPPONE →</span>
+    </button>
+  </div>
+</section>
+
+<!-- ===================== PACKAGES ===================== -->
+<section class="packages-section">
+  <div class="packages-header">
+    <span class="label">I NOSTRI PACCHETTI</span>
+    <h2>Viaggi costruiti.<br>Non assemblati.</h2>
+  </div>
+
+  <!-- PACKAGE 1 -->
+  <div class="package-strip">
+    <div class="package-photo">
+      <span class="altrove-photo-hint">Giappone — Tokyo / Kyoto / Osaka</span>
+    </div>
+    <div class="package-text">
+      <span class="label">CULTURA</span>
+      <h3 class="package-title">Il Giappone dei contrasti</h3>
+      <div class="package-meta">
+        <span class="package-pill">14 notti</span>
+        <span class="package-pill">€ 3.200 / persona</span>
+      </div>
+      <p class="package-desc">Da Tokyo caotica e luminosa ai templi silenziosi di Kyoto, passando per i mercati notturni di Osaka. Un itinerario che non lascia nulla al caso, costruito su misura per chi vuole capire il Giappone, non solo fotografarlo.</p>
+      <a href="#" class="package-link">SCOPRI IL PACCHETTO →</a>
+    </div>
+  </div>
+
+  <!-- PACKAGE 2 -->
+  <div class="package-strip">
+    <div class="package-photo">
+      <span class="altrove-photo-hint">Marocco — Marrakech / Sahara / Fez</span>
+    </div>
+    <div class="package-text">
+      <span class="label">CULTURA · DESERTO</span>
+      <h3 class="package-title">Marocco autentico</h3>
+      <div class="package-meta">
+        <span class="package-pill">10 notti</span>
+        <span class="package-pill">€ 1.680 / persona</span>
+      </div>
+      <p class="package-desc">Marrakech, le dune di Merzouga, la medina di Fez. Un viaggio nell'entroterra marocchino, lontano dai resort e vicino alle persone. Riads selezionati, guide locali, esperienze autentiche.</p>
+      <a href="#" class="package-link">SCOPRI IL PACCHETTO →</a>
+    </div>
+  </div>
+
+  <!-- PACKAGE 3 -->
+  <div class="package-strip">
+    <div class="package-photo">
+      <span class="altrove-photo-hint">Islanda — Ring Road in camper</span>
+    </div>
+    <div class="package-text">
+      <span class="label">AVVENTURA</span>
+      <h3 class="package-title">Ring Road, Islanda</h3>
+      <div class="package-meta">
+        <span class="package-pill">8 notti</span>
+        <span class="package-pill">€ 2.450 / persona</span>
+      </div>
+      <p class="package-desc">L'intero perimetro dell'isola percorso in camper, con soste agli indirizzi giusti. Cascate, geyser, aurora boreale e il silenzio assoluto delle highland. Per chi ama guidare verso l'ignoto.</p>
+      <a href="#" class="package-link">SCOPRI IL PACCHETTO →</a>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== PERCHÉ ALTROVE ===================== -->
+<section class="why-section">
+  <div class="why-header">
+    <span class="label-gold">PERCHÉ ALTROVE</span>
+  </div>
+  <div class="why-grid">
+    <div class="why-col">
+      <h3 class="why-title">Nessun catalogo.</h3>
+      <p class="why-text">Costruiamo ogni viaggio da zero. Non esistono due viaggi Altrove identici.</p>
+    </div>
+    <div class="why-col">
+      <h3 class="why-title">Il paese prima del pacchetto.</h3>
+      <p class="why-text">Ti mostriamo la cultura, il clima, la cucina. Poi ti proponiamo cosa fare.</p>
+    </div>
+    <div class="why-col">
+      <h3 class="why-title">Siamo lì anche dopo.</h3>
+      <p class="why-text">Dalla prenotazione all'atterraggio, hai un numero diretto. Senza call center.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== FOOTER ===================== -->
+<footer>
+  <div class="footer-brand">ALTROVE</div>
+  <div class="footer-copy">© 2026 Altrove Travel Studio · Milano</div>
+  <div class="footer-links">
+    <a href="#">Instagram</a>
+    <a href="#">LinkedIn</a>
+    <a href="#">info@altrove.it</a>
+  </div>
+</footer>
+
+<script>
+const DESTINATIONS = [
+  {
+    id: 'giappone',
+    name: 'GIAPPONE',
+    native: '日本',
+    tagline: 'Cerimonie silenziose e neon accecanti.',
+    flag_primary: '#BC002D',
+    flag_secondary: '#FFFFFF',
+    flag_text: '#FFFFFF',
+    nights: '10 – 16 notti',
+    price: '€ 2.800+',
+    type: 'Cultura',
+    currency_code: 'JPY',
+    currency_name: 'Yen giapponese',
+    rate: 163.4,
+    best_season: 'Marzo – Maggio / Ottobre – Nov.',
+    intro: 'Un paese di contraddizioni perfette: dove il silenzio dei templi Zen incontra l\'energia dei quartieri neon di Tokyo. Il Giappone non si visita — si abita per un momento.',
+    moments: ['Cerimonia del tè, Kyoto', 'Mercati notturni di Osaka', 'Tempio Fushimi Inari', 'Shibuya all\'alba'],
+  },
+  {
+    id: 'marocco',
+    name: 'MAROCCO',
+    native: 'المغرب',
+    tagline: 'Spezie, mosaici e cieli senza confine.',
+    flag_primary: '#C1272D',
+    flag_secondary: '#006233',
+    flag_text: '#FFFFFF',
+    nights: '7 – 12 notti',
+    price: '€ 1.400+',
+    type: 'Cultura · Deserto',
+    currency_code: 'MAD',
+    currency_name: 'Dirham marocchino',
+    rate: 10.87,
+    best_season: 'Ott. – Apr.',
+    intro: 'Medine millenarie, dune senza fine e riads nascosti nei vicoli di Marrakech. Il Marocco è un paese che si impara lentamente, un vicolo alla volta.',
+    moments: ['Mercato Djemaa el-Fna', 'Dune del Sahara, Merzouga', 'Cascate di Ouzoud', 'Bagni hammam tradizionali'],
+  },
+  {
+    id: 'islanda',
+    name: 'ISLANDA',
+    native: 'Ísland',
+    tagline: 'Aurora boreale e paesaggi da un altro pianeta.',
+    flag_primary: '#003897',
+    flag_secondary: '#D72828',
+    flag_text: '#FFFFFF',
+    nights: '7 – 10 notti',
+    price: '€ 2.200+',
+    type: 'Natura · Avventura',
+    currency_code: 'ISK',
+    currency_name: 'Corona islandese',
+    rate: 147.2,
+    best_season: 'Nov. – Feb. (aurora) / Giu. – Ago. (midnight sun)',
+    intro: 'L\'Islanda non è un paese, è un fenomeno geologico. Geyser, ghiacciai, aurora boreale e cascate che sembrano uscire da un racconto antico.',
+    moments: ['Aurora boreale, Þingvellir', 'Cascata Skógafoss', 'Bagni geotermali Blue Lagoon', 'Ring Road in camper'],
+  },
+  {
+    id: 'peru',
+    name: 'PERÙ',
+    native: 'Perú',
+    tagline: 'Civiltà perdute e cucina che cambia il mondo.',
+    flag_primary: '#D91023',
+    flag_secondary: '#D91023',
+    flag_text: '#FFFFFF',
+    nights: '12 – 18 notti',
+    price: '€ 2.600+',
+    type: 'Storia · Cucina',
+    currency_code: 'PEN',
+    currency_name: 'Sol peruviano',
+    rate: 4.08,
+    best_season: 'Mag. – Ott.',
+    intro: 'Machu Picchu è l\'inizio, non la fine. Il Perù è Lake Titicaca, Lima gastronomica, i canyon del Colca e i mercati di Cusco dove il tempo si è fermato.',
+    moments: ['Machu Picchu all\'alba', 'Mercato di Pisac', 'Crociera Lake Titicaca', 'Lima — cena da Central'],
+  },
+  {
+    id: 'portogallo',
+    name: 'PORTOGALLO',
+    native: 'Portugal',
+    tagline: 'Fado, azulejos e oceano Atlantico.',
+    flag_primary: '#006600',
+    flag_secondary: '#FF2400',
+    flag_text: '#FFFFFF',
+    nights: '7 – 10 notti',
+    price: '€ 1.100+',
+    type: 'City · Costa',
+    currency_code: 'EUR',
+    currency_name: 'Euro (stessa valuta)',
+    rate: 1,
+    best_season: 'Apr. – Ott.',
+    intro: 'Lisbona ha i quartieri dove il tempo scivola lento, il Douro ha i vigneti che producono il Porto migliore del mondo. Il Portogallo è piccolo e non finisce mai.',
+    moments: ['Tramonto a Miradouro da Graça', 'Degustazione vini, Valle del Douro', 'Sintra — Palácio da Pena', 'Surf ad Ericeira'],
+  },
+  {
+    id: 'maldive',
+    name: 'MALDIVE',
+    native: 'ދިވެހި',
+    tagline: 'Acqua cristallina e notti sotto le stelle.',
+    flag_primary: '#007E3A',
+    flag_secondary: '#D21034',
+    flag_text: '#FFFFFF',
+    nights: '7 – 14 notti',
+    price: '€ 3.200+',
+    type: 'Mare · Relax',
+    currency_code: 'MVR',
+    currency_name: 'Rufiyaa maldiviano',
+    rate: 16.8,
+    best_season: 'Nov. – Apr.',
+    intro: 'Le Maldive non sono tutte uguali. Oltre i resort di lusso, ci sono atolli remoti, villaggi di pescatori, barriere coralline incontaminate. Ti mostriamo quelle.',
+    moments: ['Snorkeling con i mante', 'Cena sulla spiaggia privata', 'Bioluminescenza notturna', 'Escursione all\'atollo di Baa'],
+  },
+];
+
+let activeId = 'giappone';
+
+function selectDestination(id) {
+  activeId = id;
+  const dest = DESTINATIONS.find(d => d.id === id);
+
+  // Update card active states
+  document.querySelectorAll('.dest-card').forEach(c => {
+    c.classList.toggle('active', c.dataset.id === id);
+  });
+
+  // Update country story border
+  document.getElementById('country-story').style.borderTopColor = dest.flag_primary;
+
+  // Update watermark
+  document.getElementById('story-watermark').textContent = dest.native;
+
+  // Update text content
+  document.getElementById('story-country-name').textContent = dest.name;
+  document.getElementById('story-intro').textContent = dest.intro;
+  document.getElementById('story-season').textContent = dest.best_season;
+
+  // Update moments list
+  const momentsEl = document.getElementById('story-moments');
+  momentsEl.innerHTML = dest.moments.map(m => `<li>${m}</li>`).join('');
+
+  // Update photo hints
+  for (let i = 0; i < 4; i++) {
+    const hint = document.getElementById('photo-hint-' + i);
+    if (hint) hint.textContent = dest.moments[i] || '';
+  }
+
+  // Update currency
+  document.getElementById('dest-code').textContent = dest.currency_code;
+  document.getElementById('dest-result').style.color = dest.flag_primary;
+  document.getElementById('rate-text').textContent =
+    '1 EUR = ' + dest.rate.toLocaleString('it-IT') + ' ' + dest.currency_code + ' · tasso indicativo';
+
+  // Update CTA
+  document.getElementById('story-cta-text').textContent = 'Vedi i pacchetti per ' + dest.name + ' →';
+
+  // Update currency result
+  updateCurrency();
+
+  // Scroll to story
+  document.getElementById('country-story').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function updateCurrency() {
+  const dest = DESTINATIONS.find(d => d.id === activeId);
+  const eurVal = parseFloat(document.getElementById('eur-input').value) || 0;
+  const result = (eurVal * dest.rate).toLocaleString('it-IT', { maximumFractionDigits: 0 });
+  document.getElementById('dest-result').textContent = result;
+}
+
+document.getElementById('eur-input').addEventListener('input', updateCurrency);
+
+// Filter tabs (visual only)
+document.querySelectorAll('.filter-tab').forEach(tab => {
+  tab.addEventListener('click', function () {
+    document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
+    this.classList.add('active');
+  });
+});
+
+// Initialize
+selectDestination('giappone');
+// On init, don't auto-scroll
+document.getElementById('country-story').style.scrollMarginTop = '3.5rem';
+</script>
+
+</body>
+</html>
