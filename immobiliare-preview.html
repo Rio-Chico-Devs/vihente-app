@@ -1,0 +1,1817 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RESIDENZE — Agenzia Immobiliare Roma</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,600;1,9..144,300;1,9..144,400;1,9..144,600&family=Epilogue:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --green:     #1B3A2D;
+  --gold:      #C4A574;
+  --linen:     #F4EFE6;
+  --ink:       #1E1A16;
+  --gy:        #7A7470;
+  --rule:      #DDD5C8;
+  --pale:      #EDE8DF;
+  --palegreen: #EBF0EB;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Epilogue', sans-serif;
+  background: var(--linen);
+  color: var(--ink);
+  font-size: 16px;
+  line-height: 1.5;
+  overflow-x: hidden;
+}
+
+/* ========== PHOTO PLACEHOLDER SYSTEM ========== */
+.res-photo-slot {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background: var(--pale);
+  overflow: hidden;
+}
+.res-photo-bg {
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(145deg, #DDD5C8 0%, #C8BFB0 100%);
+}
+.res-photo-hint {
+  position: absolute;
+  bottom: .5rem;
+  left: .5rem;
+  font-family: 'Epilogue', sans-serif;
+  font-weight: 600;
+  font-size: .52rem;
+  letter-spacing: .22em;
+  text-transform: uppercase;
+  color: rgba(30,26,22,.55);
+  background: rgba(244,239,230,.88);
+  padding: .22rem .5rem;
+  z-index: 10;
+}
+
+/* ========== SHARED LABEL ========== */
+.res-label {
+  font-family: 'Epilogue', sans-serif;
+  font-weight: 600;
+  font-size: .58rem;
+  letter-spacing: .35em;
+  text-transform: uppercase;
+  color: var(--gy);
+}
+
+/* ========== 1. NAV ========== */
+.nav {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: var(--green);
+  height: 58px;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  padding: 0 2rem;
+  border-bottom: 1px solid rgba(255,255,255,.12);
+}
+
+.nav-links {
+  display: flex;
+  gap: 1.6rem;
+  align-items: center;
+}
+
+.nav-links a {
+  font-family: 'Epilogue', sans-serif;
+  font-weight: 600;
+  font-size: .6rem;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,.5);
+  text-decoration: none;
+  transition: color .2s;
+}
+.nav-links a:hover { color: rgba(255,255,255,.9); }
+
+.nav-brand {
+  font-family: 'Fraunces', serif;
+  font-weight: 400;
+  font-style: normal;
+  font-size: 1.1rem;
+  letter-spacing: .08em;
+  color: rgba(255,255,255,.9);
+  text-decoration: none;
+  font-variation-settings: 'opsz' 144;
+}
+
+.nav-actions {
+  display: flex;
+  gap: .6rem;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.nav-pill {
+  font-family: 'Epilogue', sans-serif;
+  font-weight: 600;
+  font-size: .58rem;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  padding: .35rem .9rem;
+  cursor: pointer;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: opacity .2s;
+}
+.nav-pill-outline {
+  border: 1px solid rgba(255,255,255,.3);
+  background: transparent;
+  color: rgba(255,255,255,.7);
+}
+.nav-pill-outline:hover { color: white; border-color: rgba(255,255,255,.6); }
+.nav-pill-gold {
+  background: var(--gold);
+  color: var(--ink);
+  border: none;
+}
+.nav-pill-gold:hover { opacity: .85; }
+
+/* ========== 2. HERO ========== */
+.hero {
+  display: grid;
+  grid-template-columns: 60% 40%;
+  min-height: calc(100vh - 58px);
+}
+
+.hero-left {
+  padding: 5rem 4rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  background: var(--linen);
+}
+
+.hero-top-label {
+  font-family: 'Epilogue', sans-serif;
+  font-weight: 600;
+  font-size: .58rem;
+  letter-spacing: .35em;
+  text-transform: uppercase;
+  color: var(--gy);
+}
+
+.hero-mid {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 1rem;
+  padding: 3rem 0;
+}
+
+.hero-h1-normal {
+  font-family: 'Fraunces', serif;
+  font-weight: 400;
+  font-style: normal;
+  font-size: clamp(3.5rem, 6.5vw, 5.5rem);
+  line-height: 1.0;
+  color: var(--ink);
+  font-variation-settings: 'opsz' 144;
+}
+
+.hero-h1-italic {
+  font-family: 'Fraunces', serif;
+  font-weight: 300;
+  font-style: italic;
+  font-size: clamp(5rem, 9vw, 8rem);
+  line-height: .88;
+  letter-spacing: -.02em;
+  color: var(--ink);
+  font-variation-settings: 'opsz' 144;
+}
+
+.hero-rule {
+  border: none;
+  border-top: 1px solid var(--gold);
+  width: 100%;
+  margin-top: 1rem;
+}
+
+.hero-sub {
+  font-family: 'Epilogue', sans-serif;
+  font-weight: 400;
+  font-size: .9rem;
+  line-height: 1.8;
+  color: var(--gy);
+  max-width: 42ch;
+}
+
+.hero-ctas {
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+}
+
+.btn-primary {
+  font-family: 'Epilogue', sans-serif;
+  font-weight: 600;
+  font-size: .62rem;
+  letter-spacing: .25em;
+  text-transform: uppercase;
+  background: var(--green);
+  color: var(--linen);
+  padding: .85rem 2rem;
+  border: none;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-block;
+  transition: opacity .2s;
+  white-space: nowrap;
+}
+.btn-primary:hover { opacity: .85; }
+
+.btn-secondary {
+  font-family: 'Epilogue', sans-serif;
+  font-weight: 600;
+  font-size: .62rem;
+  letter-spacing: .25em;
+  text-transform: uppercase;
+  border: 1px solid var(--gold);
+  color: var(--gold);
+  background: transparent;
+  padding: .85rem 2rem;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-block;
+  transition: opacity .2s;
+  white-space: nowrap;
+}
+.btn-secondary:hover { opacity: .7; }
+
+.hero-right {
+  position: relative;
+  height: calc(100vh - 58px);
+  overflow: hidden;
+}
+
+.hero-right .res-photo-slot {
+  height: 100%;
+}
+
+.hero-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 200px;
+  background: linear-gradient(to top, rgba(20,15,10,.85), transparent);
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 1.5rem;
+  gap: .4rem;
+}
+
+.hero-overlay-tag {
+  font-family: 'Epilogue', sans-serif;
+  font-weight: 600;
+  font-size: .5rem;
+  letter-spacing: .3em;
+  text-transform: uppercase;
+  background: var(--gold);
+  color: var(--ink);
+  padding: .2rem .6rem;
+  display: inline-block;
+  align-self: flex-start;
+}
+
+.hero-overlay-address {
+  font-family: 'Fraunces', serif;
+  font-style: italic;
+  font-weight: 300;
+  font-size: 1.1rem;
+  color: white;
+  font-variation-settings: 'opsz' 72;
+}
+
+.hero-overlay-price {
+  font-family: 'Epilogue', sans-serif;
+  font-weight: 600;
+  font-size: .7rem;
+  letter-spacing: .1em;
+  color: var(--gold);
+}
+
+/* ========== 3. PERCORSO ACQUIRENTE ========== */
+.strip-acquirente {
+  background: var(--palegreen);
+  border-top: 1px solid rgba(27,58,45,.12);
+  border-bottom: 1px solid rgba(27,58,45,.12);
+  padding: 2.5rem 3rem;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  gap: 2rem;
+}
+
+.strip-label-left {
+  font-family: 'Epilogue', sans-serif;
+  font-weight: 600;
+  font-size: .58rem;
+  letter-spacing: .35em;
+  text-transform: uppercase;
+  color: var(--green);
+  white-space: nowrap;
+}
+
+.strip-steps {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 0;
+  flex: 1;
+  justify-content: center;
+}
+
+.strip-step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: .3rem;
+  text-align: center;
+}
+
+.step-num {
+  font-family: 'Fraunces', serif;
+  font-style: italic;
+  font-weight: 400;
+  font-size: 1.4rem;
+  color: var(--gold);
+  line-height: 1;
+  font-variation-settings: 'opsz' 72;
+}
+
+.step-name {
+  font-family: 'Epilogue', sans-serif;
+  font-weight: 600;
+  font-size: .58rem;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  color: var(--ink);
+}
+
+.step-desc {
+  font-family: 'Epilogue', sans-serif;
+  font-weight: 400;
+  font-size: .75rem;
+  color: var(--gy);
+  max-width: 14ch;
+  line-height: 1.4;
+}
+
+.step-dash {
+  border: none;
+  border-top: 1px dashed var(--gold);
+  width: 3rem;
+  opacity: .6;
+  flex-shrink: 0;
+  margin: 0 .8rem;
+  align-self: flex-start;
+  margin-top: 1.1rem;
+}
+
+.strip-cta-right {
+  font-family: 'Epilogue', sans-serif;
+  font-weight: 600;
+  font-size: .58rem;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  color: var(--gold);
+  text-decoration: none;
+  white-space: nowrap;
+  border-bottom: 1px solid var(--gold);
+  padding-bottom: .1rem;
+  transition: opacity .2s;
+}
+.strip-cta-right:hover { opacity: .7; }
+
+/* ========== 4. IMMOBILI IN EVIDENZA ========== */
+.properties-section {
+  padding: 0;
+}
+
+.properties-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: auto auto;
+}
+
+.res-prop-card {
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+  background: var(--pale);
+}
+
+.res-prop-card .res-photo-slot {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.res-prop-card .res-photo-bg {
+  transition: transform .5s ease;
+}
+
+.res-prop-card:hover .res-photo-bg {
+  transform: scale(1.03);
+}
+
+.res-prop-card::before {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 180px;
+  background: linear-gradient(to top, rgba(20,15,10,.85), transparent);
+  z-index: 1;
+  pointer-events: none;
+}
+
+.prop-card-large {
+  grid-column: 1;
+  grid-row: 1 / 3;
+  aspect-ratio: 2/3;
+}
+
+.prop-card-sm {
+  grid-column: 2;
+  aspect-ratio: 4/3;
+}
+
+.prop-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 2;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: .35rem;
+}
+
+.res-prop-zone {
+  font-family: 'Epilogue', sans-serif;
+  font-weight: 600;
+  font-size: .55rem;
+  letter-spacing: .3em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,.6);
+}
+
+.res-prop-name {
+  font-family: 'Fraunces', serif;
+  font-style: italic;
+  font-weight: 300;
+  font-size: 1.3rem;
+  color: white;
+  line-height: 1.15;
+  font-variation-settings: 'opsz' 72;
+}
+
+.prop-bottom-row {
+  display: flex;
+  align-items: baseline;
+  gap: .8rem;
+  margin-top: .2rem;
+}
+
+.res-prop-price {
+  font-family: 'Fraunces', serif;
+  font-weight: 400;
+  font-size: .95rem;
+  color: var(--gold);
+  font-variation-settings: 'opsz' 72;
+}
+
+.res-prop-meta {
+  font-family: 'Epilogue', sans-serif;
+  font-size: .55rem;
+  color: rgba(255,255,255,.5);
+  letter-spacing: .05em;
+}
+
+.properties-strip {
+  background: white;
+  border-top: 1px solid var(--rule);
+  padding: .8rem 3rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.properties-strip-count {
+  font-family: 'Epilogue', sans-serif;
+  font-weight: 600;
+  font-size: .58rem;
+  letter-spacing: .25em;
+  text-transform: uppercase;
+  color: var(--gy);
+}
+
+.properties-strip-link {
+  font-family: 'Epilogue', sans-serif;
+  font-weight: 600;
+  font-size: .58rem;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  color: var(--gold);
+  text-decoration: none;
+  border-bottom: 1px solid var(--gold);
+  padding-bottom: .1rem;
+}
+.properties-strip-link:hover { opacity: .7; }
+
+/* ========== 5. ZONE ========== */
+.zone-section {
+  background: var(--green);
+  padding: 5rem 3rem;
+}
+
+.zone-header-label {
+  font-family: 'Epilogue', sans-serif;
+  font-weight: 600;
+  font-size: .58rem;
+  letter-spacing: .35em;
+  text-transform: uppercase;
+  color: rgba(196,165,116,.7);
+  margin-bottom: 1.2rem;
+}
+
+.zone-h2 {
+  font-family: 'Fraunces', serif;
+  font-style: italic;
+  font-weight: 300;
+  font-size: clamp(2.5rem, 5vw, 4rem);
+  color: var(--linen);
+  line-height: 1.1;
+  font-variation-settings: 'opsz' 144;
+}
+
+.zone-rule {
+  border: none;
+  border-top: 1px solid rgba(196,165,116,.3);
+  margin: 2rem 0;
+}
+
+.zone-pills {
+  display: flex;
+  flex-direction: row;
+  gap: 1px;
+  margin-bottom: 2.5rem;
+}
+
+.zone-pill {
+  font-family: 'Epilogue', sans-serif;
+  font-weight: 600;
+  font-size: .62rem;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  padding: .6rem 1.4rem;
+  border: 1px solid rgba(255,255,255,.2);
+  background: transparent;
+  color: rgba(255,255,255,.5);
+  cursor: pointer;
+  transition: all .2s;
+}
+
+.zone-pill.active,
+.zone-pill:hover {
+  background: rgba(255,255,255,.1);
+  border-color: rgba(255,255,255,.4);
+  color: white;
+}
+
+.zone-expanded {
+  display: grid;
+  grid-template-columns: 45% 55%;
+  gap: 3rem;
+}
+
+.zone-info {
+  padding: 2rem 0 0;
+}
+
+.zone-char {
+  font-family: 'Fraunces', serif;
+  font-style: italic;
+  font-weight: 300;
+  font-size: 3rem;
+  color: var(--gold);
+  line-height: 1;
+  margin-bottom: 1.2rem;
+  font-variation-settings: 'opsz' 144;
+}
+
+.zone-desc {
+  font-family: 'Epilogue', sans-serif;
+  font-weight: 400;
+  font-size: .88rem;
+  color: rgba(255,255,255,.65);
+  line-height: 1.75;
+  max-width: 40ch;
+  margin-bottom: 1.8rem;
+}
+
+.zone-ratings {
+  display: flex;
+  flex-direction: column;
+  gap: .7rem;
+  margin-bottom: 1.8rem;
+}
+
+.zone-rating-row {
+  display: flex;
+  align-items: center;
+  gap: .8rem;
+}
+
+.zone-rating-label {
+  font-family: 'Epilogue', sans-serif;
+  font-weight: 600;
+  font-size: .55rem;
+  letter-spacing: .25em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,.35);
+  min-width: 6rem;
+}
+
+.zone-rating {
+  display: flex;
+  gap: .15rem;
+}
+
+.zone-link {
+  font-family: 'Epilogue', sans-serif;
+  font-weight: 600;
+  font-size: .6rem;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  color: var(--gold);
+  text-decoration: none;
+  border-bottom: 1px solid rgba(196,165,116,.4);
+  padding-bottom: .15rem;
+}
+.zone-link:hover { opacity: .7; }
+
+.zone-photos {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: .8rem;
+}
+
+.zone-photo {
+  aspect-ratio: 4/3;
+}
+
+/* ========== 6. VENDITORE ========== */
+.venditore-section {
+  background: var(--linen);
+  border-top: 4px solid var(--gold);
+  padding: 6rem 3rem;
+}
+
+.venditore-grid {
+  display: grid;
+  grid-template-columns: 50% 50%;
+  gap: 4rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.venditore-left {}
+
+.venditore-h2 {
+  font-family: 'Fraunces', serif;
+  font-weight: 400;
+  font-style: normal;
+  font-size: clamp(2.8rem, 5vw, 4.2rem);
+  line-height: 1.0;
+  color: var(--ink);
+  font-variation-settings: 'opsz' 144;
+  margin: 1rem 0 0;
+}
+
+.venditore-h2-italic {
+  font-family: 'Fraunces', serif;
+  font-weight: 400;
+  font-style: italic;
+  font-size: clamp(2.8rem, 5vw, 4.2rem);
+  line-height: 1.0;
+  color: var(--ink);
+  font-variation-settings: 'opsz' 144;
+  display: block;
+}
+
+.venditore-rule {
+  border: none;
+  border-top: 1px solid var(--gold);
+  margin: 1.5rem 0;
+  width: 4rem;
+}
+
+.venditore-sub {
+  font-family: 'Epilogue', sans-serif;
+  font-weight: 400;
+  font-size: .88rem;
+  color: var(--gy);
+  margin-bottom: 2rem;
+  line-height: 1.6;
+}
+
+.venditore-props {
+  display: flex;
+  flex-direction: column;
+  gap: .8rem;
+  margin-bottom: 2rem;
+}
+
+.venditore-prop {
+  border-left: 2px solid var(--gold);
+  padding-left: .8rem;
+}
+
+.venditore-prop-title {
+  font-family: 'Fraunces', serif;
+  font-style: italic;
+  font-weight: 400;
+  font-size: 1.1rem;
+  color: var(--ink);
+  line-height: 1.2;
+  font-variation-settings: 'opsz' 72;
+}
+
+.venditore-prop-desc {
+  font-family: 'Epilogue', sans-serif;
+  font-weight: 400;
+  font-size: .78rem;
+  color: var(--gy);
+  margin-top: .2rem;
+  line-height: 1.5;
+}
+
+.btn-gold-full {
+  display: block;
+  width: 100%;
+  font-family: 'Epilogue', sans-serif;
+  font-weight: 600;
+  font-size: .62rem;
+  letter-spacing: .25em;
+  text-transform: uppercase;
+  background: var(--gold);
+  color: var(--ink);
+  border: none;
+  padding: 1rem;
+  cursor: pointer;
+  text-align: center;
+  text-decoration: none;
+  transition: opacity .2s;
+}
+.btn-gold-full:hover { opacity: .85; }
+
+/* Estimator */
+.estimator-box {
+  background: var(--palegreen);
+  border: 1px solid rgba(27,58,45,.15);
+  padding: 2.5rem;
+}
+
+.estimator-section-label {
+  font-family: 'Epilogue', sans-serif;
+  font-weight: 600;
+  font-size: .55rem;
+  letter-spacing: .35em;
+  text-transform: uppercase;
+  color: var(--gy);
+  margin-bottom: 1.5rem;
+}
+
+.est-field {
+  margin-bottom: 1.2rem;
+}
+
+.est-field-label {
+  font-family: 'Epilogue', sans-serif;
+  font-weight: 600;
+  font-size: .58rem;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  color: var(--gy);
+  margin-bottom: .4rem;
+  display: block;
+}
+
+.est-select {
+  font-family: 'Fraunces', serif;
+  font-style: italic;
+  font-weight: 400;
+  font-size: 1rem;
+  font-variation-settings: 'opsz' 72;
+  border: none;
+  border-bottom: 1px solid var(--ink);
+  background: transparent;
+  width: 100%;
+  padding: .5rem 0;
+  color: var(--ink);
+  cursor: pointer;
+  outline: none;
+  appearance: none;
+}
+
+.est-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.est-tab {
+  font-family: 'Epilogue', sans-serif;
+  font-weight: 600;
+  font-size: .6rem;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  border: 1px solid var(--rule);
+  background: transparent;
+  color: var(--gy);
+  padding: .4rem .8rem;
+  cursor: pointer;
+  transition: all .15s;
+}
+
+.est-tab.active {
+  background: var(--green);
+  color: var(--linen);
+  border-color: var(--green);
+}
+
+.est-tab:hover:not(.active) {
+  border-color: var(--gy);
+  color: var(--ink);
+}
+
+.est-slider-wrap {
+  margin-top: .4rem;
+}
+
+.est-slider-label {
+  font-family: 'Epilogue', sans-serif;
+  font-weight: 400;
+  font-size: .82rem;
+  color: var(--ink);
+  margin-bottom: .5rem;
+  display: flex;
+  justify-content: space-between;
+}
+
+.est-slider-label strong {
+  font-weight: 600;
+  color: var(--green);
+}
+
+input[type="range"] {
+  width: 100%;
+  accent-color: var(--gold);
+  cursor: pointer;
+}
+
+#est-result {
+  background: var(--linen);
+  border: 1px solid var(--gold);
+  padding: 1.5rem;
+  margin-top: 1rem;
+}
+
+.est-range-label {
+  font-family: 'Epilogue', sans-serif;
+  font-weight: 600;
+  font-size: .55rem;
+  letter-spacing: .3em;
+  text-transform: uppercase;
+  color: var(--gy);
+  display: block;
+  margin-bottom: .5rem;
+}
+
+.est-range {
+  font-family: 'Fraunces', serif;
+  font-style: italic;
+  font-weight: 300;
+  font-size: 2rem;
+  color: var(--green);
+  font-variation-settings: 'opsz' 144;
+  line-height: 1;
+  margin-bottom: .6rem;
+}
+
+.est-disclaimer {
+  font-family: 'Epilogue', sans-serif;
+  font-weight: 400;
+  font-size: .72rem;
+  color: var(--gy);
+  line-height: 1.5;
+}
+
+#est-btn {
+  width: 100%;
+  margin-top: 1.2rem;
+  font-family: 'Epilogue', sans-serif;
+  font-weight: 600;
+  font-size: .6rem;
+  letter-spacing: .25em;
+  text-transform: uppercase;
+  background: var(--green);
+  color: var(--linen);
+  border: none;
+  padding: .85rem 1rem;
+  cursor: pointer;
+  transition: opacity .2s;
+}
+#est-btn:hover { opacity: .8; }
+
+/* ========== 7. NUMERI ========== */
+.kpi-section {
+  background: var(--green);
+  padding: 5rem 3rem;
+}
+
+.kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0;
+}
+
+.kpi-item {
+  border-top: 1px solid rgba(196,165,116,.3);
+  border-right: 1px solid rgba(255,255,255,.1);
+  padding: 2rem 2rem 1.5rem;
+}
+.kpi-item:last-child { border-right: none; }
+
+.kpi-num {
+  font-family: 'Fraunces', serif;
+  font-style: italic;
+  font-weight: 300;
+  font-size: clamp(3rem, 5vw, 4.5rem);
+  color: var(--gold);
+  line-height: 1;
+  font-variation-settings: 'opsz' 144;
+}
+
+.kpi-unit {
+  font-family: 'Epilogue', sans-serif;
+  font-weight: 600;
+  font-size: .58rem;
+  letter-spacing: .3em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,.4);
+  margin-top: .4rem;
+  display: block;
+}
+
+.kpi-desc {
+  font-family: 'Epilogue', sans-serif;
+  font-weight: 400;
+  font-size: .78rem;
+  color: rgba(255,255,255,.5);
+  margin-top: .4rem;
+  line-height: 1.5;
+}
+
+/* ========== 8. AGENTI ========== */
+.agenti-section {
+  background: var(--linen);
+  padding: 5rem 3rem;
+}
+
+.agenti-header {
+  margin-bottom: 3rem;
+}
+
+.agenti-h2 {
+  font-family: 'Fraunces', serif;
+  font-weight: 400;
+  font-size: clamp(2rem, 4vw, 3rem);
+  line-height: 1.1;
+  color: var(--ink);
+  font-variation-settings: 'opsz' 144;
+  margin-top: .8rem;
+}
+
+.agenti-h2 em {
+  font-style: italic;
+  font-weight: 300;
+}
+
+.agenti-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2rem;
+}
+
+.agente-card {}
+
+.agente-photo {
+  aspect-ratio: 3/4;
+  background: var(--palegreen);
+}
+
+.agente-name {
+  font-family: 'Fraunces', serif;
+  font-weight: 400;
+  font-size: 1.3rem;
+  color: var(--ink);
+  margin-top: 1rem;
+  font-variation-settings: 'opsz' 72;
+}
+
+.agente-zone {
+  font-family: 'Epilogue', sans-serif;
+  font-weight: 600;
+  font-size: .55rem;
+  letter-spacing: .3em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-top: .3rem;
+}
+
+.agente-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .3rem;
+  margin-top: .6rem;
+}
+
+.agente-tag {
+  font-family: 'Epilogue', sans-serif;
+  font-weight: 400;
+  font-size: .5rem;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  border: 1px solid var(--rule);
+  padding: .2rem .5rem;
+  color: var(--gy);
+}
+
+.agente-link {
+  font-family: 'Epilogue', sans-serif;
+  font-weight: 600;
+  font-size: .6rem;
+  letter-spacing: .1em;
+  color: var(--green);
+  text-decoration: none;
+  margin-top: .7rem;
+  display: block;
+  border-bottom: 1px solid rgba(27,58,45,.25);
+  padding-bottom: .15rem;
+  align-self: flex-start;
+  width: fit-content;
+}
+.agente-link:hover { opacity: .7; }
+
+/* ========== 9. INSIGHTS ========== */
+.insights-section {
+  background: var(--pale);
+  padding: 4rem 3rem;
+  border-top: 1px solid var(--rule);
+}
+
+.insights-header {
+  margin-bottom: 2.5rem;
+}
+
+.insights-h2 {
+  font-family: 'Fraunces', serif;
+  font-style: italic;
+  font-weight: 300;
+  font-size: 2rem;
+  color: var(--ink);
+  margin-top: .6rem;
+  font-variation-settings: 'opsz' 72;
+}
+
+.insights-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2px;
+}
+
+.insight-card {
+  background: var(--linen);
+  cursor: pointer;
+}
+
+.insight-card:hover .insight-photo .res-photo-bg {
+  transform: scale(1.03);
+}
+
+.insight-photo {
+  aspect-ratio: 16/9;
+  overflow: hidden;
+}
+
+.insight-photo .res-photo-bg {
+  transition: transform .5s ease;
+}
+
+.insight-body {
+  padding: 2rem;
+}
+
+.insight-category {
+  font-family: 'Epilogue', sans-serif;
+  font-weight: 600;
+  font-size: .55rem;
+  letter-spacing: .3em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: .6rem;
+}
+
+.insight-title {
+  font-family: 'Fraunces', serif;
+  font-weight: 400;
+  font-size: 1.4rem;
+  color: var(--ink);
+  line-height: 1.2;
+  font-variation-settings: 'opsz' 72;
+}
+
+.insight-excerpt {
+  font-family: 'Epilogue', sans-serif;
+  font-weight: 400;
+  font-size: .85rem;
+  color: var(--gy);
+  line-height: 1.6;
+  margin-top: .7rem;
+  max-width: 52ch;
+}
+
+.insight-link {
+  font-family: 'Epilogue', sans-serif;
+  font-weight: 600;
+  font-size: .58rem;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: var(--gold);
+  text-decoration: none;
+  margin-top: 1rem;
+  display: inline-block;
+  border-bottom: 1px solid rgba(196,165,116,.4);
+  padding-bottom: .1rem;
+}
+.insight-link:hover { opacity: .7; }
+
+/* ========== 10. FOOTER ========== */
+.footer {
+  background: var(--ink);
+  padding: 2rem 3rem;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 1rem;
+}
+
+.footer-brand {
+  font-family: 'Fraunces', serif;
+  font-weight: 400;
+  font-style: normal;
+  font-size: 1.1rem;
+  color: rgba(255,255,255,.5);
+  font-variation-settings: 'opsz' 72;
+}
+
+.footer-copy {
+  font-family: 'Epilogue', sans-serif;
+  font-weight: 400;
+  font-size: .5rem;
+  letter-spacing: .05em;
+  color: rgba(255,255,255,.25);
+  text-align: center;
+}
+
+.footer-links {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1.5rem;
+}
+
+.footer-links a {
+  font-family: 'Epilogue', sans-serif;
+  font-weight: 400;
+  font-size: .58rem;
+  color: rgba(255,255,255,.4);
+  text-decoration: none;
+  transition: color .2s;
+}
+.footer-links a:hover { color: rgba(255,255,255,.8); }
+
+/* ========== MOBILE RESPONSIVE ========== */
+@media (max-width: 768px) {
+  /* Nav */
+  .nav {
+    grid-template-columns: 1fr;
+    height: 50px;
+    padding: 0 1.5rem;
+    justify-items: center;
+  }
+  .nav-links, .nav-actions { display: none; }
+  .nav-brand { font-size: 1rem; }
+
+  /* Hero */
+  .hero {
+    grid-template-columns: 1fr;
+    min-height: auto;
+  }
+  .hero-left {
+    padding: 2.5rem 1.5rem;
+    order: 2;
+  }
+  .hero-right {
+    height: 55vw;
+    order: 1;
+  }
+  .hero-ctas {
+    flex-direction: column;
+  }
+
+  /* Strip */
+  .strip-acquirente {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 2rem 1.5rem;
+    gap: 1.5rem;
+  }
+  .strip-steps {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1.5rem;
+    width: 100%;
+  }
+  .step-dash { display: none; }
+
+  /* Properties */
+  .properties-grid {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto;
+  }
+  .prop-card-large {
+    grid-column: 1;
+    grid-row: auto;
+    aspect-ratio: 4/3;
+  }
+  .prop-card-sm {
+    grid-column: 1;
+  }
+  .properties-strip { padding: .8rem 1.5rem; }
+
+  /* Zone */
+  .zone-section { padding: 3rem 1.5rem; }
+  .zone-pills {
+    overflow-x: auto;
+    padding-bottom: .5rem;
+  }
+  .zone-expanded {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+  .zone-photos { grid-template-columns: 1fr 1fr; }
+
+  /* Venditore */
+  .venditore-section { padding: 4rem 1.5rem; }
+  .venditore-grid {
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
+  }
+
+  /* KPI */
+  .kpi-section { padding: 3rem 1.5rem; }
+  .kpi-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+  .kpi-item:nth-child(2) { border-right: none; }
+  .kpi-item { padding: 1.5rem 1rem; }
+
+  /* Agenti */
+  .agenti-section { padding: 3rem 1.5rem; }
+  .agenti-grid { grid-template-columns: 1fr; }
+
+  /* Insights */
+  .insights-section { padding: 3rem 1.5rem; }
+  .insights-grid { grid-template-columns: 1fr; }
+
+  /* Footer */
+  .footer {
+    grid-template-columns: 1fr;
+    text-align: center;
+    padding: 2rem 1.5rem;
+    gap: .8rem;
+  }
+  .footer-links { justify-content: center; }
+}
+
+@media (max-width: 480px) {
+  .kpi-grid { grid-template-columns: 1fr 1fr; }
+  .kpi-num { font-size: 2.5rem; }
+}
+</style>
+</head>
+<body>
+
+<!-- ========== 1. NAV ========== -->
+<nav class="nav">
+  <div class="nav-links">
+    <a href="#">Portfolio</a>
+    <a href="#">Vendere</a>
+    <a href="#">Chi Siamo</a>
+    <a href="#">Insights</a>
+  </div>
+  <a href="#" class="nav-brand">RESIDENZE</a>
+  <div class="nav-actions">
+    <a href="#" class="nav-pill nav-pill-outline">Cerca Casa</a>
+    <a href="#venditore" class="nav-pill nav-pill-gold">Vendi con Noi</a>
+  </div>
+</nav>
+
+<!-- ========== 2. HERO ========== -->
+<section class="hero">
+  <div class="hero-left">
+    <div class="hero-top-label">RESIDENZE · AGENZIA IMMOBILIARE · ROMA</div>
+
+    <div class="hero-mid">
+      <h1 class="hero-h1-normal">Ogni casa ha</h1>
+      <h1 class="hero-h1-italic">la sua storia.</h1>
+      <hr class="hero-rule">
+      <p class="hero-sub">Da 18 anni accompagniamo chi cerca casa, chi vuole vendere e chi costruisce qualcosa che dura. A Roma, e non solo.</p>
+    </div>
+
+    <div class="hero-ctas">
+      <a href="#" class="btn-primary">Cerca il tuo Immobile &rarr;</a>
+      <a href="#venditore" class="btn-secondary">Valuta la tua Proprietà &rarr;</a>
+    </div>
+  </div>
+
+  <div class="hero-right">
+    <div class="res-photo-slot">
+      <div class="res-photo-bg" style="background: linear-gradient(160deg, #C8BFB0 0%, #9E9080 60%, #7A7470 100%);"></div>
+      <span class="res-photo-hint">hero · proprietà di pregio / luce naturale</span>
+    </div>
+    <div class="hero-overlay">
+      <span class="hero-overlay-tag">Disponibile</span>
+      <div class="hero-overlay-address">Via dei Coronari, 48 · Prati</div>
+      <div class="hero-overlay-price">€ 680.000</div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== 3. PERCORSO ACQUIRENTE ========== -->
+<section class="strip-acquirente">
+  <div class="strip-label-left">Il tuo percorso</div>
+
+  <div class="strip-steps">
+    <div class="strip-step">
+      <span class="step-num">01</span>
+      <span class="step-name">Scopri</span>
+      <span class="step-desc">Immobili curati e selezionati</span>
+    </div>
+    <hr class="step-dash">
+    <div class="strip-step">
+      <span class="step-num">02</span>
+      <span class="step-name">Visita</span>
+      <span class="step-desc">Il tuo agente dedicato</span>
+    </div>
+    <hr class="step-dash">
+    <div class="strip-step">
+      <span class="step-num">03</span>
+      <span class="step-name">Acquista</span>
+      <span class="step-desc">Supporto legale incluso</span>
+    </div>
+  </div>
+
+  <a href="#" class="strip-cta-right">Scopri gli Immobili &rarr;</a>
+</section>
+
+<!-- ========== 4. IMMOBILI IN EVIDENZA ========== -->
+<section class="properties-section">
+  <div class="properties-grid" id="prop-grid">
+    <!-- JS fills this -->
+  </div>
+  <div class="properties-strip">
+    <span class="properties-strip-count">04 Immobili in Evidenza</span>
+    <a href="#" class="properties-strip-link">Vedi tutto il Portfolio &rarr;</a>
+  </div>
+</section>
+
+<!-- ========== 5. ZONE ========== -->
+<section class="zone-section">
+  <div class="zone-header-label">La rete territoriale</div>
+  <h2 class="zone-h2">Ogni quartiere<br>racconta una vita diversa.</h2>
+  <hr class="zone-rule">
+
+  <div class="zone-pills">
+    <button class="zone-pill" data-zone="prati">Prati</button>
+    <button class="zone-pill" data-zone="trastevere">Trastevere</button>
+    <button class="zone-pill" data-zone="parioli">Parioli</button>
+    <button class="zone-pill" data-zone="eur">EUR</button>
+  </div>
+
+  <div class="zone-expanded">
+    <div class="zone-info">
+      <div class="zone-char">—</div>
+      <p class="zone-desc"></p>
+      <div class="zone-ratings">
+        <div class="zone-rating-row">
+          <span class="zone-rating-label">Walkability</span>
+          <div class="zone-rating" data-key="walk"></div>
+        </div>
+        <div class="zone-rating-row">
+          <span class="zone-rating-label">Scuole</span>
+          <div class="zone-rating" data-key="scuole"></div>
+        </div>
+        <div class="zone-rating-row">
+          <span class="zone-rating-label">Verde</span>
+          <div class="zone-rating" data-key="verde"></div>
+        </div>
+      </div>
+      <a href="#" class="zone-link">Immobili in zona &rarr;</a>
+    </div>
+
+    <div class="zone-photos">
+      <div class="zone-photo">
+        <div class="res-photo-slot">
+          <div class="res-photo-bg"></div>
+          <span class="res-photo-hint zone-photo-hint-0"></span>
+        </div>
+      </div>
+      <div class="zone-photo">
+        <div class="res-photo-slot">
+          <div class="res-photo-bg"></div>
+          <span class="res-photo-hint zone-photo-hint-1"></span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== 6. VENDITORE ========== -->
+<section class="venditore-section" id="venditore">
+  <div class="venditore-grid">
+    <div class="venditore-left">
+      <div class="res-label">Stai pensando di vendere?</div>
+      <h2 class="venditore-h2">La tua casa vale<br>più di quanto<span class="venditore-h2-italic">pensi.</span></h2>
+      <hr class="venditore-rule">
+      <p class="venditore-sub">Valutiamo gratuitamente il tuo immobile in 48 ore. Nessun impegno.</p>
+
+      <div class="venditore-props">
+        <div class="venditore-prop">
+          <div class="venditore-prop-title">Valutazione gratuita in 48 ore</div>
+          <div class="venditore-prop-desc">Un esperto della tua zona ti contatta direttamente.</div>
+        </div>
+        <div class="venditore-prop">
+          <div class="venditore-prop-title">Vendiamo al 98,2% del prezzo</div>
+          <div class="venditore-prop-desc">La media del mercato è 91%. La differenza è significativa.</div>
+        </div>
+        <div class="venditore-prop">
+          <div class="venditore-prop-title">23 giorni per trovare il compratore</div>
+          <div class="venditore-prop-desc">La media di settore è 87 giorni. Questo è il nostro impegno.</div>
+        </div>
+      </div>
+
+      <a href="#" class="btn-gold-full">Prenota la Valutazione Gratuita &rarr;</a>
+    </div>
+
+    <div class="venditore-right">
+      <div class="estimator-box">
+        <div class="estimator-section-label">Stima veloce del tuo immobile</div>
+
+        <div class="est-field">
+          <span class="est-field-label">Città</span>
+          <select id="est-city" class="est-select">
+            <option value="roma">Roma</option>
+            <option value="milano">Milano</option>
+            <option value="firenze">Firenze</option>
+          </select>
+        </div>
+
+        <div class="est-field">
+          <span class="est-field-label">Tipologia</span>
+          <div class="est-tabs est-type-tabs">
+            <button class="est-tab" data-type="appartamento">Appartamento</button>
+            <button class="est-tab" data-type="villa">Villa</button>
+            <button class="est-tab" data-type="attico">Attico</button>
+          </div>
+        </div>
+
+        <div class="est-field">
+          <span class="est-field-label">Superficie</span>
+          <div class="est-slider-wrap">
+            <div class="est-slider-label">
+              <span>Superficie</span>
+              <strong><span id="sqm-val">90</span> mq</strong>
+            </div>
+            <input type="range" id="sqm-slider" min="30" max="400" value="90">
+          </div>
+        </div>
+
+        <div class="est-field">
+          <span class="est-field-label">Condizione</span>
+          <div class="est-tabs est-cond-tabs">
+            <button class="est-tab" data-cond="ristrutturato">Ristrutturato</button>
+            <button class="est-tab" data-cond="buono">Buono stato</button>
+            <button class="est-tab" data-cond="da-ristrutturare">Da ristrutturare</button>
+          </div>
+        </div>
+
+        <div id="est-result" style="display:none">
+          <span class="est-range-label">Stima Indicativa</span>
+          <div class="est-range">
+            <span id="est-min">€ 280.000</span> — <span id="est-max">€ 340.000</span>
+          </div>
+          <p class="est-disclaimer">Stima algoritmica basata su prezzi di zona. Per una valutazione precisa, prenota la consulenza gratuita.</p>
+        </div>
+
+        <button id="est-btn">STIMA IL VALORE &rarr;</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== 7. NUMERI ========== -->
+<section class="kpi-section">
+  <div class="kpi-grid">
+    <div class="kpi-item">
+      <div class="kpi-num">23</div>
+      <span class="kpi-unit">Giorni</span>
+      <div class="kpi-desc">Tempo medio di vendita</div>
+    </div>
+    <div class="kpi-item">
+      <div class="kpi-num">98,2%</div>
+      <span class="kpi-unit">Prezzo</span>
+      <div class="kpi-desc">Raggiunto sul richiesto</div>
+    </div>
+    <div class="kpi-item">
+      <div class="kpi-num">340+</div>
+      <span class="kpi-unit">Famiglie</span>
+      <div class="kpi-desc">Accompagnate a casa</div>
+    </div>
+    <div class="kpi-item">
+      <div class="kpi-num">18</div>
+      <span class="kpi-unit">Anni</span>
+      <div class="kpi-desc">A Roma, e non solo</div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== 8. AGENTI ========== -->
+<section class="agenti-section">
+  <div class="agenti-header">
+    <div class="res-label">Il team</div>
+    <h2 class="agenti-h2">Le persone<br><em>dietro ogni acquisto.</em></h2>
+  </div>
+
+  <div class="agenti-grid">
+    <div class="agente-card">
+      <div class="agente-photo res-photo-slot">
+        <div class="res-photo-bg" style="background: linear-gradient(160deg, #C8BFB0 0%, #A89A88 100%);"></div>
+        <span class="res-photo-hint">agente · ritratto / studio</span>
+      </div>
+      <div class="agente-name">Marco Ferretti</div>
+      <div class="agente-zone">Esperto di Prati · Flaminio</div>
+      <div class="agente-tags">
+        <span class="agente-tag">Matrimoniali</span>
+        <span class="agente-tag">Investitori</span>
+        <span class="agente-tag">Prime Case</span>
+      </div>
+      <a href="#" class="agente-link">Conosci Marco &rarr;</a>
+    </div>
+
+    <div class="agente-card">
+      <div class="agente-photo res-photo-slot">
+        <div class="res-photo-bg" style="background: linear-gradient(160deg, #BFC4B8 0%, #9EA898 100%);"></div>
+        <span class="res-photo-hint">agente · ritratto / studio</span>
+      </div>
+      <div class="agente-name">Giulia Monti</div>
+      <div class="agente-zone">Esperta di Trastevere · Testaccio</div>
+      <div class="agente-tags">
+        <span class="agente-tag">Storici</span>
+        <span class="agente-tag">Giovani Acquirenti</span>
+        <span class="agente-tag">Locazioni</span>
+      </div>
+      <a href="#" class="agente-link">Conosci Giulia &rarr;</a>
+    </div>
+
+    <div class="agente-card">
+      <div class="agente-photo res-photo-slot">
+        <div class="res-photo-bg" style="background: linear-gradient(160deg, #C4BDB0 0%, #A09080 100%);"></div>
+        <span class="res-photo-hint">agente · ritratto / studio</span>
+      </div>
+      <div class="agente-name">Andrea Caruso</div>
+      <div class="agente-zone">Esperto di Parioli · EUR</div>
+      <div class="agente-tags">
+        <span class="agente-tag">Ville</span>
+        <span class="agente-tag">Piani Nobili</span>
+        <span class="agente-tag">Internazionali</span>
+      </div>
+      <a href="#" class="agente-link">Conosci Andrea &rarr;</a>
+    </div>
+  </div>
+</section>
+
+<!-- ========== 9. INSIGHTS ========== -->
+<section class="insights-section">
+  <div class="insights-header">
+    <div class="res-label">Insights · Mercato Immobiliare</div>
+    <h2 class="insights-h2">Leggi, impara, decidi meglio.</h2>
+  </div>
+
+  <div class="insights-grid">
+    <div class="insight-card">
+      <div class="insight-photo">
+        <div class="res-photo-slot">
+          <div class="res-photo-bg" style="background: linear-gradient(150deg, #C8BFB0 0%, #A89A88 100%);"></div>
+          <span class="res-photo-hint">mercato · architettura / luce</span>
+        </div>
+      </div>
+      <div class="insight-body">
+        <div class="insight-category">Mercato · Comprare</div>
+        <h3 class="insight-title">Comprare casa a Roma nel 2026: cosa è cambiato nel mercato</h3>
+        <p class="insight-excerpt">I tassi si sono stabilizzati, la domanda cresce nei quartieri storici e il mercato del nuovo si trasforma. Ecco cosa sapere prima di cercare.</p>
+        <a href="#" class="insight-link">Leggi l'articolo &rarr;</a>
+      </div>
+    </div>
+
+    <div class="insight-card">
+      <div class="insight-photo">
+        <div class="res-photo-slot">
+          <div class="res-photo-bg" style="background: linear-gradient(150deg, #BFC4B0 0%, #9EA890 100%);"></div>
+          <span class="res-photo-hint">ristrutturazione · cantiere / luce</span>
+        </div>
+      </div>
+      <div class="insight-body">
+        <div class="insight-category">Mercato · Vendere</div>
+        <h3 class="insight-title">Ristrutturare per rivendere: quando l'investimento ha senso</h3>
+        <p class="insight-excerpt">Non sempre spendere di più porta a ricavare di più. Ecco i numeri reali su quali interventi aumentano davvero il valore di vendita.</p>
+        <a href="#" class="insight-link">Leggi l'articolo &rarr;</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== 10. FOOTER ========== -->
+<footer class="footer">
+  <div class="footer-brand">RESIDENZE</div>
+  <div class="footer-copy">© 2026 Residenze Srl &nbsp;·&nbsp; Via Condotti 12 &nbsp;·&nbsp; Roma</div>
+  <div class="footer-links">
+    <a href="#">Instagram</a>
+    <a href="#">LinkedIn</a>
+    <a href="mailto:info@residenze.it">info@residenze.it</a>
+  </div>
+</footer>
+
+<script>
+// ========== DATA ==========
+const PROPERTIES = [
+  { zone: 'PRATI · ROMA',      name: 'Un attico dove il cielo è di casa',  price: '€ 820.000',   meta: '145 mq · 4 camere', hint: 'attico · terrazza / luce zenitale',         bg: 'linear-gradient(160deg,#BFC8C0 0%,#8E9E92 100%)' },
+  { zone: 'TRASTEVERE · ROMA', name: 'Il cortile segreto',                  price: '€ 480.000',   meta: '85 mq · 2 camere',  hint: 'appartamento · cortile interno / cotto',    bg: 'linear-gradient(160deg,#C4B898 0%,#9E8868 100%)' },
+  { zone: 'PARIOLI · ROMA',    name: 'Prospettiva sui tigli',               price: '€ 1.100.000', meta: '220 mq · 5 camere', hint: 'piano nobile · verde / viali alberati',      bg: 'linear-gradient(160deg,#B8C4A8 0%,#8A9E78 100%)' },
+  { zone: 'EUR · ROMA',        name: 'Geometrie razionaliste',              price: '€ 390.000',   meta: '70 mq · 2 camere',  hint: 'moderno · razionalismo / luce uniforme',    bg: 'linear-gradient(160deg,#C0BCC0 0%,#9090A0 100%)' },
+];
+
+const ZONES = {
+  prati:      { char: 'RAFFINATO.',  desc: "Strade ampie e ordinate, vicino al Vaticano e al Tevere. Il quartiere borghese per eccellenza — caffè storici, palazzi degli anni '30, silenzio.", walk: 5, scuole: 4, verde: 3, hints: ['appartamento · palazzo liberty', 'giardino privato · prati'] },
+  trastevere: { char: 'AUTENTICO.',  desc: "Selciato, trattorie, edera sui muri. Trastevere è Roma nella sua versione più umana e vitale. Di notte si anima, di mattina dorme.",             walk: 5, scuole: 3, verde: 4, hints: ['vicolo · cotto e mattoni', 'terrazza · vista tetti Roma'] },
+  parioli:    { char: 'ESCLUSIVO.',  desc: "Viali alberati, ville e palazzi signorili. Il quartiere delle famiglie romane di tradizione. Tranquillo, verde, lontano dal caos.",               walk: 3, scuole: 5, verde: 5, hints: ['villa · parco privato / liberty', 'piano nobile · parquet / stucchi'] },
+  eur:        { char: 'MODERNO.',    desc: "Architettura razionalista degli anni '40, lago, congressi. Il quartiere del business e della residenza moderna. Efficiente, ampio, connected.",   walk: 4, scuole: 4, verde: 4, hints: ['moderno · razionalismo / luce', 'vista lago · EUR / palazzi'] },
+};
+
+// ========== BUILD PROPERTY GRID ==========
+(function buildGrid() {
+  const grid = document.getElementById('prop-grid');
+  PROPERTIES.forEach((p, i) => {
+    const card = document.createElement('div');
+    card.className = 'res-prop-card' + (i === 0 ? ' prop-card-large' : ' prop-card-sm');
+    card.innerHTML = `
+      <div class="res-photo-slot" style="height:100%">
+        <div class="res-photo-bg" style="background:${p.bg}"></div>
+        <span class="res-photo-hint">${p.hint}</span>
+      </div>
+      <div class="prop-overlay">
+        <div class="res-prop-zone">${p.zone}</div>
+        <div class="res-prop-name">${p.name}</div>
+        <div class="prop-bottom-row">
+          <span class="res-prop-price">${p.price}</span>
+          <span class="res-prop-meta">${p.meta}</span>
+        </div>
+      </div>`;
+    grid.appendChild(card);
+  });
+})();
+
+// ========== ZONE SELECTOR ==========
+let activeZone = null;
+
+function selectZone(id) {
+  activeZone = id;
+  const zone = ZONES[id];
+
+  document.querySelectorAll('.zone-pill').forEach(p =>
+    p.classList.toggle('active', p.dataset.zone === id)
+  );
+
+  document.querySelector('.zone-char').textContent = zone.char;
+  document.querySelector('.zone-desc').textContent = zone.desc;
+
+  ['walk', 'scuole', 'verde'].forEach(key => {
+    const el = document.querySelector(`.zone-rating[data-key="${key}"]`);
+    if (!el) return;
+    const v = zone[key];
+    el.innerHTML = Array.from({ length: 5 }, (_, i) =>
+      `<span style="color:${i < v ? 'var(--gold)' : 'rgba(255,255,255,.2)'};font-size:.75rem">●</span>`
+    ).join('');
+  });
+
+  document.querySelectorAll('.zone-photo-hint-0,.zone-photo-hint-1').forEach((h, i) => {
+    if (zone.hints[i]) h.textContent = zone.hints[i];
+  });
+}
+
+document.querySelectorAll('.zone-pill').forEach(p => {
+  p.addEventListener('click', () => selectZone(p.dataset.zone));
+});
+
+selectZone('prati');
+
+// ========== PROPERTY ESTIMATOR ==========
+const BASE_PRICES = {
+  roma:    { appartamento: 4200, villa: 5800, attico: 6500 },
+  milano:  { appartamento: 5500, villa: 7200, attico: 8000 },
+  firenze: { appartamento: 3800, villa: 5200, attico: 5800 },
+};
+const COND_MULT = { ristrutturato: 1.15, buono: 1.0, 'da-ristrutturare': 0.82 };
+
+function computeEstimate() {
+  const city = document.getElementById('est-city').value;
+  const type = document.querySelector('.est-type-tabs .est-tab.active')?.dataset.type || 'appartamento';
+  const sqm  = parseInt(document.getElementById('sqm-slider').value);
+  const cond = document.querySelector('.est-cond-tabs .est-tab.active')?.dataset.cond || 'buono';
+
+  const base = BASE_PRICES[city]?.[type] || 4200;
+  const mult = COND_MULT[cond] || 1;
+  const mid  = base * sqm * mult;
+  const min  = Math.round(mid * 0.92 / 1000) * 1000;
+  const max  = Math.round(mid * 1.08 / 1000) * 1000;
+
+  document.getElementById('est-min').textContent = '€ ' + min.toLocaleString('it-IT');
+  document.getElementById('est-max').textContent = '€ ' + max.toLocaleString('it-IT');
+
+  const result = document.getElementById('est-result');
+  result.style.display = 'block';
+  result.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+
+// Tab activation (type + cond)
+document.querySelectorAll('.est-type-tabs .est-tab, .est-cond-tabs .est-tab').forEach(btn => {
+  btn.addEventListener('click', function () {
+    this.closest('.est-tabs').querySelectorAll('.est-tab').forEach(b => b.classList.remove('active'));
+    this.classList.add('active');
+    // Auto-recompute if result is visible
+    if (document.getElementById('est-result').style.display !== 'none') {
+      computeEstimate();
+    }
+  });
+});
+
+// Slider live update
+document.getElementById('sqm-slider').addEventListener('input', function () {
+  document.getElementById('sqm-val').textContent = this.value;
+  if (document.getElementById('est-result').style.display !== 'none') {
+    computeEstimate();
+  }
+});
+
+// Defaults
+document.querySelector('.est-type-tabs .est-tab[data-type="appartamento"]').classList.add('active');
+document.querySelector('.est-cond-tabs .est-tab[data-cond="buono"]').classList.add('active');
+
+document.getElementById('est-btn').addEventListener('click', computeEstimate);
+</script>
+</body>
+</html>
