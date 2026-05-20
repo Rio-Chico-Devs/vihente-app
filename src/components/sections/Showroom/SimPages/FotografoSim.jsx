@@ -2,25 +2,50 @@ import { useState } from 'react';
 import SimWrapper from './SimWrapper';
 import './FotografoSim.css';
 
-const GALLERY = [
-  { id: 1, label: 'WEDDING',   hint: 'wedding · cerimonia / sposi' },
-  { id: 2, label: 'PORTRAIT',  hint: 'ritratto · donna / luce naturale' },
-  { id: 3, label: 'EDITORIAL', hint: 'editorial · fashion / studio' },
-  { id: 4, label: 'WEDDING',   hint: 'wedding · dettaglio / floreale' },
-  { id: 5, label: 'PORTRAIT',  hint: 'ritratto · uomo / bianco nero' },
-  { id: 6, label: 'EDITORIAL', hint: 'editorial · campagna / outdoor' },
-  { id: 7, label: 'WEDDING',   hint: 'wedding · ricevimento / luce' },
-  { id: 8, label: 'PORTRAIT',  hint: 'ritratto / close-up' },
+const STORIES = [
+  {
+    id: 1, vol: '01', label: 'WEDDING',
+    hint: 'wedding · cerimonia / coppia',
+    tags: 'Cerimonia · Dettaglio · Ritratto',
+    type: 'landscape',
+    title: 'Wedding Photography',
+  },
+  {
+    id: 2, vol: '02', label: 'RITRATTO',
+    hint: 'ritratto · donna / luce naturale',
+    tags: 'Studio · Location · Reportage',
+    type: 'portrait',
+    title: 'Ritratto & Luce',
+  },
+  {
+    id: 3, vol: '02b', label: 'EDITORIAL',
+    hint: 'editorial · fashion / studio',
+    type: 'portrait',
+  },
+  {
+    id: 4, vol: '02c', label: 'RITRATTO',
+    hint: 'ritratto · uomo / bianco nero',
+    type: 'portrait',
+  },
+  {
+    id: 5, vol: '03', label: 'EDITORIAL',
+    hint: 'editorial · campagna / outdoor — sinistra',
+    type: 'split-left',
+    tags: 'Studio · Campagna · Cover',
+    title: 'Editorial & Fashion',
+  },
+  {
+    id: 6, vol: '03b', label: 'RITRATTO',
+    hint: 'ritratto · close-up — destra',
+    type: 'split-right',
+  },
 ];
 
-const CATS = ['TUTTI', 'WEDDING', 'PORTRAIT', 'EDITORIAL'];
+const CATS = ['TUTTI', 'WEDDING', 'RITRATTO', 'EDITORIAL'];
 
 const FotografoSim = () => {
-  const [lightboxItem, setLightboxItem] = useState(null);
-  const [catFilter,    setCatFilter]    = useState('TUTTI');
-  const [contactSent,  setContactSent]  = useState(false);
-
-  const filtered = catFilter === 'TUTTI' ? GALLERY : GALLERY.filter(g => g.label === catFilter);
+  const [catFilter,   setCatFilter]   = useState('TUTTI');
+  const [contactSent, setContactSent] = useState(false);
 
   const handleContact = () => {
     setContactSent(true);
@@ -28,188 +53,198 @@ const FotografoSim = () => {
   };
 
   return (
-    <SimWrapper templateId="fotografo" templateTitle="Fotografo" accentColor="#C8968A">
+    <SimWrapper templateId="fotografo" templateTitle="Fotografo" accentColor="#C4A882">
       <div className="fot-site">
-
-        {/* ── LABEL STRIP ── */}
-        <div className="fot-label-strip">
-          <span>FERRARI STUDIO — PORTFOLIO 2026</span>
-          <span>WEDDING · PORTRAIT · EDITORIAL</span>
-        </div>
 
         {/* ── NAV ── */}
         <nav className="fot-nav">
-          <div className="fot-nav-logo"><em>Luca Ferrari</em></div>
-          <div className="fot-nav-links">
+          <div className="fot-nav-left">
             <a className="fot-nav-link">Portfolio</a>
+            <a className="fot-nav-link">Servizi</a>
             <a className="fot-nav-link">About</a>
-            <a className="fot-nav-link">Prints</a>
-            <a className="fot-nav-link">Contatti</a>
           </div>
-          <div className="fot-nav-social">
-            <span>IG</span>
-            <span>BE</span>
+          <a className="fot-nav-logo">Luca Ferrari</a>
+          <div className="fot-nav-right">
+            <a className="fot-nav-link">IG</a>
+            <a className="fot-nav-link">BE</a>
           </div>
         </nav>
 
         {/* ── HERO ── */}
         <section className="fot-hero">
           <div className="fot-hero-photo sim-photo-slot">
-            <img src="" alt="" className="sim-photo-img" />
+            <img src="" alt="" className="sim-photo-img fot-bw" />
             <span className="sim-photo-hint">hero · ritratto / fashion editorial</span>
-            <div className="fot-hero-photo-banner">
-              <span className="fot-hero-photo-word">LIGHT.</span>
-              <span className="fot-hero-photo-sub">L'ambiente, la luce — tutto nella stessa posa.</span>
-            </div>
           </div>
-          <div className="fot-hero-right">
-            <div className="fot-hero-side-text">FERRARI STUDIO</div>
-            <div className="fot-hero-main">
-              <div className="fot-hero-issue">
-                <div className="fot-hero-num">01</div>
-                <div className="fot-hero-issue-meta">
-                  <p>THE BOOK</p>
-                  <p>Racconto per immagini</p>
-                  <p>—</p>
-                  <p>DAL <strong>2012</strong></p>
-                </div>
-              </div>
-              <div className="fot-hero-text">
-                <h1 className="fot-hero-h1">
-                  OGNI<br />
-                  LUCE<br />
-                  <em>dice.</em>
-                </h1>
-                <div className="fot-hero-rule" />
-                <p className="fot-hero-sub">Fotografia di matrimonio, ritratto e editorial. Estetica essenziale, momenti reali.</p>
-              </div>
-              <div className="fot-hero-bottom">
-                <div className="fot-hero-spec">
-                  <span>Specializzazioni</span>
-                  WEDDING · PORTRAIT · EDITORIAL
-                </div>
-                <div className="fot-hero-location">Milano<br />Roma<br />+39 02 9876543</div>
-              </div>
+          <div className="fot-hero-text">
+            <div className="fot-hero-text-top">
+              <span className="fot-label">Ferrari Studio · Est. 2012</span>
+            </div>
+            <div className="fot-hero-name">
+              <span className="fot-hero-first">Luca</span>
+              <span className="fot-hero-last">Ferrari</span>
+              <span className="fot-hero-rule" />
+              <p className="fot-hero-sub">Fotografia di matrimonio, ritratto e editorial.</p>
+            </div>
+            <div className="fot-hero-text-bottom">
+              <span className="fot-label">Milano · Roma · +39 02 9876543</span>
             </div>
           </div>
         </section>
 
-        {/* ── PORTFOLIO STRIP ── */}
-        <div className="fot-port-strip">
-          <span className="fot-port-title">IL PORTFOLIO</span>
-          <div className="fot-port-cats">
-            {CATS.map(cat => (
-              <button
-                key={cat}
-                className={`fot-cat${catFilter === cat ? ' fot-cat--active' : ''}`}
-                onClick={() => setCatFilter(cat)}
-              >{cat}</button>
+        {/* ── FILTER STRIP ── */}
+        <div className="fot-filter-strip">
+          <span className="fot-label">Portfolio</span>
+          <div className="fot-filter-tabs">
+            {CATS.map((cat, i) => (
+              <>
+                {i > 0 && <span key={`sep-${cat}`} className="fot-filter-sep">·</span>}
+                <button
+                  key={cat}
+                  className={`fot-filter-tab${catFilter === cat ? ' fot-filter-tab--active' : ''}`}
+                  onClick={() => setCatFilter(cat)}
+                >{cat}</button>
+              </>
             ))}
           </div>
-          <span className="fot-port-count">{filtered.length.toString().padStart(2, '0')} lavori</span>
+          <span className="fot-filter-count">08 Lavori</span>
         </div>
 
-        {/* ── GALLERY ── */}
-        <section className="fot-gallery">
-          <div className="fot-gallery-side">PORTFOLIO</div>
-          <div className="fot-gallery-grid">
-            {filtered.map((item, i) => (
-              <div
-                key={item.id}
-                className={`fot-thumb${i === 0 ? ' fot-thumb--tall' : ''}${i === 3 ? ' fot-thumb--wide' : ''} sim-photo-slot`}
-                onClick={() => setLightboxItem(item)}
-              >
-                <img src="" alt={item.label} className="sim-photo-img" />
-                <span className="sim-photo-hint">{item.hint}</span>
-                {i % 3 === 0 && <div className="fot-pink-accent" />}
-                <div className="fot-thumb-overlay">
-                  <span className="fot-thumb-label">{item.label}</span>
-                  <span className="fot-thumb-num">0{item.id}</span>
-                </div>
-              </div>
-            ))}
+        {/* ── GALLERY STORY 1 — full-width landscape ── */}
+        <section className="fot-story1">
+          <div className="fot-story1-photo sim-photo-slot">
+            <img src="" alt="Wedding ceremony" className="sim-photo-img fot-bw" />
+            <span className="sim-photo-hint">wedding · cerimonia / coppia</span>
+          </div>
+          <div className="fot-story1-caption">
+            <span className="fot-caption-vol">Vol. 01</span>
+            <span className="fot-caption-title">Wedding Photography</span>
+            <span className="fot-caption-tags">Cerimonia · Dettaglio · Ritratto</span>
           </div>
         </section>
 
-        {/* ── BARON SPREAD — big letter + photo ── */}
-        <section className="fot-baron">
-          <div className="fot-baron-letter" aria-hidden="true" />
-          <div className="fot-baron-photo sim-photo-slot">
-            <img src="" alt="" className="sim-photo-img" />
-            <span className="sim-photo-hint">editorial · fashion / studio shoot</span>
-            <div className="fot-baron-caption">
-              <span className="fot-baron-caption-eyebrow">FERRARI STUDIO · EDITORIAL</span>
-              <span className="fot-baron-caption-issue">ISSUE 03 / 2026</span>
+        {/* ── GALLERY STORY 2 — 3 col portrait ── */}
+        <section className="fot-story2">
+          <div className="fot-story2-grid">
+            <div className="fot-story2-item">
+              <div className="fot-story2-photo sim-photo-slot">
+                <img src="" alt="Ritratto sposa" className="sim-photo-img fot-bw" />
+                <span className="sim-photo-hint">wedding · ritratto / sposa</span>
+              </div>
+              <div className="fot-story2-caption"><strong>Ritratto</strong> / Bridal portrait, Milano 2025</div>
+            </div>
+            <div className="fot-story2-item">
+              <div className="fot-story2-photo sim-photo-slot">
+                <img src="" alt="Fashion studio" className="sim-photo-img fot-bw" />
+                <span className="sim-photo-hint">editorial · fashion / studio</span>
+              </div>
+              <div className="fot-story2-caption"><strong>Editorial</strong> / Studio session, Roma 2025</div>
+            </div>
+            <div className="fot-story2-item">
+              <div className="fot-story2-photo sim-photo-slot">
+                <img src="" alt="Editorial portrait" className="sim-photo-img fot-bw" />
+                <span className="sim-photo-hint">editorial · campagna / outdoor</span>
+              </div>
+              <div className="fot-story2-caption"><strong>Editorial</strong> / Cover shoot, Venezia 2024</div>
             </div>
           </div>
         </section>
 
-        {/* ── ABOUT ── */}
-        <section className="fot-about">
-          <div className="fot-about-inner">
-            <div className="fot-about-left">
-              <p className="fot-eyebrow">IL FOTOGRAFO</p>
-              <h2 className="fot-about-h2">Luca<br /><em>Ferrari</em></h2>
-              <p className="fot-about-body">
-                Fotografo professionista con oltre dodici anni di esperienza nel racconto per immagini.
-                Specializzato in wedding, ritrattistica e editorial per riviste internazionali.
-              </p>
-              <p className="fot-about-body">
-                Il mio approccio: luce naturale, momenti autentici, estetica essenziale.
-                Ogni progetto è una collaborazione, non una commissione.
-              </p>
-              <div className="fot-about-stats">
-                <div className="fot-stat"><strong>340+</strong><span>matrimoni</span></div>
-                <div className="fot-stat"><strong>12</strong><span>anni</span></div>
-                <div className="fot-stat"><strong>18</strong><span>paesi</span></div>
+        {/* ── GALLERY STORY 3 — split 58/42 ── */}
+        <section className="fot-story3">
+          <div className="fot-story3-left sim-photo-slot">
+            <img src="" alt="Photography light" className="sim-photo-img fot-bw" />
+            <span className="sim-photo-hint">editorial · luce / campagna</span>
+          </div>
+          <div className="fot-story3-right sim-photo-slot">
+            <img src="" alt="Portrait close-up" className="sim-photo-img fot-bw" />
+            <span className="sim-photo-hint">ritratto · close-up / luce naturale</span>
+          </div>
+        </section>
+        <div className="fot-story3-caption">
+          <span className="fot-caption-vol">Vol. 02</span>
+          <span className="fot-caption-title">Ritratto &amp; Luce</span>
+          <span className="fot-caption-tags">Studio · Location · Reportage</span>
+        </div>
+
+        {/* ── FEATURE SPREAD ── */}
+        <section className="fot-feature">
+          <div className="fot-feature-text">
+            <span className="fot-label">Il Fotografo</span>
+            <div className="fot-feature-name">
+              <span className="fot-feature-first">Luca</span>
+              <span className="fot-feature-last">Ferrari</span>
+            </div>
+            <p className="fot-feature-body">
+              Con oltre dodici anni di esperienza nell'arte della fotografia, Luca Ferrari ha costruito
+              un linguaggio visivo capace di fermare il tempo senza soffocare l'emozione.
+              Ogni scatto è un dialogo tra luce e silenzio.
+            </p>
+            <p className="fot-feature-body">
+              Basato tra Milano e Roma, lavora con coppie, brand editoriali e riviste internazionali.
+              Il suo approccio è sempre lo stesso: sottrazione, non aggiunta.
+            </p>
+            <div className="fot-feature-stats">
+              <div className="fot-stat">
+                <span className="fot-stat-num">340+</span>
+                <span className="fot-stat-lbl">Matrimoni</span>
+              </div>
+              <span className="fot-stat-sep">·</span>
+              <div className="fot-stat">
+                <span className="fot-stat-num">12</span>
+                <span className="fot-stat-lbl">Anni</span>
+              </div>
+              <span className="fot-stat-sep">·</span>
+              <div className="fot-stat">
+                <span className="fot-stat-num">18</span>
+                <span className="fot-stat-lbl">Paesi</span>
               </div>
             </div>
-            <div className="fot-about-photo-col">
-              <div className="fot-about-photo sim-photo-slot">
-                <img src="" alt="" className="sim-photo-img" />
-                <span className="sim-photo-hint">fotografo · ritratto about</span>
-                <span className="fot-about-tag">MASTER</span>
-              </div>
-              <div className="fot-about-pink-block" />
-            </div>
+          </div>
+          <div className="fot-feature-photo sim-photo-slot">
+            <img src="" alt="Ritratto del fotografo" className="sim-photo-img fot-bw" />
+            <span className="sim-photo-hint">fotografo · ritratto / studio</span>
           </div>
         </section>
 
         {/* ── QUOTE ── */}
-        <div className="fot-quote-strip">
-          <span className="fot-quote-mark" aria-hidden="true">"</span>
-          <p className="fot-quote-text">La fotografia è il silenzio<br /><em>che parla.</em></p>
-          <span className="fot-quote-source">— LUCA FERRARI, MASTER PHOTOGRAPHER</span>
-        </div>
+        <section className="fot-quote">
+          <p className="fot-quote-text">
+            La fotografia è il silenzio<br />
+            <em className="fot-quote-accent">che parla.</em>
+          </p>
+          <span className="fot-quote-rule" />
+          <span className="fot-quote-attr">— Luca Ferrari</span>
+        </section>
 
         {/* ── CONTACT ── */}
         <section className="fot-contact">
           <div className="fot-contact-left">
-            <p className="fot-eyebrow fot-eyebrow--light">LAVORIAMO INSIEME</p>
+            <span className="fot-label">Contatti</span>
             <h2 className="fot-contact-h2">Hai un<br /><em>progetto?</em></h2>
-            <p className="fot-contact-sub">Racconta la tua storia. Rispondo entro 24 ore.</p>
+            <p className="fot-contact-sub">Raccontami la tua storia. Rispondo entro 24 ore per pianificare insieme la vostra giornata speciale.</p>
             {contactSent ? (
               <div className="fot-contact-sent">Messaggio inviato — ti rispondo presto.</div>
             ) : (
               <div className="fot-contact-form">
-                <input className="fot-contact-input" type="email" placeholder="la tua email" />
-                <button className="fot-contact-btn" onClick={handleContact}>Scrivimi →</button>
+                <input className="fot-contact-input" type="email" placeholder="La tua email" />
+                <button className="fot-contact-btn" onClick={handleContact}>Scrivimi</button>
               </div>
             )}
           </div>
           <div className="fot-contact-right">
             <div className="fot-contact-info">
-              <div className="fot-contact-info-item">
-                <div className="fot-contact-info-label">Studio</div>
-                <div className="fot-contact-info-value">Via Brera 28, Milano</div>
+              <div className="fot-contact-item">
+                <span className="fot-label">Studio</span>
+                <span className="fot-contact-val">Via Brera 12, Milano</span>
               </div>
-              <div className="fot-contact-info-item">
-                <div className="fot-contact-info-label">Email</div>
-                <div className="fot-contact-info-value">luca@lucaferrari.it</div>
+              <div className="fot-contact-item">
+                <span className="fot-label">Email</span>
+                <span className="fot-contact-val">luca@ferraristudio.it</span>
               </div>
-              <div className="fot-contact-info-item">
-                <div className="fot-contact-info-label">Telefono</div>
-                <div className="fot-contact-info-value">+39 02 9876543</div>
+              <div className="fot-contact-item">
+                <span className="fot-label">Telefono</span>
+                <span className="fot-contact-val">+39 02 9876543</span>
               </div>
             </div>
           </div>
@@ -217,31 +252,16 @@ const FotografoSim = () => {
 
         {/* ── FOOTER ── */}
         <footer className="fot-footer">
-          <div className="fot-footer-logo"><em>Luca Ferrari</em></div>
-          <div className="fot-footer-center">© 2026 Ferrari Studio · Milano<br />P.IVA 01234567890</div>
-          <div className="fot-footer-social">
-            <span>Instagram</span>
-            <span>Behance</span>
-            <span>Vimeo</span>
+          <span className="fot-footer-logo">Luca Ferrari</span>
+          <span className="fot-footer-copy">© 2026 Ferrari Studio · Milano</span>
+          <div className="fot-footer-links">
+            <a className="fot-footer-link">Instagram</a>
+            <a className="fot-footer-link">Behance</a>
+            <a className="fot-footer-link">Vimeo</a>
           </div>
         </footer>
 
       </div>
-
-      {/* ── LIGHTBOX ── */}
-      {lightboxItem && (
-        <div className="fot-lightbox" onClick={() => setLightboxItem(null)}>
-          <button className="fot-lightbox-close" onClick={() => setLightboxItem(null)}>✕</button>
-          <div className="fot-lightbox-img sim-photo-slot" onClick={e => e.stopPropagation()}>
-            <img src="" alt={lightboxItem.label} className="sim-photo-img" />
-            <span className="sim-photo-hint">{lightboxItem.hint}</span>
-            <div className="fot-lightbox-caption">
-              <span className="fot-lightbox-label">{lightboxItem.label}</span>
-              <span className="fot-lightbox-num">#{lightboxItem.id.toString().padStart(3, '0')}</span>
-            </div>
-          </div>
-        </div>
-      )}
     </SimWrapper>
   );
 };

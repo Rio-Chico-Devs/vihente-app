@@ -204,36 +204,35 @@ const SalonePreview = () => (
 const FotografoPreview = () => (
   <div className="sr-preview sr-fotografo">
     <nav className="sr-f-nav">
-      <span className="sr-f-logo"><em>Luca Ferrari</em></span>
       <div className="sr-f-nav-links"><i /><i /><i /></div>
+      <span className="sr-f-logo"><em>Luca Ferrari</em></span>
+      <div className="sr-f-nav-links sr-f-nav-right"><i /><i /></div>
     </nav>
     <div className="sr-f-hero">
-      <div className="sr-f-hero-photo">
-        <div className="sr-f-hero-banner">
-          <span className="sr-f-banner-word">LIGHT.</span>
+      <div className="sr-f-hero-photo" />
+      <div className="sr-f-hero-text">
+        <div className="sr-f-hero-eyebrow" />
+        <div className="sr-f-hero-name">
+          <span className="sr-f-name-first">Luca</span>
+          <span className="sr-f-name-last">Ferrari</span>
+          <div className="sr-f-hero-rule" />
+          <div className="sr-f-hero-sub" />
         </div>
-      </div>
-      <div className="sr-f-hero-right">
-        <div className="sr-f-big-num">01</div>
-        <div className="sr-f-h1-group">
-          <div className="sr-f-h1" />
-          <div className="sr-f-h1 sr-f-h1--2" />
-          <div className="sr-f-h1--accent" />
-        </div>
+        <div className="sr-f-hero-eyebrow" />
       </div>
     </div>
-    <div className="sr-f-port-strip">
-      <span className="sr-f-port-title">IL PORTFOLIO</span>
-      <div className="sr-f-cats">
-        <span>TUTTI</span><span>WEDDING</span><span>PORTRAIT</span>
+    <div className="sr-f-filter-strip">
+      <div className="sr-f-filter-tabs">
+        <span className="sr-f-tab sr-f-tab--active">TUTTI</span>
+        <span className="sr-f-sep">·</span>
+        <span className="sr-f-tab">WEDDING</span>
+        <span className="sr-f-sep">·</span>
+        <span className="sr-f-tab">RITRATTO</span>
       </div>
     </div>
-    <div className="sr-f-grid">
-      {[0,1,2,3].map(i => (
-        <div key={i} className={`sr-f-gtile${i===0?' sr-f-gtile--tall':''}`}>
-          {i===0 && <div className="sr-f-pink-dot" />}
-        </div>
-      ))}
+    <div className="sr-f-story1" />
+    <div className="sr-f-story2">
+      <div className="sr-f-s2-col" /><div className="sr-f-s2-col" /><div className="sr-f-s2-col" />
     </div>
   </div>
 );
