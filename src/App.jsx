@@ -50,6 +50,8 @@ const EcommerceSim = lazy(() => import('./components/sections/Showroom/SimPages/
 const SaloneSim = lazy(() => import('./components/sections/Showroom/SimPages/SaloneSim'));
 const FotografoSim = lazy(() => import('./components/sections/Showroom/SimPages/FotografoSim'));
 const BarbiereSim = lazy(() => import('./components/sections/Showroom/SimPages/BarbiereSim'));
+const AgenziaViaggioSim = lazy(() => import('./components/sections/Showroom/SimPages/AgenziaViaggioSim'));
+const ImmobiliareSim = lazy(() => import('./components/sections/Showroom/SimPages/ImmobiliareSim'));
 const Contacts = lazy(() => import('./components/sections/Contacts/Contacts'));
 const PrivacyPolicy = lazy(() => import('./components/sections/PrivacyPolicy/PrivacyPolicy'));
 const CookiePolicy = lazy(() => import('./components/sections/CookiePolicy/CookiePolicy'));
@@ -157,6 +159,8 @@ function App() {
                     <Route path="/showroom/salone" element={<SaloneSim />} />
                     <Route path="/showroom/fotografo" element={<FotografoSim />} />
                     <Route path="/showroom/barbiere" element={<BarbiereSim />} />
+                    <Route path="/showroom/agenzia-viaggio" element={<AgenziaViaggioSim />} />
+                    <Route path="/showroom/immobiliare" element={<ImmobiliareSim />} />
                     <Route path="/contatti" element={<Contacts />} />
                     <Route path="/privacy-policy" element={<PrivacyPolicy />} />
                     <Route path="/cookie-policy" element={<CookiePolicy />} />

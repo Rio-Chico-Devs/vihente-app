@@ -3,13 +3,15 @@ import { useNavigate } from 'react-router-dom';
 import { useGuide } from '../../../contexts/GuideContext';
 
 const SIM_ROUTES = {
-  psicologo: '/showroom/psicologo',
-  avvocati:  '/showroom/avvocati',
-  campagna:  '/showroom/campagna',
-  ecommerce: '/showroom/ecommerce',
-  salone:    '/showroom/salone',
-  fotografo: '/showroom/fotografo',
-  barbiere:  '/showroom/barbiere',
+  psicologo:      '/showroom/psicologo',
+  avvocati:       '/showroom/avvocati',
+  campagna:       '/showroom/campagna',
+  ecommerce:      '/showroom/ecommerce',
+  salone:         '/showroom/salone',
+  fotografo:      '/showroom/fotografo',
+  barbiere:       '/showroom/barbiere',
+  'agenzia-viaggio': '/showroom/agenzia-viaggio',
+  immobiliare:    '/showroom/immobiliare',
 };
 import './Showroom.css';
 
@@ -69,6 +71,22 @@ const templates = [
     description: 'Design editoriale magazine: hero split, ticker animato, griglia servizi con prenotazione rapida e galleria asimmetrica.',
     tags: ['Editoriale', 'Bold', 'Maschile'],
     guide: 'Template barbershop. Palette giallo/nero, Barlow Condensed 900, layout magazine con outline numbers — identità forte e prenotazione integrata.',
+  },
+  {
+    id: 'agenzia-viaggio',
+    sector: 'TRAVEL AGENCY',
+    title: 'Agenzia Viaggio',
+    description: 'Destinazioni con palette bandiera, country story interattiva, convertitore valuta live e pacchetti editoriali. Ogni paese, una scoperta.',
+    tags: ['Editoriale', 'Interattivo', 'Raffinato'],
+    guide: 'Template agenzia viaggio ALTROVE. DM Serif Display + Plus Jakarta Sans, palette warm ivory, 6 destinazioni con flag-color system — country story interattiva con currency converter live.',
+  },
+  {
+    id: 'immobiliare',
+    sector: 'REAL ESTATE',
+    title: 'Agenzia Immobiliare',
+    description: 'Doppio funnel acquirente/venditore: zone selector con rating, stimatore valore in tempo reale e griglia editoriale proprietà.',
+    tags: ['Premium', 'Convertente', 'Elegante'],
+    guide: 'Template immobiliare RESIDENZE. Fraunces variable + Epilogue, verde scuro + gold, doppio CTA hero — zone selector interattivo, estimator prezzo, grid editoriale proprietà.',
   },
 ];
 
@@ -273,6 +291,70 @@ const BarbierePreview = () => (
   </div>
 );
 
+const AgenziaViaggioPreview = () => (
+  <div className="sr-preview sr-agenzia-viaggio">
+    <nav className="sr-av-nav">
+      <div className="sr-av-nav-links"><i /><i /><i /></div>
+      <span className="sr-av-logo">ALTROVE</span>
+      <div className="sr-av-nav-right"><i /><span className="sr-av-pill">CERCA</span></div>
+    </nav>
+    <div className="sr-av-hero">
+      <div className="sr-av-hero-left">
+        <div className="sr-av-eyebrow" />
+        <div className="sr-av-headline">
+          <div className="sr-av-h1-normal">Il tuo prossimo</div>
+          <div className="sr-av-h1-italic">altrove.</div>
+          <div className="sr-av-rule" />
+          <div className="sr-av-sub" />
+        </div>
+      </div>
+      <div className="sr-av-hero-right">
+        <div className="sr-av-selector" />
+        <div className="sr-av-selector" />
+        <div className="sr-av-selector" />
+        <div className="sr-av-cta">COSTRUISCI IL VIAGGIO</div>
+      </div>
+    </div>
+    <div className="sr-av-dest-grid">
+      {['#BC002D','#C1272D','#003897','#D91023','#006600','#007E3A'].map((c, i) => (
+        <div key={i} className="sr-av-dest-card" style={{ background: c }} />
+      ))}
+    </div>
+  </div>
+);
+
+const ImmobiliarePreview = () => (
+  <div className="sr-preview sr-immobiliare">
+    <nav className="sr-im-nav">
+      <div className="sr-im-nav-links"><i /><i /><i /></div>
+      <span className="sr-im-logo">RESIDENZE</span>
+      <div className="sr-im-nav-right">
+        <span className="sr-im-pill-outline">Cerca</span>
+        <span className="sr-im-pill-gold">Vendi</span>
+      </div>
+    </nav>
+    <div className="sr-im-hero">
+      <div className="sr-im-hero-left">
+        <div className="sr-im-eyebrow" />
+        <div className="sr-im-h1-normal">Ogni casa ha</div>
+        <div className="sr-im-h1-italic">la sua storia.</div>
+        <div className="sr-im-rule" />
+        <div className="sr-im-sub" />
+        <div className="sr-im-ctas">
+          <div className="sr-im-btn-green" />
+          <div className="sr-im-btn-border" />
+        </div>
+      </div>
+      <div className="sr-im-hero-photo" />
+    </div>
+    <div className="sr-im-prop-grid">
+      <div className="sr-im-prop-large" style={{ background: 'linear-gradient(160deg,#BFC8C0,#8E9E92)' }} />
+      <div className="sr-im-prop-sm" style={{ background: 'linear-gradient(160deg,#C4B898,#9E8868)' }} />
+      <div className="sr-im-prop-sm" style={{ background: 'linear-gradient(160deg,#B8C4A8,#8A9E78)' }} />
+    </div>
+  </div>
+);
+
 const PREVIEWS = {
   psicologo: PsicologoPreview,
   avvocati: AvvocatiPreview,
@@ -281,6 +363,8 @@ const PREVIEWS = {
   salone: SalonePreview,
   fotografo: FotografoPreview,
   barbiere: BarbierePreview,
+  'agenzia-viaggio': AgenziaViaggioPreview,
+  immobiliare: ImmobiliarePreview,
 };
 
 /* ─── Main Component ──────────────────────────────────────────────────────── */

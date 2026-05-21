@@ -1,0 +1,853 @@
+/* ════════════════════════════════════════════════════════════════
+   ALTROVE — Agenzia di Viaggio
+   Palette: #F8F4EE · #1C1814 · #C8A96E · #E6DFD5
+   Fonts: DM Serif Display (ital) · Plus Jakarta Sans
+════════════════════════════════════════════════════════════════ */
+
+@import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Plus+Jakarta+Sans:wght@400;500;600&display=swap');
+
+/* ── VARIABLES ── */
+.alt-site {
+  --bg:   #F8F4EE;
+  --ink:  #1C1814;
+  --gold: #C8A96E;
+  --rule: #E6DFD5;
+  --grey: #8A8278;
+  --pale: #F0EAE0;
+  --wh:   #FFFFFF;
+
+  background: var(--bg);
+  color: var(--ink);
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-weight: 400;
+  font-size: 1rem;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── LABELS ── */
+.alt-label {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-weight: 600;
+  font-size: .6rem;
+  letter-spacing: .3em;
+  text-transform: uppercase;
+  color: var(--grey);
+}
+.alt-label-gold {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-weight: 600;
+  font-size: .6rem;
+  letter-spacing: .3em;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+
+/* ════════════════ NAV ════════════════ */
+
+.alt-nav {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: rgba(248, 244, 238, .92);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--rule);
+  padding: 0 3rem;
+  height: 3.5rem;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+}
+
+.alt-nav-left {
+  display: flex;
+  gap: 1.5rem;
+  align-items: center;
+}
+
+.alt-nav-right {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 1.2rem;
+}
+
+.alt-nav-link {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-weight: 600;
+  font-size: .62rem;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  color: var(--grey);
+  text-decoration: none;
+  cursor: pointer;
+  transition: color .2s;
+}
+.alt-nav-link:hover { color: var(--ink); }
+
+.alt-nav-center {
+  font-family: 'DM Serif Display', serif;
+  font-size: 1.4rem;
+  color: var(--ink);
+  letter-spacing: .04em;
+  text-align: center;
+}
+
+.alt-nav-pill {
+  background: var(--ink);
+  color: var(--wh);
+  padding: .35rem .9rem;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-weight: 600;
+  font-size: .6rem;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  text-decoration: none;
+  border-radius: 2px;
+  cursor: pointer;
+  transition: background .2s;
+}
+.alt-nav-pill:hover { background: #3a3330; }
+
+/* ════════════════ HERO ════════════════ */
+
+.alt-hero {
+  display: grid;
+  grid-template-columns: 58fr 42fr;
+  min-height: calc(100vh - 3.5rem);
+}
+
+.alt-hero-left {
+  padding: 5rem 4rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  border-right: 1px solid var(--rule);
+}
+
+.alt-hero-eyebrow { margin-bottom: 3rem; }
+
+.alt-hero-headline {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.alt-hero-h1-normal {
+  font-family: 'DM Serif Display', serif;
+  font-style: normal;
+  font-weight: 400;
+  font-size: clamp(3.5rem, 6vw, 5rem);
+  line-height: 1.05;
+  color: var(--ink);
+  margin: 0;
+}
+
+.alt-hero-h1-italic {
+  font-family: 'DM Serif Display', serif;
+  font-style: italic;
+  font-weight: 400;
+  font-size: clamp(5rem, 9vw, 8rem);
+  line-height: .9;
+  color: var(--ink);
+  margin: 0;
+}
+
+.alt-hero-rule {
+  width: 100%;
+  height: 1px;
+  background: var(--gold);
+  margin-top: 2rem;
+  margin-bottom: 1.5rem;
+}
+
+.alt-hero-subtext {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-weight: 400;
+  font-size: .9rem;
+  line-height: 1.8;
+  color: var(--grey);
+  max-width: 44ch;
+}
+
+.alt-hero-bottom { margin-top: 2rem; }
+
+.alt-hero-scroll-label {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-weight: 600;
+  font-size: .6rem;
+  letter-spacing: .3em;
+  text-transform: uppercase;
+  color: var(--gold);
+  text-decoration: none;
+}
+
+/* Hero Right */
+.alt-hero-right {
+  background: var(--pale);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 4rem 3rem;
+  gap: 1.5rem;
+}
+
+.alt-hero-selectors { display: flex; flex-direction: column; gap: 1.2rem; }
+
+.alt-selector-wrap { position: relative; }
+
+.alt-selector-wrap::after {
+  content: '▾';
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: .7rem;
+  color: var(--grey);
+  pointer-events: none;
+}
+
+.alt-selector {
+  border: none;
+  border-bottom: 1px solid var(--ink);
+  padding: .6rem 0;
+  width: 100%;
+  background: transparent;
+  font-family: 'DM Serif Display', serif;
+  font-style: italic;
+  font-size: 1rem;
+  color: var(--ink);
+  appearance: none;
+  cursor: pointer;
+  outline: none;
+}
+
+.alt-hero-cta {
+  display: block;
+  width: 100%;
+  background: var(--ink);
+  color: var(--wh);
+  padding: .9rem;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-weight: 600;
+  font-size: .65rem;
+  letter-spacing: .25em;
+  text-transform: uppercase;
+  text-align: center;
+  border: none;
+  border-radius: 2px;
+  cursor: pointer;
+  transition: background .2s;
+  margin-top: .5rem;
+}
+.alt-hero-cta:hover { background: #3a3330; }
+
+/* ════════════════ DESTINATION STRIP ════════════════ */
+
+.alt-dest-strip {
+  background: var(--pale);
+  border-top: 1px solid var(--rule);
+  border-bottom: 1px solid var(--rule);
+  padding: .8rem 3rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.alt-dest-filters {
+  display: flex;
+  gap: 1.5rem;
+  align-items: center;
+}
+
+.alt-filter-tab {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-weight: 600;
+  font-size: .6rem;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  color: var(--grey);
+  cursor: pointer;
+  padding-bottom: 2px;
+  border-bottom: 2px solid transparent;
+  transition: color .2s, border-color .2s;
+  user-select: none;
+}
+.alt-filter-tab--active {
+  color: var(--ink);
+  border-bottom-color: var(--gold);
+}
+.alt-filter-tab:hover { color: var(--ink); }
+
+/* ════════════════ DESTINATION GRID ════════════════ */
+
+.alt-dest-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2px;
+}
+
+.alt-dest-card {
+  aspect-ratio: 5/4;
+  padding: 1.8rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transition: filter .25s, outline .1s;
+}
+
+.alt-dest-card::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 5px;
+  background: var(--card-accent, #fff);
+}
+
+.alt-dest-card--active {
+  outline: 3px solid var(--ink);
+  outline-offset: -3px;
+  filter: none !important;
+}
+
+.alt-dest-card:not(.alt-dest-card--active) {
+  filter: brightness(.88) saturate(.7);
+}
+.alt-dest-card:not(.alt-dest-card--active):hover {
+  filter: brightness(.95) saturate(.85);
+}
+
+.alt-card-native {
+  font-family: 'DM Serif Display', serif;
+  font-style: italic;
+  font-size: .85rem;
+  color: rgba(255,255,255,.45);
+  align-self: flex-start;
+}
+
+.alt-card-bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+}
+
+.alt-card-name {
+  font-family: 'DM Serif Display', serif;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 1.6rem;
+  color: #fff;
+  line-height: 1.1;
+}
+
+.alt-card-tagline {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-weight: 400;
+  font-size: .7rem;
+  color: rgba(255,255,255,.7);
+  margin-top: .25rem;
+  max-width: 26ch;
+}
+
+.alt-card-meta {
+  text-align: right;
+  display: flex;
+  flex-direction: column;
+  gap: .15rem;
+}
+
+.alt-card-price, .alt-card-nights {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-weight: 600;
+  font-size: .55rem;
+  letter-spacing: .15em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,.6);
+  white-space: nowrap;
+}
+
+/* ════════════════ COUNTRY STORY ════════════════ */
+
+.alt-country-story {
+  background: var(--wh);
+  border-top: 4px solid #BC002D;
+  transition: border-color .3s;
+}
+
+.alt-story-inner {
+  display: grid;
+  grid-template-columns: 45fr 55fr;
+}
+
+.alt-story-left {
+  padding: 4rem 3rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.alt-story-watermark {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-family: 'DM Serif Display', serif;
+  font-style: italic;
+  font-size: clamp(5rem, 10vw, 8rem);
+  color: rgba(0,0,0,.05);
+  pointer-events: none;
+  white-space: nowrap;
+  z-index: 0;
+  transition: all .3s;
+}
+
+.alt-story-content { position: relative; z-index: 1; }
+
+.alt-story-eyebrow { margin-bottom: 1.5rem; }
+
+.alt-story-country-name {
+  font-family: 'DM Serif Display', serif;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 3rem;
+  color: var(--ink);
+  line-height: 1.1;
+  margin-bottom: 1rem;
+  transition: all .3s;
+}
+
+.alt-story-intro {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-weight: 400;
+  font-size: .9rem;
+  line-height: 1.8;
+  color: var(--grey);
+  max-width: 40ch;
+  margin-bottom: 1.5rem;
+}
+
+.alt-story-season-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: .4rem;
+  border: 1px solid var(--rule);
+  padding: .3rem .8rem;
+  border-radius: 2px;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-weight: 600;
+  font-size: .55rem;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  color: var(--grey);
+  margin-bottom: 1.5rem;
+}
+
+.alt-story-moments-label { margin-bottom: .75rem; }
+
+.alt-story-moments {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: .6rem;
+}
+
+.alt-story-moments li {
+  border-left: 2px solid var(--gold);
+  padding-left: .8rem;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: .85rem;
+  color: var(--ink);
+  line-height: 1.4;
+}
+
+/* Story Right */
+.alt-story-right {
+  padding: 0;
+  border-left: 1px solid var(--rule);
+}
+
+.alt-story-photo-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2px;
+  height: 100%;
+}
+
+.alt-photo-slot {
+  background: var(--pale);
+  aspect-ratio: 4/3;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Story Bottom Strip */
+.alt-story-bottom-strip {
+  background: var(--pale);
+  border-top: 1px solid var(--rule);
+  padding: 2rem 3rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 2rem;
+}
+
+/* ════════════════ CURRENCY WIDGET ════════════════ */
+
+.alt-currency-widget {
+  display: flex;
+  flex-direction: column;
+  gap: .6rem;
+}
+
+.alt-currency-row {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.alt-currency-from, .alt-currency-to {
+  display: flex;
+  align-items: baseline;
+  gap: .5rem;
+}
+
+.alt-currency-code {
+  font-family: 'DM Serif Display', serif;
+  font-style: italic;
+  font-size: 2.5rem;
+  color: var(--ink);
+  line-height: 1;
+}
+
+.alt-currency-input-wrap input[type="number"] {
+  font-family: 'DM Serif Display', serif;
+  font-style: normal;
+  font-size: 2rem;
+  color: var(--ink);
+  border: none;
+  border-bottom: 2px solid var(--ink);
+  background: transparent;
+  outline: none;
+  width: 8rem;
+  line-height: 1;
+  padding-bottom: .1rem;
+  appearance: textfield;
+  -moz-appearance: textfield;
+}
+.alt-currency-input-wrap input[type="number"]::-webkit-inner-spin-button,
+.alt-currency-input-wrap input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+}
+
+.alt-currency-arrow {
+  font-size: 2.5rem;
+  color: var(--gold);
+  line-height: 1;
+}
+
+.alt-currency-result {
+  font-family: 'DM Serif Display', serif;
+  font-style: italic;
+  font-size: 2.5rem;
+  line-height: 1;
+  transition: color .3s;
+}
+
+.alt-rate-text {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-weight: 600;
+  font-size: .55rem;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  color: var(--grey);
+}
+
+.alt-story-cta-btn {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-weight: 600;
+  font-size: .65rem;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  color: var(--ink);
+  text-decoration: none;
+  border: 1px solid var(--ink);
+  padding: .8rem 1.5rem;
+  border-radius: 2px;
+  white-space: nowrap;
+  transition: background .2s, color .2s;
+  cursor: pointer;
+  background: transparent;
+}
+.alt-story-cta-btn:hover { background: var(--ink); color: var(--wh); }
+
+/* ════════════════ PACKAGES ════════════════ */
+
+.alt-packages-section { padding: 5rem 0 0; }
+
+.alt-packages-header {
+  padding: 0 3rem 2.5rem;
+  border-bottom: 1px solid var(--rule);
+}
+
+.alt-packages-h2 {
+  font-family: 'DM Serif Display', serif;
+  font-style: italic;
+  font-size: 2.5rem;
+  color: var(--ink);
+  margin-top: .5rem;
+  font-weight: 400;
+}
+
+.alt-package-strip {
+  display: grid;
+  grid-template-columns: 35fr 65fr;
+  border-bottom: 1px solid var(--rule);
+  min-height: 16rem;
+}
+
+.alt-package-photo {
+  aspect-ratio: 3/2;
+  background: var(--pale);
+  position: relative;
+  overflow: hidden;
+}
+
+.alt-package-text {
+  padding: 3rem 4rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: .8rem;
+}
+
+.alt-package-title {
+  font-family: 'DM Serif Display', serif;
+  font-style: italic;
+  font-size: 2rem;
+  color: var(--ink);
+  line-height: 1.2;
+  font-weight: 400;
+  margin: 0;
+}
+
+.alt-package-meta {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.alt-package-pill {
+  border: 1px solid var(--rule);
+  padding: .25rem .7rem;
+  border-radius: 2px;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-weight: 600;
+  font-size: .55rem;
+  letter-spacing: .15em;
+  text-transform: uppercase;
+  color: var(--grey);
+}
+
+.alt-package-desc {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: .85rem;
+  color: var(--grey);
+  line-height: 1.75;
+  max-width: 55ch;
+}
+
+.alt-package-link {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-weight: 600;
+  font-size: .6rem;
+  letter-spacing: .25em;
+  text-transform: uppercase;
+  color: var(--gold);
+  text-decoration: none;
+  cursor: pointer;
+  transition: color .2s;
+}
+.alt-package-link:hover { color: var(--ink); }
+
+/* ════════════════ WHY ALTROVE ════════════════ */
+
+.alt-why-section {
+  background: var(--ink);
+  padding: 6rem 3rem;
+  color: var(--wh);
+}
+
+.alt-why-header { margin-bottom: 3rem; }
+
+.alt-why-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 3rem;
+}
+
+.alt-why-col {
+  border-top: 1px solid var(--gold);
+  padding-top: 1.5rem;
+}
+
+.alt-why-title {
+  font-family: 'DM Serif Display', serif;
+  font-style: italic;
+  font-size: 1.6rem;
+  color: var(--wh);
+  line-height: 1.2;
+  margin-bottom: .8rem;
+  font-weight: 400;
+}
+
+.alt-why-text {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-weight: 400;
+  font-size: .85rem;
+  color: rgba(255,255,255,.6);
+  line-height: 1.75;
+}
+
+/* ════════════════ FOOTER ════════════════ */
+
+.alt-footer {
+  background: var(--ink);
+  border-top: 1px solid rgba(255,255,255,.08);
+  padding: 1.8rem 3rem;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+}
+
+.alt-footer-brand {
+  font-family: 'DM Serif Display', serif;
+  font-size: 1.2rem;
+  color: rgba(255,255,255,.55);
+}
+
+.alt-footer-copy {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-weight: 600;
+  font-size: .55rem;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,.25);
+  text-align: center;
+}
+
+.alt-footer-links {
+  display: flex;
+  gap: 1.2rem;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.alt-footer-link {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-weight: 600;
+  font-size: .6rem;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,.4);
+  text-decoration: none;
+  cursor: pointer;
+  transition: color .2s;
+}
+.alt-footer-link:hover { color: rgba(255,255,255,.75); }
+
+/* ════════════════ PHOTO SLOT OVERRIDES ════════════════ */
+
+.alt-site .sim-photo-slot {
+  background: var(--pale);
+}
+
+.alt-site .sim-photo-hint {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-weight: 600;
+  font-size: .52rem;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: rgba(28,24,20,.5);
+  background: rgba(248,244,238,.85);
+}
+
+/* ════════════════ MOBILE ════════════════ */
+
+@media (max-width: 768px) {
+  .alt-nav {
+    padding: 0 1.5rem;
+    grid-template-columns: 1fr;
+    justify-items: center;
+  }
+  .alt-nav-left, .alt-nav-right { display: none; }
+
+  .alt-hero {
+    grid-template-columns: 1fr;
+    min-height: auto;
+  }
+  .alt-hero-left { padding: 3rem 1.5rem; border-right: none; border-bottom: 1px solid var(--rule); }
+  .alt-hero-right { padding: 2rem 1.5rem; }
+
+  .alt-dest-strip {
+    padding: .8rem 1.5rem;
+    flex-wrap: wrap;
+    gap: .5rem;
+  }
+  .alt-dest-filters {
+    gap: .8rem;
+    flex-wrap: wrap;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .alt-dest-filters::-webkit-scrollbar { display: none; }
+
+  .alt-dest-grid { grid-template-columns: repeat(2, 1fr); }
+
+  .alt-story-inner { grid-template-columns: 1fr; }
+  .alt-story-right { border-left: none; border-top: 1px solid var(--rule); }
+  .alt-story-left { padding: 2.5rem 1.5rem; }
+
+  .alt-story-bottom-strip {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 1.5rem;
+    gap: 1.5rem;
+  }
+
+  .alt-package-strip { grid-template-columns: 1fr; }
+  .alt-package-photo { aspect-ratio: 16/9; }
+  .alt-package-text { padding: 2rem 1.5rem; }
+
+  .alt-why-grid { grid-template-columns: 1fr; }
+  .alt-why-section { padding: 4rem 1.5rem; }
+
+  .alt-footer {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+    padding: 2rem 1.5rem;
+    text-align: center;
+  }
+  .alt-footer-links { justify-content: center; }
+
+  .alt-packages-header { padding: 0 1.5rem 2rem; }
+  .alt-packages-section { padding: 3rem 0 0; }
+
+  .alt-currency-row { flex-wrap: wrap; gap: .8rem; }
+}
+
+@media (max-width: 480px) {
+  .alt-dest-grid { grid-template-columns: 1fr; }
+  .alt-hero-h1-normal { font-size: 2.8rem; }
+  .alt-hero-h1-italic { font-size: 4rem; }
+  .alt-story-country-name { font-size: 2.2rem; }
+  .alt-currency-code { font-size: 2rem; }
+  .alt-currency-result { font-size: 2rem; }
+  .alt-currency-arrow { font-size: 2rem; }
+  .alt-currency-input-wrap input[type="number"] { font-size: 1.7rem; width: 6rem; }
+}
