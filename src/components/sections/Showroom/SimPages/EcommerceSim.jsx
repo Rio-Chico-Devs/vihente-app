@@ -271,7 +271,7 @@ const EcommerceSim = () => {
           <div className="eco-nav-left">
             <button className="eco-hamburger">☰</button>
           </div>
-          <div className="eco-nav-logo">LUMIÈRE</div>
+          <div className="eco-nav-logo">LULLABIES</div>
           <div className="eco-nav-right">
             <button className="eco-nav-icon">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
@@ -372,8 +372,8 @@ const EcommerceSim = () => {
 
         {/* ── FOOTER ── */}
         <footer className="eco-footer">
-          <div className="eco-footer-logo">LUMIÈRE</div>
-          <p className="eco-footer-sub">Via della Moda 12, Milano · info@lumiere.it · +39 02 5551234</p>
+          <div className="eco-footer-logo">LULLABIES</div>
+          <p className="eco-footer-sub">Via della Moda 12, Milano · info@lullabies.it · +39 02 5551234</p>
           <p className="eco-footer-legal">© 2026 Lumière S.r.l. — P.IVA 09876543210</p>
         </footer>
 

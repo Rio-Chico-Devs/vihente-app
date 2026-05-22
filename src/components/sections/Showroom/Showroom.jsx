@@ -167,7 +167,7 @@ const CampagnaPreview = () => (
 const EcommercePreview = () => (
   <div className="sr-preview sr-ecommerce">
     <nav className="sr-e-nav">
-      <span className="sr-e-logo">BRAND</span>
+      <span className="sr-e-logo">LULLABIES</span>
       <div className="sr-e-nav-right">
         <i /><i />
         <span className="sr-e-cart">
