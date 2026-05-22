@@ -64,22 +64,27 @@ const CampagnaSim = () => {
             <div className="cam-hero-accent" />
           </div>
           <div className="cam-hero-text">
-            <p className="cam-eyebrow">CANDIDATO SINDACO · ELEZIONI COMUNALI 2026</p>
-            <h1 className="cam-h1">Un futuro<br />per tutti.</h1>
-            <p className="cam-hero-desc">
-              Costruiamo insieme una città più giusta, più verde e più sicura.
-              Il cambiamento parte da ognuno di noi.
-            </p>
-            <div className="cam-hero-btns">
-              <button className="cam-btn-red" onClick={() => document.getElementById('cam-donazione')?.scrollIntoView({ behavior: 'smooth' })}>
-                Sostienici ora
-              </button>
-              <button
-                className={`cam-btn-outline${joined ? ' cam-btn-outline--done' : ''}`}
-                onClick={() => setJoined(j => !j)}
-              >
-                {joined ? 'Iscritto ✓' : 'Unisciti al movimento'}
-              </button>
+            <img src="/images/campagna-hero-bg.webp" alt="" className="sim-photo-img" />
+            <span className="sim-photo-hint">piazza · comizio / folla città</span>
+            <div className="cam-hero-text-overlay" />
+            <div className="cam-hero-text-content">
+              <p className="cam-eyebrow">CANDIDATO SINDACO · ELEZIONI COMUNALI 2026</p>
+              <h1 className="cam-h1">Un futuro<br />per tutti.</h1>
+              <p className="cam-hero-desc">
+                Costruiamo insieme una città più giusta, più verde e più sicura.
+                Il cambiamento parte da ognuno di noi.
+              </p>
+              <div className="cam-hero-btns">
+                <button className="cam-btn-red" onClick={() => document.getElementById('cam-donazione')?.scrollIntoView({ behavior: 'smooth' })}>
+                  Sostienici ora
+                </button>
+                <button
+                  className={`cam-btn-outline${joined ? ' cam-btn-outline--done' : ''}`}
+                  onClick={() => setJoined(j => !j)}
+                >
+                  {joined ? 'Iscritto ✓' : 'Unisciti al movimento'}
+                </button>
+              </div>
             </div>
           </div>
         </section>
