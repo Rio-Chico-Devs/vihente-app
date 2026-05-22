@@ -93,6 +93,18 @@ const PsicologoSim = () => {
           </div>
         </section>
 
+        {/* ── NATURA BREAK ── */}
+        <section className="psi-nature-break">
+          <div className="psi-nature-overlay" />
+          <div className="psi-nature-content">
+            <span className="psi-nature-eyebrow">Un momento di respiro</span>
+            <blockquote className="psi-nature-quote">
+              "Il cambiamento inizia sempre<br />
+              <em>con il coraggio di chiedere aiuto.</em>"
+            </blockquote>
+          </div>
+        </section>
+
         {/* ── CHI SONO ── */}
         <section className="psi-about" id="chi-sono">
           <div className="psi-about-inner">

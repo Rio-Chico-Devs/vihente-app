@@ -541,6 +541,85 @@
   font-style: normal;
 }
 
+/* ── NATURA BREAK ── */
+
+.psi-nature-break {
+  position: relative;
+  height: clamp(320px, 42vw, 560px);
+  background-image: url('/images/psicologo-natura-bg.jpg');
+  background-size: cover;
+  background-position: center 40%;
+  background-attachment: fixed;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.psi-nature-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    rgba(255, 249, 240, 0.18) 0%,
+    rgba(255, 249, 240, 0.08) 40%,
+    rgba(255, 249, 240, 0.22) 100%
+  );
+}
+
+.psi-nature-content {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+  padding: 0 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.2rem;
+}
+
+.psi-nature-eyebrow {
+  font-family: system-ui, -apple-system, sans-serif;
+  font-size: .65rem;
+  font-weight: 600;
+  letter-spacing: .35em;
+  text-transform: uppercase;
+  color: rgba(71, 93, 95, 0.75);
+  background: rgba(255, 249, 240, 0.72);
+  padding: .35rem .9rem;
+  border-radius: 20px;
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+}
+
+.psi-nature-quote {
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: clamp(1.5rem, 3.2vw, 2.6rem);
+  font-style: normal;
+  font-weight: 400;
+  line-height: 1.35;
+  color: #2C3A3B;
+  margin: 0;
+  max-width: 22ch;
+  text-align: center;
+  text-shadow: 0 1px 12px rgba(255, 249, 240, 0.9), 0 0 30px rgba(255, 249, 240, 0.7);
+}
+
+.psi-nature-quote em {
+  font-style: italic;
+  color: #5C7A6B;
+}
+
+@media (max-width: 768px) {
+  .psi-nature-break {
+    background-attachment: scroll;
+    height: clamp(260px, 60vw, 380px);
+  }
+  .psi-nature-quote {
+    font-size: clamp(1.2rem, 5vw, 1.8rem);
+  }
+}
+
 /* ── RESPONSIVE ── */
 
 @media (max-width: 768px) {
