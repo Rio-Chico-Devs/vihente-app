@@ -63,7 +63,7 @@ const FotografoSim = () => {
             <a className="fot-nav-link">Servizi</a>
             <a className="fot-nav-link">About</a>
           </div>
-          <a className="fot-nav-logo">Luca Ferrari</a>
+          <a className="fot-nav-logo">Bruno Vizienti</a>
           <div className="fot-nav-right">
             <a className="fot-nav-link">IG</a>
             <a className="fot-nav-link">BE</a>
@@ -78,11 +78,11 @@ const FotografoSim = () => {
           </div>
           <div className="fot-hero-text">
             <div className="fot-hero-text-top">
-              <span className="fot-label">Ferrari Studio · Est. 2012</span>
+              <span className="fot-label">Vizienti Studio · Est. 2012</span>
             </div>
             <div className="fot-hero-name">
-              <span className="fot-hero-first">Luca</span>
-              <span className="fot-hero-last">Ferrari</span>
+              <span className="fot-hero-first">Bruno</span>
+              <span className="fot-hero-last">Vizienti</span>
               <span className="fot-hero-rule" />
               <p className="fot-hero-sub">Fotografia di matrimonio, ritratto e editorial.</p>
             </div>
@@ -172,11 +172,11 @@ const FotografoSim = () => {
           <div className="fot-feature-text">
             <span className="fot-label">Il Fotografo</span>
             <div className="fot-feature-name">
-              <span className="fot-feature-first">Luca</span>
-              <span className="fot-feature-last">Ferrari</span>
+              <span className="fot-feature-first">Bruno</span>
+              <span className="fot-feature-last">Vizienti</span>
             </div>
             <p className="fot-feature-body">
-              Con oltre dodici anni di esperienza nell'arte della fotografia, Luca Ferrari ha costruito
+              Con oltre dodici anni di esperienza nell'arte della fotografia, Bruno Vizienti ha costruito
               un linguaggio visivo capace di fermare il tempo senza soffocare l'emozione.
               Ogni scatto è un dialogo tra luce e silenzio.
             </p>
@@ -214,7 +214,7 @@ const FotografoSim = () => {
             <em className="fot-quote-accent">che parla.</em>
           </p>
           <span className="fot-quote-rule" />
-          <span className="fot-quote-attr">— Luca Ferrari</span>
+          <span className="fot-quote-attr">— Bruno Vizienti</span>
         </section>
 
         {/* ── CONTACT ── */}
@@ -240,7 +240,7 @@ const FotografoSim = () => {
               </div>
               <div className="fot-contact-item">
                 <span className="fot-label">Email</span>
-                <span className="fot-contact-val">luca@ferraristudio.it</span>
+                <span className="fot-contact-val">bruno@vizienti.it</span>
               </div>
               <div className="fot-contact-item">
                 <span className="fot-label">Telefono</span>
@@ -252,8 +252,8 @@ const FotografoSim = () => {
 
         {/* ── FOOTER ── */}
         <footer className="fot-footer">
-          <span className="fot-footer-logo">Luca Ferrari</span>
-          <span className="fot-footer-copy">© 2026 Ferrari Studio · Milano</span>
+          <span className="fot-footer-logo">Bruno Vizienti</span>
+          <span className="fot-footer-copy">© 2026 Vizienti Studio · Milano</span>
           <div className="fot-footer-links">
             <a className="fot-footer-link">Instagram</a>
             <a className="fot-footer-link">Behance</a>

@@ -223,7 +223,7 @@ const FotografoPreview = () => (
   <div className="sr-preview sr-fotografo">
     <nav className="sr-f-nav">
       <div className="sr-f-nav-links"><i /><i /><i /></div>
-      <span className="sr-f-logo"><em>Luca Ferrari</em></span>
+      <span className="sr-f-logo"><em>Bruno Vizienti</em></span>
       <div className="sr-f-nav-links sr-f-nav-right"><i /><i /></div>
     </nav>
     <div className="sr-f-hero">
@@ -231,8 +231,8 @@ const FotografoPreview = () => (
       <div className="sr-f-hero-text">
         <div className="sr-f-hero-eyebrow" />
         <div className="sr-f-hero-name">
-          <span className="sr-f-name-first">Luca</span>
-          <span className="sr-f-name-last">Ferrari</span>
+          <span className="sr-f-name-first">Bruno</span>
+          <span className="sr-f-name-last">Vizienti</span>
           <div className="sr-f-hero-rule" />
           <div className="sr-f-hero-sub" />
         </div>
