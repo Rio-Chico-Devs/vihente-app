@@ -1,12 +1,55 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 
-// https://vite.dev/config/
 export default defineConfig(({ mode }) => ({
-  plugins: [react()],
-  
+  plugins: [
+    react({
+      babel: {
+        // Skip Babel plugins not needed — keeps transform lean
+        plugins: [],
+      },
+    }),
+  ],
+
   base: '/',
-  
+
+  optimizeDeps: {
+    // Explicitly list CJS/heavy deps so Vite pre-bundles them once
+    // and never rescans on subsequent cold starts
+    include: [
+      'react',
+      'react-dom',
+      'react-dom/client',
+      'react-router-dom',
+      'dompurify',
+      'validator',
+      'vanilla-cookieconsent',
+    ],
+  },
+
+  server: {
+    port: 3000,
+    open: true,
+    warmup: {
+      // Pre-transform these files during startup instead of on first request
+      clientFiles: [
+        './src/main.jsx',
+        './src/App.jsx',
+        './src/components/sections/Hero/Hero.jsx',
+        './src/components/sections/Showroom/Showroom.jsx',
+        './src/components/sections/Showroom/SimPages/BarbiereSim.jsx',
+        './src/components/sections/Showroom/SimPages/FotografoSim.jsx',
+        './src/components/sections/Showroom/SimPages/PsicologoSim.jsx',
+        './src/components/sections/Showroom/SimPages/SaloneSim.jsx',
+        './src/components/sections/Showroom/SimPages/EcommerceSim.jsx',
+        './src/components/sections/Showroom/SimPages/AvvocatiSim.jsx',
+        './src/components/sections/Showroom/SimPages/CampagnaSim.jsx',
+        './src/components/sections/Showroom/SimPages/AgenziaViaggioSim.jsx',
+        './src/components/sections/Showroom/SimPages/ImmobiliareSim.jsx',
+      ],
+    },
+  },
+
   build: {
     minify: 'esbuild',
     cssMinify: true,
@@ -14,24 +57,19 @@ export default defineConfig(({ mode }) => ({
       output: {
         manualChunks: {
           'react-vendor': ['react', 'react-dom', 'react-router-dom'],
-          'utils-vendor': ['validator', 'dompurify']
-        }
-      }
+          'utils-vendor': ['validator', 'dompurify'],
+        },
+      },
     },
-    chunkSizeWarningLimit: 1000
+    chunkSizeWarningLimit: 1000,
   },
-  
+
   esbuild: {
-    drop: mode === 'production' ? ['console', 'debugger'] : []
+    drop: mode === 'production' ? ['console', 'debugger'] : [],
   },
-  
-  server: {
-    port: 3000,
-    open: true
-  },
-  
+
   preview: {
     port: 4173,
-    open: true
-  }
+    open: true,
+  },
 }))

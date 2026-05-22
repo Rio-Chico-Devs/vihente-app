@@ -37,7 +37,6 @@
     "@fontsource/orbitron": "^5.2.8",
     "@fontsource/share-tech-mono": "^5.2.7",
     "dompurify": "^3.3.0",
-    "lucide-react": "^0.545.0",
     "react": "^19.1.1",
     "react-dom": "^19.1.1",
     "react-router-dom": "^7.9.6",
