@@ -3,17 +3,17 @@ import SimWrapper from './SimWrapper';
 import './ImmobiliareSim.css';
 
 const PROPERTIES = [
-  { zone: 'PRATI · ROMA',      name: 'Un attico dove il cielo è di casa',  price: '€ 820.000',   meta: '145 mq · 4 camere', hint: 'attico · terrazza / luce zenitale',      bg: 'linear-gradient(160deg,#BFC8C0 0%,#8E9E92 100%)' },
-  { zone: 'TRASTEVERE · ROMA', name: 'Il cortile segreto',                  price: '€ 480.000',   meta: '85 mq · 2 camere',  hint: 'appartamento · cortile / cotto',        bg: 'linear-gradient(160deg,#C4B898 0%,#9E8868 100%)' },
-  { zone: 'PARIOLI · ROMA',    name: 'Prospettiva sui tigli',               price: '€ 1.100.000', meta: '220 mq · 5 camere', hint: 'piano nobile · verde / viali alberati',  bg: 'linear-gradient(160deg,#B8C4A8 0%,#8A9E78 100%)' },
-  { zone: 'EUR · ROMA',        name: 'Geometrie razionaliste',              price: '€ 390.000',   meta: '70 mq · 2 camere',  hint: 'moderno · razionalismo / luce uniforme', bg: 'linear-gradient(160deg,#C0BCC0 0%,#9090A0 100%)' },
+  { zone: 'PRATI · ROMA',      name: 'Un attico dove il cielo è di casa',  price: '€ 820.000',   meta: '145 mq · 4 camere', hint: 'attico · terrazza / luce zenitale',      bg: 'linear-gradient(160deg,#BFC8C0 0%,#8E9E92 100%)', src: '/images/residenze-prop-prati.webp' },
+  { zone: 'TRASTEVERE · ROMA', name: 'Il cortile segreto',                  price: '€ 480.000',   meta: '85 mq · 2 camere',  hint: 'appartamento · cortile / cotto',        bg: 'linear-gradient(160deg,#C4B898 0%,#9E8868 100%)', src: '/images/residenze-prop-trastevere.webp' },
+  { zone: 'PARIOLI · ROMA',    name: 'Prospettiva sui tigli',               price: '€ 1.100.000', meta: '220 mq · 5 camere', hint: 'piano nobile · verde / viali alberati',  bg: 'linear-gradient(160deg,#B8C4A8 0%,#8A9E78 100%)', src: '/images/residenze-prop-parioli.webp' },
+  { zone: 'EUR · ROMA',        name: 'Geometrie razionaliste',              price: '€ 390.000',   meta: '70 mq · 2 camere',  hint: 'moderno · razionalismo / luce uniforme', bg: 'linear-gradient(160deg,#C0BCC0 0%,#9090A0 100%)', src: '/images/residenze-prop-eur.webp' },
 ];
 
 const ZONES = {
-  prati:      { char: 'RAFFINATO.', desc: "Strade ampie e ordinate, vicino al Vaticano e al Tevere. Il quartiere borghese per eccellenza — caffè storici, palazzi degli anni '30, silenzio.", walk: 5, scuole: 4, verde: 3, hints: ['appartamento · palazzo liberty', 'giardino privato · prati'] },
-  trastevere: { char: 'AUTENTICO.', desc: "Selciato, trattorie, edera sui muri. Trastevere è Roma nella sua versione più umana e vitale. Di notte si anima, di mattina dorme.", walk: 5, scuole: 3, verde: 4, hints: ['vicolo · cotto e mattoni', 'terrazza · vista tetti Roma'] },
-  parioli:    { char: 'ESCLUSIVO.', desc: "Viali alberati, ville e palazzi signorili. Il quartiere delle famiglie romane di tradizione. Tranquillo, verde, lontano dal caos.", walk: 3, scuole: 5, verde: 5, hints: ['villa · parco privato / liberty', 'piano nobile · parquet / stucchi'] },
-  eur:        { char: 'MODERNO.',   desc: "Architettura razionalista degli anni '40, lago, congressi. Il quartiere del business e della residenza moderna. Efficiente, ampio, connected.", walk: 4, scuole: 4, verde: 4, hints: ['moderno · razionalismo / luce', 'vista lago · EUR / palazzi'] },
+  prati:      { char: 'RAFFINATO.', desc: "Strade ampie e ordinate, vicino al Vaticano e al Tevere. Il quartiere borghese per eccellenza — caffè storici, palazzi degli anni '30, silenzio.", walk: 5, scuole: 4, verde: 3, hints: ['appartamento · palazzo liberty', 'giardino privato · prati'],       photos: ['/images/residenze-zona-prati-1.webp',      '/images/residenze-zona-prati-2.webp'] },
+  trastevere: { char: 'AUTENTICO.', desc: "Selciato, trattorie, edera sui muri. Trastevere è Roma nella sua versione più umana e vitale. Di notte si anima, di mattina dorme.", walk: 5, scuole: 3, verde: 4, hints: ['vicolo · cotto e mattoni', 'terrazza · vista tetti Roma'],                  photos: ['/images/residenze-zona-trastevere-1.webp', '/images/residenze-zona-trastevere-2.webp'] },
+  parioli:    { char: 'ESCLUSIVO.', desc: "Viali alberati, ville e palazzi signorili. Il quartiere delle famiglie romane di tradizione. Tranquillo, verde, lontano dal caos.", walk: 3, scuole: 5, verde: 5, hints: ['villa · parco privato / liberty', 'piano nobile · parquet / stucchi'],       photos: ['/images/residenze-zona-parioli-1.webp',    '/images/residenze-zona-parioli-2.webp'] },
+  eur:        { char: 'MODERNO.',   desc: "Architettura razionalista degli anni '40, lago, congressi. Il quartiere del business e della residenza moderna. Efficiente, ampio, connected.", walk: 4, scuole: 4, verde: 4, hints: ['moderno · razionalismo / luce', 'vista lago · EUR / palazzi'], photos: ['/images/residenze-zona-eur-1.webp',         '/images/residenze-zona-eur-2.webp'] },
 };
 
 const BASE_PRICES = {
@@ -24,14 +24,14 @@ const BASE_PRICES = {
 const COND_MULT = { ristrutturato: 1.15, buono: 1.0, 'da-ristrutturare': 0.82 };
 
 const AGENTI = [
-  { name: 'Marco Ferretti', zone: 'Esperto di Prati · Flaminio',       tags: ['Matrimoniali', 'Investitori', 'Prime Case'], bg: 'linear-gradient(160deg, #C8BFB0 0%, #A89A88 100%)' },
-  { name: 'Giulia Monti',   zone: 'Esperta di Trastevere · Testaccio', tags: ['Storici', 'Giovani Acquirenti', 'Locazioni'], bg: 'linear-gradient(160deg, #BFC4B8 0%, #9EA898 100%)' },
-  { name: 'Andrea Caruso',  zone: 'Esperto di Parioli · EUR',          tags: ['Ville', 'Piani Nobili', 'Internazionali'],   bg: 'linear-gradient(160deg, #C4BDB0 0%, #A09080 100%)' },
+  { name: 'Marco Ferretti', zone: 'Esperto di Prati · Flaminio',       tags: ['Matrimoniali', 'Investitori', 'Prime Case'], bg: 'linear-gradient(160deg, #C8BFB0 0%, #A89A88 100%)', photo: '/images/residenze-agente-marco.webp' },
+  { name: 'Giulia Monti',   zone: 'Esperta di Trastevere · Testaccio', tags: ['Storici', 'Giovani Acquirenti', 'Locazioni'], bg: 'linear-gradient(160deg, #BFC4B8 0%, #9EA898 100%)', photo: '/images/residenze-agente-giulia.webp' },
+  { name: 'Andrea Caruso',  zone: 'Esperto di Parioli · EUR',          tags: ['Ville', 'Piani Nobili', 'Internazionali'],   bg: 'linear-gradient(160deg, #C4BDB0 0%, #A09080 100%)', photo: '/images/residenze-agente-andrea.webp' },
 ];
 
 const INSIGHTS = [
-  { category: 'Mercato · Comprare', title: 'Comprare casa a Roma nel 2026: cosa è cambiato nel mercato', excerpt: 'I tassi si sono stabilizzati, la domanda cresce nei quartieri storici. Ecco cosa sapere prima di cercare.', hint: 'mercato · architettura / luce', bg: 'linear-gradient(150deg, #C8BFB0 0%, #A89A88 100%)' },
-  { category: 'Mercato · Vendere',  title: "Ristrutturare per rivendere: quando l'investimento ha senso", excerpt: 'Non sempre spendere di più porta a ricavare di più. Ecco i numeri reali su quali interventi aumentano il valore.', hint: 'ristrutturazione · cantiere / luce', bg: 'linear-gradient(150deg, #BFC4B0 0%, #9EA890 100%)' },
+  { category: 'Mercato · Comprare', title: 'Comprare casa a Roma nel 2026: cosa è cambiato nel mercato', excerpt: 'I tassi si sono stabilizzati, la domanda cresce nei quartieri storici. Ecco cosa sapere prima di cercare.', hint: 'mercato · architettura / luce',     bg: 'linear-gradient(150deg, #C8BFB0 0%, #A89A88 100%)', src: '/images/residenze-insight-1.webp' },
+  { category: 'Mercato · Vendere',  title: "Ristrutturare per rivendere: quando l'investimento ha senso", excerpt: 'Non sempre spendere di più porta a ricavare di più. Ecco i numeri reali su quali interventi aumentano il valore.', hint: 'ristrutturazione · cantiere / luce', bg: 'linear-gradient(150deg, #BFC4B0 0%, #9EA890 100%)', src: '/images/residenze-insight-2.webp' },
 ];
 
 const RatingDots = ({ value }) => (
@@ -114,6 +114,7 @@ const ImmobiliareSim = () => {
             </div>
           </div>
           <div className="res-hero-right sim-photo-slot">
+            <img src="/images/residenze-hero.webp" alt="" className="sim-photo-img" />
             <span className="sim-photo-hint">architettura · Roma / luce dorata</span>
           </div>
         </section>
@@ -151,6 +152,7 @@ const ImmobiliareSim = () => {
             {PROPERTIES.map((p, i) => (
               <div key={i} className={`res-prop-card${i === 0 ? ' res-prop-card--large' : ''}`}>
                 <div className="res-prop-photo" style={{ background: p.bg }}>
+                  <img src={p.src} alt="" className="sim-photo-img" />
                   <span className="res-photo-hint">{p.hint}</span>
                 </div>
                 <div className="res-prop-overlay">
@@ -204,6 +206,7 @@ const ImmobiliareSim = () => {
               {zone.hints.map((h, i) => (
                 <div key={i} className="res-zone-photo">
                   <div className="res-zone-photo-inner sim-photo-slot">
+                    <img src={zone.photos[i]} alt="" className="sim-photo-img" />
                     <span className="sim-photo-hint">{h}</span>
                   </div>
                 </div>
@@ -342,6 +345,7 @@ const ImmobiliareSim = () => {
             {AGENTI.map((a, i) => (
               <div key={i} className="res-agente-card">
                 <div className="res-agente-photo" style={{ background: a.bg }}>
+                  <img src={a.photo} alt={a.name} className="sim-photo-img" />
                   <span className="res-photo-hint">agente · ritratto / studio</span>
                 </div>
                 <div className="res-agente-name">{a.name}</div>
@@ -365,6 +369,7 @@ const ImmobiliareSim = () => {
             {INSIGHTS.map((ins, i) => (
               <div key={i} className="res-insight-card">
                 <div className="res-insight-photo" style={{ background: ins.bg }}>
+                  <img src={ins.src} alt="" className="sim-photo-img" />
                   <span className="res-photo-hint">{ins.hint}</span>
                 </div>
                 <div className="res-insight-body">

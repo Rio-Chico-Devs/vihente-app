@@ -73,7 +73,7 @@ const FotografoSim = () => {
         {/* ── HERO ── */}
         <section className="fot-hero">
           <div className="fot-hero-photo sim-photo-slot">
-            <img src="" alt="" className="sim-photo-img fot-bw" />
+            <img src="/images/fotografo-hero.webp" alt="" className="sim-photo-img fot-bw" />
             <span className="sim-photo-hint">hero · ritratto / fashion editorial</span>
           </div>
           <div className="fot-hero-text">
@@ -113,7 +113,7 @@ const FotografoSim = () => {
         {/* ── GALLERY STORY 1 — full-width landscape ── */}
         <section className="fot-story1">
           <div className="fot-story1-photo sim-photo-slot">
-            <img src="" alt="Wedding ceremony" className="sim-photo-img fot-bw" />
+            <img src="/images/fotografo-wedding-cerimonia.webp" alt="Wedding ceremony" className="sim-photo-img fot-bw" />
             <span className="sim-photo-hint">wedding · cerimonia / coppia</span>
           </div>
           <div className="fot-story1-caption">
@@ -128,21 +128,21 @@ const FotografoSim = () => {
           <div className="fot-story2-grid">
             <div className="fot-story2-item">
               <div className="fot-story2-photo sim-photo-slot">
-                <img src="" alt="Ritratto sposa" className="sim-photo-img fot-bw" />
+                <img src="/images/fotografo-wedding-sposa.webp" alt="Ritratto sposa" className="sim-photo-img fot-bw" />
                 <span className="sim-photo-hint">wedding · ritratto / sposa</span>
               </div>
               <div className="fot-story2-caption"><strong>Ritratto</strong> / Bridal portrait, Milano 2025</div>
             </div>
             <div className="fot-story2-item">
               <div className="fot-story2-photo sim-photo-slot">
-                <img src="" alt="Fashion studio" className="sim-photo-img fot-bw" />
+                <img src="/images/fotografo-editorial-studio.webp" alt="Fashion studio" className="sim-photo-img fot-bw" />
                 <span className="sim-photo-hint">editorial · fashion / studio</span>
               </div>
               <div className="fot-story2-caption"><strong>Editorial</strong> / Studio session, Roma 2025</div>
             </div>
             <div className="fot-story2-item">
               <div className="fot-story2-photo sim-photo-slot">
-                <img src="" alt="Editorial portrait" className="sim-photo-img fot-bw" />
+                <img src="/images/fotografo-editorial-campagna.webp" alt="Editorial portrait" className="sim-photo-img fot-bw" />
                 <span className="sim-photo-hint">editorial · campagna / outdoor</span>
               </div>
               <div className="fot-story2-caption"><strong>Editorial</strong> / Cover shoot, Venezia 2024</div>
@@ -153,11 +153,11 @@ const FotografoSim = () => {
         {/* ── GALLERY STORY 3 — split 58/42 ── */}
         <section className="fot-story3">
           <div className="fot-story3-left sim-photo-slot">
-            <img src="" alt="Photography light" className="sim-photo-img fot-bw" />
+            <img src="/images/fotografo-ritratto-luce.webp" alt="Photography light" className="sim-photo-img fot-bw" />
             <span className="sim-photo-hint">editorial · luce / campagna</span>
           </div>
           <div className="fot-story3-right sim-photo-slot">
-            <img src="" alt="Portrait close-up" className="sim-photo-img fot-bw" />
+            <img src="/images/fotografo-ritratto-closeup.webp" alt="Portrait close-up" className="sim-photo-img fot-bw" />
             <span className="sim-photo-hint">ritratto · close-up / luce naturale</span>
           </div>
         </section>
@@ -202,7 +202,7 @@ const FotografoSim = () => {
             </div>
           </div>
           <div className="fot-feature-photo sim-photo-slot">
-            <img src="" alt="Ritratto del fotografo" className="sim-photo-img fot-bw" />
+            <img src="/images/fotografo-ritratto-studio.webp" alt="Ritratto del fotografo" className="sim-photo-img fot-bw" />
             <span className="sim-photo-hint">fotografo · ritratto / studio</span>
           </div>
         </section>

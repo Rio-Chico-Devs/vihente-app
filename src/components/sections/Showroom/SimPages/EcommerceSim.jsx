@@ -6,6 +6,7 @@ const PRODOTTI = [
   {
     id: 1,
     nome: 'Giacca Oversize',
+    src: '/images/lullabies-giacca-oversize.webp',
     cat: 'Outerwear',
     prezzo: 149,
     colore: '#D4C5B0',
@@ -18,6 +19,7 @@ const PRODOTTI = [
   {
     id: 2,
     nome: 'Abito Drappeggiato',
+    src: '/images/lullabies-abito-drappeggiato.webp',
     cat: 'Dresses',
     prezzo: 129,
     colore: '#C4B4A0',
@@ -30,6 +32,7 @@ const PRODOTTI = [
   {
     id: 3,
     nome: 'Sneaker Low',
+    src: '/images/lullabies-sneaker-low.webp',
     cat: 'Footwear',
     prezzo: 89,
     colore: '#E8E0D8',
@@ -42,6 +45,7 @@ const PRODOTTI = [
   {
     id: 4,
     nome: 'Borsa Tote Premium',
+    src: '/images/lullabies-borsa-tote.webp',
     cat: 'Accessories',
     prezzo: 199,
     colore: '#A89080',
@@ -54,6 +58,7 @@ const PRODOTTI = [
   {
     id: 5,
     nome: 'Maglione Cashmere',
+    src: '/images/lullabies-maglione-cashmere.webp',
     cat: 'Knitwear',
     prezzo: 175,
     colore: '#C8B8A8',
@@ -66,6 +71,7 @@ const PRODOTTI = [
   {
     id: 6,
     nome: 'Pantaloni Wide-Leg',
+    src: '/images/lullabies-pantaloni-wide.webp',
     cat: 'Bottoms',
     prezzo: 98,
     colore: '#D8D0C8',
@@ -78,6 +84,7 @@ const PRODOTTI = [
   {
     id: 7,
     nome: 'Camicia Seta',
+    src: '/images/lullabies-camicia-seta.webp',
     cat: 'Tops',
     prezzo: 115,
     colore: '#E4D8C8',
@@ -90,6 +97,7 @@ const PRODOTTI = [
   {
     id: 8,
     nome: 'Cintura Pelle',
+    src: '/images/lullabies-cintura-pelle.webp',
     cat: 'Accessories',
     prezzo: 65,
     colore: '#A09080',
@@ -292,7 +300,7 @@ const EcommerceSim = () => {
         {/* ── HERO BANNER ── */}
         <section className="eco-hero">
           <div className="eco-hero-bg">
-            <img src="" alt="" className="sim-photo-img" />
+            <img src="/images/lullabies-hero.webp" alt="" className="sim-photo-img" />
             <span className="sim-photo-hint">hero · moda / collezione</span>
             <div className="eco-hero-overlay" />
           </div>
@@ -328,7 +336,7 @@ const EcommerceSim = () => {
                     style={{ background: `linear-gradient(145deg, ${p.colore}, ${p.colore2})` }}
                     onClick={() => setDetailProd(p)}
                   >
-                    <img src="" alt={p.nome} className="sim-photo-img" />
+                    <img src={p.src} alt={p.nome} className="sim-photo-img" />
                     <span className="sim-photo-hint">{p.nome}</span>
                     <div className="eco-product-overlay">
                       <button className="eco-zoom-btn" onClick={e => { e.stopPropagation(); setDetailProd(p); }}>

@@ -71,6 +71,7 @@ const PACKAGES = [
     title: 'Il Giappone dei contrasti',
     nights: '14 notti', price: '€ 3.200 / persona',
     hint: 'Giappone — Tokyo / Kyoto / Osaka',
+    src: '/images/altrove-pkg-giappone.webp',
     desc: "Da Tokyo caotica e luminosa ai templi silenziosi di Kyoto, passando per i mercati notturni di Osaka. Un itinerario costruito su misura per chi vuole capire il Giappone, non solo fotografarlo.",
   },
   {
@@ -78,6 +79,7 @@ const PACKAGES = [
     title: 'Marocco autentico',
     nights: '10 notti', price: '€ 1.680 / persona',
     hint: 'Marocco — Marrakech / Sahara / Fez',
+    src: '/images/altrove-pkg-marocco.webp',
     desc: "Marrakech, le dune di Merzouga, la medina di Fez. Un viaggio nell'entroterra marocchino, lontano dai resort e vicino alle persone. Riads selezionati, guide locali.",
   },
   {
@@ -85,6 +87,7 @@ const PACKAGES = [
     title: 'Ring Road, Islanda',
     nights: '8 notti', price: '€ 2.450 / persona',
     hint: 'Islanda — Ring Road in camper',
+    src: '/images/altrove-pkg-islanda.webp',
     desc: "L'intero perimetro dell'isola percorso in camper, con soste agli indirizzi giusti. Cascate, geyser, aurora boreale e il silenzio assoluto delle highland.",
   },
 ];
@@ -244,6 +247,7 @@ const AgenziaViaggioSim = () => {
               <div className="alt-story-photo-grid">
                 {dest.moments.map((m, i) => (
                   <div key={i} className="alt-photo-slot sim-photo-slot">
+                    <img src={`/images/altrove-${dest.id}-${i + 1}.webp`} alt="" className="sim-photo-img" />
                     <span className="sim-photo-hint">{m}</span>
                   </div>
                 ))}
@@ -291,6 +295,7 @@ const AgenziaViaggioSim = () => {
           {PACKAGES.map((pkg, i) => (
             <div key={i} className="alt-package-strip">
               <div className="alt-package-photo sim-photo-slot">
+                <img src={pkg.src} alt="" className="sim-photo-img" />
                 <span className="sim-photo-hint">{pkg.hint}</span>
               </div>
               <div className="alt-package-text">

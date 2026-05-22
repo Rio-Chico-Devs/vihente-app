@@ -12,9 +12,9 @@ const SERVIZI = [
 ];
 
 const TEAM = [
-  { nome: 'Sofia Marini', ruolo: 'Color Specialist', anni: '12 anni' },
-  { nome: 'Giulia Conte', ruolo: 'Styling Director', anni: '9 anni' },
-  { nome: 'Andrea Villa', ruolo: 'Hair Artist', anni: '6 anni' },
+  { nome: 'Sofia Marini', ruolo: 'Color Specialist', anni: '12 anni', photo: '/images/salone-team-sofia.webp' },
+  { nome: 'Giulia Conte', ruolo: 'Styling Director', anni: '9 anni',  photo: '/images/salone-team-giulia.webp' },
+  { nome: 'Andrea Villa', ruolo: 'Hair Artist',       anni: '6 anni',  photo: '/images/salone-team-andrea.webp' },
 ];
 
 const SaloneSim = () => {
@@ -54,7 +54,7 @@ const SaloneSim = () => {
         {/* ── HERO ── */}
         <section className="sal-hero">
           <div className="sal-hero-bg">
-            <img src="" alt="" className="sim-photo-img" />
+            <img src="/images/salone-hero.webp" alt="" className="sim-photo-img" />
             <span className="sim-photo-hint">hero · salone / beauty interior</span>
           </div>
           <div className="sal-hero-content">
@@ -107,7 +107,7 @@ const SaloneSim = () => {
               {TEAM.map(m => (
                 <div key={m.nome} className="sal-member-card">
                   <div className="sal-member-avatar sim-photo-slot">
-                    <img src="" alt={m.nome} className="sim-photo-img" />
+                    <img src={m.photo} alt={m.nome} className="sim-photo-img" />
                     <span className="sim-photo-hint">{m.nome.split(' ')[0]}</span>
                     <svg viewBox="0 0 80 100" width="52" height="65">
                       <circle cx="40" cy="28" r="16" fill="#C9A96E" opacity="0.45" />
@@ -130,11 +130,15 @@ const SaloneSim = () => {
             <h2 className="sal-section-title">Il nostro lavoro</h2>
             <div className="sal-gallery-grid">
               {[
-                '#E8DDD0', '#D8CFC2', '#C8BFB0',
-                '#EAE0D4', '#D2C8BC', '#E0D6CA',
-              ].map((c, i) => (
+                { c: '#E8DDD0', src: '/images/salone-gallery-1.webp' },
+                { c: '#D8CFC2', src: '/images/salone-gallery-2.webp' },
+                { c: '#C8BFB0', src: '/images/salone-gallery-3.webp' },
+                { c: '#EAE0D4', src: '/images/salone-gallery-4.webp' },
+                { c: '#D2C8BC', src: '/images/salone-gallery-5.webp' },
+                { c: '#E0D6CA', src: '/images/salone-gallery-6.webp' },
+              ].map(({ c, src }, i) => (
                 <div key={i} className="sal-gallery-item sim-photo-slot" style={{ background: `linear-gradient(145deg, ${c}, ${c}BB)` }}>
-                  <img src="" alt="" className="sim-photo-img" />
+                  <img src={src} alt="" className="sim-photo-img" />
                   <span className="sim-photo-hint">gallery · {i + 1}</span>
                 </div>
               ))}

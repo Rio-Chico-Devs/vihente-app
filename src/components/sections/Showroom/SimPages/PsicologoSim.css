@@ -546,7 +546,7 @@
 .psi-nature-break {
   position: relative;
   height: clamp(320px, 42vw, 560px);
-  background-image: url('/images/psicologo-natura-bg.jpg');
+  background-image: url('/images/psicologo-natura-bg.webp');
   background-size: cover;
   background-position: center 40%;
   background-attachment: fixed;

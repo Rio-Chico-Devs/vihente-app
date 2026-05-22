@@ -3,16 +3,16 @@ import SimWrapper from './SimWrapper';
 import './BarbiereSim.css';
 
 const SERVIZI = [
-  { nome: 'Taglio Uomo',       desc: 'Taglio personalizzato, lavaggio, asciugatura e finishing professionale.', prezzo: 'Da € 28 · 40 min', slot: 'Taglio Uomo — € 28 · 40 min' },
-  { nome: 'Barba Tradizionale', desc: 'Rasatura con rasoio a mano libera, asciugamano caldo e oli essenziali.',  prezzo: 'Da € 22 · 30 min', slot: 'Barba Tradizionale — € 22 · 30 min' },
-  { nome: 'Taglio + Barba',     desc: 'Il pacchetto completo: taglio su misura e rifinitura barba professionale.', prezzo: 'Da € 45 · 65 min', slot: 'Taglio + Barba — € 45 · 65 min' },
-  { nome: 'Trattamento Cuoio',  desc: 'Maschera nutriente, massaggio capillare e trattamento anti-caduta.',     prezzo: 'Da € 38 · 50 min', slot: 'Trattamento Cuoio — € 38 · 50 min' },
+  { nome: 'Taglio Uomo',       desc: 'Taglio personalizzato, lavaggio, asciugatura e finishing professionale.', prezzo: 'Da € 28 · 40 min', slot: 'Taglio Uomo — € 28 · 40 min',               src: '/images/barbiere-svc-taglio-uomo.webp' },
+  { nome: 'Barba Tradizionale', desc: 'Rasatura con rasoio a mano libera, asciugamano caldo e oli essenziali.',  prezzo: 'Da € 22 · 30 min', slot: 'Barba Tradizionale — € 22 · 30 min',      src: '/images/barbiere-svc-barba-tradizionale.webp' },
+  { nome: 'Taglio + Barba',     desc: 'Il pacchetto completo: taglio su misura e rifinitura barba professionale.', prezzo: 'Da € 45 · 65 min', slot: 'Taglio + Barba — € 45 · 65 min',      src: '/images/barbiere-svc-taglio-barba.webp' },
+  { nome: 'Trattamento Cuoio',  desc: 'Maschera nutriente, massaggio capillare e trattamento anti-caduta.',     prezzo: 'Da € 38 · 50 min', slot: 'Trattamento Cuoio — € 38 · 50 min',      src: '/images/barbiere-svc-trattamento-cuoio.webp' },
 ];
 
 const TEAM = [
-  { nome: 'Marco Neri',    ruolo: 'Master Barber',    tag: 'Fondatore',       spec: 'Specializzato in tagli classici e rasatura tradizionale. 16 anni di esperienza.', photoHint: 'ritratto · master barber / uomo' },
-  { nome: 'Luca Ferretti', ruolo: 'Senior Barber',    tag: 'Fade Specialist', spec: 'Esperto di fade, skin fade e tagli moderni. Appassionato di freestyle cutting.',   photoHint: 'ritratto · barber giovane / uomo' },
-  { nome: 'Andrea Russo',  ruolo: 'Barber & Stylist', tag: 'Beard Expert',    spec: 'Specialista in trattamenti barba, design e colorazione. Formazione Londra.',       photoHint: 'ritratto · barber / uomo scuro' },
+  { nome: 'Marco Neri',    ruolo: 'Master Barber',    tag: 'Fondatore',       spec: 'Specializzato in tagli classici e rasatura tradizionale. 16 anni di esperienza.', photoHint: 'ritratto · master barber / uomo',  photo: '/images/barbiere-team-marco.webp' },
+  { nome: 'Luca Ferretti', ruolo: 'Senior Barber',    tag: 'Fade Specialist', spec: 'Esperto di fade, skin fade e tagli moderni. Appassionato di freestyle cutting.',   photoHint: 'ritratto · barber giovane / uomo', photo: '/images/barbiere-team-luca.webp' },
+  { nome: 'Andrea Russo',  ruolo: 'Barber & Stylist', tag: 'Beard Expert',    spec: 'Specialista in trattamenti barba, design e colorazione. Formazione Londra.',       photoHint: 'ritratto · barber / uomo scuro',   photo: '/images/barbiere-team-andrea.webp' },
 ];
 
 const DATE_OPTIONS = ['Lun 23 Giugno', 'Mar 24 Giugno', 'Mer 25 Giugno', 'Gio 26 Giugno', 'Ven 27 Giugno', 'Sab 28 Giugno'];
@@ -108,7 +108,7 @@ const BarbiereSim = () => {
             </div>
           </div>
           <div className="bar-hero-right sim-photo-slot">
-            <img src="" alt="" className="sim-photo-img" />
+            <img src="/images/barbiere-hero.webp" alt="" className="sim-photo-img" />
             <span className="sim-photo-hint">hero · ritratto uomo / barbiere</span>
           </div>
         </section>
@@ -158,7 +158,7 @@ const BarbiereSim = () => {
           <div className="bar-services-grid">
             {SERVIZI.map((svc, i) => (
               <div key={i} className="bar-svc-card sim-photo-slot">
-                <img src="" alt="" className="sim-photo-img" />
+                <img src={svc.src} alt="" className="sim-photo-img" />
                 <span className="sim-photo-hint">{`servizio · ${svc.nome.toLowerCase()}`}</span>
                 <div className="bar-svc-overlay" />
                 <div className="bar-svc-num">0{i + 1}</div>
@@ -184,7 +184,7 @@ const BarbiereSim = () => {
         {/* ── SPREAD ── */}
         <section className="bar-spread">
           <div className="bar-spread-photo sim-photo-slot">
-            <img src="" alt="" className="sim-photo-img" />
+            <img src="/images/barbiere-interni.webp" alt="" className="sim-photo-img" />
             <span className="sim-photo-hint">interni · barbershop interior</span>
             <div className="bar-spread-banner">
               <div className="bar-spread-word">CUT.</div>
@@ -211,14 +211,14 @@ const BarbiereSim = () => {
           </div>
           <div className="bar-gallery-grid">
             {[
-              { label: 'FEATURED', hint: 'gallery · ritratto capelli uomo' },
-              { label: 'FADE',     hint: 'gallery · fade / barbiere' },
-              { label: 'BEARD',    hint: 'gallery · barba / design' },
-              { label: 'CLASSIC',  hint: 'gallery · taglio classico / uomo' },
-              { label: 'TEXTURE',  hint: 'gallery · texture / hairstyle uomo' },
+              { label: 'FEATURED', hint: 'gallery · ritratto capelli uomo', src: '/images/barbiere-gallery-featured.webp' },
+              { label: 'FADE',     hint: 'gallery · fade / barbiere',        src: '/images/barbiere-gallery-fade.webp' },
+              { label: 'BEARD',    hint: 'gallery · barba / design',         src: '/images/barbiere-gallery-beard.webp' },
+              { label: 'CLASSIC',  hint: 'gallery · taglio classico / uomo', src: '/images/barbiere-gallery-classic.webp' },
+              { label: 'TEXTURE',  hint: 'gallery · texture / hairstyle uomo', src: '/images/barbiere-gallery-texture.webp' },
             ].map((item, i) => (
               <div key={i} className="bar-gal-item sim-photo-slot">
-                <img src="" alt="" className="sim-photo-img" />
+                <img src={item.src} alt="" className="sim-photo-img" />
                 <span className="sim-photo-hint">{item.hint}</span>
                 <div className="bar-gal-label">{item.label}</div>
                 <div className="bar-gal-num">0{i + 1}</div>
@@ -237,7 +237,7 @@ const BarbiereSim = () => {
             {TEAM.map((member, i) => (
               <div key={i} className="bar-team-card">
                 <div className="bar-team-photo sim-photo-slot">
-                  <img src="" alt="" className="sim-photo-img" />
+                  <img src={member.photo} alt="" className="sim-photo-img" />
                   <span className="sim-photo-hint">{member.photoHint}</span>
                   <span className="bar-team-tag">{member.tag}</span>
                 </div>

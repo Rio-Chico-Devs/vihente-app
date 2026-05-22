@@ -43,6 +43,7 @@ const SOCI = [
     foro: 'Cassazione · Milano',
     anni: 'XXVII anni di esperienza',
     init: 'MR',
+    photo: '/images/avvocati-socio-mr.webp',
   },
   {
     nome: 'Avv. Giulia Ferrari',
@@ -51,6 +52,7 @@ const SOCI = [
     foro: 'Milano · Bruxelles',
     anni: 'XVIII anni di esperienza',
     init: 'GF',
+    photo: '/images/avvocati-socio-gf.webp',
   },
   {
     nome: 'Avv. Luca Bianchi',
@@ -59,6 +61,7 @@ const SOCI = [
     foro: 'Cassazione · Roma',
     anni: 'XXI anni di esperienza',
     init: 'LB',
+    photo: '/images/avvocati-socio-lb.webp',
   },
 ];
 
@@ -162,7 +165,7 @@ const AvvocatiSim = () => {
         {/* ── HERO ── */}
         <section className="avv-hero">
           <div className="avv-hero-photobg">
-            <img src="" alt="" className="sim-photo-img" />
+            <img src="/images/avvocati-hero.webp" alt="" className="sim-photo-img" />
             <span className="sim-photo-hint">hero · architettura / marmo</span>
           </div>
           <div className="avv-hero-inner">
@@ -248,7 +251,7 @@ const AvvocatiSim = () => {
                 <div key={s.nome} className="avv-socio-card">
                   <div className="avv-socio-portrait">
                     <div className="avv-portrait-frame sim-photo-slot">
-                      <img src="" alt={s.nome} className="sim-photo-img" />
+                      <img src={s.photo} alt={s.nome} className="sim-photo-img" />
                       <span className="sim-photo-hint">ritratto · {s.init}</span>
                       <div className="avv-portrait-init">{s.init}</div>
                     </div>
