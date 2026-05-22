@@ -53,7 +53,7 @@ const CampagnaSim = () => {
         {/* ── HERO ── */}
         <section className="cam-hero">
           <div className="cam-hero-photo">
-            <img src="" alt="" className="sim-photo-img" />
+            <img src="/images/campagna-candidato.webp" alt="" className="sim-photo-img" />
             <span className="sim-photo-hint">candidato · ritratto ufficiale</span>
             <div className="cam-candidate-silhouette">
               <svg viewBox="0 0 100 160" width="80" height="128">
