@@ -2,9 +2,9 @@
 <html lang="it">
   <head>
     <meta charset="UTF-8" />
-    <link rel="preload" href="/node_modules/@fontsource/share-tech-mono/files/share-tech-mono-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin />
-    <link rel="preload" href="/node_modules/@fontsource/orbitron/files/orbitron-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin />
-    <link rel="preload" href="/node_modules/@fontsource/orbitron/files/orbitron-latin-900-normal.woff2" as="font" type="font/woff2" crossorigin />
+    <!-- I font sono auto-discoverati dal CSS bundle generato da Vite a partire dagli
+         import @fontsource in main.jsx. I vecchi preload puntavano a /node_modules/...
+         che esiste solo in dev → in produzione causavano 404 silenziosi. -->
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="alternate icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="mask-icon" href="/favicon.svg" color="#00ffff" />

@@ -3,7 +3,8 @@ import '@fontsource/orbitron/400.css';
 import '@fontsource/orbitron/700.css';
 import '@fontsource/orbitron/900.css';
 
-import 'vanilla-cookieconsent/dist/cookieconsent.css';
+// vanilla-cookieconsent CSS è già importato dentro CookieConsent.jsx (lazy chunk).
+// Toglierlo da qui evita di trascinarlo nel main bundle.
 
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'

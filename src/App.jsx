@@ -6,28 +6,24 @@ import { SettingsProvider } from './contexts/SettingsContext';
 import { TourProvider } from './contexts/TourContext';
 import ErrorBoundary from './components/ErrorBoundary/ErrorBoundary';
 import Navbar from './components/sections/Navbar/Navbar';
-import Iris from './components/Iris/Iris';
 import Footer from './components/sections/Footer/Footer';
 import CustomCursor from './components/sections/Cursor/CustomCursor';
 import ThemeToggle from './components/ThemeToggle/ThemeToggle';
 import ScrollingHeader from './components/ScrollingHeader';
-import CookieConsentBanner from './components/global/CookieConsent/CookieConsent';
 import PageTransition from './components/PageTransition/PageTransition';
-import SiteSoundtrack from './components/SiteSoundtrack/SiteSoundtrack';
-import TourOverlay from './components/Tour/TourOverlay';
+
+// 🏠 EAGER: la home è l'ingresso principale — import diretto evita lo spinner al primo accesso
+import LandingPage from './components/sections/LandingPage/LandingPage';
+
+// 🌙 LAZY OVERLAYS: non critici per il First Paint, montati via <Suspense fallback={null}>
+const Iris = lazy(() => import('./components/Iris/Iris'));
+const TourOverlay = lazy(() => import('./components/Tour/TourOverlay'));
+const SiteSoundtrack = lazy(() => import('./components/SiteSoundtrack/SiteSoundtrack'));
+const CookieConsentBanner = lazy(() => import('./components/global/CookieConsent/CookieConsent'));
 
 // 🚀 LAZY LOADING - Carica componenti solo quando necessario
-const LandingPage = lazy(() => import('./components/sections/LandingPage/LandingPage'));
 const MyStory = lazy(() => import('./components/sections/MyStory/MyStory'));
-const ServicesPage = lazy(() => {
-  console.log('📦 [LAZY] Starting to load ServicesPage chunk...');
-  const start = performance.now();
-  return import('./components/sections/ServicesPage/ServicesPage').then(module => {
-    const duration = performance.now() - start;
-    console.log(`✅ [LAZY] ServicesPage chunk loaded in ${duration.toFixed(2)}ms`);
-    return module;
-  });
-});
+const ServicesPage = lazy(() => import('./components/sections/ServicesPage/ServicesPage'));
 const ConsulenzePage = lazy(() => import('./components/sections/ConsulenzePage/ConsulenzePage'));
 const SitiWebPage = lazy(() => import('./components/sections/SitiWebPage/SitiWebPage'));
 const PresenzaOnlinePage = lazy(() => import('./components/sections/PresenzaOnline/PresenzaOnlinePage'));
@@ -45,6 +41,17 @@ const FemosBlackMarketPage = lazy(() => import('./components/sections/Portfolio/
 const DashboardPage = lazy(() => import('./components/sections/Portfolio/ComponentShowcase/DashboardPage/DashboardPage'));
 const ImageCheckerPage = lazy(() => import('./components/sections/Portfolio/ComponentShowcase/ImageCheckerPage/ImageCheckerPage'));
 const BookingPage = lazy(() => import('./components/sections/Portfolio/ComponentShowcase/BookingPage/BookingPage'));
+const BackgroundsPage = lazy(() => import('./components/sections/Portfolio/ComponentShowcase/BackgroundsPage/BackgroundsPage'));
+const Showroom = lazy(() => import('./components/sections/Showroom/Showroom'));
+const PsicologoSim = lazy(() => import('./components/sections/Showroom/SimPages/PsicologoSim'));
+const AvvocatiSim = lazy(() => import('./components/sections/Showroom/SimPages/AvvocatiSim'));
+const CampagnaSim = lazy(() => import('./components/sections/Showroom/SimPages/CampagnaSim'));
+const EcommerceSim = lazy(() => import('./components/sections/Showroom/SimPages/EcommerceSim'));
+const SaloneSim = lazy(() => import('./components/sections/Showroom/SimPages/SaloneSim'));
+const FotografoSim = lazy(() => import('./components/sections/Showroom/SimPages/FotografoSim'));
+const BarbiereSim = lazy(() => import('./components/sections/Showroom/SimPages/BarbiereSim'));
+const AgenziaViaggioSim = lazy(() => import('./components/sections/Showroom/SimPages/AgenziaViaggioSim'));
+const ImmobiliareSim = lazy(() => import('./components/sections/Showroom/SimPages/ImmobiliareSim'));
 const Contacts = lazy(() => import('./components/sections/Contacts/Contacts'));
 const PrivacyPolicy = lazy(() => import('./components/sections/PrivacyPolicy/PrivacyPolicy'));
 const CookiePolicy = lazy(() => import('./components/sections/CookiePolicy/CookiePolicy'));
@@ -53,7 +60,6 @@ const Settings = lazy(() => import('./components/sections/Settings/Settings'));
 
 // 🎨 Loading Spinner Component
 const LoadingSpinner = () => {
-  console.log('⏳ [SUSPENSE] LoadingSpinner shown - Lazy loading in progress...');
   return (
     <div style={{
       minHeight: '100dvh',
@@ -92,6 +98,9 @@ const LoadingSpinner = () => {
 function App() {
   const [startTime] = useState(Date.now());
 
+  // 🔮 Il prefetch on-intent vive nella Navbar: hover-prefetch su desktop,
+  // pointerdown-prefetch su mobile. Vedi src/components/sections/Navbar/Navbar.jsx.
+
   return (
     <ErrorBoundary>
       <ThemeProvider>
@@ -100,11 +109,15 @@ function App() {
       <GuideProvider>
         <BrowserRouter basename={import.meta.env.DEV ? '/' : '/vihente-app'}>
           <CustomCursor />
-          <Iris />
-          <TourOverlay />
-          <SiteSoundtrack />
           <ThemeToggle />
-          <CookieConsentBanner isBooting={false} />
+
+          {/* Overlay non critici: caricati in background, niente spinner */}
+          <Suspense fallback={null}>
+            <Iris />
+            <TourOverlay />
+            <SiteSoundtrack />
+            <CookieConsentBanner isBooting={false} />
+          </Suspense>
 
           <>
             <Navbar />
@@ -137,6 +150,17 @@ function App() {
                     <Route path="/portfolio/componenti/dashboard" element={<DashboardPage />} />
                     <Route path="/portfolio/componenti/image-checker" element={<ImageCheckerPage />} />
                     <Route path="/portfolio/componenti/booking" element={<BookingPage />} />
+                    <Route path="/portfolio/componenti/backgrounds" element={<BackgroundsPage />} />
+                    <Route path="/showroom" element={<Showroom />} />
+                    <Route path="/showroom/psicologo" element={<PsicologoSim />} />
+                    <Route path="/showroom/avvocati" element={<AvvocatiSim />} />
+                    <Route path="/showroom/campagna" element={<CampagnaSim />} />
+                    <Route path="/showroom/ecommerce" element={<EcommerceSim />} />
+                    <Route path="/showroom/salone" element={<SaloneSim />} />
+                    <Route path="/showroom/fotografo" element={<FotografoSim />} />
+                    <Route path="/showroom/barbiere" element={<BarbiereSim />} />
+                    <Route path="/showroom/agenzia-viaggio" element={<AgenziaViaggioSim />} />
+                    <Route path="/showroom/immobiliare" element={<ImmobiliareSim />} />
                     <Route path="/contatti" element={<Contacts />} />
                     <Route path="/privacy-policy" element={<PrivacyPolicy />} />
                     <Route path="/cookie-policy" element={<CookiePolicy />} />

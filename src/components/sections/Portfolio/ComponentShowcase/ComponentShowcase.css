@@ -723,6 +723,67 @@
 .mini-bk-slot.sel  { background: var(--color-primary-15, rgba(0,255,255,0.15)); border-color: var(--color-primary); color: var(--color-primary); }
 .mini-bk-slot.busy { opacity: 0.3; background: rgba(255,68,68,0.08); border-color: rgba(255,68,68,0.2); }
 
+/* Shader Wallpapers mini preview */
+.mini-backgrounds {
+  height: 120px;
+  background: #06080D;
+  border: 1px solid var(--color-primary-20, rgba(0, 255, 255, 0.2));
+  border-radius: 4px;
+  overflow: hidden;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  padding-bottom: 0.6rem;
+  gap: 0.5rem;
+}
+
+.mini-bg-dots {
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(circle, rgba(141, 234, 255, 0.35) 1px, transparent 1px);
+  background-size: 12px 12px;
+  animation: bgDotsPulse 3s ease-in-out infinite;
+}
+
+@keyframes bgDotsPulse {
+  0%, 100% { opacity: 0.35; }
+  50%       { opacity: 0.85; }
+}
+
+.mini-bg-glow {
+  position: absolute;
+  width: 48px;
+  height: 48px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -60%);
+  background: radial-gradient(circle, rgba(141, 234, 255, 0.30), transparent 70%);
+  border-radius: 50%;
+  animation: bgGlowFloat 4s ease-in-out infinite;
+  pointer-events: none;
+}
+
+@keyframes bgGlowFloat {
+  0%, 100% { transform: translate(-50%, -60%) scale(1); opacity: 0.5; }
+  50%       { transform: translate(-50%, -65%) scale(1.3); opacity: 0.9; }
+}
+
+.mini-bg-chips {
+  position: relative;
+  display: flex;
+  gap: 5px;
+  z-index: 1;
+}
+
+.mini-bg-chip {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  opacity: 0.85;
+}
+
 /* ====================================
    LIGHT MODE (NIGHT MODE) OVERRIDES
    Sfondo scuro + accenti amber per comfort visivo notturno

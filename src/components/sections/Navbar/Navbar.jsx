@@ -4,6 +4,26 @@ import { useTheme } from '../../../contexts/theme';
 import { useGuide } from '../../../contexts/GuideContext';
 import './Navbar.css';
 
+/* ─── Route prefetch on intent (hover / pointerdown) ────────────────────────
+   Hover-based prefetch su desktop e pointerdown su mobile. Niente spreco di
+   banda: il chunk parte solo se l'utente mostra intent di navigare. */
+const ROUTE_PREFETCHERS = {
+  '/services':     () => import('../ServicesPage/ServicesPage'),
+  '/portfolio':    () => import('../Portfolio/Portfolio'),
+  '/showroom':     () => import('../Showroom/Showroom'),
+  '/storia':       () => import('../MyStory/MyStory'),
+  '/contatti':     () => import('../Contacts/Contacts'),
+  '/impostazioni': () => import('../Settings/Settings'),
+};
+const prefetchedRoutes = new Set();
+const prefetchRoute = (path) => {
+  if (prefetchedRoutes.has(path)) return;
+  const loader = ROUTE_PREFETCHERS[path];
+  if (!loader) return;
+  prefetchedRoutes.add(path);
+  loader().catch(() => prefetchedRoutes.delete(path));
+};
+
 const MOBILE_GREETINGS = [
   ':D Eccomi! Mi hai chiamato?',
   'Yawn... e.e Hola amigo mi ero addormentata.',
@@ -27,12 +47,14 @@ const PAGE_GUIDES = {
   '/portfolio/componenti/black-market':   "Femo's Black Market — negozio cyberpunk con carrello simulato.",
   '/portfolio/componenti/dashboard':      'Analytics Dashboard — metriche e grafici in tempo reale.',
   '/portfolio/componenti/booking':        'Booking System — prenota sessioni scegliendo data e orario.',
+  '/portfolio/componenti/backgrounds':   'Shader Wallpapers — 5 sfondi WebGL interattivi controllati dal cursore.',
   '/portfolio/componenti/music-player':   'Music Player — riproduttore con equalizzatore e playlist.',
   '/portfolio/componenti/crud-simulator': 'Gestionale Logistico — magazzino con form CRUD.',
   '/portfolio/componenti/slider':         'Expanding Gallery — pannelli espandibili con lightbox.',
   '/portfolio/componenti/text-sampler':   'Text Sampler — effetti tipografici in CSS puro.',
   '/portfolio/componenti/cubo-3d':        '3D Model — cubo interattivo, zero librerie esterne.',
   '/portfolio/componenti/image-checker':  "Image Checker — lente d'ingrandimento su immagini.",
+  '/showroom':                            'Showroom — 6 template professionali per settori diversi. Scegli il tuo modello.',
   '/contatti':                            'Contatti — scrivi un messaggio o richiedi un preventivo!',
   '/impostazioni':                        'Impostazioni — personalizza volumi e gestisci i dati di navigazione.',
 };
@@ -162,9 +184,10 @@ const Navbar = () => {
     { id: 'landing',      label: 'Home',          path: '/',             number: '01' },
     { id: 'services',     label: 'Servizi',        path: '/services',     number: '02' },
     { id: 'portfolio',    label: 'Portfolio',      path: '/portfolio',    number: '03' },
-    { id: 'storia',       label: 'La Mia Storia',  path: '/storia',       number: '04' },
-    { id: 'contatti',     label: 'Contatti',       path: '/contatti',     number: '05' },
-    { id: 'impostazioni', label: 'Impostazioni',   path: '/impostazioni', number: '06' },
+    { id: 'showroom',     label: 'Showroom',       path: '/showroom',     number: '04' },
+    { id: 'storia',       label: 'La Mia Storia',  path: '/storia',       number: '05' },
+    { id: 'contatti',     label: 'Contatti',       path: '/contatti',     number: '06' },
+    { id: 'impostazioni', label: 'Impostazioni',   path: '/impostazioni', number: '07' },
   ];
 
   // Improved transition with proper navigation timing
@@ -535,7 +558,7 @@ const Navbar = () => {
               aria-label="Vai alla pagina Servizi"
               aria-current={isActive('/services') ? 'page' : undefined}
               onClick={(e) => handleDesktopNavClick(e, '/services')}
-              onMouseEnter={() => setGuide("Dai un'occhiata ad alcuni dei miei precedenti lavori")}
+              onMouseEnter={() => { setGuide("Dai un'occhiata ad alcuni dei miei precedenti lavori"); prefetchRoute('/services'); }}
               onMouseLeave={clearGuide}
             >
               <span className="nav-link-text">Servizi</span>
@@ -549,10 +572,23 @@ const Navbar = () => {
               aria-label="Vai alla pagina Portfolio"
               aria-current={isActive('/portfolio') ? 'page' : undefined}
               onClick={(e) => handleDesktopNavClick(e, '/portfolio')}
-              onMouseEnter={() => setGuide("Dai un'occhiata ai miei precedenti lavori!")}
+              onMouseEnter={() => { setGuide("Dai un'occhiata ai miei precedenti lavori!"); prefetchRoute('/portfolio'); }}
               onMouseLeave={clearGuide}
             >
               <span className="nav-link-text">Portfolio</span>
+              <div className="nav-link-underline" />
+            </Link>
+
+            <Link
+              to="/showroom"
+              className={`nav-link ${isActive('/showroom') ? 'active' : ''}`}
+              aria-label="Vai allo Showroom"
+              aria-current={isActive('/showroom') ? 'page' : undefined}
+              onClick={(e) => handleDesktopNavClick(e, '/showroom')}
+              onMouseEnter={() => { setGuide('Showroom — scegli il template per la tua attività: psicologo, avvocati, e-commerce e altri.'); prefetchRoute('/showroom'); }}
+              onMouseLeave={clearGuide}
+            >
+              <span className="nav-link-text">Showroom</span>
               <div className="nav-link-underline" />
             </Link>
 
@@ -563,7 +599,7 @@ const Navbar = () => {
               aria-label="Vai alla pagina La Mia Storia"
               aria-current={isActive('/storia') ? 'page' : undefined}
               onClick={(e) => handleDesktopNavClick(e, '/storia')}
-              onMouseEnter={() => setGuide('Visita questa sezione per conoscere la storia del titolare del sito')}
+              onMouseEnter={() => { setGuide('Visita questa sezione per conoscere la storia del titolare del sito'); prefetchRoute('/storia'); }}
               onMouseLeave={clearGuide}
             >
               <span className="nav-link-text">La Mia Storia</span>
@@ -577,7 +613,7 @@ const Navbar = () => {
               aria-label="Vai alla pagina Contatti"
               aria-current={isActive('/contatti') ? 'page' : undefined}
               onClick={(e) => handleDesktopNavClick(e, '/contatti')}
-              onMouseEnter={() => setGuide('Mi sembra un\'ottima idea e.e')}
+              onMouseEnter={() => { setGuide('Mi sembra un\'ottima idea e.e'); prefetchRoute('/contatti'); }}
               onMouseLeave={clearGuide}
             >
               <span className="nav-link-text">Contatti</span>
@@ -591,7 +627,7 @@ const Navbar = () => {
             data-tour="nav-settings"
             onClick={(e) => handleDesktopNavClick(e, '/impostazioni')}
             aria-label="Vai alle impostazioni"
-            onMouseEnter={() => setGuide('Impostazioni — volumi, preferenze e gestione dati.')}
+            onMouseEnter={() => { setGuide('Impostazioni — volumi, preferenze e gestione dati.'); prefetchRoute('/impostazioni'); }}
             onMouseLeave={clearGuide}
           >
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -669,6 +705,7 @@ const Navbar = () => {
             return (
               <div
                 key={item.id}
+                onPointerDown={() => prefetchRoute(item.path)}
                 onClick={(e) => handleMobileItemClick(e, item)}
                 className={`p4-menu-item ${isSelected ? 'selected' : ''} ${isCurrent ? 'current' : ''}`}
                 style={{ animationDelay: `${index * 0.08}s` }}

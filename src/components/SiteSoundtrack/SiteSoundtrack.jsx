@@ -21,6 +21,15 @@ const SiteSoundtrack = () => {
   const [hasStarted, setHasStarted] = useState(false);
   const [isPlaying,  setIsPlaying]  = useState(false);
 
+  // Refs so the visibilitychange handler always reads current state without re-registering
+  const isMutedRef     = useRef(isMuted);
+  const hasStartedRef  = useRef(hasStarted);
+  const pathnameRef    = useRef(location.pathname);
+
+  useEffect(() => { isMutedRef.current    = isMuted;           }, [isMuted]);
+  useEffect(() => { hasStartedRef.current = hasStarted;        }, [hasStarted]);
+  useEffect(() => { pathnameRef.current   = location.pathname; }, [location.pathname]);
+
   /* ── Sync volume ref + update playing audio in real-time ── */
   useEffect(() => {
     musicVolumeRef.current = musicVolume;
@@ -67,6 +76,25 @@ const SiteSoundtrack = () => {
       setIsPlaying(true);
     }
   }, [location.pathname]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  /* ── Pause when tab is hidden, resume when visible again ── */
+  useEffect(() => {
+    const handleVisibility = () => {
+      const audio = audioRef.current;
+      if (!audio || !hasStartedRef.current || isMutedRef.current) return;
+      if (document.hidden) {
+        wasPlaying.current = !audio.paused;
+        audio.pause();
+        setIsPlaying(false);
+      } else if (wasPlaying.current && !PAUSE_PATHS.includes(pathnameRef.current)) {
+        audio.volume = musicVolumeRef.current * BASE_VOL;
+        audio.play().catch(() => {});
+        setIsPlaying(true);
+      }
+    };
+    document.addEventListener('visibilitychange', handleVisibility);
+    return () => document.removeEventListener('visibilitychange', handleVisibility);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   /* ── Cancel on unmount ── */
   useEffect(() => () => { audioRef.current?.pause(); }, []);

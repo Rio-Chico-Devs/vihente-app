@@ -1,0 +1,310 @@
+/* ═══════════════════════════════════════════════════════════════
+   SIM WRAPPER — TRUE FULLSCREEN OVERLAY
+   Covers VIHENTE chrome entirely. Native cursor restored inside.
+   Floating close UI top-left, floating "scegli modello" top-right.
+═══════════════════════════════════════════════════════════════ */
+
+.simwrap {
+  position: fixed;
+  inset: 0;
+  z-index: 1000050;            /* above CookieConsent (1000000) */
+  background: #000;
+  overflow-y: auto;
+  overflow-x: hidden;
+  cursor: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.simwrap * {
+  cursor: auto;
+}
+
+.simwrap button,
+.simwrap a,
+.simwrap [role="button"],
+.simwrap input[type="submit"],
+.simwrap input[type="button"] {
+  cursor: pointer;
+}
+
+.simwrap input,
+.simwrap textarea,
+.simwrap select {
+  cursor: text;
+}
+
+/* ── Restore native cursor on body while a sim is active ───────── */
+/* index.css has `* { cursor: none !important }`.
+   A bare `body.sim-fullscreen-active { cursor: auto }` loses that battle.
+   `body.sim-fullscreen-active *` has higher specificity AND !important → wins. */
+
+body.sim-fullscreen-active,
+body.sim-fullscreen-active * {
+  cursor: auto !important;
+}
+
+body.sim-fullscreen-active button,
+body.sim-fullscreen-active a,
+body.sim-fullscreen-active [role="button"],
+body.sim-fullscreen-active input[type="submit"],
+body.sim-fullscreen-active input[type="button"],
+body.sim-fullscreen-active input[type="range"],
+body.sim-fullscreen-active select {
+  cursor: pointer !important;
+}
+
+body.sim-fullscreen-active input:not([type="submit"]):not([type="button"]):not([type="range"]),
+body.sim-fullscreen-active textarea {
+  cursor: text !important;
+}
+
+body.sim-fullscreen-active .custom-cursor-dot,
+body.sim-fullscreen-active .custom-cursor-ring {
+  display: none !important;
+}
+
+/* ── Hide VIHENTE chrome completely while a sim is active ──────── */
+/* z-index alone wasn't enough: backdrop-filter on navbar/footer
+   creates rendering quirks (esp. mobile Safari) that can leak the
+   bottom bar through. Just remove them from the layout. */
+body.sim-fullscreen-active .navbar,
+body.sim-fullscreen-active .footer,
+body.sim-fullscreen-active .scrolling-header,
+body.sim-fullscreen-active .iris-container {
+  display: none !important;
+}
+
+/* ── Body wrapper — sim content ────────────────────────────────── */
+
+.simwrap-body {
+  min-height: 100dvh;
+  position: relative;
+  /* Mobile safe-area buffer so the last line of the sim's own footer
+     is never hidden behind the iOS home indicator. */
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+/* Neutralize global bare `footer { position: fixed }` rules from
+   other pages' CSS files (e.g. ServicesPage.css) that leak site-wide.
+   Keeps every sim's own <footer> in normal document flow. */
+.simwrap-body footer {
+  position: static;
+}
+
+/* Each sim site is the root block of its own page — make sure its
+   stacking context is well-defined so position:sticky inner navs
+   don't accidentally paint over later sections. */
+.simwrap-body > .psi-site,
+.simwrap-body > .avv-site,
+.simwrap-body > .fot-site,
+.simwrap-body > .sal-site,
+.simwrap-body > .eco-site,
+.simwrap-body > .cam-site,
+.simwrap-body > .bar-site {
+  position: relative;
+  z-index: 0;
+}
+
+/* ── Top-left close cluster ────────────────────────────────────── */
+
+.simwrap-close-wrap {
+  position: fixed;
+  top: 22px;
+  left: 22px;
+  z-index: 99999;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+  pointer-events: none;
+}
+
+.simwrap-close-wrap > * {
+  pointer-events: auto;
+}
+
+.simwrap-close-x {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.82);
+  border: 1px solid rgba(255, 255, 255, 0.34);
+  color: rgba(255, 255, 255, 0.92);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  box-shadow: 0 6px 22px rgba(0, 0, 0, 0.45);
+  transition: background 0.2s ease, border-color 0.2s ease, transform 0.25s ease, color 0.2s ease;
+}
+
+.simwrap-close-x:hover {
+  background: var(--sim-accent, #0ff);
+  border-color: var(--sim-accent, #0ff);
+  color: #000;
+  transform: rotate(90deg);
+}
+
+.simwrap-close-text {
+  background: rgba(0, 0, 0, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: rgba(255, 255, 255, 0.72);
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 0.6rem;
+  letter-spacing: 0.18em;
+  padding: 0.5rem 0.75rem;
+  border-radius: 4px;
+  cursor: pointer;
+  text-align: left;
+  line-height: 1.35;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  transition: color 0.2s, border-color 0.2s, background 0.2s;
+}
+
+.simwrap-close-text:hover {
+  color: var(--sim-accent, #0ff);
+  border-color: rgba(255, 255, 255, 0.45);
+  background: rgba(0, 0, 0, 0.84);
+}
+
+/* ── Top-right Scegli CTA ──────────────────────────────────────── */
+
+.simwrap-choose-float {
+  position: fixed;
+  top: 22px;
+  right: 22px;
+  z-index: 99999;
+  background: rgba(0, 0, 0, 0.78);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  color: #fff;
+  font-family: 'Share Tech Mono', monospace;
+  border-radius: 4px;
+  cursor: pointer;
+  padding: 0.55rem 0.95rem;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.18rem;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  box-shadow: 0 6px 22px rgba(0, 0, 0, 0.45);
+  transition: border-color 0.2s, transform 0.2s, background 0.2s;
+}
+
+.simwrap-choose-float:hover {
+  border-color: var(--sim-accent, #0ff);
+  transform: translateX(-2px);
+}
+
+.simwrap-choose-badge {
+  font-size: 0.52rem;
+  letter-spacing: 0.22em;
+  color: var(--sim-accent, #0ff);
+  opacity: 0.85;
+  white-space: nowrap;
+}
+
+.simwrap-choose-action {
+  font-size: 0.74rem;
+  letter-spacing: 0.06em;
+  font-weight: 700;
+  color: #fff;
+  white-space: nowrap;
+}
+
+/* ── Responsive ────────────────────────────────────────────────── */
+
+@media (max-width: 768px) {
+  .simwrap-close-wrap {
+    top: 12px;
+    left: 12px;
+    gap: 6px;
+  }
+
+  .simwrap-close-x {
+    width: 44px;
+    height: 44px;
+  }
+
+  .simwrap-close-text {
+    font-size: 0.54rem;
+    padding: 0.36rem 0.55rem;
+    letter-spacing: 0.15em;
+  }
+
+  .simwrap-choose-float {
+    top: 12px;
+    right: 12px;
+    padding: 0.45rem 0.75rem;
+  }
+
+  .simwrap-choose-badge {
+    font-size: 0.46rem;
+    letter-spacing: 0.18em;
+  }
+
+  .simwrap-choose-action {
+    font-size: 0.66rem;
+  }
+}
+
+@media (max-width: 420px) {
+  .simwrap-close-text {
+    display: none;
+  }
+
+  .simwrap-choose-badge {
+    display: none;
+  }
+}
+
+/* ── Photo placeholder slot system ─────────────────────────────────
+   Aggiungi `sim-photo-slot` al container, `sim-photo-img` all'<img>,
+   `sim-photo-hint` allo <span> di etichetta.
+   Quando src è vuoto: img nascosta, hint visibile come indicatore.
+   Quando src è valorizzato: img copre tutto, hint scompare sotto.
+─────────────────────────────────────────────────────────────────── */
+
+.sim-photo-slot {
+  position: relative;
+  overflow: hidden;
+}
+
+/* img nascosta di default (src vuoto) */
+.sim-photo-img {
+  display: none;
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  z-index: 5;
+}
+
+/* img visibile solo quando src è valorizzato */
+.sim-photo-img[src]:not([src=""]) {
+  display: block;
+}
+
+/* etichetta placeholder — z-index sotto l'img, scompare sotto la foto */
+.sim-photo-hint {
+  position: absolute;
+  bottom: 6px;
+  right: 8px;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 0.48rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.72);
+  background: rgba(0, 0, 0, 0.48);
+  padding: 0.18rem 0.44rem;
+  border-radius: 2px;
+  pointer-events: none;
+  z-index: 4;
+  line-height: 1.4;
+  text-align: right;
+}
