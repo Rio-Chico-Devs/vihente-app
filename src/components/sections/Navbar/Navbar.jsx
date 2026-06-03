@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useTheme } from '../../../contexts/theme';
 import { useGuide } from '../../../contexts/GuideContext';
@@ -74,8 +74,31 @@ const Navbar = () => {
 
   /* Reset greeting on route change */
   useEffect(() => { setMobileGreeting(null); }, [location.pathname]);
-  const [pupilPosition, setPupilPosition] = useState({ x: 50, y: 50 });
-  const [isBlinking, setIsBlinking] = useState(false);
+  // Pupilla e blink scritti direttamente nel DOM via ref: l'occhio segue il mouse
+  // identico, ma senza ri-renderizzare la Navbar a ogni movimento.
+  const deskOuterRef = useRef(null);
+  const deskInnerRef = useRef(null);
+  const deskContourRef = useRef(null);
+  const deskPupilGroupRef = useRef(null);
+  const mobOuterRef = useRef(null);
+  const mobInnerRef = useRef(null);
+  const mobContourRef = useRef(null);
+  const mobPupilGroupRef = useRef(null);
+
+  const applyPupil = useCallback((x, y) => {
+    const xs = String(x), ys = String(y);
+    [deskOuterRef, deskInnerRef, mobOuterRef, mobInnerRef].forEach((r) => {
+      if (r.current) { r.current.setAttribute('cx', xs); r.current.setAttribute('cy', ys); }
+    });
+  }, []);
+
+  const applyBlink = useCallback((on) => {
+    const op = on ? '0' : '1';
+    [deskContourRef, deskPupilGroupRef, mobContourRef, mobPupilGroupRef].forEach((r) => {
+      if (r.current) r.current.style.opacity = op;
+    });
+  }, []);
+
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [selectedItem, setSelectedItem] = useState(null);
   const [isNavigating, setIsNavigating] = useState(false);
@@ -101,42 +124,35 @@ const Navbar = () => {
     };
   }, []);
 
-  // Track mouse movement globally to make pupil follow cursor
+  // Track mouse movement globally to make pupil follow cursor.
+  // rAF-throttled + scrittura diretta nel DOM: nessun re-render.
   useEffect(() => {
+    let rafId = null;
     const handleMouseMove = (e) => {
-      const logo = document.querySelector('.navbar-logo');
-      if (!logo) return;
+      if (rafId) return;
+      rafId = requestAnimationFrame(() => {
+        rafId = null;
+        const logo = document.querySelector('.navbar-logo');
+        if (!logo) return;
 
-      const logoRect = logo.getBoundingClientRect();
-      const logoCenterX = logoRect.left + logoRect.width / 2;
-      const logoCenterY = logoRect.top + logoRect.height / 2;
+        const logoRect = logo.getBoundingClientRect();
+        const logoCenterX = logoRect.left + logoRect.width / 2;
+        const logoCenterY = logoRect.top + logoRect.height / 2;
 
-      const deltaX = e.clientX - logoCenterX;
-      const deltaY = e.clientY - logoCenterY;
-      const angle = Math.atan2(deltaY, deltaX);
+        const angle = Math.atan2(e.clientY - logoCenterY, e.clientX - logoCenterX);
+        const newX = 50 + Math.cos(angle) * 8;
+        const newY = 50 + Math.sin(angle) * 6;
 
-      const maxRadiusX = 8;
-      const maxRadiusY = 6;
-
-      let newX = 50 + Math.cos(angle) * maxRadiusX;
-      let newY = 50 + Math.sin(angle) * maxRadiusY;
-
-      const distanceFromCenter = Math.sqrt(
-        Math.pow((newX - 50) / maxRadiusX, 2) +
-        Math.pow((newY - 50) / maxRadiusY, 2)
-      );
-
-      if (distanceFromCenter > 1) {
-        newX = 50 + Math.cos(angle) * maxRadiusX;
-        newY = 50 + Math.sin(angle) * maxRadiusY;
-      }
-
-      setPupilPosition({ x: newX, y: newY });
+        applyPupil(newX, newY);
+      });
     };
 
     window.addEventListener('mousemove', handleMouseMove);
-    return () => window.removeEventListener('mousemove', handleMouseMove);
-  }, []);
+    return () => {
+      if (rafId) cancelAnimationFrame(rafId);
+      window.removeEventListener('mousemove', handleMouseMove);
+    };
+  }, [applyPupil]);
 
   // Random looking around
   useEffect(() => {
@@ -147,11 +163,8 @@ const Navbar = () => {
       const newX = 50 + Math.cos(randomAngle) * 8 * randomDistance;
       const newY = 50 + Math.sin(randomAngle) * 6 * randomDistance;
 
-      setPupilPosition({ x: newX, y: newY });
-
-      setTimeout(() => {
-        setPupilPosition({ x: 50, y: 50 });
-      }, 1000 + Math.random() * 1000);
+      applyPupil(newX, newY);
+      setTimeout(() => applyPupil(50, 50), 1000 + Math.random() * 1000);
     };
 
     const interval = setInterval(() => {
@@ -161,23 +174,19 @@ const Navbar = () => {
     }, 5000 + Math.random() * 3000);
 
     return () => clearInterval(interval);
-  }, []);
+  }, [applyPupil]);
 
   // Random blinking
   useEffect(() => {
     const blink = () => {
-      setIsBlinking(true);
-      setTimeout(() => {
-        setIsBlinking(false);
-      }, 100);
+      applyBlink(true);
+      setTimeout(() => applyBlink(false), 100);
     };
 
-    const interval = setInterval(() => {
-      blink();
-    }, 4000 + Math.random() * 2000);
+    const interval = setInterval(blink, 4000 + Math.random() * 2000);
 
     return () => clearInterval(interval);
-  }, []);
+  }, [applyBlink]);
 
   // Mobile menu navigation items
   const navItems = [
@@ -426,6 +435,7 @@ const Navbar = () => {
 
               {/* Eye shape - outer contour */}
               <path
+                ref={deskContourRef}
                 d="M 35 50 C 39 43, 44 40, 50 40 C 56 40, 61 43, 65 50 C 61 57, 56 60, 50 60 C 44 60, 39 57, 35 50 Z"
                 fill="none"
                 stroke="var(--color-primary-95, rgba(0, 255, 255, 0.95))"
@@ -433,24 +443,20 @@ const Navbar = () => {
                 strokeLinecap="round"
                 strokeLinejoin="round"
                 filter="url(#eyeGlowNav)"
-                style={{
-                  opacity: isBlinking ? 0 : 1,
-                  transition: 'opacity 0.1s ease-in-out'
-                }}
+                style={{ transition: 'opacity 0.1s ease-in-out' }}
               />
 
               {/* Pupil group - clipped by eye contour */}
               <g
+                ref={deskPupilGroupRef}
                 clipPath="url(#eyeContourClipNav)"
-                style={{
-                  opacity: isBlinking ? 0 : 1,
-                  transition: 'opacity 0.1s ease-in-out'
-                }}
+                style={{ transition: 'opacity 0.1s ease-in-out' }}
               >
                 {/* Outer circle */}
                 <circle
-                  cx={pupilPosition.x}
-                  cy={pupilPosition.y}
+                  ref={deskOuterRef}
+                  cx="50"
+                  cy="50"
                   r="8"
                   fill="none"
                   stroke="var(--color-primary-95, rgba(0, 255, 255, 0.95))"
@@ -463,8 +469,9 @@ const Navbar = () => {
 
                 {/* Inner pupil */}
                 <circle
-                  cx={pupilPosition.x}
-                  cy={pupilPosition.y}
+                  ref={deskInnerRef}
+                  cx="50"
+                  cy="50"
                   r="3.5"
                   fill="none"
                   stroke="var(--color-primary-95, rgba(0, 255, 255, 0.95))"
@@ -494,6 +501,7 @@ const Navbar = () => {
 
               {/* Eye outline */}
               <path
+                ref={mobContourRef}
                 d="M 35 50 C 39 43, 44 40, 50 40 C 56 40, 61 43, 65 50 C 61 57, 56 60, 50 60 C 44 60, 39 57, 35 50 Z"
                 fill="none"
                 stroke="var(--color-primary-95, rgba(0, 255, 255, 0.95))"
@@ -501,16 +509,18 @@ const Navbar = () => {
                 strokeLinecap="round"
                 strokeLinejoin="round"
                 filter="url(#irisGlowNav)"
-                style={{ opacity: isBlinking ? 0 : 1, transition: 'opacity 0.1s ease-in-out' }}
+                style={{ transition: 'opacity 0.1s ease-in-out' }}
               />
 
               {/* Pupil */}
               <g
+                ref={mobPupilGroupRef}
                 clipPath="url(#irisClipNav)"
-                style={{ opacity: isBlinking ? 0 : 1, transition: 'opacity 0.1s ease-in-out' }}
+                style={{ transition: 'opacity 0.1s ease-in-out' }}
               >
                 <circle
-                  cx={pupilPosition.x} cy={pupilPosition.y} r="8"
+                  ref={mobOuterRef}
+                  cx="50" cy="50" r="8"
                   fill="none"
                   stroke="var(--color-primary-95, rgba(0, 255, 255, 0.95))"
                   strokeWidth="1"
@@ -518,7 +528,8 @@ const Navbar = () => {
                   style={{ transition: 'cx 0.3s ease-out, cy 0.3s ease-out' }}
                 />
                 <circle
-                  cx={pupilPosition.x} cy={pupilPosition.y} r="3.5"
+                  ref={mobInnerRef}
+                  cx="50" cy="50" r="3.5"
                   fill="none"
                   stroke="var(--color-primary-95, rgba(0, 255, 255, 0.95))"
                   strokeWidth="0.8"

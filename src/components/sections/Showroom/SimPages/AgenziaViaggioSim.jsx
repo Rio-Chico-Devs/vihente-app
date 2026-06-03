@@ -247,7 +247,7 @@ const AgenziaViaggioSim = () => {
               <div className="alt-story-photo-grid">
                 {dest.moments.map((m, i) => (
                   <div key={i} className="alt-photo-slot sim-photo-slot">
-                    <img src={`/images/altrove-${dest.id}-${i + 1}.webp`} alt="" className="sim-photo-img" />
+                    <img src={`/images/altrove-${dest.id}-${i + 1}.webp`} alt="" loading="lazy" decoding="async" className="sim-photo-img" />
                     <span className="sim-photo-hint">{m}</span>
                   </div>
                 ))}
@@ -295,7 +295,7 @@ const AgenziaViaggioSim = () => {
           {PACKAGES.map((pkg, i) => (
             <div key={i} className="alt-package-strip">
               <div className="alt-package-photo sim-photo-slot">
-                <img src={pkg.src} alt="" className="sim-photo-img" />
+                <img src={pkg.src} alt="" loading="lazy" decoding="async" className="sim-photo-img" />
                 <span className="sim-photo-hint">{pkg.hint}</span>
               </div>
               <div className="alt-package-text">

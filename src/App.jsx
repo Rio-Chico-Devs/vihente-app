@@ -1,4 +1,4 @@
-import { useState, lazy, Suspense } from 'react';
+import { useState, useEffect, lazy, Suspense } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import ThemeProvider from './contexts/ThemeProvider';
 import { GuideProvider } from './contexts/GuideContext';
@@ -98,6 +98,16 @@ const LoadingSpinner = () => {
 function App() {
   const [startTime] = useState(Date.now());
 
+  // ⏳ Overlay non critici (Iris, Tour, Soundtrack, CookieConsent) montati quando
+  // il main thread è idle: stesso aspetto, ma fuori dal critical path del primo paint.
+  const [overlaysReady, setOverlaysReady] = useState(false);
+  useEffect(() => {
+    const ric = window.requestIdleCallback || ((cb) => setTimeout(cb, 200));
+    const cic = window.cancelIdleCallback || clearTimeout;
+    const id = ric(() => setOverlaysReady(true));
+    return () => cic(id);
+  }, []);
+
   // 🔮 Il prefetch on-intent vive nella Navbar: hover-prefetch su desktop,
   // pointerdown-prefetch su mobile. Vedi src/components/sections/Navbar/Navbar.jsx.
 
@@ -111,12 +121,16 @@ function App() {
           <CustomCursor />
           <ThemeToggle />
 
-          {/* Overlay non critici: caricati in background, niente spinner */}
+          {/* Overlay non critici: caricati in background quando il thread è idle */}
           <Suspense fallback={null}>
-            <Iris />
-            <TourOverlay />
-            <SiteSoundtrack />
-            <CookieConsentBanner isBooting={false} />
+            {overlaysReady && (
+              <>
+                <Iris />
+                <TourOverlay />
+                <SiteSoundtrack />
+                <CookieConsentBanner isBooting={false} />
+              </>
+            )}
           </Suspense>
 
           <>

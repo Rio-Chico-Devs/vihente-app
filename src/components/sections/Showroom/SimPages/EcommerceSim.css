@@ -552,7 +552,11 @@
   position: relative;
   overflow: hidden;
   cursor: crosshair;
-  background-size: 12px 12px, cover;
+  background: #f3efe9;
+}
+
+.eco-magnify-wrap .sim-photo-img {
+  z-index: 1;
 }
 
 .eco-magnify-hint {
@@ -574,6 +578,7 @@
   white-space: nowrap;
   pointer-events: none;
   transition: opacity 0.3s;
+  z-index: 3;
 }
 
 .eco-magnify-wrap:hover .eco-magnify-hint {
@@ -591,8 +596,9 @@
     0 0 0 1px rgba(255,255,255,0.6) inset,
     0 8px 28px rgba(0, 0, 0, 0.22);
   transform: translate(-50%, -50%);
-  background-size: 34px 34px, 250%;
-  background-repeat: repeat, no-repeat;
+  background-repeat: no-repeat;
+  background-color: #f3efe9;
+  z-index: 4;
 }
 
 /* ── Product info column ── */

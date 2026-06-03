@@ -158,7 +158,7 @@ const BarbiereSim = () => {
           <div className="bar-services-grid">
             {SERVIZI.map((svc, i) => (
               <div key={i} className="bar-svc-card sim-photo-slot">
-                <img src={svc.src} alt="" className="sim-photo-img" />
+                <img src={svc.src} alt="" loading="lazy" decoding="async" className="sim-photo-img" />
                 <span className="sim-photo-hint">{`servizio · ${svc.nome.toLowerCase()}`}</span>
                 <div className="bar-svc-overlay" />
                 <div className="bar-svc-num">0{i + 1}</div>
@@ -184,7 +184,7 @@ const BarbiereSim = () => {
         {/* ── SPREAD ── */}
         <section className="bar-spread">
           <div className="bar-spread-photo sim-photo-slot">
-            <img src="/images/barbiere-interni.webp" alt="" className="sim-photo-img" />
+            <img src="/images/barbiere-interni.webp" alt="" loading="lazy" decoding="async" className="sim-photo-img" />
             <span className="sim-photo-hint">interni · barbershop interior</span>
             <div className="bar-spread-banner">
               <div className="bar-spread-word">CUT.</div>
@@ -218,7 +218,7 @@ const BarbiereSim = () => {
               { label: 'TEXTURE',  hint: 'gallery · texture / hairstyle uomo', src: '/images/barbiere-gallery-texture.webp' },
             ].map((item, i) => (
               <div key={i} className="bar-gal-item sim-photo-slot">
-                <img src={item.src} alt="" className="sim-photo-img" />
+                <img src={item.src} alt="" loading="lazy" decoding="async" className="sim-photo-img" />
                 <span className="sim-photo-hint">{item.hint}</span>
                 <div className="bar-gal-label">{item.label}</div>
                 <div className="bar-gal-num">0{i + 1}</div>
@@ -237,7 +237,7 @@ const BarbiereSim = () => {
             {TEAM.map((member, i) => (
               <div key={i} className="bar-team-card">
                 <div className="bar-team-photo sim-photo-slot">
-                  <img src={member.photo} alt="" className="sim-photo-img" />
+                  <img src={member.photo} alt="" loading="lazy" decoding="async" className="sim-photo-img" />
                   <span className="sim-photo-hint">{member.photoHint}</span>
                   <span className="bar-team-tag">{member.tag}</span>
                 </div>

@@ -152,7 +152,7 @@ const ImmobiliareSim = () => {
             {PROPERTIES.map((p, i) => (
               <div key={i} className={`res-prop-card${i === 0 ? ' res-prop-card--large' : ''}`}>
                 <div className="res-prop-photo" style={{ background: p.bg }}>
-                  <img src={p.src} alt="" className="sim-photo-img" />
+                  <img src={p.src} alt="" loading="lazy" decoding="async" className="sim-photo-img" />
                   <span className="res-photo-hint">{p.hint}</span>
                 </div>
                 <div className="res-prop-overlay">
@@ -206,7 +206,7 @@ const ImmobiliareSim = () => {
               {zone.hints.map((h, i) => (
                 <div key={i} className="res-zone-photo">
                   <div className="res-zone-photo-inner sim-photo-slot">
-                    <img src={zone.photos[i]} alt="" className="sim-photo-img" />
+                    <img src={zone.photos[i]} alt="" loading="lazy" decoding="async" className="sim-photo-img" />
                     <span className="sim-photo-hint">{h}</span>
                   </div>
                 </div>
@@ -345,7 +345,7 @@ const ImmobiliareSim = () => {
             {AGENTI.map((a, i) => (
               <div key={i} className="res-agente-card">
                 <div className="res-agente-photo" style={{ background: a.bg }}>
-                  <img src={a.photo} alt={a.name} className="sim-photo-img" />
+                  <img src={a.photo} alt={a.name} loading="lazy" decoding="async" className="sim-photo-img" />
                   <span className="res-photo-hint">agente · ritratto / studio</span>
                 </div>
                 <div className="res-agente-name">{a.name}</div>
@@ -369,7 +369,7 @@ const ImmobiliareSim = () => {
             {INSIGHTS.map((ins, i) => (
               <div key={i} className="res-insight-card">
                 <div className="res-insight-photo" style={{ background: ins.bg }}>
-                  <img src={ins.src} alt="" className="sim-photo-img" />
+                  <img src={ins.src} alt="" loading="lazy" decoding="async" className="sim-photo-img" />
                   <span className="res-photo-hint">{ins.hint}</span>
                 </div>
                 <div className="res-insight-body">

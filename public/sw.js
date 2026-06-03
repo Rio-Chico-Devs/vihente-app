@@ -25,12 +25,9 @@ const CACHE_PATTERNS = {
 // Viene eseguito quando il SW viene installato per la prima volta
 // o quando c'è una nuova versione
 self.addEventListener('install', (event) => {
-  console.log('[SW] Installing Service Worker...', CACHE_VERSION);
-
   event.waitUntil(
     caches.open(CACHE_NAME)
       .then((cache) => {
-        console.log('[SW] Caching critical assets');
         // Cacha gli asset critici
         return cache.addAll(CRITICAL_ASSETS);
       })
@@ -38,9 +35,7 @@ self.addEventListener('install', (event) => {
         // Forza il nuovo SW ad attivarsi immediatamente
         return self.skipWaiting();
       })
-      .catch((error) => {
-        console.error('[SW] Installation failed:', error);
-      })
+      .catch(() => {})
   );
 });
 
@@ -50,8 +45,6 @@ self.addEventListener('install', (event) => {
 // Viene eseguito quando il SW diventa attivo
 // Qui puliamo le cache vecchie
 self.addEventListener('activate', (event) => {
-  console.log('[SW] Activating Service Worker...', CACHE_VERSION);
-
   event.waitUntil(
     caches.keys()
       .then((cacheNames) => {
@@ -61,7 +54,6 @@ self.addEventListener('activate', (event) => {
         });
 
         // Elimina le cache vecchie
-        console.log('[SW] Deleting old caches:', oldCaches);
         return Promise.all(
           oldCaches.map((cacheName) => caches.delete(cacheName))
         );
@@ -70,9 +62,7 @@ self.addEventListener('activate', (event) => {
         // Prendi il controllo di tutte le pagine immediatamente
         return self.clients.claim();
       })
-      .catch((error) => {
-        console.error('[SW] Activation failed:', error);
-      })
+      .catch(() => {})
   );
 });
 
@@ -105,12 +95,10 @@ self.addEventListener('fetch', (event) => {
       caches.match(request)
         .then((cachedResponse) => {
           if (cachedResponse) {
-            console.log('[SW] Cache HIT:', url.pathname);
             return cachedResponse;
           }
 
           // Non in cache: scarica dalla rete
-          console.log('[SW] Cache MISS, fetching:', url.pathname);
           return fetch(request)
             .then((networkResponse) => {
               // Salva in cache per il prossimo utilizzo
@@ -123,8 +111,7 @@ self.addEventListener('fetch', (event) => {
               }
               return networkResponse;
             })
-            .catch((error) => {
-              console.error('[SW] Fetch failed:', error);
+            .catch(() => {
               // Ritorna una risposta offline di fallback se disponibile
               return caches.match('/index.html');
             });
@@ -154,7 +141,6 @@ self.addEventListener('fetch', (event) => {
       })
       .catch(() => {
         // Rete non disponibile: usa cache
-        console.log('[SW] Network failed, using cache:', url.pathname);
         return caches.match(request)
           .then((cachedResponse) => {
             if (cachedResponse) {

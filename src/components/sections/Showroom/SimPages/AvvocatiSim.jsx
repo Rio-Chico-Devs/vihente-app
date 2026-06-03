@@ -251,7 +251,7 @@ const AvvocatiSim = () => {
                 <div key={s.nome} className="avv-socio-card">
                   <div className="avv-socio-portrait">
                     <div className="avv-portrait-frame sim-photo-slot">
-                      <img src={s.photo} alt={s.nome} className="sim-photo-img" />
+                      <img src={s.photo} alt={s.nome} loading="lazy" decoding="async" className="sim-photo-img" />
                       <span className="sim-photo-hint">ritratto · {s.init}</span>
                       <div className="avv-portrait-init">{s.init}</div>
                     </div>

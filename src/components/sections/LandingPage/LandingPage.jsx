@@ -65,11 +65,13 @@ const LandingPageOldEye = ({ startTime }) => {
     accentLight: 'rgba(103, 232, 249, 0.8)',
   };
 
-  const [uptime, setUptime] = useState('0m 0s');
-  const [currentTime, setCurrentTime] = useState('00:00:00');
-  const [fps, setFps] = useState(60);
-  const [memory, setMemory] = useState('N/A');
-  const [network, setNetwork] = useState('UNKNOWN');
+  // Metriche scritte direttamente nel DOM via ref: si aggiornano ogni 2s
+  // senza ri-renderizzare l'intero componente.
+  const uptimeRef = useRef(null);
+  const timeRef = useRef(null);
+  const fpsRef = useRef(null);
+  const memoryRef = useRef(null);
+  const networkRef = useRef(null);
   const [isEyeGlitching, setIsEyeGlitching] = useState(false);
   // Refs invece di state: aggiornamento diretto del DOM senza re-render React
   // (React 19 + Router 7 usano startTransition per la navigazione — setState a 60fps
@@ -294,23 +296,27 @@ const LandingPageOldEye = ({ startTime }) => {
 
     const timeInterval = setInterval(() => {
       const now = new Date();
-      setCurrentTime(now.toLocaleTimeString('it-IT', {
-        hour: '2-digit', minute: '2-digit', second: '2-digit'
-      }));
+      if (timeRef.current) {
+        timeRef.current.textContent = now.toLocaleTimeString('it-IT', {
+          hour: '2-digit', minute: '2-digit', second: '2-digit'
+        });
+      }
 
       const elapsed = Math.floor((Date.now() - startTime) / 1000);
       const mins = Math.floor(elapsed / 60);
       const secs = elapsed % 60;
-      setUptime(`${mins}m ${secs}s`);
+      if (uptimeRef.current) uptimeRef.current.textContent = `${mins}m ${secs}s`;
 
-      if (performance.memory) {
+      if (performance.memory && memoryRef.current) {
         const memoryMB = Math.round(performance.memory.usedJSHeapSize / 1048576);
-        setMemory(`${memoryMB}MB`);
+        memoryRef.current.textContent = `${memoryMB}MB`;
       }
 
-      const conn = navigator.connection;
-      const netType = conn && conn.effectiveType ? conn.effectiveType.toUpperCase() : 'ONLINE';
-      setNetwork(netType);
+      if (networkRef.current) {
+        const conn = navigator.connection;
+        const netType = conn && conn.effectiveType ? conn.effectiveType.toUpperCase() : 'ONLINE';
+        networkRef.current.textContent = netType;
+      }
     }, 2000);
 
     intervalsRef.current.push(timeInterval);
@@ -320,13 +326,13 @@ const LandingPageOldEye = ({ startTime }) => {
 
     function measureFPS() {
       frameCount++;
-      const currentTime = performance.now();
+      const nowTs = performance.now();
 
-      if (currentTime >= lastTime + 2000) {
-        const calculatedFps = Math.round(frameCount * 1000 / (currentTime - lastTime));
-        setFps(Math.min(calculatedFps, 60));
+      if (nowTs >= lastTime + 2000) {
+        const calculatedFps = Math.round(frameCount * 1000 / (nowTs - lastTime));
+        if (fpsRef.current) fpsRef.current.textContent = String(Math.min(calculatedFps, 60));
         frameCount = 0;
-        lastTime = currentTime;
+        lastTime = nowTs;
       }
 
       animationFrameRef.current = requestAnimationFrame(measureFPS);
@@ -365,6 +371,9 @@ const LandingPageOldEye = ({ startTime }) => {
 
     ctx.fillStyle = colors.bg;
     ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    // Rispetta prefers-reduced-motion: niente pioggia animata, solo sfondo statico.
+    if (window.matchMedia?.('(prefers-reduced-motion: reduce)').matches) return;
 
     function draw() {
       // Skip draw quando il tab è nascosto: zero CPU/batteria sprecati.
@@ -782,23 +791,23 @@ const LandingPageOldEye = ({ startTime }) => {
       <div className="system-metrics">
         <div className="metric-item">
           <span className="metric-label">UPTIME:</span>
-          <span className="metric-value">{uptime}</span>
+          <span className="metric-value" ref={uptimeRef}>0m 0s</span>
         </div>
         <div className="metric-item">
           <span className="metric-label">TIME:</span>
-          <span className="metric-value">{currentTime}</span>
+          <span className="metric-value" ref={timeRef}>00:00:00</span>
         </div>
         <div className="metric-item">
           <span className="metric-label">FPS:</span>
-          <span className="metric-value">{fps}</span>
+          <span className="metric-value" ref={fpsRef}>60</span>
         </div>
         <div className="metric-item">
           <span className="metric-label">MEM:</span>
-          <span className="metric-value">{memory}</span>
+          <span className="metric-value" ref={memoryRef}>N/A</span>
         </div>
         <div className="metric-item">
           <span className="metric-label">NET:</span>
-          <span className="metric-value">{network}</span>
+          <span className="metric-value" ref={networkRef}>UNKNOWN</span>
         </div>
       </div>
 

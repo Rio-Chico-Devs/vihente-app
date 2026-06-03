@@ -113,19 +113,41 @@ const CATEGORIE = ['Tutti', 'Outerwear', 'Dresses', 'Footwear', 'Accessories', '
 
 /* ─── Product Magnifier ─────────────────────────────────────── */
 
-const ProductMagnifier = ({ colore, colore2 }) => {
-  const imgRef = useRef(null);
-  const [lens, setLens] = useState({ x: 0, y: 0, visible: false });
+const MAG_ZOOM = 2.8;
+const MAG_LENS_SIZE = 150;
 
-  const ZOOM = 2.8;
-  const LENS_SIZE = 150;
+const ProductMagnifier = ({ src, nome }) => {
+  const wrapRef = useRef(null);
+  const imgRef = useRef(null);
+  const [lens, setLens] = useState({ x: 0, y: 0, bgX: 0, bgY: 0, w: 0, h: 0, visible: false });
 
   const handleMouseMove = useCallback((e) => {
-    const rect = imgRef.current?.getBoundingClientRect();
-    if (!rect) return;
+    const wrap = wrapRef.current;
+    if (!wrap) return;
+    const rect = wrap.getBoundingClientRect();
     const x = e.clientX - rect.left;
     const y = e.clientY - rect.top;
-    setLens({ x, y, visible: true });
+
+    // Replicate the `object-fit: cover` geometry of the base <img> so the
+    // magnified view lines up exactly with the crop shown underneath.
+    const img = imgRef.current;
+    const nw = img?.naturalWidth || rect.width;
+    const nh = img?.naturalHeight || rect.height;
+    const scale = Math.max(rect.width / nw, rect.height / nh);
+    const dispW = nw * scale;
+    const dispH = nh * scale;
+    const offX = (dispW - rect.width) / 2;
+    const offY = (dispH - rect.height) / 2;
+
+    setLens({
+      x,
+      y,
+      w: dispW * MAG_ZOOM,
+      h: dispH * MAG_ZOOM,
+      bgX: MAG_LENS_SIZE / 2 - (offX + x) * MAG_ZOOM,
+      bgY: MAG_LENS_SIZE / 2 - (offY + y) * MAG_ZOOM,
+      visible: true,
+    });
   }, []);
 
   const handleMouseLeave = useCallback(() => {
@@ -136,30 +158,20 @@ const ProductMagnifier = ({ colore, colore2 }) => {
     display: 'block',
     left: lens.x,
     top: lens.y,
-    backgroundImage: `
-      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12'%3E%3Cpath d='M0 6h12M6 0v12' stroke='rgba(0,0,0,0.06)' stroke-width='0.5'/%3E%3C/svg%3E"),
-      linear-gradient(145deg, ${colore}, ${colore2})
-    `,
-    backgroundSize: `${12 * ZOOM}px ${12 * ZOOM}px, cover`,
-    backgroundPosition: `
-      ${-lens.x * ZOOM + LENS_SIZE / 2}px ${-lens.y * ZOOM + LENS_SIZE / 2}px,
-      ${-lens.x * (ZOOM - 1)}px ${-lens.y * (ZOOM - 1)}px
-    `,
+    backgroundImage: `url("${src}")`,
+    backgroundSize: `${lens.w}px ${lens.h}px`,
+    backgroundPosition: `${lens.bgX}px ${lens.bgY}px`,
+    backgroundRepeat: 'no-repeat',
   } : { display: 'none' };
 
   return (
     <div
       className="eco-magnify-wrap"
-      ref={imgRef}
+      ref={wrapRef}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
-      style={{
-        background: `
-          url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12'%3E%3Cpath d='M0 6h12M6 0v12' stroke='rgba(0,0,0,0.06)' stroke-width='0.5'/%3E%3C/svg%3E"),
-          linear-gradient(145deg, ${colore}, ${colore2})
-        `,
-      }}
     >
+      <img src={src} alt={nome} className="sim-photo-img" ref={imgRef} />
       <div className="eco-magnify-hint">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="rgba(0,0,0,0.45)" strokeWidth="1.8" strokeLinecap="round">
           <circle cx="11" cy="11" r="7" />
@@ -191,7 +203,7 @@ const ProductModal = ({ prodotto, onClose, onAddToCart, addedId }) => {
         <div className="eco-pmodal-layout">
           {/* Left: image with magnifier */}
           <div className="eco-pmodal-img-col">
-            <ProductMagnifier colore={prodotto.colore} colore2={prodotto.colore2} />
+            <ProductMagnifier src={prodotto.src} nome={prodotto.nome} />
           </div>
 
           {/* Right: product details */}
@@ -336,7 +348,7 @@ const EcommerceSim = () => {
                     style={{ background: `linear-gradient(145deg, ${p.colore}, ${p.colore2})` }}
                     onClick={() => setDetailProd(p)}
                   >
-                    <img src={p.src} alt={p.nome} className="sim-photo-img" />
+                    <img src={p.src} alt={p.nome} loading="lazy" decoding="async" className="sim-photo-img" />
                     <span className="sim-photo-hint">{p.nome}</span>
                     <div className="eco-product-overlay">
                       <button className="eco-zoom-btn" onClick={e => { e.stopPropagation(); setDetailProd(p); }}>

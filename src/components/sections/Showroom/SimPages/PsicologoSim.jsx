@@ -109,7 +109,7 @@ const PsicologoSim = () => {
         <section className="psi-about" id="chi-sono">
           <div className="psi-about-inner">
             <div className="psi-about-photo sim-photo-slot">
-              <img src="/images/psicologo-about.webp" alt="" className="sim-photo-img" />
+              <img src="/images/psicologo-about.webp" alt="" loading="lazy" decoding="async" className="sim-photo-img" />
               <span className="sim-photo-hint">dottoressa · about</span>
               <div className="psi-about-photo-placeholder">
                 <svg viewBox="0 0 80 100" width="72" height="90">
