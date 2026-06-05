@@ -1,10 +1,6 @@
-import '@fontsource/share-tech-mono/400.css';
-import '@fontsource/orbitron/400.css';
-import '@fontsource/orbitron/700.css';
-import '@fontsource/orbitron/900.css';
-
-// vanilla-cookieconsent CSS è già importato dentro CookieConsent.jsx (lazy chunk).
-// Toglierlo da qui evita di trascinarlo nel main bundle.
+// Font self-hosted (Orbitron, Share Tech Mono + tutti i font delle SimPages).
+// I .woff2 vivono in /public/fonts/. Nessun fetch a Google/CDN esterne.
+import './styles/fonts.css';
 
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
@@ -18,5 +14,14 @@ createRoot(document.getElementById('root')).render(
   </StrictMode>,
 )
 
-//gestire 
+// Rimuove il boot splash dell'index.html una volta che React ha montato l'app:
+// lo spinner resta visibile per tutto il download/parse del bundle, poi sfuma.
+requestAnimationFrame(() => {
+  const splash = document.getElementById('boot-splash');
+  if (!splash) return;
+  splash.style.opacity = '0';
+  setTimeout(() => splash.remove(), 300);
+});
+
+//gestire
 registerServiceWorker()
