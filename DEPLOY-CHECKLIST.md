@@ -109,6 +109,32 @@ devono essere caricati come sono (binari per i woff2).
 - [ ] DevTools → Network: nessuna richiesta a `fonts.googleapis.com` / `fonts.gstatic.com`
 - [ ] DevTools → Console: nessun errore CSP
 
+## 6-bis. Test di sicurezza CRITICI (emersi dal red-team)
+
+La protezione dei dati personali nei log dipende dal fatto che Apache applichi
+il `.htaccess`. **Verifica esplicitamente** che i file sensibili NON siano
+scaricabili (atteso **403**, non 200):
+
+```bash
+curl -I https://vihente.it/api/contacts.log      # atteso: 403 Forbidden
+curl -I https://vihente.it/api/.htaccess         # atteso: 403
+curl -I https://vihente.it/api/contacts.log.bak  # atteso: 403
+```
+
+Se uno di questi risponde **200**, i contatti dei tuoi visitatori sono
+pubblici (leak GDPR): l'hosting non sta applicando `.htaccess`
+(`AllowOverride None`). In quel caso, apri ticket Hostinger o sposta
+`contacts.log` fuori dalla webroot.
+
+Altri controlli rapidi (devono fallire):
+
+```bash
+# La vecchia password in GET non deve dare accesso ai log
+curl -s "https://vihente.it/api/view-logs.php?pass=qualsiasi" | grep -i "TOTALE\|SUCCESS"  # atteso: vuoto (mostra solo il login)
+# Il file di test non deve esistere
+curl -I https://vihente.it/api/test-email.php    # atteso: 403/404
+```
+
 ---
 
 ## 7. Se qualcosa va male
