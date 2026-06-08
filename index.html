@@ -39,10 +39,10 @@
     <meta property="twitter:description" content="Creo la tua presenza digitale da zero, o ti aiuto a migliorare quella che già hai. Consulenze digitali professionali." />
     <meta property="twitter:image" content="https://vihente.it/og-image.png" />
 
-    <!-- Security Headers -->
-    <meta http-equiv="X-Content-Type-Options" content="nosniff" />
-    <meta http-equiv="X-Frame-Options" content="SAMEORIGIN" />
-    <meta http-equiv="Permissions-Policy" content="geolocation=(), microphone=(), camera=()" />
+    <!-- NB: gli header di sicurezza (CSP, X-Frame-Options, X-Content-Type-Options,
+         Permissions-Policy, HSTS, COOP/CORP) sono serviti via HTTP da public/.htaccess.
+         I <meta http-equiv> per questi header sono ignorati dai browser, quindi
+         qui non vanno duplicati. -->
 
     <!-- Theme Color -->
     <meta name="theme-color" content="#000000" />

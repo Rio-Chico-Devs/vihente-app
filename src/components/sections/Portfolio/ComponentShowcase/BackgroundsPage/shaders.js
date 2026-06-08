@@ -423,9 +423,9 @@ export class WallpaperRenderer {
     const elapsed = (ts - this._t0) / 1000;
 
     /* Smooth mouse */
-    const α = 1.0 - Math.exp(-this._tweaks.ease * dt);
-    this._smoothMouse[0] += (this._rawMouse[0] - this._smoothMouse[0]) * α;
-    this._smoothMouse[1] += (this._rawMouse[1] - this._smoothMouse[1]) * α;
+    const alpha = 1.0 - Math.exp(-this._tweaks.ease * dt);
+    this._smoothMouse[0] += (this._rawMouse[0] - this._smoothMouse[0]) * alpha;
+    this._smoothMouse[1] += (this._rawMouse[1] - this._smoothMouse[1]) * alpha;
 
     /* Upload uniforms */
     gl.useProgram(this._prog);

@@ -34,7 +34,6 @@
     "build:analyze": "vite build --mode analyze"
   },
   "dependencies": {
-    "dompurify": "^3.3.0",
     "react": "^19.1.1",
     "react-dom": "^19.1.1",
     "react-router-dom": "^7.9.6",

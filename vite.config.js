@@ -14,7 +14,7 @@ export default defineConfig(({ mode }) => ({
       output: {
         manualChunks: {
           'react-vendor': ['react', 'react-dom', 'react-router-dom'],
-          'utils-vendor': ['validator', 'dompurify']
+          'utils-vendor': ['validator']
         }
       }
     },

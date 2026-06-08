@@ -70,89 +70,58 @@ export function registerServiceWorker() {
  * Mostra una notifica all'utente quando c'è un aggiornamento disponibile
  */
 function showUpdateNotification(registration) {
-  // Crea un banner di notifica semplice
-  const updateBanner = document.createElement('div');
-  updateBanner.style.cssText = `
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    color: white;
-    padding: 16px 24px;
-    border-radius: 12px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-    z-index: 10000;
-    font-family: 'Share Tech Mono', monospace;
-    display: flex;
-    gap: 12px;
-    align-items: center;
-    animation: slideIn 0.3s ease-out;
-  `;
+  // Costruito interamente con DOM API + proprieta' .style (coperte dalla CSP
+  // senza 'unsafe-inline') e Web Animations API: nessun innerHTML, nessun
+  // tag <style> iniettato, nessun handler on* inline. ASCII puro.
+  const banner = document.createElement('div');
+  Object.assign(banner.style, {
+    position: 'fixed', bottom: '20px', right: '20px',
+    background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+    color: 'white', padding: '16px 24px', borderRadius: '12px',
+    boxShadow: '0 4px 20px rgba(0, 0, 0, 0.3)', zIndex: '10000',
+    fontFamily: "'Share Tech Mono', monospace",
+    display: 'flex', gap: '12px', alignItems: 'center',
+  });
 
-  updateBanner.innerHTML = `
-    <span>🚀 Nuova versione disponibile!</span>
-    <button id="sw-update-btn" style="
-      background: rgba(255, 255, 255, 0.2);
-      border: 1px solid rgba(255, 255, 255, 0.3);
-      color: white;
-      padding: 8px 16px;
-      border-radius: 6px;
-      cursor: pointer;
-      font-family: 'Share Tech Mono', monospace;
-      font-weight: bold;
-      transition: all 0.2s;
-    ">
-      AGGIORNA
-    </button>
-    <button id="sw-dismiss-btn" style="
-      background: transparent;
-      border: none;
-      color: rgba(255, 255, 255, 0.7);
-      padding: 8px;
-      cursor: pointer;
-      font-size: 18px;
-    ">
-      ✕
-    </button>
-  `;
+  const label = document.createElement('span');
+  label.textContent = 'Nuova versione disponibile';
 
-  // Aggiungi animation CSS
-  const style = document.createElement('style');
-  style.textContent = `
-    @keyframes slideIn {
-      from {
-        transform: translateX(400px);
-        opacity: 0;
-      }
-      to {
-        transform: translateX(0);
-        opacity: 1;
-      }
-    }
-    #sw-update-btn:hover {
-      background: rgba(255, 255, 255, 0.3) !important;
-      transform: scale(1.05);
-    }
-    #sw-dismiss-btn:hover {
-      color: white !important;
-    }
-  `;
-  document.head.appendChild(style);
+  const updateBtn = document.createElement('button');
+  updateBtn.type = 'button';
+  updateBtn.textContent = 'AGGIORNA';
+  Object.assign(updateBtn.style, {
+    background: 'rgba(255, 255, 255, 0.2)', border: '1px solid rgba(255, 255, 255, 0.3)',
+    color: 'white', padding: '8px 16px', borderRadius: '6px', cursor: 'pointer',
+    fontFamily: "'Share Tech Mono', monospace", fontWeight: 'bold',
+  });
 
-  document.body.appendChild(updateBanner);
+  const dismissBtn = document.createElement('button');
+  dismissBtn.type = 'button';
+  dismissBtn.setAttribute('aria-label', 'Chiudi');
+  dismissBtn.textContent = 'X';
+  Object.assign(dismissBtn.style, {
+    background: 'transparent', border: 'none', color: 'rgba(255, 255, 255, 0.7)',
+    padding: '8px', cursor: 'pointer', fontSize: '18px',
+  });
 
-  // Bottone AGGIORNA: attiva il nuovo SW
-  document.getElementById('sw-update-btn').addEventListener('click', () => {
+  banner.append(label, updateBtn, dismissBtn);
+  document.body.appendChild(banner);
+
+  const slide = [
+    { transform: 'translateX(400px)', opacity: 0 },
+    { transform: 'translateX(0)', opacity: 1 },
+  ];
+  banner.animate(slide, { duration: 300, easing: 'ease-out' });
+
+  updateBtn.addEventListener('click', () => {
     if (registration.waiting) {
-      // Invia messaggio al SW in attesa di attivarsi
       registration.waiting.postMessage({ type: 'SKIP_WAITING' });
     }
   });
 
-  // Bottone CHIUDI: nasconde il banner
-  document.getElementById('sw-dismiss-btn').addEventListener('click', () => {
-    updateBanner.style.animation = 'slideIn 0.3s ease-out reverse';
-    setTimeout(() => updateBanner.remove(), 300);
+  dismissBtn.addEventListener('click', () => {
+    const out = banner.animate(slide, { duration: 300, easing: 'ease-out', direction: 'reverse' });
+    out.onfinish = () => banner.remove();
   });
 }
 

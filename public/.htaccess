@@ -15,27 +15,45 @@ AddType audio/mpeg .mp3
 </FilesMatch>
 
 <IfModule mod_headers.c>
-    # Content Security Policy - Protezione XSS
-    Header set Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:; connect-src 'self'; frame-ancestors 'none'; base-uri 'self'; form-action 'self';"
-    
-    # Impedisci al sito di essere caricato in iframe (clickjacking protection)
-    Header set X-Frame-Options "DENY"
-    
-    # Previeni MIME type sniffing
-    Header set X-Content-Type-Options "nosniff"
-    
-    # XSS Protection (legacy, ma ancora utile)
-    Header set X-XSS-Protection "1; mode=block"
-    
-    # Referrer Policy - controlla informazioni inviate ad altri siti
-    Header set Referrer-Policy "strict-origin-when-cross-origin"
-    
-    # HSTS - Forza HTTPS per 1 anno
-    Header set Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
-    
-    # Rimuovi header che espongono info sul server
+    # ---- Content Security Policy (severa) ----
+    # default-src 'none': tutto e' negato salvo cio' che apriamo esplicitamente.
+    # script-src 'self': NESSUN 'unsafe-inline' -> niente XSS via inline script.
+    # style-src 'unsafe-inline': UNICA eccezione, necessaria per i tag <style>
+    #   inline (boot splash in index.html + blocco <style> dinamico della
+    #   LandingPage che interpola i colori del tema, quindi non hashabile).
+    #   Rischio basso: nessun sink inietta CSS da input utente. Vedi SECURITY.md.
+    # font/img/media/connect/worker/manifest: tutto 'self' (zero terze parti).
+    #   I font sono self-hostati in /fonts; data: serve per gli SVG nei CSS.
+    # object/frame-src 'none', frame-ancestors 'none', base-uri/form-action 'self'.
+    Header always set Content-Security-Policy "default-src 'none'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self'; media-src 'self'; manifest-src 'self'; worker-src 'self'; object-src 'none'; frame-src 'none'; frame-ancestors 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests"
+
+    # Anti-clickjacking (ridondante con frame-ancestors, utile per browser legacy)
+    Header always set X-Frame-Options "DENY"
+
+    # Niente MIME sniffing
+    Header always set X-Content-Type-Options "nosniff"
+
+    # Disabilita il vecchio XSS Auditor: deprecato nel 2026, puo' introdurre falle.
+    Header always set X-XSS-Protection "0"
+
+    # Referrer ridotto
+    Header always set Referrer-Policy "strict-origin-when-cross-origin"
+
+    # Disattiva le API potenti non usate dal sito
+    Header always set Permissions-Policy "accelerometer=(), autoplay=(self), camera=(), display-capture=(), encrypted-media=(), fullscreen=(self), geolocation=(), gyroscope=(), magnetometer=(), microphone=(), midi=(), payment=(), usb=(), interest-cohort=()"
+
+    # Isolamento cross-origin del browsing context. COEP require-corp NON e'
+    # applicato: richiederebbe CORP su ogni asset e non serve isolation qui.
+    Header always set Cross-Origin-Opener-Policy "same-origin"
+    Header always set Cross-Origin-Resource-Policy "same-origin"
+
+    # HSTS - 2 anni + preload (forza HTTPS, idoneo per hstspreload.org)
+    Header always set Strict-Transport-Security "max-age=63072000; includeSubDomains; preload"
+
+    # Non esporre info sul server
     Header unset X-Powered-By
     Header unset Server
+    Header always unset X-Powered-By
 </IfModule>
 
 # ========================================
