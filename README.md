@@ -1,16 +1,42 @@
-# React + Vite
+# Vihente
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Sito React + Vite servito da Apache su Hostinger, dominio `vihente.it`.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## ⚠️ PRIMA DI ANDARE IN PRODUZIONE — LEGGERE
 
-## React Compiler
+Apri **[`DEPLOY-CHECKLIST.md`](./DEPLOY-CHECKLIST.md)** e seguila punto per punto.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+In particolare: il visualizzatore log (`api/view-logs.php`) è **fail-closed**
+e non funziona finché non imposti la variabile d'ambiente `VIHENTE_LOGS_HASH`
+nel pannello Hostinger. Per generare l'hash:
 
-## Expanding the ESLint configuration
+```bash
+php -r "echo password_hash('LA_TUA_PASSWORD_FORTE', PASSWORD_DEFAULT), PHP_EOL;"
+```
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+Dettagli in `DEPLOY-CHECKLIST.md` §3.
+
+---
+
+## Sviluppo locale
+
+```bash
+npm install
+npm run dev
+```
+
+## Gate di sicurezza (prima di ogni merge)
+
+```bash
+node security-audit.js     # deve uscire con 0 FAIL
+node integrity-scan.js     # deve uscire con 0 FAIL
+```
+
+## Documentazione
+
+- [`DEPLOY-CHECKLIST.md`](./DEPLOY-CHECKLIST.md) — checklist messa in produzione
+- [`SECURITY.md`](./SECURITY.md) — baseline di sicurezza + verifica indipendente
+- [`THREAT-MODEL.md`](./THREAT-MODEL.md) — catalogo vettori e contromisure
+- [`CLAUDE.md`](./CLAUDE.md) — regole non negoziabili per sessioni AI
