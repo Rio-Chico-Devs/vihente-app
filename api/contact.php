@@ -1,8 +1,13 @@
 <?php
 /**
  * VIHENTE CONTACT FORM API
- * Sistema email enterprise-grade per Hostinger
+ * Sistema email per Hostinger
  */
+
+// Sicurezza: mai rivelare path o stack trace PHP al client (info disclosure).
+ini_set('display_errors', '0');
+ini_set('log_errors', '1');
+error_reporting(E_ALL);
 
 // ==================== CONFIGURA QUI LE TUE EMAIL ====================
 
@@ -13,11 +18,11 @@ define('ADMIN_EMAIL', 'vihenteweb@proton.me');
 define('FROM_EMAIL', 'noreply@vihente.it');
 define('FROM_NAME', 'Portfolio Vihente');
 
-// Domini consentiti (CORS)
+// Domini consentiti (CORS). NB: in produzione niente localhost.
+// Per testare il PHP da locale, riaggiungi temporaneamente le righe localhost.
 $allowed_origins = [
     'https://vihente.it',
-    'http://localhost:5173',      // Per sviluppo locale Vite
-    'http://localhost:4173'       // Per test preview
+    'https://www.vihente.it'
 ];
 
 // ========================================================================
@@ -25,7 +30,7 @@ $allowed_origins = [
 // Configurazioni avanzate (puoi lasciare cosi)
 define('RATE_LIMIT_SECONDS', 60);    // Tempo minimo tra invii (60 sec)
 define('ENABLE_LOGGING', true);       // Abilita log in contacts.log
-define('SEND_AUTO_REPLY', true);      // Invia email conferma all'utente
+define('SEND_AUTO_REPLY', false);     // OFF: l'auto-reply a email arbitrarie e' un vettore di backscatter/spam
 
 // Security headers
 header('Content-Type: application/json; charset=UTF-8');
@@ -267,10 +272,28 @@ if (!$input) {
     exit();
 }
 
-// Honeypot
+// Honeypot: campo invisibile riempito solo dai bot.
 if (isset($input['_honeypot']) && !empty($input['_honeypot'])) {
     http_response_code(200);
+    echo json_encode(['success' => true]); // niente segnale al bot
+    exit();
+}
+
+// Token temporale anti-bot: il form invia _ts (ms epoch) al montaggio.
+// Submit istantaneo (bot) o form troppo vecchio (replay) -> scartato in
+// silenzio con la stessa risposta dell'honeypot.
+$ts = isset($input['_ts']) ? (int) $input['_ts'] : 0;
+$delta = (time() * 1000) - $ts;
+if ($ts <= 0 || $delta < 2000 || $delta > 3600000) {
+    http_response_code(200);
     echo json_encode(['success' => true]);
+    exit();
+}
+
+// Consenso privacy: obbligatorio lato SERVER (GDPR), non solo nel front-end.
+if (!isset($input['privacyConsent']) || $input['privacyConsent'] !== true) {
+    http_response_code(400);
+    echo json_encode(['success' => false, 'message' => 'Consenso privacy obbligatorio']);
     exit();
 }
 
@@ -310,6 +333,13 @@ if (!validateEmail($data['email'])) {
 if (strlen($data['name']) < 2 || strlen($data['message']) < 10) {
     http_response_code(400);
     echo json_encode(['success' => false, 'message' => 'Dati troppo corti']);
+    exit();
+}
+
+// Tetto massimo: evita abusi (mail enormi) anche entro post_max_size.
+if (mb_strlen($data['name']) > 100 || mb_strlen($data['message']) > 5000) {
+    http_response_code(400);
+    echo json_encode(['success' => false, 'message' => 'Dati troppo lunghi']);
     exit();
 }
 

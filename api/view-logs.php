@@ -15,6 +15,10 @@
 
 declare(strict_types=1);
 
+// Mai rivelare path/errori PHP al client.
+ini_set('display_errors', '0');
+error_reporting(E_ALL);
+
 // ---- Header anti-cache / anti-embedding (anche per la pagina admin) ----
 header('Content-Type: text/html; charset=UTF-8');
 header('Cache-Control: no-store, no-cache, must-revalidate, max-age=0');
@@ -35,7 +39,11 @@ session_set_cookie_params([
 ]);
 session_start();
 
-$PASSWORD_HASH = getenv('VIHENTE_LOGS_HASH') ?: '';
+// Hostinger puo' esporre le env var via getenv() OPPURE via $_SERVER/$_ENV
+// (SetEnv in .htaccess popola $_SERVER). Le proviamo tutte: evita il 503
+// "non configurato" quando la variabile c'e' ma non in getenv().
+$PASSWORD_HASH = getenv('VIHENTE_LOGS_HASH')
+    ?: ($_SERVER['VIHENTE_LOGS_HASH'] ?? ($_ENV['VIHENTE_LOGS_HASH'] ?? ''));
 $LOG_FILE      = __DIR__ . '/contacts.log';
 
 function csrf_token(): string {
@@ -79,16 +87,30 @@ if ($method === 'POST' && isset($_POST['logout']) && csrf_ok()) {
 // ---- Login ----
 if (!is_authed()) {
     $error = '';
+    $lockFile = sys_get_temp_dir() . '/vihente_login_' . hash('sha256', $_SERVER['REMOTE_ADDR'] ?? '0');
     if ($method === 'POST' && isset($_POST['password'])) {
-        // Piccolo ritardo costante per attenuare il brute force.
+        // Ritardo costante per attenuare il brute force.
         usleep(300000);
+
+        // Lockout: max 5 tentativi falliti per IP in 15 minuti.
+        $att = is_file($lockFile) ? json_decode((string) @file_get_contents($lockFile), true) : null;
+        $recent = is_array($att) && (time() - ($att['t'] ?? 0)) < 900;
+        if ($recent && ($att['n'] ?? 0) >= 5) {
+            deny(429, 'Troppi tentativi falliti. Riprova tra qualche minuto.');
+        }
+
         if (csrf_ok() && is_string($_POST['password'])
             && password_verify($_POST['password'], $PASSWORD_HASH)) {
+            @unlink($lockFile);
             session_regenerate_id(true);
             $_SESSION['logs_authed'] = true;
             header('Location: view-logs.php');
             exit;
         }
+
+        // Tentativo fallito: incrementa il contatore.
+        $n = $recent ? ($att['n'] ?? 0) + 1 : 1;
+        @file_put_contents($lockFile, json_encode(['n' => $n, 't' => time()]), LOCK_EX);
         $error = 'Password errata.';
     }
     $token = csrf_token();

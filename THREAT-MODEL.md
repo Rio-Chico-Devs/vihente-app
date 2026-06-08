@@ -130,11 +130,16 @@ Verifica indipendente: `securityheaders.com`, `csp-evaluator.withgoogle.com`.
 
 | Vettore | Stato | Contromisura |
 |---|---|---|
-| **Email-header injection** via newline in Subject/From/Reply-To | ✅ | `sanitizeHeader()` strippa CR/LF/TAB/controlli. |
-| **Log injection** (righe falsificate in `contacts.log`) | ✅ | `sanitizeLogField()` strippa CR/LF/`\|`. |
+| **Backscatter / spam cannon** (POST con email vittima -> auto-reply usa il dominio per spam) | ✅ | Auto-reply DISATTIVATO (`SEND_AUTO_REPLY=false`). Resta solo la mail all'admin. Vedi anche SPF/DMARC in §7. |
+| **Abuso automatizzato del form** (bot, CORS non blocca la POST) | ✅ | Honeypot reale nel form + token temporale (submit <2s o >1h scartati in silenzio) + rate-limit file-based per IP. Contro bot sofisticati: valutare Turnstile (terza parte, allenta CSP). |
+| **Email-header injection** via newline in Subject/From/Reply-To | ✅ | `sanitizeHeader()` strippa CR/LF/TAB/controlli. Verificato con payload reali. |
+| **Log injection** (righe falsificate in `contacts.log`) | ✅ | `sanitizeLogField()` strippa CR/LF/`\|`. Verificato. |
+| **Consenso privacy aggirato** (inviato solo dal front) | ✅ | `contact.php` rifiuta se `privacyConsent !== true` (verifica server-side, GDPR). |
+| **Messaggio gigante** (mail enorme entro post_max_size) | ✅ | Cap 100 char nome / 5000 char messaggio lato server. |
+| **Info disclosure** (path/stack trace su errore PHP) | ✅ | `display_errors=0` forzato in tutti i PHP. |
 | **Password in URL** (query string finisce in log, history, referrer) | ✅ | `view-logs.php` riscritto: solo POST, password mai in GET. |
-| **Password in chiaro nel sorgente** | ✅ | Hash in `VIHENTE_LOGS_HASH` (env var). Fail-closed se assente. |
-| **Brute force su login** | 🟡 | `usleep(300000)` aggiunge ~300ms costanti. Per molto traffico ostile valutare ban IP via Hostinger. |
+| **Password in chiaro nel sorgente** | ✅ | Hash in `VIHENTE_LOGS_HASH` (env var, con fallback `$_SERVER`/`$_ENV` per Hostinger). Fail-closed se assente. |
+| **Brute force su login** | ✅ | `usleep(300000)` + lockout file-based: max 5 tentativi falliti per IP / 15 min. |
 | **CSRF su POST sensibili** (logout, clear log) | ✅ | Token per-sessione, `hash_equals`. |
 | **Session fixation** | ✅ | `session_regenerate_id(true)` dopo login. |
 | **Rate-limit aggirabile non mandando il cookie** | ✅ | Rate-limit ora file-based su SHA-256(IP). |

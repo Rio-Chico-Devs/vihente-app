@@ -2,6 +2,18 @@
    CONTACTS PAGE - CYBERTECH DESIGN
    ============================================ */
 
+/* Honeypot anti-bot: spostato fuori schermo (non display:none, che alcuni
+   bot riconoscono e saltano). Invisibile e non focalizzabile per gli umani. */
+.hp-field {
+  position: absolute;
+  left: -9999px;
+  top: -9999px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  pointer-events: none;
+}
+
 /* ============================================
    SECTION STYLES
    ============================================ */
