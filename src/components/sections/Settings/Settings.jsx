@@ -1,4 +1,4 @@
-import { useState, useCallback, useRef } from 'react';
+import { useState, useCallback, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useSettings } from '../../../contexts/SettingsContext';
 import { useGuide } from '../../../contexts/GuideContext';
@@ -15,6 +15,7 @@ const Settings = () => {
   const [savedTick,  setSavedTick]  = useState(0);  /* forces animation restart */
   const debounceRef = useRef(null);
   const hideRef     = useRef(null);
+  const clearRef    = useRef(null);
 
   const pct = (v) => `${Math.round(v * 100)}%`;
 
@@ -30,9 +31,20 @@ const Settings = () => {
     }, 400);
   }, []);
 
+  /* Pulisci tutti i timer pendenti allo smontaggio. */
+  useEffect(() => () => {
+    clearTimeout(debounceRef.current);
+    clearTimeout(hideRef.current);
+    clearTimeout(clearRef.current);
+  }, []);
+
   const handleClear = () => {
     if (clearStep === 0) { setClearStep(1); return; }
-    if (clearStep === 1) { setClearStep(2); setTimeout(clearData, 900); }
+    if (clearStep === 1) {
+      setClearStep(2);
+      clearTimeout(clearRef.current);
+      clearRef.current = setTimeout(clearData, 900);
+    }
   };
 
   const handleRestartTour = () => {

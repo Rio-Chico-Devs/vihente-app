@@ -113,9 +113,18 @@ AddType audio/mpeg .mp3
     ExpiresByType text/css "access plus 1 month"
     ExpiresByType application/javascript "access plus 1 month"
     
-    # HTML - 1 ora
-    ExpiresByType text/html "access plus 1 hour"
+    # HTML - rivalidato sempre (le route SPA puntano ai chunk hashati: se il
+    # browser servisse un index.html stantio, chiederebbe chunk non piu'
+    # esistenti dopo un deploy -> pagina rotta finche' la cache non scade).
+    ExpiresByType text/html "access plus 0 seconds"
 </IfModule>
+
+# Forza il rivalido di index.html anche se intermediari ignorano Expires.
+<FilesMatch "^index\.html$">
+    <IfModule mod_headers.c>
+        Header set Cache-Control "no-cache, must-revalidate"
+    </IfModule>
+</FilesMatch>
 
 # ========================================
 # Blocca accesso a file sensibili

@@ -12,8 +12,18 @@
     Deny from all
 </FilesMatch>
 
+# Default-deny: ogni .php e' negato a meno che la whitelist sotto non lo apra.
+# Cosi' se in futuro finisce qui un file nuovo (test, debug, backup), resta
+# inaccessibile senza dover toccare la whitelist.
+<FilesMatch "\.php$">
+    Order Allow,Deny
+    Deny from all
+</FilesMatch>
+
 # Whitelist: solo gli endpoint PHP realmente in uso sono accessibili.
-# (test-email.php e' stato rimosso per sicurezza.)
+# (test-email.php e' stato rimosso per sicurezza.) Per Apache 2.2-style le
+# direttive sui FilesMatch sovrapposti vengono valutate in ordine: l'Allow
+# successivo sovrascrive il Deny precedente sui file matchati.
 <FilesMatch "^(contact|view-logs)\.php$">
     Order Allow,Deny
     Allow from all

@@ -171,10 +171,12 @@ const Contacts = () => {
         }, 100);
         timeoutsRef.current.push(timeout4);
 
+        // Cooldown allineato al rate limit del server (api/contact.php: 60s).
+        // Cosi' l'utente non puo' beccarsi un 429 silenzioso ritentando troppo presto.
         setCanSubmit(false);
         const timeout5 = setTimeout(() => {
           setCanSubmit(true);
-        }, 10000);
+        }, 60000);
         timeoutsRef.current.push(timeout5);
 
         const timeout6 = setTimeout(() => {

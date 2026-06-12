@@ -156,6 +156,8 @@ const Navbar = () => {
 
   // Random looking around
   useEffect(() => {
+    let resetTimeoutId = null;
+
     const lookAround = () => {
       const randomAngle = Math.random() * Math.PI * 2;
       const randomDistance = Math.random() * 0.7;
@@ -164,7 +166,8 @@ const Navbar = () => {
       const newY = 50 + Math.sin(randomAngle) * 6 * randomDistance;
 
       applyPupil(newX, newY);
-      setTimeout(() => applyPupil(50, 50), 1000 + Math.random() * 1000);
+      clearTimeout(resetTimeoutId);
+      resetTimeoutId = setTimeout(() => applyPupil(50, 50), 1000 + Math.random() * 1000);
     };
 
     const interval = setInterval(() => {
@@ -173,19 +176,28 @@ const Navbar = () => {
       }
     }, 5000 + Math.random() * 3000);
 
-    return () => clearInterval(interval);
+    return () => {
+      clearInterval(interval);
+      clearTimeout(resetTimeoutId);
+    };
   }, [applyPupil]);
 
   // Random blinking
   useEffect(() => {
+    let blinkTimeoutId = null;
+
     const blink = () => {
       applyBlink(true);
-      setTimeout(() => applyBlink(false), 100);
+      clearTimeout(blinkTimeoutId);
+      blinkTimeoutId = setTimeout(() => applyBlink(false), 100);
     };
 
     const interval = setInterval(blink, 4000 + Math.random() * 2000);
 
-    return () => clearInterval(interval);
+    return () => {
+      clearInterval(interval);
+      clearTimeout(blinkTimeoutId);
+    };
   }, [applyBlink]);
 
   // Mobile menu navigation items
