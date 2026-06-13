@@ -15,7 +15,9 @@ const CRITICAL_ASSETS = [
 const CACHE_PATTERNS = {
   // JS, CSS, font, immagini
   static: /\.(js|css|woff2?|ttf|otf|eot|svg|png|jpg|jpeg|gif|webp|ico)$/,
-  // API calls (se necessario)
+  // Endpoint API: MAI cachare. Le risposte possono contenere dati personali
+  // (view-logs.php e' autenticato, contact.php e' POST ma le GET di errore
+  // non devono finire in Cache Storage che ignora Cache-Control: no-store).
   api: /\/api\//
 };
 
@@ -79,8 +81,14 @@ self.addEventListener('fetch', (event) => {
     return;
   }
 
-  // Ignora richieste a domini esterni (tranne font CDN)
-  if (url.origin !== location.origin && !url.hostname.includes('fonts')) {
+  // Ignora richieste a domini esterni: i font sono self-hostati,
+  // non serve nessuna eccezione.
+  if (url.origin !== location.origin) {
+    return;
+  }
+
+  // Mai cachare le API: fail-through al network senza toccare la cache.
+  if (CACHE_PATTERNS.api.test(url.pathname)) {
     return;
   }
 
@@ -112,8 +120,10 @@ self.addEventListener('fetch', (event) => {
               return networkResponse;
             })
             .catch(() => {
-              // Ritorna una risposta offline di fallback se disponibile
-              return caches.match('/index.html');
+              // Asset statico mancante e offline: NON tornare /index.html
+              // (creerebbe un MIME mismatch quando il browser si aspetta JS/CSS
+              // e riceve HTML). Meglio un 503 vuoto: l'app gestisce il fallimento.
+              return new Response('', { status: 503, statusText: 'Offline' });
             });
         })
     );

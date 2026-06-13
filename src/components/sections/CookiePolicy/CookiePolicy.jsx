@@ -107,7 +107,7 @@ const CookiePolicy = () => {
           <div className="highlight-box">
             <h4>Font Self-Hosted - Nessun Tracking</h4>
             <p>
-              Questo sito utilizza font self-hosted (Orbitron, Share Tech Mono, Electrolize) tramite <code>@fontsource</code>.
+              Questo sito utilizza font self-hosted (Orbitron, Share Tech Mono) serviti direttamente da <code>/fonts</code>.
               <strong> Non vengono contattati server di Google Fonts</strong>, quindi non c'è alcun tracking esterno legato ai font.
             </p>
           </div>

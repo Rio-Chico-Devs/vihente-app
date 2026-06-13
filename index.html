@@ -39,10 +39,10 @@
     <meta property="twitter:description" content="Creo la tua presenza digitale da zero, o ti aiuto a migliorare quella che già hai. Consulenze digitali professionali." />
     <meta property="twitter:image" content="https://vihente.it/og-image.png" />
 
-    <!-- Security Headers -->
-    <meta http-equiv="X-Content-Type-Options" content="nosniff" />
-    <meta http-equiv="X-Frame-Options" content="SAMEORIGIN" />
-    <meta http-equiv="Permissions-Policy" content="geolocation=(), microphone=(), camera=()" />
+    <!-- NB: gli header di sicurezza (CSP, X-Frame-Options, X-Content-Type-Options,
+         Permissions-Policy, HSTS, COOP/CORP) sono serviti via HTTP da public/.htaccess.
+         I <meta http-equiv> per questi header sono ignorati dai browser, quindi
+         qui non vanno duplicati. -->
 
     <!-- Theme Color -->
     <meta name="theme-color" content="#000000" />
@@ -54,8 +54,47 @@
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
     <meta name="apple-mobile-web-app-title" content="VIHENTE" />
+
+    <!-- Preload font critici della landing (titolo + testo above-the-fold).
+         crossorigin è obbligatorio per i font, anche se same-origin. -->
+    <link rel="preload" as="font" type="font/woff2" crossorigin
+          href="/fonts/orbitron/orbitron-latin-900-normal.woff2" />
+    <link rel="preload" as="font" type="font/woff2" crossorigin
+          href="/fonts/share-tech-mono/ShareTechMono-Regular.woff2" />
+
+    <!-- Boot splash: HTML+CSS inline che appare istantaneamente, prima ancora
+         che il bundle JS sia scaricato/eseguito. Evita lo schermo vuoto del
+         primo avvio. main.jsx lo rimuove appena React ha montato l'app. -->
+    <style>
+      html, body { margin: 0; background: #000; }
+      #boot-splash {
+        position: fixed;
+        inset: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #000;
+        z-index: 2147483647;
+        transition: opacity 0.3s ease;
+      }
+      #boot-splash .boot-spinner {
+        width: 60px;
+        height: 60px;
+        border: 3px solid rgba(0, 255, 255, 0.2);
+        border-top-color: #00ffff;
+        border-radius: 50%;
+        animation: boot-spin 1s linear infinite;
+      }
+      @keyframes boot-spin { to { transform: rotate(360deg); } }
+      @media (prefers-reduced-motion: reduce) {
+        #boot-splash .boot-spinner { animation: none; }
+      }
+    </style>
   </head>
   <body>
+    <div id="boot-splash" aria-hidden="true">
+      <div class="boot-spinner"></div>
+    </div>
     <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>
   </body>

@@ -117,7 +117,9 @@ function App() {
       <SettingsProvider>
       <TourProvider>
       <GuideProvider>
-        <BrowserRouter basename={import.meta.env.DEV ? '/' : '/vihente-app'}>
+        {/* Deploy nella root del dominio (vihente.it/) -> basename '/'.
+            NON usare '/vihente-app' o le rotte interne si rompono in produzione. */}
+        <BrowserRouter>
           <CustomCursor />
           <ThemeToggle />
 

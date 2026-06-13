@@ -6,14 +6,25 @@
     SetHandler application/x-httpd-php
 </FilesMatch>
 
-# Proteggi file sensibili
-<FilesMatch "(\.log|README\.md|\.htaccess)$">
+# Proteggi file sensibili (log, backup, markdown, htaccess)
+<FilesMatch "(\.log|\.bak|README\.md|\.htaccess)$">
     Order Allow,Deny
     Deny from all
 </FilesMatch>
 
-# Solo contact.php, view-logs.php e test-email.php sono accessibili
-<FilesMatch "^(contact|view-logs|test-email)\.php$">
+# Default-deny: ogni .php e' negato a meno che la whitelist sotto non lo apra.
+# Cosi' se in futuro finisce qui un file nuovo (test, debug, backup), resta
+# inaccessibile senza dover toccare la whitelist.
+<FilesMatch "\.php$">
+    Order Allow,Deny
+    Deny from all
+</FilesMatch>
+
+# Whitelist: solo gli endpoint PHP realmente in uso sono accessibili.
+# (test-email.php e' stato rimosso per sicurezza.) Per Apache 2.2-style le
+# direttive sui FilesMatch sovrapposti vengono valutate in ordine: l'Allow
+# successivo sovrascrive il Deny precedente sui file matchati.
+<FilesMatch "^(contact|view-logs)\.php$">
     Order Allow,Deny
     Allow from all
 </FilesMatch>
@@ -26,11 +37,15 @@
     # Previeni clickjacking
     Header set X-Frame-Options "DENY"
 
-    # XSS Protection
-    Header set X-XSS-Protection "1; mode=block"
+    # Disabilita il vecchio XSS Auditor (deprecato nel 2026, puo' introdurre falle).
+    Header set X-XSS-Protection "0"
 
-    # Referrer Policy
-    Header set Referrer-Policy "strict-origin-when-cross-origin"
+    # Le risposte API non vengono incorniciate ne' condivise cross-site.
+    Header set Referrer-Policy "no-referrer"
+    Header set Cross-Origin-Resource-Policy "same-site"
+
+    # Niente caching di risposte che possono contenere dati personali.
+    Header set Cache-Control "no-store"
 </IfModule>
 
 # Disabilita directory listing

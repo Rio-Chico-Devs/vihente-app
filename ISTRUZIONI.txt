@@ -1,0 +1,33 @@
+=====================================================================
+ PACCHETTO SICUREZZA - vihente-app
+=====================================================================
+
+COME APPLICARE:
+1. Scompatta questo zip nella ROOT del progetto (dove c'e' package.json),
+   sovrascrivendo i file esistenti. I percorsi delle cartelle combaciano
+   gia', quindi ogni file va al posto giusto.
+
+2. IMPORTANTE - CANCELLA A MANO QUESTO FILE (era pericoloso, l'ho rimosso):
+       api/test-email.php
+   (lo zip non puo' "cancellare" un file, devi eliminarlo tu)
+
+3. Allinea le dipendenze (ho rimosso dompurify, dipendenza inutilizzata):
+       npm install
+
+4. Lancia i due gate di sicurezza (devono uscire con 0 FAIL):
+       node security-audit.js
+       node integrity-scan.js
+
+PRIMA DI ANDARE ONLINE:
+- Imposta su Hostinger la variabile d'ambiente VIHENTE_LOGS_HASH
+  (vedi DEPLOY-CHECKLIST.md, sezione 3). Senza, /api/view-logs.php da' 503.
+- Configura SPF/DKIM/DMARC nel DNS di vihente.it.
+- Dopo il deploy, verifica che i log NON siano scaricabili:
+      curl -I https://vihente.it/api/contacts.log   (deve dare 403)
+
+DOCUMENTAZIONE NEL PACCHETTO:
+- SECURITY.md          baseline + come verificare senza fidarti dell'AI
+- THREAT-MODEL.md      catalogo dei vettori con stato e contromisura
+- DEPLOY-CHECKLIST.md  checklist passo-passo per la messa online
+- CLAUDE.md            regole di sicurezza per sessioni AI future
+=====================================================================

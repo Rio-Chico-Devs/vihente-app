@@ -18,6 +18,7 @@ const CustomCursor = () => {
     document.body.appendChild(cursor);
 
     let rafId = null;
+    let clickTimeoutId = null;
     const updatePosition = (e) => {
       if (rafId) return;
       rafId = requestAnimationFrame(() => {
@@ -29,7 +30,8 @@ const CustomCursor = () => {
 
     const handleClick = () => {
       cursor.classList.add('click-effect');
-      setTimeout(() => cursor.classList.remove('click-effect'), 300);
+      clearTimeout(clickTimeoutId);
+      clickTimeoutId = setTimeout(() => cursor.classList.remove('click-effect'), 300);
     };
 
     document.addEventListener('mousemove', updatePosition, { passive: true });
@@ -39,6 +41,7 @@ const CustomCursor = () => {
 
     return () => {
       if (rafId) cancelAnimationFrame(rafId);
+      clearTimeout(clickTimeoutId);
       document.removeEventListener('mousemove', updatePosition);
       document.removeEventListener('mousedown', handleClick);
       if (document.body.contains(cursor)) cursor.remove();

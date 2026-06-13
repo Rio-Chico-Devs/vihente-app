@@ -1,8 +1,13 @@
 <?php
 /**
  * VIHENTE CONTACT FORM API
- * Sistema email enterprise-grade per Hostinger
+ * Sistema email per Hostinger
  */
+
+// Sicurezza: mai rivelare path o stack trace PHP al client (info disclosure).
+ini_set('display_errors', '0');
+ini_set('log_errors', '1');
+error_reporting(E_ALL);
 
 // ==================== CONFIGURA QUI LE TUE EMAIL ====================
 
@@ -13,11 +18,11 @@ define('ADMIN_EMAIL', 'vihenteweb@proton.me');
 define('FROM_EMAIL', 'noreply@vihente.it');
 define('FROM_NAME', 'Portfolio Vihente');
 
-// Domini consentiti (CORS)
+// Domini consentiti (CORS). NB: in produzione niente localhost.
+// Per testare il PHP da locale, riaggiungi temporaneamente le righe localhost.
 $allowed_origins = [
     'https://vihente.it',
-    'http://localhost:5173',      // Per sviluppo locale Vite
-    'http://localhost:4173'       // Per test preview
+    'https://www.vihente.it'
 ];
 
 // ========================================================================
@@ -25,7 +30,7 @@ $allowed_origins = [
 // Configurazioni avanzate (puoi lasciare cosi)
 define('RATE_LIMIT_SECONDS', 60);    // Tempo minimo tra invii (60 sec)
 define('ENABLE_LOGGING', true);       // Abilita log in contacts.log
-define('SEND_AUTO_REPLY', true);      // Invia email conferma all'utente
+define('SEND_AUTO_REPLY', false);     // OFF: l'auto-reply a email arbitrarie e' un vettore di backscatter/spam
 
 // Security headers
 header('Content-Type: application/json; charset=UTF-8');
@@ -59,17 +64,20 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 
 session_start();
 
-// Rate Limiting
+// Rate Limiting (file-based per IP: robusto, non dipende dal cookie di sessione)
+function rateLimitFile() {
+    $ip  = $_SERVER['REMOTE_ADDR'] ?? '0.0.0.0';
+    $dir = __DIR__ . '/.ratelimit';
+    if (!is_dir($dir)) { @mkdir($dir, 0700, true); }
+    return $dir . '/' . hash('sha256', $ip);
+}
+
 function checkRateLimit() {
-    $ip = $_SERVER['REMOTE_ADDR'];
-    $now = time();
+    $now  = time();
+    $file = rateLimitFile();
 
-    if (isset($_SESSION['last_submit_ip']) &&
-        isset($_SESSION['last_submit_time']) &&
-        $_SESSION['last_submit_ip'] === $ip) {
-
-        $time_elapsed = $now - $_SESSION['last_submit_time'];
-
+    if (is_file($file)) {
+        $time_elapsed = $now - (int) @file_get_contents($file);
         if ($time_elapsed < RATE_LIMIT_SECONDS) {
             $wait_time = RATE_LIMIT_SECONDS - $time_elapsed;
             http_response_code(429);
@@ -84,7 +92,19 @@ function checkRateLimit() {
 }
 
 function sanitizeData($data) {
-    return htmlspecialchars(strip_tags(trim($data)), ENT_QUOTES, 'UTF-8');
+    return htmlspecialchars(strip_tags(trim((string) $data)), ENT_QUOTES, 'UTF-8');
+}
+
+// Rimuove CR/LF/TAB e caratteri di controllo: previene l'email header injection
+// quando un valore finisce in Subject/From/Reply-To.
+function sanitizeHeader($data) {
+    $clean = preg_replace('/[\r\n\t\x00-\x1F\x7F]+/', ' ', (string) $data);
+    return trim(mb_substr($clean, 0, 200));
+}
+
+// Neutralizza newline e separatori: previene la log injection (righe falsificate).
+function sanitizeLogField($data) {
+    return preg_replace('/[\r\n\x00-\x1F\x7F|]+/', ' ', (string) $data);
 }
 
 function validateEmail($email) {
@@ -126,9 +146,9 @@ function logContact($data, $status = 'success') {
         "[%s] [%s] %s | %s | %s\n",
         $timestamp,
         strtoupper($status),
-        $data['name'],
-        $data['email'],
-        $data['service'] ?? $data['reason'] ?? 'N/A'
+        sanitizeLogField($data['name']),
+        sanitizeLogField($data['email']),
+        sanitizeLogField($data['service'] ?? $data['reason'] ?? 'N/A')
     );
 
     file_put_contents($log_file, $log_entry, FILE_APPEND | LOCK_EX);
@@ -252,10 +272,28 @@ if (!$input) {
     exit();
 }
 
-// Honeypot
+// Honeypot: campo invisibile riempito solo dai bot.
 if (isset($input['_honeypot']) && !empty($input['_honeypot'])) {
     http_response_code(200);
+    echo json_encode(['success' => true]); // niente segnale al bot
+    exit();
+}
+
+// Token temporale anti-bot: il form invia _ts (ms epoch) al montaggio.
+// Submit istantaneo (bot) o form troppo vecchio (replay) -> scartato in
+// silenzio con la stessa risposta dell'honeypot.
+$ts = isset($input['_ts']) ? (int) $input['_ts'] : 0;
+$delta = (time() * 1000) - $ts;
+if ($ts <= 0 || $delta < 2000 || $delta > 3600000) {
+    http_response_code(200);
     echo json_encode(['success' => true]);
+    exit();
+}
+
+// Consenso privacy: obbligatorio lato SERVER (GDPR), non solo nel front-end.
+if (!isset($input['privacyConsent']) || $input['privacyConsent'] !== true) {
+    http_response_code(400);
+    echo json_encode(['success' => false, 'message' => 'Consenso privacy obbligatorio']);
     exit();
 }
 
@@ -298,6 +336,13 @@ if (strlen($data['name']) < 2 || strlen($data['message']) < 10) {
     exit();
 }
 
+// Tetto massimo: evita abusi (mail enormi) anche entro post_max_size.
+if (mb_strlen($data['name']) > 100 || mb_strlen($data['message']) > 5000) {
+    http_response_code(400);
+    echo json_encode(['success' => false, 'message' => 'Dati troppo lunghi']);
+    exit();
+}
+
 if (isSpam($data)) {
     logContact($data, 'spam');
     http_response_code(400);
@@ -306,9 +351,9 @@ if (isSpam($data)) {
 }
 
 // Invia email ADMIN
-$admin_subject = isset($data['service']) 
-    ? "Preventivo: {$data['service']} - {$data['name']}"
-    : "Contatto: {$data['name']}";
+$admin_subject = isset($data['service'])
+    ? sanitizeHeader("Preventivo: {$data['service']} - {$data['name']}")
+    : sanitizeHeader("Contatto: {$data['name']}");
 
 $admin_body = getAdminEmailTemplate($data);
 
@@ -316,8 +361,7 @@ $admin_headers = [
     'MIME-Version: 1.0',
     'Content-Type: text/html; charset=UTF-8',
     'From: ' . FROM_NAME . ' <' . FROM_EMAIL . '>',
-    'Reply-To: ' . $data['email'],
-    'X-Mailer: PHP/' . phpversion()
+    'Reply-To: ' . sanitizeHeader($data['email'])
 ];
 
 $admin_sent = mail(ADMIN_EMAIL, $admin_subject, $admin_body, implode("\r\n", $admin_headers));
@@ -336,15 +380,15 @@ if (SEND_AUTO_REPLY) {
     $user_headers = [
         'MIME-Version: 1.0',
         'Content-Type: text/html; charset=UTF-8',
-        'From: ' . FROM_NAME . ' <' . FROM_EMAIL . '>',
-        'X-Mailer: PHP/' . phpversion()
+        'From: ' . FROM_NAME . ' <' . FROM_EMAIL . '>'
     ];
     mail($data['email'], $user_subject, $user_body, implode("\r\n", $user_headers));
 }
 
 logContact($data, 'success');
 
-$_SESSION['last_submit_ip'] = $_SERVER['REMOTE_ADDR'];
+@file_put_contents(rateLimitFile(), (string) time(), LOCK_EX);
+$_SESSION['last_submit_ip'] = $_SERVER['REMOTE_ADDR'] ?? '';
 $_SESSION['last_submit_time'] = time();
 
 http_response_code(200);

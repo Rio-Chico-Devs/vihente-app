@@ -18,7 +18,7 @@ const PrivacyPolicy = () => {
           </p>
           <div className="info-box">
             <p><strong>Antonio Vicente Bruno</strong></p>
-            <p>Email: <a href="mailto:[vihenteweb@proton.me]">[vihenteweb@proton.me]</a></p>
+            <p>Email: <a href="mailto:vihenteweb@proton.me">vihenteweb@proton.me</a></p>
             <p>Sito web: vihente.it</p>
           </div>
           <p className="note">
@@ -34,7 +34,7 @@ const PrivacyPolicy = () => {
           <p>Raccogliamo le seguenti categorie di dati personali:</p>
           <ul>
             <li><strong>Dati di contatto:</strong> nome, cognome, indirizzo email forniti volontariamente tramite il form di contatto</li>
-            <li><strong>Dati di navigazione:</strong> indirizzo IP, tipo di browser, sistema operativo, pagine visitate (log del server GitHub Pages)</li>
+            <li><strong>Dati di navigazione:</strong> indirizzo IP, tipo di browser, sistema operativo, pagine visitate (log del server Hostinger)</li>
             <li><strong>Cookie tecnici:</strong> preferenze cookie banner (salvate in localStorage)</li>
           </ul>
           <p className="highlight">
@@ -90,63 +90,38 @@ const PrivacyPolicy = () => {
           <h2>5. Periodo di Conservazione</h2>
           <ul>
             <li><strong>Richieste di contatto:</strong> 2 anni dalla ricezione (termine prescrizionale contrattuale)</li>
-            <li><strong>Log del server:</strong> gestiti da GitHub Pages secondo la loro policy (max 90 giorni)</li>
+            <li><strong>Log del server:</strong> gestiti da Hostinger secondo la loro policy (max 90 giorni)</li>
             <li><strong>Cookie tecnici:</strong> 12 mesi o fino alla cancellazione manuale</li>
           </ul>
           <p>Trascorsi tali termini, i dati saranno cancellati o anonimizzati in modo irreversibile.</p>
         </section>
 
         <section className="privacy-section">
-          <h2>6. Destinatari dei Dati e Trasferimenti Extra-UE</h2>
+          <h2>6. Destinatari dei Dati</h2>
           <p>I tuoi dati personali possono essere comunicati ai seguenti soggetti terzi (Responsabili del Trattamento ai sensi dell'Art. 28 GDPR):</p>
 
           <div className="info-box">
-            <h3>GitHub Pages (Microsoft Corporation)</h3>
-            <p><strong>Finalità:</strong> Hosting del sito web e gestione infrastruttura</p>
-            <p><strong>Ubicazione server:</strong> USA (trasferimento extra-UE)</p>
-            <p><strong>Dati trasferiti:</strong> Indirizzo IP, dati di navigazione (log del server), cookies tecnici</p>
-            <p><strong>Periodo conservazione:</strong> Massimo 90 giorni (gestito da GitHub)</p>
-            <p><strong>Base giuridica trasferimento:</strong></p>
-            <ul>
-              <li>Clausole Contrattuali Standard (SCC) approvate dalla Commissione Europea (Decisione 2021/914)</li>
-              <li>EU-U.S. Data Privacy Framework (DPF) - Microsoft è certificata</li>
-              <li>Misure tecniche supplementari: Cifratura TLS 1.3, accesso limitato ai dati</li>
-            </ul>
+            <h3>Hostinger International Ltd.</h3>
+            <p><strong>Finalità:</strong> Hosting del sito web, gestione dell'infrastruttura e relay dell'invio email dal form di contatto (PHP <code>mail()</code> tramite il server Hostinger).</p>
+            <p><strong>Ubicazione server:</strong> Unione Europea (datacenter UE selezionato in fase di acquisto del piano).</p>
+            <p><strong>Dati trasferiti:</strong> Indirizzo IP, dati di navigazione (log del server), nome ed email inviati tramite form, contenuto del messaggio.</p>
+            <p><strong>Periodo conservazione:</strong> Log del server max 90 giorni (gestiti da Hostinger). Email transitano e non vengono conservate sul server oltre l'invio.</p>
+            <p><strong>Base giuridica:</strong> Art. 28 GDPR (Responsabile del trattamento). Trattamento all'interno dello SEE, nessun trasferimento extra-UE necessario.</p>
             <p>
               <strong>Privacy Policy:</strong>{' '}
-              <a href="https://docs.github.com/en/site-policy/privacy-policies/github-privacy-statement" target="_blank" rel="noopener noreferrer">
-                GitHub Privacy Statement
-              </a>
-            </p>
-            <p>
-              <strong>DPF Certification:</strong>{' '}
-              <a href="https://www.dataprivacyframework.gov/s/participant-search/participant-detail?id=a2zt0000000KzNaAAK&status=Active" target="_blank" rel="noopener noreferrer">
-                Microsoft DPF Status
-              </a>
-            </p>
-          </div>
-
-          <div className="info-box">
-            <h3>EmailJS (se implementato)</h3>
-            <p><strong>Finalità:</strong> Invio email dal form di contatto</p>
-            <p><strong>Ubicazione server:</strong> UE (conformità GDPR)</p>
-            <p><strong>Dati trasferiti:</strong> Nome, email, messaggio inviato tramite form</p>
-            <p><strong>Periodo conservazione:</strong> Immediata cancellazione dopo invio (EmailJS funge da relay)</p>
-            <p>
-              <strong>Privacy Policy:</strong>{' '}
-              <a href="https://www.emailjs.com/legal/privacy-policy/" target="_blank" rel="noopener noreferrer">
-                EmailJS Privacy Policy
+              <a href="https://www.hostinger.com/legal/privacy-policy" target="_blank" rel="noopener noreferrer">
+                Hostinger Privacy Policy
               </a>
             </p>
           </div>
 
           <div className="highlight">
-            <h3>Garanzie per i Trasferimenti Extra-UE (Art. 46 GDPR):</h3>
+            <h3>Misure tecniche e organizzative (Art. 32 GDPR):</h3>
             <ul>
-              <li><strong>Clausole Contrattuali Standard (SCC):</strong> Accordi vincolanti approvati dalla Commissione UE</li>
-              <li><strong>EU-U.S. Data Privacy Framework:</strong> Certificazione che garantisce standard di protezione equivalenti al GDPR</li>
-              <li><strong>Misure supplementari (Schrems II):</strong> Cifratura end-to-end, minimizzazione dati, audit periodici</li>
-              <li><strong>Diritto di copia SCC:</strong> Puoi richiedere copia delle clausole contrattuali via email</li>
+              <li><strong>Cifratura in transito:</strong> tutte le comunicazioni avvengono su HTTPS con HSTS attivo.</li>
+              <li><strong>Minimizzazione dei dati:</strong> raccogliamo solo nome, email e messaggio.</li>
+              <li><strong>Niente terze parti tracciamento:</strong> font self-hostati, nessun CDN esterno, nessun analytics.</li>
+              <li><strong>Accesso limitato:</strong> i log del form sono consultabili solo dal titolare tramite area riservata autenticata.</li>
             </ul>
           </div>
 
@@ -186,7 +161,7 @@ const PrivacyPolicy = () => {
             </div>
           </div>
           <p>
-            Per esercitare questi diritti, contattaci via email: <a href="mailto:[vihenteweb@proton.me]">[vihenteweb@proton.me]</a>
+            Per esercitare questi diritti, contattaci via email: <a href="mailto:vihenteweb@proton.me">vihenteweb@proton.me</a>
           </p>
           <p>
             Risponderemo alla tua richiesta entro 30 giorni (prorogabili di ulteriori 60 giorni in caso di complessità,
@@ -254,7 +229,7 @@ const PrivacyPolicy = () => {
         <div className="privacy-footer">
           <p>
             Per qualsiasi domanda relativa al trattamento dei tuoi dati personali, contattaci via email:{' '}
-            <a href="mailto:[vihenteweb@proton.me]">[vihenteweb@proton.me]</a>
+            <a href="mailto:vihenteweb@proton.me">vihenteweb@proton.me</a>
           </p>
         </div>
       </div>

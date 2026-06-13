@@ -14,7 +14,7 @@ export default defineConfig(({ mode }) => ({
       output: {
         manualChunks: {
           'react-vendor': ['react', 'react-dom', 'react-router-dom'],
-          'utils-vendor': ['validator', 'dompurify']
+          'utils-vendor': ['validator']
         }
       }
     },
@@ -34,4 +34,6 @@ export default defineConfig(({ mode }) => ({
     port: 4173,
     open: true
   }
-}))
+
+   }))
+

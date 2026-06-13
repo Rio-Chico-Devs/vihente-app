@@ -109,7 +109,7 @@ const LandingPageOldEye = ({ startTime }) => {
     else if (newCount === 300) msg = 'Vorrei vedere ancora una volta la luce del sole...';
     else if (newCount === 420) msg = 'Loading 420 jokes...';
     else if (newCount === 555) msg = 'Incredibile.';
-    else if (newCount === 1000) msg = "Non perdere altro tempo non c'è altro oltre questo punto.";
+    else if (newCount === 1000) msg = "Non perdere altro tempo, non c'è altro oltre questo punto.";
     else if (newCount === 1050) msg = "Davvero, non c'è altro.";
     else if (newCount > 1050 && (newCount - 1050) % 30 === 0) msg = 'Limit reached.';
 

@@ -33,6 +33,13 @@ const Contacts = () => {
 
   const timeoutsRef = useRef([]);
 
+  // Anti-bot (zero dipendenze, niente terze parti):
+  // - formStartRef: istante di montaggio, usato come token temporale.
+  //   Il server scarta i submit istantanei (bot) o troppo vecchi (replay).
+  // - honeypotRef: campo invisibile; se un bot lo riempie, il server scarta.
+  const formStartRef = useRef(Date.now());
+  const honeypotRef = useRef(null);
+
   useEffect(() => {
     return () => {
       timeoutsRef.current.forEach(timeout => clearTimeout(timeout));
@@ -136,7 +143,9 @@ const Contacts = () => {
             message: sanitizedData.message,
             service: isQuoteMode ? sanitizedData.service : undefined,
             reason: !isQuoteMode ? sanitizedData.reason : undefined,
-            privacyConsent: sanitizedData.privacyConsent
+            privacyConsent: sanitizedData.privacyConsent,
+            _honeypot: honeypotRef.current ? honeypotRef.current.value : '',
+            _ts: formStartRef.current
           })
         });
 
@@ -162,10 +171,12 @@ const Contacts = () => {
         }, 100);
         timeoutsRef.current.push(timeout4);
 
+        // Cooldown allineato al rate limit del server (api/contact.php: 60s).
+        // Cosi' l'utente non puo' beccarsi un 429 silenzioso ritentando troppo presto.
         setCanSubmit(false);
         const timeout5 = setTimeout(() => {
           setCanSubmit(true);
-        }, 10000);
+        }, 60000);
         timeoutsRef.current.push(timeout5);
 
         const timeout6 = setTimeout(() => {
@@ -269,6 +280,22 @@ const Contacts = () => {
           </div>
 
           <form onSubmit={handleSubmit}>
+            {/* Honeypot: invisibile e fuori dal tab order. Gli umani non lo
+                vedono; i bot che compilano tutto lo riempiono e il server
+                scarta la richiesta. Non e' display:none (alcuni bot lo
+                saltano): e' spostato fuori schermo via .hp-field nel CSS. */}
+            <div className="hp-field" aria-hidden="true">
+              <label htmlFor="company_website">Non compilare questo campo</label>
+              <input
+                ref={honeypotRef}
+                type="text"
+                id="company_website"
+                name="company_website"
+                tabIndex={-1}
+                autoComplete="off"
+                defaultValue=""
+              />
+            </div>
             <div className="form-fields">
               <div className="form-group">
                 <label className="form-label" htmlFor="name">
