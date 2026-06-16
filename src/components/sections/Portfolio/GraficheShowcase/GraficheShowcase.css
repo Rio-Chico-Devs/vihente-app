@@ -200,9 +200,19 @@
 
 .trophy-arena .image-rotator {
 
-  width: 200px;
+  /* Si adatta alla dimensione naturale del front (cap 200x200).
+     Le immagini reali entrano col loro aspect ratio. */
+  width: auto;
 
-  height: 200px;
+  height: auto;
+
+  min-width: 80px;
+
+  min-height: 80px;
+
+  max-width: 200px;
+
+  max-height: 200px;
 
   position: relative;
 
@@ -246,12 +256,8 @@
 
 .trophy-arena .image-card {
 
-  position: absolute;
-
-  width: 200px;
-
-  height: 200px;
-
+  /* Il front determina la dimensione (position: relative + auto sizing).
+     Il back si sovrappone in absolute con stesse dimensioni del rotator. */
   backface-visibility: hidden;
 
   background: rgba(0, 150, 180, 0.15);
@@ -266,19 +272,55 @@
 
 }
 
- 
+
 
 .trophy-arena .image-card.front {
 
+  position: relative;
+
   transform: rotateY(0deg);
+
+  width: auto;
+
+  height: auto;
+
+  min-width: 80px;
+
+  min-height: 80px;
 
 }
 
- 
+
 
 .trophy-arena .image-card.back {
 
+  position: absolute;
+
+  inset: 0;
+
   transform: rotateY(180deg);
+
+}
+
+
+
+/* Immagine vera della card (front).
+   Mantiene l'aspect ratio nativo, cap a 200x200 per non sforare la griglia. */
+.trophy-arena .trophy-img {
+
+  display: block;
+
+  width: auto;
+
+  height: auto;
+
+  max-width: 200px;
+
+  max-height: 200px;
+
+  user-select: none;
+
+  -webkit-user-drag: none;
 
 }
 
@@ -592,15 +634,16 @@
 
 .trophy-modal .modal-content {
 
+  /* Si dimensiona sull'immagine + info section, non viceversa. */
   position: relative;
 
-  width: 90%;
+  width: auto;
 
-  max-width: var(--max-width-modal);
+  height: auto;
 
-  height: 80vh;
+  max-width: 95vw;
 
-  max-height: 700px;
+  max-height: 95vh;
 
   z-index: 1;
 
@@ -702,7 +745,11 @@
 
   display: flex;
 
-  height: 100%;
+  align-items: stretch;
+
+  width: auto;
+
+  height: auto;
 
   background: rgba(0, 0, 0, 0.4);
 
@@ -746,7 +793,8 @@
 
 .trophy-modal .modal-trophy-section {
 
-  flex: 0 0 60%;
+  /* Si dimensiona sull'immagine (viewer + toolbar in colonna). */
+  flex: 0 0 auto;
 
   background: rgba(0, 10, 15, 0.5);
 
@@ -754,9 +802,15 @@
 
   display: flex;
 
+  flex-direction: column;
+
   align-items: center;
 
   justify-content: center;
+
+  gap: 12px;
+
+  padding: 16px;
 
   border-right: 2px solid var(--color-primary-20);
 
@@ -822,67 +876,197 @@
 
 /* ============================================
 
-   MODAL IMAGE ROTATOR - 2D interattivo (drag to rotate)
+   MODAL IMAGE VIEWER - zoom (wheel) + pan (drag)
 
    ============================================ */
 
-.trophy-modal .modal-image-rotator {
+.trophy-modal .modal-image-viewer {
 
-  width: 350px;
-
-  height: 350px;
-
+  /* Il viewer si adatta alla dimensione naturale dell'immagine (cap su
+     viewport, con 380px riservati alla info-section + paddings). Lo zoom
+     ingrandisce l'<img> via transform: scale, l'overflow:hidden taglia
+     gli eccessi, il pan li riporta in vista. */
   position: relative;
 
-  transform-style: preserve-3d;
-
-  transition: transform 0.05s linear;
-
-  user-select: none;
-
-}
-
- 
-
-/* Modal image card */
-
-.trophy-modal .modal-image-card {
-
-  position: absolute;
-
-  width: 350px;
-
-  height: 350px;
-
-  backface-visibility: hidden;
-
-  background: rgba(0, 150, 180, 0.2);
-
-  border: var(--border-width-thick) solid var(--color-primary-60);
-
-  display: flex;
+  display: inline-flex;
 
   align-items: center;
 
   justify-content: center;
 
+  background: rgba(0, 60, 90, 0.4);
+
+  border: var(--border-width-thick) solid var(--color-primary-60);
+
   box-shadow: 0 0 20px var(--color-primary-15);
 
+  overflow: hidden;
+
+  cursor: grab;
+
+  user-select: none;
+
+  touch-action: none;
+
+  min-width: 240px;
+
+  min-height: 240px;
+
+  max-width: calc(95vw - 400px);
+
+  max-height: 80vh;
+
 }
 
- 
 
-.trophy-modal .modal-image-card.front {
 
-  transform: rotateY(0deg);
+.trophy-modal .modal-image-viewer:active {
+
+  cursor: grabbing;
 
 }
 
- 
 
-.trophy-modal .modal-image-card.back {
 
-  transform: rotateY(180deg);
+.trophy-modal .modal-image-viewer.is-empty {
+
+  cursor: default;
+
+  width: 350px;
+
+  height: 350px;
+
+}
+
+
+
+/* L'immagine dentro il viewer. Le sue dimensioni di layout (naturali, fittate
+   dal max-width/height) determinano la grandezza del viewer; il transform
+   applicato in inline style sposta/ingrandisce visivamente senza alterare
+   il bounding box. */
+.trophy-modal .modal-image {
+
+  display: block;
+
+  width: auto;
+
+  height: auto;
+
+  max-width: calc(95vw - 400px);
+
+  max-height: 80vh;
+
+  user-select: none;
+
+  -webkit-user-drag: none;
+
+  pointer-events: none;
+
+  transform-origin: center center;
+
+  will-change: transform;
+
+}
+
+
+
+/* ============================================
+
+   MODAL IMAGE TOOLBAR - zoom buttons + reset
+
+   ============================================ */
+
+.trophy-modal .modal-image-toolbar {
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 8px;
+
+  background: rgba(0, 0, 0, 0.6);
+
+  border: 1px solid var(--color-primary-30);
+
+  border-radius: 4px;
+
+  padding: 6px 10px;
+
+  font-family: var(--font-mono);
+
+  font-size: var(--font-size-sm);
+
+  color: var(--color-primary-90);
+
+}
+
+
+
+.trophy-modal .modal-toolbar-btn {
+
+  background: rgba(0, 0, 0, 0.4);
+
+  border: 1px solid var(--color-primary-40);
+
+  color: var(--color-primary-90);
+
+  font-family: var(--font-mono);
+
+  font-size: var(--font-size-base);
+
+  min-width: 32px;
+
+  height: 28px;
+
+  padding: 0 8px;
+
+  cursor: pointer;
+
+  transition: background var(--transition-base), border-color var(--transition-base);
+
+}
+
+
+
+.trophy-modal .modal-toolbar-btn:hover:not(:disabled) {
+
+  background: var(--color-primary-15);
+
+  border-color: var(--color-primary-80);
+
+}
+
+
+
+.trophy-modal .modal-toolbar-btn:disabled {
+
+  opacity: 0.35;
+
+  cursor: not-allowed;
+
+}
+
+
+
+.trophy-modal .modal-toolbar-btn--reset {
+
+  font-size: var(--font-size-xs);
+
+  letter-spacing: var(--letter-spacing-wider);
+
+}
+
+
+
+.trophy-modal .modal-toolbar-zoom {
+
+  min-width: 56px;
+
+  text-align: center;
+
+  color: var(--color-primary-95);
+
+  letter-spacing: var(--letter-spacing-wider);
 
 }
 
@@ -1058,7 +1242,12 @@
 
 .trophy-modal .modal-info-section {
 
-  flex: 1;
+  /* Larghezza fissa accanto al viewer (il viewer e' quello che si adatta). */
+  flex: 0 0 360px;
+
+  min-width: 320px;
+
+  max-width: 380px;
 
   background: rgba(0, 0, 0, 0.6);
 
@@ -1462,37 +1651,41 @@
 
  
 
-  .trophy-modal .modal-image-rotator {
+  .trophy-modal .modal-image-viewer {
+
+    /* In layout column la sezione info sta sotto: il viewer puo' usare
+       tutta la larghezza disponibile. */
+    max-width: calc(95vw - 32px);
+
+    max-height: 55vh;
+
+  }
+
+  .trophy-modal .modal-image {
+
+    max-width: calc(95vw - 32px);
+
+    max-height: 55vh;
+
+  }
+
+  .trophy-modal .modal-image-viewer.is-empty {
 
     width: 280px;
 
     height: 280px;
 
   }
-
- 
-
-  .trophy-modal .modal-image-card {
-
-    width: 280px;
-
-    height: 280px;
-
-  }
-
- 
-
-  .trophy-modal .modal-ground-shadow {
-
-    width: 240px;
-
-    height: 25px;
-
-  }
-
- 
 
   .trophy-modal .modal-info-section {
+
+    flex: 0 0 auto;
+
+    width: 100%;
+
+    min-width: 0;
+
+    max-width: none;
 
     padding: var(--spacing-lg);
 
@@ -1534,19 +1727,25 @@
 
   .trophy-arena .image-rotator {
 
-    width: 180px;
+    max-width: 180px;
 
-    height: 180px;
+    max-height: 180px;
 
   }
 
- 
+  .trophy-arena .image-card.front {
 
-  .trophy-arena .image-card {
+    max-width: 180px;
 
-    width: 180px;
+    max-height: 180px;
 
-    height: 180px;
+  }
+
+  .trophy-arena .trophy-img {
+
+    max-width: 180px;
+
+    max-height: 180px;
 
   }
 
@@ -1574,16 +1773,6 @@
 
  
 
-  .trophy-modal .modal-content {
-
-    width: 95%;
-
-    height: 90vh;
-
-  }
-
- 
-
   .trophy-modal .modal-close {
 
     top: 0.5rem;
@@ -1596,55 +1785,39 @@
 
   }
 
- 
+  .trophy-modal .modal-image-viewer {
 
-  .trophy-modal .modal-image-rotator {
+    max-width: calc(95vw - 16px);
+
+    max-height: 50vh;
+
+    min-width: 180px;
+
+    min-height: 180px;
+
+  }
+
+  .trophy-modal .modal-image {
+
+    max-width: calc(95vw - 16px);
+
+    max-height: 50vh;
+
+  }
+
+  .trophy-modal .modal-image-viewer.is-empty {
 
     width: 220px;
 
     height: 220px;
 
   }
-
- 
-
-  .trophy-modal .modal-image-card {
-
-    width: 220px;
-
-    height: 220px;
-
-  }
-
- 
-
-  .trophy-modal .grafiche-modal-logo-eye {
-
-    width: 110px;
-
-    height: 110px;
-
-  }
-
- 
-
-  .trophy-modal .modal-ground-shadow {
-
-    width: 200px;
-
-    height: 22px;
-
-  }
-
- 
 
   .trophy-modal .modal-info-section {
 
     padding: var(--spacing-md);
 
   }
-
- 
 
   .trophy-modal .info-title {
 
