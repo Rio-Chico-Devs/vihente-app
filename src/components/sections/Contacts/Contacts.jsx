@@ -1,12 +1,33 @@
 import { useState, useEffect, useRef } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { validateContactForm, sanitizeInput } from '../../../utils/validation';
 import { useGuide } from '../../../contexts/GuideContext';
 import { useSettings } from '../../../contexts/SettingsContext';
 import './Contacts.css';
 
+/* ------------------------------------------------------------------
+   Alias per la query string ?service=... arrivata dalle pagine servizio.
+   I valori a destra DEVONO coincidere con quelli del <select> in fondo.
+------------------------------------------------------------------ */
+const SERVICE_ALIAS = {
+  consulenza: 'Consulenza',
+  consulenze: 'Consulenza',
+  sitiweb: 'Sito Web o componenti',
+  'sito web': 'Sito Web o componenti',
+  web: 'Sito Web o componenti',
+  presenza: 'Social e SEO',
+  'presenza online': 'Social e SEO',
+  social: 'Social e SEO',
+  seo: 'Social e SEO',
+  multimedia: 'Content Creation',
+  content: 'Content Creation',
+  grafica: 'Grafica',
+};
+
 const Contacts = () => {
   const { setGuide, clearGuide } = useGuide();
   const { fxVolume } = useSettings();
+  const [searchParams] = useSearchParams();
   const fxVolumeRef = useRef(fxVolume);
   useEffect(() => { fxVolumeRef.current = fxVolume; }, [fxVolume]);
   const [isQuoteMode, setIsQuoteMode] = useState(false);
@@ -45,6 +66,23 @@ const Contacts = () => {
       timeoutsRef.current.forEach(timeout => clearTimeout(timeout));
       timeoutsRef.current = [];
     };
+  }, []);
+
+  /* Pre-fill da query string (es. arrivo da una pagina servizio con
+     /contatti?mode=quote&service=Consulenza). Solo al primo mount. */
+  useEffect(() => {
+    const mode = searchParams.get('mode');
+    const service = searchParams.get('service');
+    if (mode === 'quote') {
+      setIsQuoteMode(true);
+    }
+    if (service) {
+      const mapped = SERVICE_ALIAS[service.toLowerCase()] || null;
+      if (mapped) {
+        setFormData(prev => ({ ...prev, service: mapped }));
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleChange = (e) => {
@@ -253,14 +291,18 @@ const Contacts = () => {
           className={`form-container ${isAnimating ? 'cube-animation' : ''} ${submitStatus === 'success' && !isAnimating ? 'reappearing' : ''}`}
         >
           <div className="mode-toggle-container">
-            <button 
+            <button
               type="button"
               className="mode-toggle-button"
               onClick={toggleMode}
-              style={{ display: 'none' }}
+              aria-pressed={isQuoteMode}
+              onMouseEnter={() => setGuide(isQuoteMode
+                ? 'Torna al modulo di contatto generale.'
+                : 'Passa alla modalità preventivo: ti chiedo qualche dettaglio in più sul progetto.')}
+              onMouseLeave={clearGuide}
             >
               <span className="mode-toggle-text">
-                {isQuoteMode ? '📧 Contatto Generale' : '💰 Richiedi un Preventivo'}
+                {isQuoteMode ? 'Contatto Generale' : 'Richiedi un Preventivo'}
               </span>
             </button>
             <p className="section-subtitle">
