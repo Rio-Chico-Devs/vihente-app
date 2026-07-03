@@ -1,4 +1,4 @@
-import { useRef, useState, useCallback } from 'react';
+import { useRef, useState, useCallback, useEffect } from 'react';
 import './GraficheShowcase.css';
 import { useGuide } from '../../../../contexts/GuideContext';
 
@@ -25,8 +25,24 @@ const GraficheShowcase = () => {
   const [imageViews, setImageViews] = useState({});
   // Trofei la cui immagine ha fallito il caricamento -> fallback al placeholder.
   const [imageErrors, setImageErrors] = useState({});
+  // Modal aperto (id trofeo) — vero dialog React: solo il modal aperto viene
+  // renderizzato (accessibility tree pulito), ESC chiude, focus gestito.
+  const [openId, setOpenId] = useState(null);
 
   const panRef = useRef({});
+  const viewerRef = useRef(null);
+  const closeBtnRef = useRef(null);
+
+  const closeModal = useCallback(() => {
+    setOpenId((current) => {
+      if (current) {
+        // Restituisce il focus alla card che ha aperto il modal.
+        const opener = document.getElementById(`trophy-btn-${current}`);
+        if (opener) setTimeout(() => opener.focus(), 0);
+      }
+      return null;
+    });
+  }, []);
 
   const getView = (id) => imageViews[id] || DEFAULT_VIEW;
 
@@ -57,6 +73,30 @@ const GraficheShowcase = () => {
   };
 
   const handleReset = (id) => setView(id, DEFAULT_VIEW);
+
+  /* Modal aperto: wheel non-passive sul viewer (React attacca onWheel come
+     passive dal v17 -> preventDefault sarebbe ignorato e la pagina dietro
+     scrollerebbe durante lo zoom), ESC per chiudere, focus sul bottone
+     chiudi all'apertura. */
+  useEffect(() => {
+    if (!openId) return;
+
+    const el = viewerRef.current;
+    const onWheel = (e) => handleWheel(e, openId);
+    if (el) el.addEventListener('wheel', onWheel, { passive: false });
+
+    const onKeyDown = (e) => {
+      if (e.key === 'Escape') closeModal();
+    };
+    document.addEventListener('keydown', onKeyDown);
+
+    if (closeBtnRef.current) closeBtnRef.current.focus();
+
+    return () => {
+      if (el) el.removeEventListener('wheel', onWheel);
+      document.removeEventListener('keydown', onKeyDown);
+    };
+  }, [openId, handleWheel, closeModal]);
 
   /* ------------------------------------------------------------------
      PAN (click + drag, touch + drag)
@@ -214,36 +254,20 @@ const GraficheShowcase = () => {
 
   return (
     <div className="trophy-arena">
-      {/* PURE CSS STATE: Radio inputs nascosti + dummy per reset */}
-      <input
-        type="radio"
-        name="trophy-state"
-        id="trophy-none"
-        className="trophy-state"
-        defaultChecked={true}
-        style={{ display: 'none' }}
-      />
-      {trophies.map((trophy) => (
-        <input
-          key={`state-${trophy.id}`}
-          type="radio"
-          name="trophy-state"
-          id={`trophy-${trophy.id}`}
-          className="trophy-state"
-        />
-      ))}
-
       {/* GALLERY: Card rotanti con immagine in dimensione nativa (cap 200px) */}
       <div className="trophy-gallery">
         <div className="gallery-stage">
           {trophies.map((trophy, index) => {
             const hasImage = trophy.image && !imageErrors[trophy.id];
             return (
-              <label
+              <button
                 key={trophy.id}
-                htmlFor={`trophy-${trophy.id}`}
+                type="button"
+                id={`trophy-btn-${trophy.id}`}
                 className="trophy-container"
                 style={{ '--trophy-index': index }}
+                onClick={() => setOpenId(trophy.id)}
+                aria-haspopup="dialog"
                 onMouseEnter={() => setGuide('Trascina per ruotare, clicca per aprire i dettagli del progetto.')}
                 onMouseLeave={clearGuide}
               >
@@ -308,38 +332,47 @@ const GraficheShowcase = () => {
                     <div className="preview-title">{trophy.title}</div>
                   </div>
                 </div>
-              </label>
+              </button>
             );
           })}
         </div>
       </div>
 
-      {/* MODAL: si adatta all'immagine; zoom + pan per ispezionarla */}
-      {trophies.map((trophy) => {
+      {/* MODAL: solo quello aperto viene renderizzato (dialog reale) */}
+      {trophies.filter((t) => t.id === openId).map((trophy) => {
         const view = getView(trophy.id);
         const hasImage = trophy.image && !imageErrors[trophy.id];
         return (
           <div
             key={`modal-${trophy.id}`}
-            className="trophy-modal"
+            className="trophy-modal trophy-modal--open"
             data-trophy={trophy.id}
+            role="dialog"
+            aria-modal="true"
+            aria-label={trophy.title}
           >
-            <div className="modal-backdrop" />
+            <div className="modal-backdrop" onClick={closeModal} />
 
             <div className="modal-content">
               {/* Close button */}
-              <label htmlFor="trophy-none" className="modal-close" aria-label="Chiudi">
+              <button
+                type="button"
+                ref={closeBtnRef}
+                className="modal-close"
+                onClick={closeModal}
+                aria-label="Chiudi"
+              >
                 <svg viewBox="0 0 24 24">
                   <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
                 </svg>
-              </label>
+              </button>
 
               <div className="modal-layout">
                 {/* Trophy Section: viewer immagine con zoom+pan */}
                 <div className="modal-trophy-section">
                   <div
+                    ref={viewerRef}
                     className={`modal-image-viewer${hasImage ? '' : ' is-empty'}`}
-                    onWheel={hasImage ? (e) => handleWheel(e, trophy.id) : undefined}
                     onMouseDown={hasImage ? (e) => handlePanStart(e, trophy.id) : undefined}
                     onMouseMove={hasImage ? (e) => handlePanMove(e, trophy.id) : undefined}
                     onMouseUp={() => handlePanEnd(trophy.id)}
