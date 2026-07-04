@@ -11,8 +11,11 @@ const ImageCheckerPage = () => {
   const imageRef = useRef(null);
   const containerRef = useRef(null);
 
-  // Immagine fornita (MODIFICA QUESTO PATH)
-  const image = '../../../../../screenshots/VIejcO5.png';
+  // Immagine fornita (MODIFICA QUESTO PATH).
+  // Path assoluto dalla webroot: il vecchio relativo con 5 ../ funzionava
+  // solo perche' il browser clampava oltre la root — fragile se la route
+  // cambia profondita'.
+  const image = '/screenshots/VIejcO5.png';
 
   const ZOOM_LEVEL = 2.5;
 
