@@ -1,13 +1,13 @@
 import { useState, useCallback, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useSettings } from '../../../contexts/SettingsContext';
-import { useGuide } from '../../../contexts/GuideContext';
+import { useGuideActions } from '../../../contexts/GuideContext';
 import { useTour } from '../../../contexts/TourContext';
 import './Settings.css';
 
 const Settings = () => {
   const { irisVolume, setIrisVolume, musicVolume, setMusicVolume, fxVolume, setFxVolume, clearData } = useSettings();
-  const { setGuide, clearGuide } = useGuide();
+  const { setGuide, clearGuide } = useGuideActions();
   const { startTour } = useTour();
   const navigate = useNavigate();
   const [clearStep, setClearStep] = useState(0);

@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useGuide } from '../../../contexts/GuideContext';
+import { useGuideActions } from '../../../contexts/GuideContext';
 import PricingPackages from '../../global/PricingPackages/PricingPackages';
 import ServiceTimeline from '../../global/ServiceTimeline/ServiceTimeline';
 import FAQSection from '../../global/FAQSection/FAQSection';
@@ -124,7 +124,7 @@ const FRAME_MS = 120; // millisecondi per frame
 
 const MultimediaPage = () => {
   const navigate = useNavigate();
-  const { setGuide, clearGuide } = useGuide();
+  const { setGuide, clearGuide } = useGuideActions();
 
   /* Grafiche: slider + modal */
   const [slide, setSlide]   = useState(0);

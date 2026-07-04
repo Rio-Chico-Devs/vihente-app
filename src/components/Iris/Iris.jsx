@@ -272,7 +272,6 @@ const Iris = () => {
   const [isActive,      setIsActive]      = useState(false);
   const [isGlitching,   setIsGlitching]   = useState(false);
   const [greeting,      setGreeting]      = useState(null);
-  const [pupilPos,      setPupilPos]      = useState({ x: 50, y: 50 });
   const [blinking,      setBlinking]      = useState(false);
   const [isMuted,       setIsMuted]       = useState(() => { try { return localStorage.getItem('iris-muted') === 'true'; } catch { return false; } });
   const [showBadge,     setShowBadge]     = useState(() => { try { return !localStorage.getItem('iris-activated'); } catch { return true; } });
@@ -294,6 +293,24 @@ const Iris = () => {
   const greetingPlayingRef  = useRef(false);
   const fxAudioRef          = useRef(null);
   const tooltipTimerRef     = useRef(null);
+  // Pupilla via setAttribute sui ref: prima ogni mousemove faceva setState
+  // (centinaia di re-render/secondo con mouse ad alto polling rate).
+  const pupilC1Ref          = useRef(null);
+  const pupilC2Ref          = useRef(null);
+  const pupilRafRef         = useRef(null);
+
+  const applyPupil = useCallback((x, y) => {
+    const cx = x.toString();
+    const cy = y.toString();
+    if (pupilC1Ref.current) {
+      pupilC1Ref.current.setAttribute('cx', cx);
+      pupilC1Ref.current.setAttribute('cy', cy);
+    }
+    if (pupilC2Ref.current) {
+      pupilC2Ref.current.setAttribute('cx', cx);
+      pupilC2Ref.current.setAttribute('cy', cy);
+    }
+  }, []);
 
   /* ── Sync volume refs ── */
   useEffect(() => { irisVolumeRef.current = irisVolume; }, [irisVolume]);
@@ -376,35 +393,50 @@ const Iris = () => {
     clearGuide();
   }, [location.pathname]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  /* ── Cursor tracking — only when active ── */
+  /* ── Cursor tracking — only when active, throttled a rAF ── */
   useEffect(() => {
     if (!isActive) return;
     const onMove = (e) => {
-      const el = ref.current;
-      if (!el) return;
-      const r  = el.getBoundingClientRect();
-      const cx = r.left + r.width  / 2;
-      const cy = r.top  + r.height / 2;
-      const angle = Math.atan2(e.clientY - cy, e.clientX - cx);
-      setPupilPos({ x: 50 + Math.cos(angle) * 8, y: 50 + Math.sin(angle) * 6 });
+      if (pupilRafRef.current) return; // max un update per frame
+      pupilRafRef.current = requestAnimationFrame(() => {
+        pupilRafRef.current = null;
+        const el = ref.current;
+        if (!el) return;
+        const r  = el.getBoundingClientRect();
+        const cx = r.left + r.width  / 2;
+        const cy = r.top  + r.height / 2;
+        const angle = Math.atan2(e.clientY - cy, e.clientX - cx);
+        applyPupil(50 + Math.cos(angle) * 8, 50 + Math.sin(angle) * 6);
+      });
     };
     window.addEventListener('mousemove', onMove);
-    return () => window.removeEventListener('mousemove', onMove);
-  }, [isActive]);
+    return () => {
+      window.removeEventListener('mousemove', onMove);
+      if (pupilRafRef.current) {
+        cancelAnimationFrame(pupilRafRef.current);
+        pupilRafRef.current = null;
+      }
+    };
+  }, [isActive, applyPupil]);
 
   /* ── Idle random look — only when active ── */
   useEffect(() => {
     if (!isActive) return;
+    let backTimeout = null;
     const id = setInterval(() => {
       if (Math.random() > 0.5) {
         const a = Math.random() * Math.PI * 2;
         const d = Math.random() * 0.7;
-        setPupilPos({ x: 50 + Math.cos(a) * 8 * d, y: 50 + Math.sin(a) * 6 * d });
-        setTimeout(() => setPupilPos({ x: 50, y: 50 }), 1000 + Math.random() * 1000);
+        applyPupil(50 + Math.cos(a) * 8 * d, 50 + Math.sin(a) * 6 * d);
+        clearTimeout(backTimeout);
+        backTimeout = setTimeout(() => applyPupil(50, 50), 1000 + Math.random() * 1000);
       }
     }, 5000 + Math.random() * 3000);
-    return () => clearInterval(id);
-  }, [isActive]);
+    return () => {
+      clearInterval(id);
+      clearTimeout(backTimeout);
+    };
+  }, [isActive, applyPupil]);
 
   /* ── Blinking — only when active ── */
   useEffect(() => {
@@ -487,7 +519,7 @@ const Iris = () => {
       setTimeout(() => {
         setIsGlitching(false);
         setIsActive(true);
-        setPupilPos({ x: 50, y: 50 });
+        applyPupil(50, 50);
         const idx = Math.floor(Math.random() * GREETINGS.length);
         greetingIdxRef.current = idx;
         const msg = GREETINGS[idx];
@@ -615,12 +647,12 @@ const Iris = () => {
                 style={{ opacity: eyeOpacity, transition: 'opacity 0.1s ease-in-out' }}
               />
               <g clipPath="url(#irisClipD)" style={{ opacity: eyeOpacity, transition: 'opacity 0.1s ease-in-out' }}>
-                <circle cx={pupilPos.x} cy={pupilPos.y} r="8"
+                <circle ref={pupilC1Ref} cx="50" cy="50" r="8"
                   fill="none" stroke="var(--color-primary-95, rgba(0,255,255,0.95))"
                   strokeWidth="1" filter="url(#irisGlowD)"
                   style={{ transition: pTrans }}
                 />
-                <circle cx={pupilPos.x} cy={pupilPos.y} r="3.5"
+                <circle ref={pupilC2Ref} cx="50" cy="50" r="3.5"
                   fill="none" stroke="var(--color-primary-95, rgba(0,255,255,0.95))"
                   strokeWidth="0.8" filter="url(#irisGlowD)"
                   style={{ transition: pTrans }}

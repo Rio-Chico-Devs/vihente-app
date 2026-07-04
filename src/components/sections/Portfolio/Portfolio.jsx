@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTheme } from '../../../contexts/theme';
-import { useGuide } from '../../../contexts/GuideContext';
+import { useGuideActions } from '../../../contexts/GuideContext';
 import GraficheCard from './GraficheCard';
 import WebsiteMockup from './WebsiteMockup';
 import ComponentiCard from './ComponentiCard';
@@ -10,7 +10,7 @@ import './Portfolio.css';
 const Portfolio = () => {
   const navigate = useNavigate();
   const { theme } = useTheme();
-  const { setGuide, clearGuide } = useGuide();
+  const { setGuide, clearGuide } = useGuideActions();
 
   const categoryGuide = {
     grafiche:    'Loghi, illustrazioni e materiali grafici — visual identity e comunicazione digitale.',

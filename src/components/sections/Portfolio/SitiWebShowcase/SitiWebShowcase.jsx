@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom';
-import { useGuide } from '../../../../contexts/GuideContext';
+import { useGuideActions } from '../../../../contexts/GuideContext';
 import './SitiWebShowcase.css';
 
 // Imposta a false per riattivarla quando i permessi saranno ottenuti
@@ -7,7 +7,7 @@ const COMING_SOON = true;
 
 const SitiWebShowcase = () => {
   const navigate = useNavigate();
-  const { setGuide, clearGuide } = useGuide();
+  const { setGuide, clearGuide } = useGuideActions();
 
   if (COMING_SOON) {
     return (

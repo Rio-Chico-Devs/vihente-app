@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect, useCallback } from 'react';
 import './FemosBlackMarketPage.css';
-import { useGuide } from '../../../../../contexts/GuideContext';
+import { useGuideActions } from '../../../../../contexts/GuideContext';
 import { useSettings } from '../../../../../contexts/SettingsContext';
 
 // Costanti e database fuori dal componente per evitare problemi di dipendenze
@@ -77,7 +77,7 @@ const playFx = (path, vol = 1) => {
 const BASE_MARKET_VOL = 0.35;
 
 const FemosBlackMarketPage = () => {
-  const { setGuide, clearGuide } = useGuide();
+  const { setGuide, clearGuide } = useGuideActions();
   const { musicVolume, fxVolume } = useSettings();
   const musicVolumeRef = useRef(musicVolume);
   const fxVolumeRef    = useRef(fxVolume);
@@ -87,7 +87,11 @@ const FemosBlackMarketPage = () => {
   const [currentPage, setCurrentPage] = useState('shop');
   const [cart, setCart] = useState([]);
   const [mascotMessage, setMascotMessage] = useState("Il mercato nero ti dà il benvenuto...");
-  const [pupilPosition, setPupilPosition] = useState({ x: 500, y: 500 });
+  // Pupilla della mascotte: aggiornata via setAttribute sui ref (zero
+  // re-render). Con setState a ogni frame l'intera pagina (griglia, carrello,
+  // mascotte) si ri-renderizzava 60 volte al secondo per tutta la simulazione.
+  const pupilCircle1Ref = useRef(null);
+  const pupilCircle2Ref = useRef(null);
   const [checkoutData, setCheckoutData] = useState({
     name: '', email: '', address: '', city: '', zip: '', wallet: ''
   });
@@ -219,6 +223,22 @@ const FemosBlackMarketPage = () => {
     if (!simulationActive) return;
 
     const smoothness = 0.15;
+
+    // Scrittura diretta sul DOM (come la pupilla della LandingPage):
+    // nessun setState, quindi nessun re-render della pagina per frame.
+    const applyToDom = (x, y) => {
+      const cx = x.toString();
+      const cy = y.toString();
+      if (pupilCircle1Ref.current) {
+        pupilCircle1Ref.current.setAttribute('cx', cx);
+        pupilCircle1Ref.current.setAttribute('cy', cy);
+      }
+      if (pupilCircle2Ref.current) {
+        pupilCircle2Ref.current.setAttribute('cx', cx);
+        pupilCircle2Ref.current.setAttribute('cy', cy);
+      }
+    };
+
     function interpolate() {
       const current = currentPositionRef.current;
       const target = targetPositionRef.current;
@@ -226,25 +246,26 @@ const FemosBlackMarketPage = () => {
       const dy = target.y - current.y;
 
       if (Math.abs(dx) < 0.1 && Math.abs(dy) < 0.1) {
+        // Convergenza: snap e stop. Il loop riparte dal prossimo mousemove.
         current.x = target.x;
         current.y = target.y;
-      } else {
-        current.x += dx * smoothness;
-        current.y += dy * smoothness;
+        applyToDom(current.x, current.y);
+        interpolationFrameRef.current = null;
+        return;
       }
 
-      setPupilPosition({ x: current.x, y: current.y });
+      current.x += dx * smoothness;
+      current.y += dy * smoothness;
+      applyToDom(current.x, current.y);
       interpolationFrameRef.current = requestAnimationFrame(interpolate);
     }
 
-    interpolate();
-    return () => {
-      if (interpolationFrameRef.current) cancelAnimationFrame(interpolationFrameRef.current);
+    const startLoop = () => {
+      if (!interpolationFrameRef.current) {
+        interpolationFrameRef.current = requestAnimationFrame(interpolate);
+      }
     };
-  }, [simulationActive]);
-
-  useEffect(() => {
-    if (!simulationActive) return;
+    startLoop();
 
     const handleMouseMove = (e) => {
       if (!eyeRef.current) return;
@@ -274,10 +295,17 @@ const FemosBlackMarketPage = () => {
       }
 
       targetPositionRef.current = { x: newX, y: newY };
+      startLoop();
     };
 
     window.addEventListener('mousemove', handleMouseMove);
-    return () => window.removeEventListener('mousemove', handleMouseMove);
+    return () => {
+      window.removeEventListener('mousemove', handleMouseMove);
+      if (interpolationFrameRef.current) {
+        cancelAnimationFrame(interpolationFrameRef.current);
+        interpolationFrameRef.current = null;
+      }
+    };
   }, [simulationActive]);
 
   const startSimulation = () => {
@@ -673,8 +701,8 @@ const FemosBlackMarketPage = () => {
               </defs>
               <path d="M 350 500 C 390 430, 440 400, 500 400 C 560 400, 610 430, 650 500 C 610 570, 560 600, 500 600 C 440 600, 390 570, 350 500 Z" fill="none" stroke="rgba(0, 255, 255, 0.95)" strokeWidth="12" strokeLinecap="round" strokeLinejoin="round" filter="url(#mascotGlow)"/>
               <g clipPath="url(#mascotClip)">
-                <circle cx={pupilPosition.x} cy={pupilPosition.y} r="80" fill="none" stroke="rgba(0, 255, 255, 0.95)" strokeWidth="10" filter="url(#mascotGlow)"/>
-                <circle cx={pupilPosition.x} cy={pupilPosition.y} r="35" fill="none" stroke="rgba(0, 255, 255, 0.95)" strokeWidth="8" filter="url(#mascotGlow)"/>
+                <circle ref={pupilCircle1Ref} cx="500" cy="500" r="80" fill="none" stroke="rgba(0, 255, 255, 0.95)" strokeWidth="10" filter="url(#mascotGlow)"/>
+                <circle ref={pupilCircle2Ref} cx="500" cy="500" r="35" fill="none" stroke="rgba(0, 255, 255, 0.95)" strokeWidth="8" filter="url(#mascotGlow)"/>
               </g>
             </svg>
           </div>

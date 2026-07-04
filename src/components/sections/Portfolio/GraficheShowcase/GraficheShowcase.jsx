@@ -1,6 +1,6 @@
 import { useRef, useState, useCallback, useEffect } from 'react';
 import './GraficheShowcase.css';
-import { useGuide } from '../../../../contexts/GuideContext';
+import { useGuideActions } from '../../../../contexts/GuideContext';
 
 /* ------------------------------------------------------------------
    Limiti zoom/pan per il viewer del modal.
@@ -19,7 +19,7 @@ const GraficheShowcase = () => {
   // Logo occhio path - stesso della navbar (back card della gallery)
   const eyeContourPath = "M 35 50 C 39 43, 44 40, 50 40 C 56 40, 61 43, 65 50 C 61 57, 56 60, 50 60 C 44 60, 39 57, 35 50 Z";
 
-  const { setGuide, clearGuide } = useGuide();
+  const { setGuide, clearGuide } = useGuideActions();
 
   // Stato di vista (zoom + pan) per ciascun trofeo, indipendente.
   const [imageViews, setImageViews] = useState({});

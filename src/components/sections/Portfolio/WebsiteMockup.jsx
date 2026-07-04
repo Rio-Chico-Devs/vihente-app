@@ -23,8 +23,8 @@ const WebsiteMockup = ({ theme = 'dark' }) => {
 
     const ctx = canvas.getContext('2d', { alpha: false });
 
-    // High DPI per qualità massima
-    const dpr = window.devicePixelRatio || 3;
+    // High DPI (cap a 2: oltre il costo raster raddoppia senza differenza visiva)
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
     const width = 600;
     const height = 400;
 
@@ -376,14 +376,45 @@ const WebsiteMockup = ({ theme = 'dark' }) => {
 
       ctx.shadowBlur = 0;
 
-      animationRef.current = requestAnimationFrame(animate);
+      // Pausa quando il canvas non e' visibile (ripreso da IO/visibilitychange)
+      if (isVisible) {
+        animationRef.current = requestAnimationFrame(animate);
+      } else {
+        animationRef.current = null;
+      }
     };
+
+    // Sospende il rAF fuori viewport / tab nascosta (pattern CoinLogo3D)
+    let isIntersecting = true;
+    let isVisible = true;
+
+    const resumeLoop = () => {
+      if (isVisible && !animationRef.current) {
+        animationRef.current = requestAnimationFrame(animate);
+      }
+    };
+
+    const io = new IntersectionObserver(([entry]) => {
+      isIntersecting = entry.isIntersecting;
+      isVisible = isIntersecting && !document.hidden;
+      if (isVisible) resumeLoop();
+    }, { threshold: 0.01 });
+    io.observe(canvas);
+
+    const handleVisibility = () => {
+      isVisible = isIntersecting && !document.hidden;
+      if (isVisible) resumeLoop();
+    };
+    document.addEventListener('visibilitychange', handleVisibility);
 
     animationRef.current = requestAnimationFrame(animate);
 
     return () => {
+      io.disconnect();
+      document.removeEventListener('visibilitychange', handleVisibility);
       if (animationRef.current) {
         cancelAnimationFrame(animationRef.current);
+        animationRef.current = null;
       }
     };
   }, [theme]);

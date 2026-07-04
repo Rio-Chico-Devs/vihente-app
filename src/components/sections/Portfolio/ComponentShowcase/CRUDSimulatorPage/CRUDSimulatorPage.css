@@ -80,7 +80,8 @@
   background: rgba(0, 0, 0, 0.8);
   border: 2px solid var(--color-primary-30, rgba(0, 255, 255, 0.3));
   border-radius: 8px;
-  backdrop-filter: blur(10px);
+  /* backdrop-filter rimosso: 8 superfici blur simultanee costavano un
+     resampling continuo del backdrop; lo sfondo e' gia' quasi opaco. */
   box-shadow:
     0 4px 20px var(--color-primary-10, rgba(0, 255, 255, 0.1)),
     inset 0 1px 0 var(--color-primary-10, rgba(0, 255, 255, 0.1));
@@ -103,7 +104,8 @@
   background: rgba(0, 0, 0, 0.8);
   border: 2px solid var(--color-primary-30, rgba(0, 255, 255, 0.3));
   border-radius: 8px;
-  backdrop-filter: blur(10px);
+  /* backdrop-filter rimosso: 8 superfici blur simultanee costavano un
+     resampling continuo del backdrop; lo sfondo e' gia' quasi opaco. */
   box-shadow:
     0 4px 20px var(--color-primary-10, rgba(0, 255, 255, 0.1)),
     inset 0 1px 0 var(--color-primary-10, rgba(0, 255, 255, 0.1));
@@ -153,7 +155,8 @@
   background: rgba(0, 0, 0, 0.8);
   border: 2px solid var(--color-primary-30, rgba(0, 255, 255, 0.3));
   border-radius: 8px;
-  backdrop-filter: blur(10px);
+  /* backdrop-filter rimosso: 8 superfici blur simultanee costavano un
+     resampling continuo del backdrop; lo sfondo e' gia' quasi opaco. */
   box-shadow:
     0 4px 20px var(--color-primary-10, rgba(0, 255, 255, 0.1)),
     inset 0 1px 0 var(--color-primary-10, rgba(0, 255, 255, 0.1));
@@ -253,7 +256,8 @@
   background: rgba(0, 0, 0, 0.8);
   border: 2px solid var(--color-primary-30, rgba(0, 255, 255, 0.3));
   border-radius: 8px;
-  backdrop-filter: blur(10px);
+  /* backdrop-filter rimosso: 8 superfici blur simultanee costavano un
+     resampling continuo del backdrop; lo sfondo e' gia' quasi opaco. */
   box-shadow:
     0 4px 20px var(--color-primary-10, rgba(0, 255, 255, 0.1)),
     inset 0 1px 0 var(--color-primary-10, rgba(0, 255, 255, 0.1));
@@ -435,7 +439,8 @@
   background: rgba(0, 0, 0, 0.7);
   border: 2px solid var(--color-primary-30, rgba(0, 255, 255, 0.3));
   border-radius: 8px;
-  backdrop-filter: blur(10px);
+  /* backdrop-filter rimosso: 8 superfici blur simultanee costavano un
+     resampling continuo del backdrop; lo sfondo e' gia' quasi opaco. */
   box-shadow:
     0 4px 20px var(--color-primary-10, rgba(0, 255, 255, 0.1)),
     inset 0 1px 0 var(--color-primary-10, rgba(0, 255, 255, 0.1));
@@ -511,7 +516,8 @@
   background: rgba(0, 0, 0, 0.7);
   border: 2px solid var(--color-primary-30, rgba(0, 255, 255, 0.3));
   border-radius: 8px;
-  backdrop-filter: blur(10px);
+  /* backdrop-filter rimosso: 8 superfici blur simultanee costavano un
+     resampling continuo del backdrop; lo sfondo e' gia' quasi opaco. */
   animation: fadeIn 0.3s ease;
   box-shadow:
     0 4px 20px var(--color-primary-10, rgba(0, 255, 255, 0.1)),
@@ -584,7 +590,8 @@
   border: 2px solid var(--color-primary-30, rgba(0, 255, 255, 0.3));
   border-radius: 8px;
   overflow: hidden;
-  backdrop-filter: blur(10px);
+  /* backdrop-filter rimosso: 8 superfici blur simultanee costavano un
+     resampling continuo del backdrop; lo sfondo e' gia' quasi opaco. */
   box-shadow:
     0 4px 20px var(--color-primary-10, rgba(0, 255, 255, 0.1)),
     inset 0 1px 0 var(--color-primary-10, rgba(0, 255, 255, 0.1));

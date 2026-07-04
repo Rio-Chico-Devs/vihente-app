@@ -1,11 +1,11 @@
 import { useEffect, useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useGuide } from '../../../contexts/GuideContext';
+import { useGuideActions } from '../../../contexts/GuideContext';
 import './ServicesPage.css';
 
 const ServicesPage = () => {
   const navigate = useNavigate();
-  const { setGuide, clearGuide } = useGuide();
+  const { setGuide, clearGuide } = useGuideActions();
   const [effectsReady, setEffectsReady] = useState(false);
   const gridRef = useRef(null);
   

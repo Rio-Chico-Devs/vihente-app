@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTheme } from '../../../contexts/theme';
-import { useGuide } from '../../../contexts/GuideContext';
+import { useGuideActions } from '../../../contexts/GuideContext';
 import CoinLogo3D from './CoinLogo3D';
 import './LandingPage.css';
 
@@ -18,7 +18,7 @@ function canUseCanvas2D() {
 const LandingPageOldEye = ({ startTime }) => {
   const navigate = useNavigate();
   const { theme } = useTheme();
-  const { setGuide, clearGuide } = useGuide();
+  const { setGuide, clearGuide } = useGuideActions();
 
   // Evaluate once — no point re-checking after mount.
   const [use3D] = useState(canUseCanvas2D);
@@ -122,6 +122,10 @@ const LandingPageOldEye = ({ startTime }) => {
   };
 
   useEffect(() => {
+    // Il loop serve solo al fallback SVG: in modalita' 3D i ref della
+    // pupilla non esistono e girerebbe a vuoto a 60fps.
+    if (use3D) return;
+
     const smoothness = 0.15;
 
     function interpolate() {
@@ -160,9 +164,13 @@ const LandingPageOldEye = ({ startTime }) => {
         cancelAnimationFrame(interpolationFrameRef.current);
       }
     };
-  }, []);
+  }, [use3D]);
 
   useEffect(() => {
+    // Il tracking dello sguardo serve solo al fallback SVG: in 3D la
+    // moneta ruota per conto suo e targetPositionRef non viene consumato.
+    if (use3D) return;
+
     const handlePointerMove = (e) => {
       if (!eyeRef.current) return;
 
@@ -283,13 +291,8 @@ const LandingPageOldEye = ({ startTime }) => {
     return () => {
       window.removeEventListener('mousemove', handlePointerMove);
       window.removeEventListener('touchmove', handlePointerMove);
-      const clickMessageTimeout = clickMessageTimeoutRef.current;
-
-      if (clickMessageTimeout) {
-        clearTimeout(clickMessageTimeout);
-      }
     };
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [use3D]); // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
     console.log('🎯 LandingPage mounted');
@@ -338,7 +341,11 @@ const LandingPageOldEye = ({ startTime }) => {
       animationFrameRef.current = requestAnimationFrame(measureFPS);
     }
 
-    measureFPS();
+    // Il pannello metriche e' visibile solo su desktop: su mobile il
+    // contatore FPS girerebbe per un elemento display:none.
+    if (window.matchMedia('(min-width: 769px)').matches) {
+      measureFPS();
+    }
 
     return () => {
       console.log('🧹 LandingPage cleanup START');
@@ -349,6 +356,11 @@ const LandingPageOldEye = ({ startTime }) => {
       if (animationFrameRef.current) {
         cancelAnimationFrame(animationFrameRef.current);
         animationFrameRef.current = null;
+      }
+
+      if (clickMessageTimeoutRef.current) {
+        clearTimeout(clickMessageTimeoutRef.current);
+        clickMessageTimeoutRef.current = null;
       }
 
       console.log('✅ LandingPage cleanup COMPLETE');
@@ -522,7 +534,10 @@ const LandingPageOldEye = ({ startTime }) => {
           }
         }
 
-        .eye-svg {
+        /* Glow animato SOLO sul fallback SVG: animare drop-shadow sul
+           contenitore del canvas 3D (480-650px) forza un re-blur del layer
+           a ogni frame, e il canvas disegna gia' il proprio glow. */
+        .eye-svg:not(.eye-svg--3d) {
           animation: subtleGlow 4s ease-in-out infinite;
         }
 
@@ -889,7 +904,7 @@ const LandingPageOldEye = ({ startTime }) => {
               /* ── 3D spinning coin ── */
               <div
                 ref={eyeRef}
-                className="eye-svg"
+                className="eye-svg eye-svg--3d"
                 onMouseEnter={() => setGuide('Io ci cliccherei sopra.')}
                 onMouseLeave={clearGuide}
                 style={{ position: 'relative' }}

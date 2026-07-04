@@ -1,9 +1,9 @@
 import { useState, useRef, useEffect } from 'react';
 import './ImageCheckerPage.css';
-import { useGuide } from '../../../../../contexts/GuideContext';
+import { useGuideActions } from '../../../../../contexts/GuideContext';
 
 const ImageCheckerPage = () => {
-  const { setGuide, clearGuide } = useGuide();
+  const { setGuide, clearGuide } = useGuideActions();
   const [lensActive, setLensActive] = useState(false);
   const [lensPosition, setLensPosition] = useState({ x: 0, y: 0 });
   const [isTouching, setIsTouching] = useState(false);

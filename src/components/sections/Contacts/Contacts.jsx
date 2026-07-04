@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { validateContactForm, sanitizeInput } from '../../../utils/validation';
-import { useGuide } from '../../../contexts/GuideContext';
+import { useGuideActions } from '../../../contexts/GuideContext';
 import { useSettings } from '../../../contexts/SettingsContext';
 import './Contacts.css';
 
@@ -25,7 +25,7 @@ const SERVICE_ALIAS = {
 };
 
 const Contacts = () => {
-  const { setGuide, clearGuide } = useGuide();
+  const { setGuide, clearGuide } = useGuideActions();
   const { fxVolume } = useSettings();
   const [searchParams] = useSearchParams();
   const fxVolumeRef = useRef(fxVolume);

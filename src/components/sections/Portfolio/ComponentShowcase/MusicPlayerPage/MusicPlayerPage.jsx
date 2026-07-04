@@ -1,9 +1,9 @@
 import { useState, useRef, useEffect, useCallback } from 'react';
 import './MusicPlayerPage.css';
-import { useGuide } from '../../../../../contexts/GuideContext';
+import { useGuideActions } from '../../../../../contexts/GuideContext';
 
 const MusicPlayerPage = () => {
-  const { setGuide, clearGuide } = useGuide();
+  const { setGuide, clearGuide } = useGuideActions();
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);

@@ -11,8 +11,9 @@ const GraficheCard = ({ theme = 'dark' }) => {
 
     const ctx = canvas.getContext('2d');
 
-    // High DPI rendering
-    const dpr = window.devicePixelRatio || 2;
+    // High DPI rendering (cap a 2: oltre non si vede differenza e il costo
+    // di raster raddoppia a ogni step di dpr)
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
     canvas.width = 600 * dpr;
     canvas.height = 400 * dpr;
     canvas.style.width = '600px';
@@ -185,6 +186,12 @@ const GraficheCard = ({ theme = 'dark' }) => {
     // Animate
     let lastTime = performance.now();
     function animate(currentTime) {
+      // Pausa quando il canvas non e' visibile: il loop si ferma e viene
+      // riavviato da IntersectionObserver/visibilitychange al ritorno.
+      if (!isVisible) {
+        animationRef.current = null;
+        return;
+      }
       const deltaTime = (currentTime - lastTime) / 1000;
       lastTime = currentTime;
 
@@ -213,11 +220,38 @@ const GraficheCard = ({ theme = 'dark' }) => {
       animationRef.current = requestAnimationFrame(animate);
     }
 
+    // Sospende il rAF fuori viewport / tab nascosta (pattern CoinLogo3D)
+    let isIntersecting = true;
+    let isVisible = true;
+
+    function resumeLoop() {
+      if (isVisible && !animationRef.current) {
+        lastTime = performance.now();
+        animationRef.current = requestAnimationFrame(animate);
+      }
+    }
+
+    const io = new IntersectionObserver(([entry]) => {
+      isIntersecting = entry.isIntersecting;
+      isVisible = isIntersecting && !document.hidden;
+      if (isVisible) resumeLoop();
+    }, { threshold: 0.01 });
+    io.observe(canvas);
+
+    const handleVisibility = () => {
+      isVisible = isIntersecting && !document.hidden;
+      if (isVisible) resumeLoop();
+    };
+    document.addEventListener('visibilitychange', handleVisibility);
+
     animationRef.current = requestAnimationFrame(animate);
 
     return () => {
+      io.disconnect();
+      document.removeEventListener('visibilitychange', handleVisibility);
       if (animationRef.current) {
         cancelAnimationFrame(animationRef.current);
+        animationRef.current = null;
       }
     };
   }, [theme]);

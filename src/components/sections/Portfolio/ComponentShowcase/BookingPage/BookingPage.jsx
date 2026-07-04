@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './BookingPage.css';
-import { useGuide } from '../../../../../contexts/GuideContext';
+import { useGuideActions } from '../../../../../contexts/GuideContext';
 
 /* ── Static data ── */
 const SERVICES = [
@@ -81,7 +81,7 @@ const DAY_NAMES = ['Lu','Ma','Me','Gi','Ve','Sa','Do'];
 const STEPS = ['Servizio', 'Data', 'Orario', 'Conferma'];
 
 const BookingPage = () => {
-  const { setGuide, clearGuide } = useGuide();
+  const { setGuide, clearGuide } = useGuideActions();
   const navigate = useNavigate();
 
   const today = new Date();
