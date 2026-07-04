@@ -449,6 +449,12 @@
   gap: 1rem;
   max-height: calc(100dvh - 260px);
   overflow-y: auto;
+  /* overflow-x esplicito: con solo overflow-y:auto la spec forza anche
+     overflow-x:auto, e le voci che entrano da translateX(-100%) facevano
+     comparire una scrollbar orizzontale per la durata dell'animazione.
+     La scrollbar aggiungeva ~12px al box centrato con translateY(-50%):
+     il menu si ri-centrava saltando su, poi tornava giu' a fine slide-in. */
+  overflow-x: hidden;
   margin-top: 25px;
 }
 
