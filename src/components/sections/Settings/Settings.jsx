@@ -6,7 +6,7 @@ import { useTour } from '../../../contexts/TourContext';
 import './Settings.css';
 
 const Settings = () => {
-  const { irisVolume, setIrisVolume, musicVolume, setMusicVolume, fxVolume, setFxVolume, clearData } = useSettings();
+  const { irisVolume, setIrisVolume, musicVolume, setMusicVolume, fxVolume, setFxVolume, systemCursor, setSystemCursor, clearData } = useSettings();
   const { setGuide, clearGuide } = useGuideActions();
   const { startTour } = useTour();
   const navigate = useNavigate();
@@ -127,6 +127,25 @@ const Settings = () => {
             />
             {savedLabel === 'fx' && <span key={`fx-${savedTick}`} className="settings-saved">✓ Salvato</span>}
           </div>
+
+          <h2 className="settings-group-title" style={{ marginTop: 'var(--spacing-lg, 1.5rem)' }}>◈ Accessibilità</h2>
+          <p className="settings-desc">
+            Il sito usa un cursore personalizzato. Se preferisci il cursore
+            del tuo sistema operativo (ad es. se usi un cursore ingrandito),
+            puoi ripristinarlo qui.
+          </p>
+          <button
+            className="settings-tour-btn"
+            onClick={() => { setSystemCursor(!systemCursor); showSaved('cursor'); }}
+            aria-pressed={systemCursor}
+            onMouseEnter={() => setGuide('Passa dal cursore personalizzato del sito al cursore nativo del sistema operativo.')}
+            onMouseLeave={clearGuide}
+          >
+            <span className="btn-bracket">[</span>
+            {systemCursor ? ' CURSORE: SISTEMA ' : ' CURSORE: PERSONALIZZATO '}
+            <span className="btn-bracket">]</span>
+          </button>
+          {savedLabel === 'cursor' && <span key={`cursor-${savedTick}`} className="settings-saved">✓ Salvato</span>}
         </div>
 
         {/* ── Col destra: Tour + Dati ── */}

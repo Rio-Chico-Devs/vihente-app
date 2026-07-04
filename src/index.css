@@ -227,6 +227,25 @@ a, button, [role="button"], input, textarea, select,
   cursor: none !important;
 }
 
+/* Opt-out accessibilita' (Impostazioni -> Cursore di sistema): ripristina
+   i cursori nativi. Specificita' maggiore delle regole sopra, quindi vince. */
+body.system-cursor,
+body.system-cursor * {
+  cursor: auto !important;
+}
+body.system-cursor a,
+body.system-cursor button,
+body.system-cursor [role="button"],
+body.system-cursor .service-box,
+body.system-cursor .overlay-close,
+body.system-cursor [onclick] {
+  cursor: pointer !important;
+}
+body.system-cursor input,
+body.system-cursor textarea {
+  cursor: text !important;
+}
+
 /* NB: la media query prefers-reduced-motion completa (con anche il
    kill-switch dei backdrop-filter) vive piu' in basso in questo file:
    qui c'era un duplicato parziale, rimosso. */

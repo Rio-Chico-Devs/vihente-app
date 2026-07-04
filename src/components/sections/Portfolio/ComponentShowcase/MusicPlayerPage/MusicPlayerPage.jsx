@@ -404,7 +404,12 @@ const MusicPlayerPage = () => {
         <div className="player-layout">
           <div className="visualizer-container" onMouseEnter={() => setGuide('Visualizzatore — l\'occhio reagisce al volume e al beat della musica in riproduzione.')} onMouseLeave={clearGuide}>
 
-            <button className="gear-toggle" onClick={() => setShowMixer(!showMixer)}>
+            <button
+              className="gear-toggle"
+              onClick={() => setShowMixer(!showMixer)}
+              aria-label={showMixer ? 'Chiudi equalizzatore' : 'Apri equalizzatore'}
+              aria-expanded={showMixer}
+            >
               <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" strokeWidth="2">
                 <path d="M12 3v3m0 12v3m9-9h-3M6 12H3m15.364 6.364l-2.121-2.121M7.757 7.757L5.636 5.636m12.728 0l-2.121 2.121M7.757 16.243l-2.121 2.121" strokeLinecap="round"/>
                 <circle cx="12" cy="12" r="3"/>
@@ -665,7 +670,8 @@ const MusicPlayerPage = () => {
               <button
                 className={`control-btn extra-control-btn ${buttonPressed === 'mode' ? 'pressed' : ''} ${playMode !== 'order' ? 'active' : ''}`}
                 onClick={cyclePlayMode}
-                title={playMode === 'order' ? 'Order' : playMode === 'shuffle' ? 'Shuffle' : 'Repeat One'}
+                title={playMode === 'order' ? 'In ordine' : playMode === 'shuffle' ? 'Casuale' : 'Ripeti brano'}
+                aria-label={`Modalità riproduzione: ${playMode === 'order' ? 'in ordine' : playMode === 'shuffle' ? 'casuale' : 'ripeti brano'}. Clicca per cambiare.`}
               >
                 {getPlayModeIcon()}
               </button>
@@ -677,6 +683,7 @@ const MusicPlayerPage = () => {
                   const prevIndex = getPrevTrack();
                   changeTrack(prevIndex);
                 }}
+                aria-label="Brano precedente"
               >
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                   <polygon points="19 20 9 12 19 4 19 20" />
@@ -687,6 +694,7 @@ const MusicPlayerPage = () => {
               <button
                 className={`control-btn play-btn ${isPlaying ? 'playing' : ''} ${buttonPressed === 'play' ? 'pressed' : ''}`}
                 onClick={togglePlay}
+                aria-label={isPlaying ? 'Pausa' : 'Riproduci'}
               >
                 {isPlaying ? (
                   <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -707,6 +715,7 @@ const MusicPlayerPage = () => {
                   const nextIndex = getNextTrack();
                   changeTrack(nextIndex);
                 }}
+                aria-label="Brano successivo"
               >
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                   <polygon points="5 4 15 12 5 20 5 4" />
@@ -717,7 +726,9 @@ const MusicPlayerPage = () => {
               <button
                 className={`control-btn extra-control-btn ${showInfo ? 'active' : ''}`}
                 onClick={() => setShowInfo(!showInfo)}
-                title="Track Info"
+                title="Info traccia"
+                aria-label={showInfo ? 'Nascondi info traccia' : 'Mostra info traccia'}
+                aria-expanded={showInfo}
               >
                 <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                   <circle cx="12" cy="12" r="10" />
@@ -728,8 +739,34 @@ const MusicPlayerPage = () => {
             </div>
 
             <div className="volume-container">
-              <span className="volume-icon">{volume === 0 ? '🔇' : volume < 0.5 ? '🔉' : '🔊'}</span>
-              <div className="volume-slider-bar" onClick={handleVolumeClick}>
+              <span className="volume-icon" aria-hidden="true">{volume === 0 ? '🔇' : volume < 0.5 ? '🔉' : '🔊'}</span>
+              <div
+                className="volume-slider-bar"
+                onClick={handleVolumeClick}
+                role="slider"
+                tabIndex={0}
+                aria-label="Volume"
+                aria-valuemin={0}
+                aria-valuemax={100}
+                aria-valuenow={Math.round(volume * 100)}
+                aria-valuetext={`${Math.round(volume * 100)}%`}
+                onKeyDown={(e) => {
+                  // Frecce = +/- 5%, Home/End = 0/100 (pattern slider WAI-ARIA)
+                  if (e.key === 'ArrowRight' || e.key === 'ArrowUp') {
+                    e.preventDefault();
+                    setVolume(v => Math.min(1, Math.round((v + 0.05) * 100) / 100));
+                  } else if (e.key === 'ArrowLeft' || e.key === 'ArrowDown') {
+                    e.preventDefault();
+                    setVolume(v => Math.max(0, Math.round((v - 0.05) * 100) / 100));
+                  } else if (e.key === 'Home') {
+                    e.preventDefault();
+                    setVolume(0);
+                  } else if (e.key === 'End') {
+                    e.preventDefault();
+                    setVolume(1);
+                  }
+                }}
+              >
                 <div className="volume-fill" style={{ width: `${volume * 100}%` }} />
               </div>
             </div>

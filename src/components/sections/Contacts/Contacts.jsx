@@ -533,25 +533,31 @@ const Contacts = () => {
                 </span>
               </button>
 
-              {showRateLimit && (
-                <div className="rate-limit-warning">
-                  ⚠ Hai appena inviato una richiesta, aspetta qualche secondo
-                </div>
-              )}
+              {/* Live region sempre montata: gli screen reader annunciano il
+                  contenuto quando cambia. Se i div comparissero dal nulla
+                  (montaggio condizionale senza regione) l'esito dell'invio
+                  resterebbe muto per chi non vede lo schermo. */}
+              <div role="status" aria-live="polite">
+                {showRateLimit && (
+                  <div className="rate-limit-warning">
+                    ⚠ Hai appena inviato una richiesta, aspetta qualche secondo
+                  </div>
+                )}
 
-              {submitStatus === 'success' && !isAnimating && (
-                <div className="success-message">
-                  ✓ {isQuoteMode 
-                    ? 'Richiesta preventivo inviata con successo! Ti risponderò a breve.' 
-                    : 'Messaggio inviato con successo! Ti risponderò il prima possibile.'}
-                </div>
-              )}
+                {submitStatus === 'success' && !isAnimating && (
+                  <div className="success-message">
+                    ✓ {isQuoteMode
+                      ? 'Richiesta preventivo inviata con successo! Ti risponderò a breve.'
+                      : 'Messaggio inviato con successo! Ti risponderò il prima possibile.'}
+                  </div>
+                )}
 
-              {submitStatus === 'error' && !isAnimating && (
-                <div className="rate-limit-warning">
-                  ✗ Errore durante l'invio. Riprova più tardi.
-                </div>
-              )}
+                {submitStatus === 'error' && !isAnimating && (
+                  <div className="rate-limit-warning">
+                    ✗ Errore durante l'invio. Riprova più tardi.
+                  </div>
+                )}
+              </div>
             </div>
           </form>
         </div>
