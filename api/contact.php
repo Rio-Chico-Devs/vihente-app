@@ -62,14 +62,34 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     exit();
 }
 
-session_start();
-
-// Rate Limiting (file-based per IP: robusto, non dipende dal cookie di sessione)
+// Rate Limiting (file-based per IP: robusto, non dipende dal cookie di sessione).
+// NB: niente session_start() qui - i $_SESSION venivano scritti e mai letti,
+// e usavano il cookie PHPSESSID che andrebbe poi dichiarato in Cookie Policy.
 function rateLimitFile() {
     $ip  = $_SERVER['REMOTE_ADDR'] ?? '0.0.0.0';
     $dir = __DIR__ . '/.ratelimit';
     if (!is_dir($dir)) { @mkdir($dir, 0700, true); }
     return $dir . '/' . hash('sha256', $ip);
+}
+
+// Cleanup probabilistico (~1% delle richieste): cancella i file di rate-limit
+// piu' vecchi del cooldown configurato. Senza cleanup la cartella .ratelimit
+// accumulerebbe un file per ogni IP visto, all'infinito.
+function maybeCleanRateLimitDir() {
+    if (random_int(0, 99) !== 0) return;
+    $dir = __DIR__ . '/.ratelimit';
+    if (!is_dir($dir)) return;
+    $cutoff = time() - RATE_LIMIT_SECONDS;
+    $handle = @opendir($dir);
+    if (!$handle) return;
+    while (($entry = readdir($handle)) !== false) {
+        if ($entry === '.' || $entry === '..') continue;
+        $path = $dir . '/' . $entry;
+        if (is_file($path) && @filemtime($path) < $cutoff) {
+            @unlink($path);
+        }
+    }
+    closedir($handle);
 }
 
 function checkRateLimit() {
@@ -262,6 +282,7 @@ function getUserAutoReplyTemplate($data) {
 // ==================== MAIN EXECUTION ====================
 
 checkRateLimit();
+maybeCleanRateLimitDir();
 
 $json = file_get_contents('php://input');
 $input = json_decode($json, true);
@@ -324,6 +345,12 @@ if (isset($input['reason']) && !empty($input['reason'])) {
 }
 
 // Validazioni
+// RFC 5321: limite tecnico di un indirizzo email = 254 caratteri.
+if (mb_strlen($data['email']) > 254) {
+    http_response_code(400);
+    echo json_encode(['success' => false, 'message' => 'Email troppo lunga']);
+    exit();
+}
 if (!validateEmail($data['email'])) {
     http_response_code(400);
     echo json_encode(['success' => false, 'message' => 'Email non valida']);
@@ -388,8 +415,6 @@ if (SEND_AUTO_REPLY) {
 logContact($data, 'success');
 
 @file_put_contents(rateLimitFile(), (string) time(), LOCK_EX);
-$_SESSION['last_submit_ip'] = $_SERVER['REMOTE_ADDR'] ?? '';
-$_SESSION['last_submit_time'] = time();
 
 http_response_code(200);
 echo json_encode(['success' => true, 'message' => 'Messaggio inviato!']);

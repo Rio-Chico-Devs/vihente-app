@@ -1,7 +1,90 @@
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useGuide } from '../../../contexts/GuideContext';
+import PricingPackages from '../../global/PricingPackages/PricingPackages';
+import ServiceTimeline from '../../global/ServiceTimeline/ServiceTimeline';
+import FAQSection from '../../global/FAQSection/FAQSection';
 import './PresenzaOnlinePage.css';
+
+const PRESENZA_PACKAGES = [
+  {
+    name: 'Setup 1 piattaforma',
+    tagline: 'Apertura e configurazione di un canale, una tantum.',
+    price: 'Da €250',
+    priceNote: 'Una tantum',
+    features: [
+      'Apertura e configurazione profilo',
+      'Bio, palette e identità visiva',
+      'Template post coordinati',
+      'Piano editoriale primo mese',
+      'Tutorial gestione autonoma',
+    ],
+  },
+  {
+    name: 'Gestione 1 piattaforma',
+    tagline: 'Mi occupo io del canale, mese per mese.',
+    price: 'Da €350',
+    priceNote: 'Al mese',
+    featured: true,
+    features: [
+      '8-12 contenuti al mese',
+      'Calendario editoriale personalizzato',
+      'Community management base',
+      'Report mensile metriche e crescita',
+      '1 call di allineamento al mese',
+      'Nessun vincolo di durata',
+    ],
+  },
+  {
+    name: 'Multipiattaforma',
+    tagline: 'Coordino la presenza su tutti i canali rilevanti.',
+    price: 'Da €700',
+    priceNote: 'Al mese',
+    features: [
+      'Gestione 2-3 piattaforme',
+      '20-30 contenuti coordinati al mese',
+      'Adattamento per canale',
+      'Strategia editoriale trimestrale',
+      'Report KPI ogni 2 settimane',
+      '2 call di allineamento al mese',
+      'Supporto WhatsApp diretto',
+    ],
+  },
+];
+
+const PRESENZA_TIMELINE = [
+  { phase: 'SETTIMANA 1', title: 'Audit & Strategia', desc: 'Analisi del tuo posizionamento e dei competitor. Definizione tone of voice.' },
+  { phase: 'SETTIMANA 2', title: 'Setup & Template', desc: 'Configuro i canali, preparo i template grafici e il piano editoriale del primo mese.' },
+  { phase: 'SETTIMANA 3-4', title: 'Lancio', desc: 'Pubblichiamo i primi contenuti. Monitoraggio quotidiano delle prime metriche.' },
+  { phase: 'MESE 2+', title: 'Ottimizzazione', desc: 'Iteriamo sulla base dei dati. Report e call di allineamento ricorrenti.' },
+];
+
+const PRESENZA_FAQ = [
+  {
+    q: 'Quante piattaforme dovrei gestire?',
+    a: 'Meglio una sola fatta bene che cinque trascurate. Per la maggior parte delle attività locali Instagram + Google Business sono sufficienti. Per i B2B aggiungi LinkedIn. Per il B2C giovane, TikTok. La scelta la facciamo insieme in base al tuo pubblico, non in base alle mode.',
+  },
+  {
+    q: 'In quanto tempo si vedono risultati?',
+    a: 'Onestamente: la crescita organica vera richiede 3-6 mesi di lavoro costante prima di mostrare numeri solidi. Chi ti promette risultati in 30 giorni o vende ads (e quello costa) o vende fuffa. Il mio lavoro è costruire un asset che si compone nel tempo.',
+  },
+  {
+    q: 'Mi serve un fotografo o produci tu i contenuti?',
+    a: 'Posso produrre io grafiche, animazioni, reel base. Per foto/video professionali del tuo prodotto o location, lavoro con fotografi/videomaker di fiducia (costo a parte, concordato in base allo shooting). In molti casi le foto le scatti tu col telefono e io le adatto: funziona benissimo se la luce è decente.',
+  },
+  {
+    q: 'Posso rivedere e approvare i contenuti prima della pubblicazione?',
+    a: 'Sì, sempre. Ricevi il piano editoriale settimanale con anteprima dei contenuti. Hai 48 ore per chiedere modifiche. Niente pubblicato senza il tuo OK.',
+  },
+  {
+    q: 'Come gestiamo le risposte ai commenti e ai messaggi?',
+    a: 'Per il community management base rispondo io in giornata, con linee guida concordate. Per richieste commerciali, prenotazioni o argomenti delicati ti giro tutto. Posso integrarmi con il tuo CRM se ne hai uno.',
+  },
+  {
+    q: 'C\'è un vincolo di durata minima del contratto?',
+    a: 'No. La gestione è mese per mese, con preavviso di 30 giorni per chiudere. Se non sei soddisfatto, è giusto che tu possa fermarti senza penali. La fiducia si costruisce con i risultati, non con i contratti vincolanti.',
+  },
+];
 
 const PresenzaOnlinePage = () => {
   const navigate = useNavigate();
@@ -309,10 +392,29 @@ const PresenzaOnlinePage = () => {
           </div>
           <h3 className="highlight-title">Audit Social Gratuito</h3>
           <p className="highlight-text">
-            Ricevi un'analisi gratuita dei tuoi profili social attuali con suggerimenti 
+            Ricevi un'analisi gratuita dei tuoi profili social attuali con suggerimenti
             pratici per migliorare engagement e visibilità. Nessun impegno richiesto!
           </p>
         </div>
+
+        <PricingPackages
+          packages={PRESENZA_PACKAGES}
+          serviceKey="Presenza Online"
+          title="Pacchetti Gestione Social"
+          subtitle="Setup una tantum oppure gestione mensile, su una o più piattaforme."
+        />
+
+        <ServiceTimeline
+          steps={PRESENZA_TIMELINE}
+          title="Dal primo audit al regime"
+          subtitle="Tempi tipici per arrivare a un flusso di lavoro stabile."
+        />
+
+        <FAQSection
+          items={PRESENZA_FAQ}
+          title="Domande frequenti sui social"
+          subtitle="Quello che i clienti mi chiedono prima di affidarmi i loro canali."
+        />
 
         {/* ── Disclaimer: Come viene erogato il servizio ── */}
         <section className="work-disclaimer-section">

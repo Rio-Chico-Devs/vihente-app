@@ -126,6 +126,18 @@ AddType audio/mpeg .mp3
     </IfModule>
 </FilesMatch>
 
+# Asset hashati di Vite (build emette /assets/[name]-[hash].[ext]):
+# contenuto immutabile, ogni deploy ha hash nuovi -> URL nuovo -> nessun rischio
+# di cache stale. Cache 1 anno + 'immutable' = il browser non rivalida mai.
+# NB: applicato SOLO ai file sotto /assets/, cosi' sw.js e gli altri asset di
+# root restano sotto la policy mod_expires standard.
+<IfModule mod_headers.c>
+    <IfModule mod_setenvif.c>
+        SetEnvIf Request_URI "^/assets/.+\.(js|mjs|css|woff2|woff)$" HASHED_ASSET
+        Header set Cache-Control "public, max-age=31536000, immutable" env=HASHED_ASSET
+    </IfModule>
+</IfModule>
+
 # ========================================
 # Blocca accesso a file sensibili
 # ========================================

@@ -1,7 +1,90 @@
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useGuide } from '../../../contexts/GuideContext';
+import PricingPackages from '../../global/PricingPackages/PricingPackages';
+import ServiceTimeline from '../../global/ServiceTimeline/ServiceTimeline';
+import FAQSection from '../../global/FAQSection/FAQSection';
 import './ConsulenzePage.css';
+
+/* ------------------------------------------------------------------
+   DATI PACCHETTI / TIMELINE / FAQ — modificabili direttamente qui.
+------------------------------------------------------------------ */
+const CONSULENZE_PACKAGES = [
+  {
+    name: 'Discovery Call',
+    tagline: 'Per capire se possiamo lavorare insieme.',
+    price: 'Gratis',
+    priceNote: '30 minuti, zero impegno',
+    features: [
+      'Call introduttiva di 30 minuti',
+      'Analisi rapida del contesto',
+      'Indicazioni preliminari',
+      'Risposta in 24-48 ore',
+    ],
+    ctaLabel: 'Prenota una call',
+  },
+  {
+    name: 'Audit & Analisi',
+    tagline: 'Una fotografia chiara del tuo stato attuale.',
+    price: 'Da €350',
+    priceNote: 'Una tantum',
+    featured: true,
+    features: [
+      'Analisi approfondita (3-5 ore)',
+      'Report dettagliato in PDF',
+      'Lista priorità interventi',
+      '1 sessione di review (1h)',
+      'Consegna in 7 giorni lavorativi',
+    ],
+  },
+  {
+    name: 'Roadmap Strategica',
+    tagline: 'Un piano d\'azione su misura, accompagnato nel tempo.',
+    price: 'Da €1.200',
+    priceNote: 'Pacchetto 6 mesi',
+    features: [
+      'Audit iniziale completo',
+      'Roadmap dettagliata 6 mesi',
+      '3 sessioni follow-up trimestrali',
+      'Supporto via email tra le sessioni',
+      'Aggiornamento KPI e correzioni rotta',
+    ],
+  },
+];
+
+const CONSULENZE_TIMELINE = [
+  { phase: 'GIORNO 1', title: 'Discovery Call', desc: 'Ci sentiamo per capire il contesto. Gratis e senza impegno.' },
+  { phase: 'GIORNI 2-3', title: 'Analisi', desc: 'Studio il tuo settore, i tuoi canali, i competitor.' },
+  { phase: 'GIORNI 4-5', title: 'Proposta', desc: 'Ricevi il report con priorità e proposta operativa.' },
+  { phase: 'GIORNO 6+', title: 'Implementazione', desc: 'Procediamo con il piano concordato, con check-point regolari.' },
+];
+
+const CONSULENZE_FAQ = [
+  {
+    q: 'In cosa consiste la Discovery Call gratuita?',
+    a: 'È una chiamata di 30 minuti (in voce o video) in cui mi racconti il tuo progetto, gli obiettivi e i blocchi. Ti rispondo con prime indicazioni operative e ti dico onestamente se posso esserti utile o no. Zero impegno: se non c\'è match, ce lo diciamo.',
+  },
+  {
+    q: 'Devo per forza scegliere uno dei pacchetti?',
+    a: 'No, i pacchetti sono fasce indicative. Per progetti complessi o esigenze specifiche preparo un preventivo personalizzato dopo la prima call. I tre tier servono solo a dare un\'idea dell\'ordine di grandezza.',
+  },
+  {
+    q: 'Lavori solo con grandi aziende o anche con piccoli progetti?',
+    a: 'Lavoro con tutti, dalle attività locali alle PMI alle startup. Il valore di una consulenza non dipende dal budget ma dalla chiarezza degli obiettivi e dalla volontà di mettere in pratica quello che decidiamo insieme.',
+  },
+  {
+    q: 'I dati e le informazioni che condivido sono al sicuro?',
+    a: 'Sì. Tratto ogni informazione come confidenziale, niente viene condiviso con terze parti senza il tuo consenso esplicito. Su richiesta firmo NDA prima di iniziare.',
+  },
+  {
+    q: 'Come avvengono i pagamenti senza Partita IVA?',
+    a: 'Al momento la collaborazione è formalizzata via contratto a tempo determinato, collaborazione occasionale (con ritenuta d\'acconto, per importi sotto i 5.000 €/anno) o contratto di prestazione professionale. Tutto regolare e tracciabile. Sto attivando la P.IVA, dopo di che fattureremo direttamente.',
+  },
+  {
+    q: 'Cosa succede se durante il percorso cambiano i miei obiettivi?',
+    a: 'È normale. Per i pacchetti con follow-up (Roadmap Strategica) la rotta viene corretta nelle sessioni periodiche. Per gli altri pacchetti possiamo concordare un\'integrazione separata.',
+  },
+];
 
 const ConsulenzePage = () => {
   const navigate = useNavigate();
@@ -189,6 +272,25 @@ const ConsulenzePage = () => {
             e vediamo come posso aiutarti a raggiungerli.
           </p>
         </div>
+
+        <PricingPackages
+          packages={CONSULENZE_PACKAGES}
+          serviceKey="Consulenza"
+          title="Pacchetti Consulenza"
+          subtitle="Tre fasce indicative per orientarti. Il preventivo definitivo nasce dopo la prima call."
+        />
+
+        <ServiceTimeline
+          steps={CONSULENZE_TIMELINE}
+          title="Dal primo contatto alla consegna"
+          subtitle="Tempi tipici per un audit standard. Per progetti più ampi il calendario viene concordato insieme."
+        />
+
+        <FAQSection
+          items={CONSULENZE_FAQ}
+          title="Le domande che ricevo più spesso"
+          subtitle="Se la tua domanda non c'è qui sotto, chiedimela nel form contatti: rispondo sempre."
+        />
 
         {/* ── Disclaimer: Come viene erogato il servizio ── */}
         <section className="work-disclaimer-section">

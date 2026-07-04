@@ -1,7 +1,92 @@
 import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useGuide } from '../../../contexts/GuideContext';
+import PricingPackages from '../../global/PricingPackages/PricingPackages';
+import ServiceTimeline from '../../global/ServiceTimeline/ServiceTimeline';
+import FAQSection from '../../global/FAQSection/FAQSection';
 import './MultimediaPage.css';
+
+const MULTIMEDIA_PACKAGES = [
+  {
+    name: 'Singolo Contenuto',
+    tagline: 'Un reel, una grafica, un\'animazione — fatto bene.',
+    price: 'Da €180',
+    priceNote: 'Per pezzo',
+    features: [
+      '1 reel/video corto (fino a 30 sec)',
+      'Editing professionale',
+      'Sottotitoli automatici',
+      '2 revisioni incluse',
+      'Adattamento per ogni piattaforma',
+      'Consegna in 5 giorni lavorativi',
+    ],
+  },
+  {
+    name: 'Pacchetto 5 Contenuti',
+    tagline: 'Un mese di contenuti coordinati.',
+    price: 'Da €700',
+    priceNote: 'Pacchetto',
+    featured: true,
+    features: [
+      '5 contenuti multimediali coordinati',
+      'Mix reel / grafiche / animazioni',
+      'Stile visivo coordinato',
+      'Story coordinate incluse',
+      '3 revisioni per pezzo',
+      'Calendario di pubblicazione',
+      'Consegna in 2-3 settimane',
+    ],
+  },
+  {
+    name: 'Campagna Completa',
+    tagline: 'Per il lancio prodotto, l\'evento, la stagione.',
+    price: 'Da €1.800',
+    priceNote: 'Progetto custom',
+    features: [
+      '10-15 contenuti tematizzati',
+      'Concept creativo & storyboard',
+      'Mix multi-formato',
+      'Animazioni 2D personalizzate',
+      'Voice-over o sound design',
+      'Versioni per ads (paid)',
+      'Report performance post-campagna',
+    ],
+  },
+];
+
+const MULTIMEDIA_TIMELINE = [
+  { phase: 'GIORNI 1-2', title: 'Briefing & Concept', desc: 'Capisco l\'obiettivo, il tono e il target. Propongo direzione creativa.' },
+  { phase: 'GIORNI 3-5', title: 'Produzione', desc: 'Editing video, motion graphics, grafiche statiche. Anteprima a metà strada.' },
+  { phase: 'GIORNI 6-7', title: 'Revisioni', desc: 'Tu rivedi, mi indichi le modifiche, finalizzo.' },
+  { phase: 'CONSEGNA', title: 'Export & Adattamento', desc: 'Versioni per ogni piattaforma con formati e durate ottimali.' },
+];
+
+const MULTIMEDIA_FAQ = [
+  {
+    q: 'Mi servono materiali (foto, video, loghi)? Cosa posso fornire?',
+    a: 'Più materiale grezzo mi dai (foto del prodotto, video brevi, logo vettoriale), più il risultato è autentico. Se non hai nulla, posso usare stock immagini/video premium (costo a parte) o produrre tutto da zero con grafica e animazioni. Te lo dico chiaramente nel preventivo.',
+  },
+  {
+    q: 'Posso usare i contenuti dove voglio dopo la consegna?',
+    a: 'Sì. I diritti di utilizzo sono tuoi al 100% per uso commerciale e organico. Se usi musiche/font/risorse stock pago io le licenze per uso esteso e te lo includo nel preventivo.',
+  },
+  {
+    q: 'I reel sono per Instagram o anche per TikTok/YouTube Shorts?',
+    a: 'Tutti i formati. Consegno i contenuti già adattati per Instagram (Reel/Stories), TikTok e YouTube Shorts senza costi extra. Per LinkedIn o Pinterest faccio versioni dedicate quando ha senso.',
+  },
+  {
+    q: 'Quante revisioni sono incluse?',
+    a: 'Variano per pacchetto (2-3 round per pezzo). Una revisione = una lista di modifiche concentrata. Se servono molte iterazioni separate, le concordiamo a parte con tariffa oraria ridotta. Nessuna sorpresa: lo metto sempre nel preventivo.',
+  },
+  {
+    q: 'Posso vedere lo storyboard prima che inizi la produzione?',
+    a: 'Sì, per il Pacchetto e per la Campagna Completa è incluso uno storyboard/moodboard di approvazione prima di iniziare la produzione vera. Per il singolo contenuto è un giro di feedback più rapido sul concept iniziale.',
+  },
+  {
+    q: 'Posso integrare contenuti tuoi nei miei sistemi di automazione?',
+    a: 'Sì: consegno in tutti i formati necessari (MP4, WebM, GIF animati, sequenze PNG). Su richiesta posso integrare direttamente con il tuo CMS o tool di scheduling (Buffer, Hootsuite, Meta Business Suite).',
+  },
+];
 
 /* ── Slot immagini grafiche digitali — sostituisci src con i tuoi URL ── */
 const GRAFICHE_SLIDES = [
@@ -302,6 +387,25 @@ const MultimediaPage = () => {
             </div>
           </div>
         </section>
+
+        <PricingPackages
+          packages={MULTIMEDIA_PACKAGES}
+          serviceKey="Multimedia"
+          title="Pacchetti Contenuti Multimediali"
+          subtitle="Dal singolo reel alla campagna completa: scegli la scala adatta al tuo momento."
+        />
+
+        <ServiceTimeline
+          steps={MULTIMEDIA_TIMELINE}
+          title="Dal concept alla consegna"
+          subtitle="Tempi tipici per un pacchetto standard. Per campagne grandi i tempi crescono linearmente."
+        />
+
+        <FAQSection
+          items={MULTIMEDIA_FAQ}
+          title="Domande frequenti sui contenuti"
+          subtitle="Le cose che i clienti chiedono prima di affidarmi un brief multimediale."
+        />
 
         {/* ── Disclaimer: Come viene erogato il servizio ── */}
         <section className="work-disclaimer-section">

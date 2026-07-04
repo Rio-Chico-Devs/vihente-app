@@ -1,7 +1,92 @@
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useGuide } from '../../../contexts/GuideContext';
+import PricingPackages from '../../global/PricingPackages/PricingPackages';
+import ServiceTimeline from '../../global/ServiceTimeline/ServiceTimeline';
+import FAQSection from '../../global/FAQSection/FAQSection';
 import './SitiWebPage.css';
+
+const SITIWEB_PACKAGES = [
+  {
+    name: 'Landing Page',
+    tagline: 'Una pagina che converte. Veloce da pubblicare.',
+    price: 'Da €600',
+    priceNote: 'Consegna in 2 settimane',
+    features: [
+      'Singola pagina ottimizzata SEO',
+      'Design responsive (mobile-first)',
+      'Form contatti con anti-spam',
+      'Performance score 90+ (Lighthouse)',
+      'Hosting e dominio guidati',
+      '30 giorni di assistenza inclusa',
+    ],
+  },
+  {
+    name: 'Sito Multipagina',
+    tagline: 'Vetrina completa per la tua attività.',
+    price: 'Da €1.800',
+    priceNote: 'Consegna in 4-6 settimane',
+    featured: true,
+    features: [
+      '5-10 pagine personalizzate',
+      'CMS WordPress o React custom',
+      'SEO on-page completa',
+      'Integrazione analytics privacy-friendly',
+      'Form contatti + area news/blog',
+      '60 giorni di assistenza inclusa',
+      '1 sessione formativa per la gestione',
+    ],
+  },
+  {
+    name: 'Web App Custom',
+    tagline: 'Per progetti con logica applicativa o e-commerce.',
+    price: 'Da €4.000',
+    priceNote: 'Tempi e prezzo in base al progetto',
+    features: [
+      'Sviluppo React + backend dedicato',
+      'Autenticazione utenti',
+      'Database e API custom',
+      'Integrazioni di terze parti',
+      'Test automatici e CI/CD',
+      '90 giorni di assistenza inclusa',
+      'Roadmap evolutiva su 12 mesi',
+    ],
+  },
+];
+
+const SITIWEB_TIMELINE = [
+  { phase: 'SETTIMANA 1', title: 'Discovery & Design', desc: 'Briefing, sitemap, wireframe, scelta tecnologie.' },
+  { phase: 'SETTIMANA 2-3', title: 'Sviluppo', desc: 'Sviluppo iterativo con anteprime settimanali navigabili.' },
+  { phase: 'SETTIMANA 4', title: 'Test & Revisioni', desc: 'Test cross-browser, mobile, accessibilità. Tue revisioni.' },
+  { phase: 'LANCIO', title: 'Pubblicazione', desc: 'Deploy, configurazione DNS, monitoraggio post-live.' },
+];
+
+const SITIWEB_FAQ = [
+  {
+    q: 'Quanto costa veramente un sito web?',
+    a: 'Le fasce qui sopra sono indicative: un sito multipagina da €1.800 è un sito ben fatto, performante e responsive, ma senza integrazioni complesse. Un e-commerce con catalogo e pagamenti parte da €4.000. La differenza la fa sempre la complessità delle funzionalità, non quante pagine ci sono.',
+  },
+  {
+    q: 'WordPress, React o cosa? Come si decide?',
+    a: 'Dipende da chi gestirà il sito dopo. WordPress se vuoi pubblicare contenuti in autonomia (blog, news, prodotti). React se serve una user experience custom, alte performance, o componenti interattivi non standard. Te lo dico onestamente nella prima call.',
+  },
+  {
+    q: 'Si possono aggiornare i contenuti da soli dopo la consegna?',
+    a: 'Sì. Per i siti WordPress hai un pannello completo con video-guida personalizzata. Per i siti React, valutiamo insieme se serve un CMS headless (Strapi, Sanity) o se preferisci aggiornamenti su richiesta con tariffa ridotta.',
+  },
+  {
+    q: 'Sono inclusi hosting e dominio?',
+    a: 'No, hosting e dominio si pagano a parte (sono spese ricorrenti tue, su intestazione tua). Ti accompagno nella scelta e nella configurazione iniziale. Stima: 30-100 €/anno per hosting standard, 10-20 €/anno per il dominio.',
+  },
+  {
+    q: 'E dopo il lancio? Cosa succede se qualcosa si rompe?',
+    a: 'Tutti i pacchetti includono un periodo di assistenza (30-90 giorni). Dopo, posso proporti un contratto di manutenzione mensile per aggiornamenti, monitoraggio sicurezza e piccole modifiche. Oppure interventi a chiamata, senza vincoli.',
+  },
+  {
+    q: 'Il sito è di mia proprietà?',
+    a: 'Sì, al 100%. Codice sorgente, contenuti, account di hosting: tutto intestato a te. Quando la collaborazione finisce, hai pieno accesso e libertà di farti gestire il sito da chiunque.',
+  },
+];
 
 const SitiWebPage = () => {
   const navigate = useNavigate();
@@ -161,6 +246,25 @@ const SitiWebPage = () => {
             </table>
           </div>
         </section>
+
+        <PricingPackages
+          packages={SITIWEB_PACKAGES}
+          serviceKey="Sitiweb"
+          title="Pacchetti Web Development"
+          subtitle="Tre fasce indicative per orientarti. Il preventivo definitivo nasce dopo aver capito il tuo progetto."
+        />
+
+        <ServiceTimeline
+          steps={SITIWEB_TIMELINE}
+          title="Dal briefing al lancio"
+          subtitle="Tempi tipici per un sito multipagina. Per progetti più grandi il calendario viene concordato insieme."
+        />
+
+        <FAQSection
+          items={SITIWEB_FAQ}
+          title="Domande frequenti sui siti web"
+          subtitle="Le risposte che mi chiedono più spesso prima di iniziare un progetto."
+        />
 
         {/* ── Disclaimer: Come viene erogato il servizio ── */}
         <section className="work-disclaimer-section">
