@@ -1,4 +1,9 @@
-import validator from 'validator';
+// Deep import tree-shakeable: l'import default di 'validator' trascina
+// l'intera libreria (~100KB min, incluse le tabelle locale di isMobilePhone)
+// per usare 3 funzioni. Cosi' il payload scende a ~2-3KB.
+import isEmail from 'validator/es/lib/isEmail';
+import trim from 'validator/es/lib/trim';
+import escape from 'validator/es/lib/escape';
 
 /**
  * Valida un indirizzo email
@@ -10,7 +15,7 @@ export const validateEmail = (email) => {
     return { valid: false, error: 'Email obbligatoria' };
   }
 
-  if (!validator.isEmail(email)) {
+  if (!isEmail(email)) {
     return { valid: false, error: 'Email non valida' };
   }
 
@@ -128,8 +133,8 @@ export const sanitizeInput = (input) => {
 
   // ✅ FIX: Rimossi backslash inutili davanti a ( ) .
   // Trim whitespace e escape HTML
-  let sanitized = validator.trim(input);
-  sanitized = validator.escape(sanitized);
+  let sanitized = trim(input);
+  sanitized = escape(sanitized);
 
   return sanitized;
 };

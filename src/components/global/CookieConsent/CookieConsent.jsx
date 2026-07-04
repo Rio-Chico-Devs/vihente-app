@@ -1,4 +1,9 @@
 import { useEffect } from 'react';
+// Import statico: il componente e' GIA' lazy (App.jsx) e montato su
+// requestIdleCallback. Il dynamic import annidato che c'era qui creava solo
+// un secondo round-trip sequenziale (chunk componente -> poi chunk libreria)
+// ritardando la comparsa del banner senza differire alcun byte in piu'.
+import * as CookieConsent from 'vanilla-cookieconsent';
 import 'vanilla-cookieconsent/dist/cookieconsent.css';
 import './CookieConsent.css';
 
@@ -7,9 +12,7 @@ const CookieConsentBanner = ({ isBooting }) => {
     // Non caricare il banner se stiamo ancora facendo boot
     if (isBooting) return;
 
-    const loadCookieConsent = async () => {
-      const CookieConsent = await import('vanilla-cookieconsent');
-
+    const loadCookieConsent = () => {
       CookieConsent.run({
         guiOptions: {
           consentModal: {

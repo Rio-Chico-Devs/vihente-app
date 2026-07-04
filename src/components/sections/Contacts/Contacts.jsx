@@ -69,10 +69,11 @@ const Contacts = () => {
   }, []);
 
   /* Pre-fill da query string (es. arrivo da una pagina servizio con
-     /contatti?mode=quote&service=Consulenza). Solo al primo mount. */
+     /contatti?mode=quote&service=Consulenza&tier=Audit). Solo al primo mount. */
   useEffect(() => {
     const mode = searchParams.get('mode');
     const service = searchParams.get('service');
+    const tier = searchParams.get('tier');
     if (mode === 'quote') {
       setIsQuoteMode(true);
     }
@@ -81,6 +82,16 @@ const Contacts = () => {
       if (mapped) {
         setFormData(prev => ({ ...prev, service: mapped }));
       }
+    }
+    // Il pacchetto cliccato nella pagina servizio pre-compila il messaggio
+    // (solo se vuoto: mai sovrascrivere testo gia' digitato).
+    if (tier) {
+      const clean = tier.slice(0, 60);
+      setFormData(prev => (
+        prev.message
+          ? prev
+          : { ...prev, message: `Sono interessato al pacchetto "${clean}".\n\n` }
+      ));
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);

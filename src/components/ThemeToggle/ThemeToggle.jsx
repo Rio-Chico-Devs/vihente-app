@@ -9,7 +9,7 @@ const ThemeToggle = () => {
       className="theme-toggle"
       data-tour="audio-theme-controls"
       onClick={toggleTheme}
-      aria-label={`Switch to ${theme === 'dark' ? 'night' : 'neon'} mode`}
+      aria-label={theme === 'dark' ? 'Passa alla modalità notte' : 'Passa alla modalità neon'}
     >
       <div className="toggle-track">
         <div className={`toggle-thumb ${theme}`}>

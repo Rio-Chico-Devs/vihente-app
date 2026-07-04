@@ -13,8 +13,9 @@ export default defineConfig(({ mode }) => ({
     rollupOptions: {
       output: {
         manualChunks: {
-          'react-vendor': ['react', 'react-dom', 'react-router-dom'],
-          'utils-vendor': ['validator']
+          'react-vendor': ['react', 'react-dom', 'react-router-dom']
+          // utils-vendor rimosso: con i deep import (validator/es/lib/*)
+          // restano ~2-3KB tree-shaken che vivono nel chunk del form.
         }
       }
     },
