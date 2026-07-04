@@ -133,8 +133,10 @@ const AgenziaViaggioSim = () => {
               <span className="alt-label">ALTROVE TRAVEL STUDIO · EST. 2018</span>
             </div>
             <div className="alt-hero-headline">
-              <h1 className="alt-hero-h1-normal">Il tuo prossimo</h1>
-              <h1 className="alt-hero-h1-italic">altrove.</h1>
+              <h1>
+                <span className="alt-hero-h1-normal">Il tuo prossimo</span>
+                <span className="alt-hero-h1-italic">altrove.</span>
+              </h1>
               <div className="alt-hero-rule" />
               <p className="alt-hero-subtext">Ogni viaggio inizia con una domanda. La nostra è: cosa stai cercando davvero?</p>
             </div>

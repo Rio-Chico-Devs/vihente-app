@@ -216,6 +216,8 @@ const ServicesPage = () => {
     <div
       className="services-page-wrapper"
     >
+      {/* h1 per SEO/screen reader: la pagina hub non aveva heading principale */}
+      <h1 className="sr-only">Servizi digitali — consulenze, siti web, social media e multimedia</h1>
       <div className="code-background" id="codeBackground"></div>
       <div id="gridOverlay" className="grid-overlay"></div>
 

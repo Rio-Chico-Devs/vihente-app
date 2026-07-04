@@ -11,6 +11,7 @@ import CustomCursor from './components/sections/Cursor/CustomCursor';
 import ThemeToggle from './components/ThemeToggle/ThemeToggle';
 import ScrollingHeader from './components/ScrollingHeader';
 import PageTransition from './components/PageTransition/PageTransition';
+import RouteMeta from './components/RouteMeta/RouteMeta';
 
 // 🏠 EAGER: la home è l'ingresso principale — import diretto evita lo spinner al primo accesso
 import LandingPage from './components/sections/LandingPage/LandingPage';
@@ -57,6 +58,7 @@ const PrivacyPolicy = lazy(() => import('./components/sections/PrivacyPolicy/Pri
 const CookiePolicy = lazy(() => import('./components/sections/CookiePolicy/CookiePolicy'));
 const TermsAndConditions = lazy(() => import('./components/sections/TermsAndConditions/TermsAndConditions'));
 const Settings = lazy(() => import('./components/sections/Settings/Settings'));
+const NotFound = lazy(() => import('./components/sections/NotFound/NotFound'));
 
 // 🎨 Loading Spinner Component
 const LoadingSpinner = () => {
@@ -120,6 +122,8 @@ function App() {
         {/* Deploy nella root del dominio (vihente.it/) -> basename '/'.
             NON usare '/vihente-app' o le rotte interne si rompono in produzione. */}
         <BrowserRouter>
+          {/* SEO per SPA: title/description/canonical/robots per route + JSON-LD home */}
+          <RouteMeta />
           <CustomCursor />
           <ThemeToggle />
 
@@ -182,6 +186,8 @@ function App() {
                     <Route path="/cookie-policy" element={<CookiePolicy />} />
                     <Route path="/termini-e-condizioni" element={<TermsAndConditions />} />
                     <Route path="/impostazioni" element={<Settings />} />
+                    {/* Catch-all: prima gli URL sbagliati davano 200 con main vuoto (soft-404) */}
+                    <Route path="*" element={<NotFound />} />
                   </Routes>
                 </PageTransition>
               </Suspense>

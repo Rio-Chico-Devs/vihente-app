@@ -173,6 +173,8 @@ const Portfolio = () => {
 
   return (
     <div className="portfolio-page">
+      {/* h1 per SEO/screen reader: la pagina hub non aveva heading principale */}
+      <h1 className="sr-only">Portfolio — grafiche, siti web e componenti interattivi</h1>
       <div className="code-background" id="codeBackground"></div>
 
       {/* Fade to black overlay per transizioni */}

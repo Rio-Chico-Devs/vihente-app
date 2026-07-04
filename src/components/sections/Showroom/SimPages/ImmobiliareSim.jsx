@@ -98,8 +98,10 @@ const ImmobiliareSim = () => {
           <div className="res-hero-left">
             <div className="res-hero-top-label">RESIDENZE · AGENZIA IMMOBILIARE · ROMA</div>
             <div className="res-hero-mid">
-              <h1 className="res-hero-h1-normal">Ogni casa ha</h1>
-              <h1 className="res-hero-h1-italic">la sua storia.</h1>
+              <h1>
+                <span className="res-hero-h1-normal">Ogni casa ha</span>
+                <span className="res-hero-h1-italic">la sua storia.</span>
+              </h1>
               <div className="res-hero-rule" />
               <p className="res-hero-sub">Non vendiamo immobili. Troviamo il posto dove la tua vita ha senso.</p>
               <div className="res-hero-ctas">
