@@ -1,51 +1,19 @@
-import { useState } from 'react';
+import { Fragment, useState } from 'react';
 import SimWrapper from './SimWrapper';
 import './FotografoSim.css';
 
-const STORIES = [
-  {
-    id: 1, vol: '01', label: 'WEDDING',
-    hint: 'wedding · cerimonia / coppia',
-    tags: 'Cerimonia · Dettaglio · Ritratto',
-    type: 'landscape',
-    title: 'Wedding Photography',
-  },
-  {
-    id: 2, vol: '02', label: 'RITRATTO',
-    hint: 'ritratto · donna / luce naturale',
-    tags: 'Studio · Location · Reportage',
-    type: 'portrait',
-    title: 'Ritratto & Luce',
-  },
-  {
-    id: 3, vol: '02b', label: 'EDITORIAL',
-    hint: 'editorial · fashion / studio',
-    type: 'portrait',
-  },
-  {
-    id: 4, vol: '02c', label: 'RITRATTO',
-    hint: 'ritratto · uomo / bianco nero',
-    type: 'portrait',
-  },
-  {
-    id: 5, vol: '03', label: 'EDITORIAL',
-    hint: 'editorial · campagna / outdoor — sinistra',
-    type: 'split-left',
-    tags: 'Studio · Campagna · Cover',
-    title: 'Editorial & Fashion',
-  },
-  {
-    id: 6, vol: '03b', label: 'RITRATTO',
-    hint: 'ritratto · close-up — destra',
-    type: 'split-right',
-  },
-];
-
 const CATS = ['TUTTI', 'WEDDING', 'RITRATTO', 'EDITORIAL'];
+
+/* Numero di lavori visibili per filtro: story1 (1 wedding) +
+   story2 (1 ritratto + 2 editorial) + story3 (2 ritratto). */
+const WORK_COUNTS = { TUTTI: 6, WEDDING: 1, RITRATTO: 3, EDITORIAL: 2 };
 
 const FotografoSim = () => {
   const [catFilter,   setCatFilter]   = useState('TUTTI');
   const [contactSent, setContactSent] = useState(false);
+
+  /* true se la categoria e' visibile col filtro corrente */
+  const show = (cat) => catFilter === 'TUTTI' || catFilter === cat;
 
   const handleContact = () => {
     setContactSent(true);
@@ -97,75 +65,90 @@ const FotografoSim = () => {
           <span className="fot-label">Portfolio</span>
           <div className="fot-filter-tabs">
             {CATS.map((cat, i) => (
-              <>
-                {i > 0 && <span key={`sep-${cat}`} className="fot-filter-sep">·</span>}
+              <Fragment key={cat}>
+                {i > 0 && <span className="fot-filter-sep">·</span>}
                 <button
-                  key={cat}
                   className={`fot-filter-tab${catFilter === cat ? ' fot-filter-tab--active' : ''}`}
                   onClick={() => setCatFilter(cat)}
                 >{cat}</button>
-              </>
+              </Fragment>
             ))}
           </div>
-          <span className="fot-filter-count">08 Lavori</span>
+          <span className="fot-filter-count">
+            {String(WORK_COUNTS[catFilter]).padStart(2, '0')} Lavori
+          </span>
         </div>
 
-        {/* ── GALLERY STORY 1 — full-width landscape ── */}
-        <section className="fot-story1">
-          <div className="fot-story1-photo sim-photo-slot">
-            <img src="/images/fotografo-wedding-cerimonia.webp" alt="Wedding ceremony" loading="lazy" decoding="async" className="sim-photo-img fot-bw" />
-            <span className="sim-photo-hint">wedding · cerimonia / coppia</span>
-          </div>
-          <div className="fot-story1-caption">
-            <span className="fot-caption-vol">Vol. 01</span>
-            <span className="fot-caption-title">Wedding Photography</span>
-            <span className="fot-caption-tags">Cerimonia · Dettaglio · Ritratto</span>
-          </div>
-        </section>
+        {/* ── GALLERY STORY 1 — full-width landscape (WEDDING) ── */}
+        {show('WEDDING') && (
+          <section className="fot-story1">
+            <div className="fot-story1-photo sim-photo-slot">
+              <img src="/images/fotografo-wedding-cerimonia.webp" alt="Wedding ceremony" loading="lazy" decoding="async" className="sim-photo-img fot-bw" />
+              <span className="sim-photo-hint">wedding · cerimonia / coppia</span>
+            </div>
+            <div className="fot-story1-caption">
+              <span className="fot-caption-vol">Vol. 01</span>
+              <span className="fot-caption-title">Wedding Photography</span>
+              <span className="fot-caption-tags">Cerimonia · Dettaglio · Ritratto</span>
+            </div>
+          </section>
+        )}
 
-        {/* ── GALLERY STORY 2 — 3 col portrait ── */}
-        <section className="fot-story2">
-          <div className="fot-story2-grid">
-            <div className="fot-story2-item">
-              <div className="fot-story2-photo sim-photo-slot">
-                <img src="/images/fotografo-wedding-sposa.webp" alt="Ritratto sposa" loading="lazy" decoding="async" className="sim-photo-img fot-bw" />
-                <span className="sim-photo-hint">wedding · ritratto / sposa</span>
-              </div>
-              <div className="fot-story2-caption"><strong>Ritratto</strong> / Bridal portrait, Milano 2025</div>
+        {/* ── GALLERY STORY 2 — 3 col portrait (1 RITRATTO + 2 EDITORIAL) ── */}
+        {(show('RITRATTO') || show('EDITORIAL')) && (
+          <section className="fot-story2">
+            <div className="fot-story2-grid">
+              {show('RITRATTO') && (
+                <div className="fot-story2-item">
+                  <div className="fot-story2-photo sim-photo-slot">
+                    <img src="/images/fotografo-wedding-sposa.webp" alt="Ritratto sposa" loading="lazy" decoding="async" className="sim-photo-img fot-bw" />
+                    <span className="sim-photo-hint">wedding · ritratto / sposa</span>
+                  </div>
+                  <div className="fot-story2-caption"><strong>Ritratto</strong> / Bridal portrait, Milano 2025</div>
+                </div>
+              )}
+              {show('EDITORIAL') && (
+                <div className="fot-story2-item">
+                  <div className="fot-story2-photo sim-photo-slot">
+                    <img src="/images/fotografo-editorial-studio.webp" alt="Fashion studio" loading="lazy" decoding="async" className="sim-photo-img fot-bw" />
+                    <span className="sim-photo-hint">editorial · fashion / studio</span>
+                  </div>
+                  <div className="fot-story2-caption"><strong>Editorial</strong> / Studio session, Roma 2025</div>
+                </div>
+              )}
+              {show('EDITORIAL') && (
+                <div className="fot-story2-item">
+                  <div className="fot-story2-photo sim-photo-slot">
+                    <img src="/images/fotografo-editorial-campagna.webp" alt="Editorial portrait" loading="lazy" decoding="async" className="sim-photo-img fot-bw" />
+                    <span className="sim-photo-hint">editorial · campagna / outdoor</span>
+                  </div>
+                  <div className="fot-story2-caption"><strong>Editorial</strong> / Cover shoot, Venezia 2024</div>
+                </div>
+              )}
             </div>
-            <div className="fot-story2-item">
-              <div className="fot-story2-photo sim-photo-slot">
-                <img src="/images/fotografo-editorial-studio.webp" alt="Fashion studio" loading="lazy" decoding="async" className="sim-photo-img fot-bw" />
-                <span className="sim-photo-hint">editorial · fashion / studio</span>
-              </div>
-              <div className="fot-story2-caption"><strong>Editorial</strong> / Studio session, Roma 2025</div>
-            </div>
-            <div className="fot-story2-item">
-              <div className="fot-story2-photo sim-photo-slot">
-                <img src="/images/fotografo-editorial-campagna.webp" alt="Editorial portrait" loading="lazy" decoding="async" className="sim-photo-img fot-bw" />
-                <span className="sim-photo-hint">editorial · campagna / outdoor</span>
-              </div>
-              <div className="fot-story2-caption"><strong>Editorial</strong> / Cover shoot, Venezia 2024</div>
-            </div>
-          </div>
-        </section>
+          </section>
+        )}
 
-        {/* ── GALLERY STORY 3 — split 58/42 ── */}
-        <section className="fot-story3">
-          <div className="fot-story3-left sim-photo-slot">
-            <img src="/images/fotografo-ritratto-luce.webp" alt="Photography light" loading="lazy" decoding="async" className="sim-photo-img fot-bw" />
-            <span className="sim-photo-hint">editorial · luce / campagna</span>
-          </div>
-          <div className="fot-story3-right sim-photo-slot">
-            <img src="/images/fotografo-ritratto-closeup.webp" alt="Portrait close-up" loading="lazy" decoding="async" className="sim-photo-img fot-bw" />
-            <span className="sim-photo-hint">ritratto · close-up / luce naturale</span>
-          </div>
-        </section>
-        <div className="fot-story3-caption">
-          <span className="fot-caption-vol">Vol. 02</span>
-          <span className="fot-caption-title">Ritratto &amp; Luce</span>
-          <span className="fot-caption-tags">Studio · Location · Reportage</span>
-        </div>
+        {/* ── GALLERY STORY 3 — split 58/42 (RITRATTO) ── */}
+        {show('RITRATTO') && (
+          <>
+            <section className="fot-story3">
+              <div className="fot-story3-left sim-photo-slot">
+                <img src="/images/fotografo-ritratto-luce.webp" alt="Photography light" loading="lazy" decoding="async" className="sim-photo-img fot-bw" />
+                <span className="sim-photo-hint">editorial · luce / campagna</span>
+              </div>
+              <div className="fot-story3-right sim-photo-slot">
+                <img src="/images/fotografo-ritratto-closeup.webp" alt="Portrait close-up" loading="lazy" decoding="async" className="sim-photo-img fot-bw" />
+                <span className="sim-photo-hint">ritratto · close-up / luce naturale</span>
+              </div>
+            </section>
+            <div className="fot-story3-caption">
+              <span className="fot-caption-vol">Vol. 02</span>
+              <span className="fot-caption-title">Ritratto &amp; Luce</span>
+              <span className="fot-caption-tags">Studio · Location · Reportage</span>
+            </div>
+          </>
+        )}
 
         {/* ── FEATURE SPREAD ── */}
         <section className="fot-feature">
@@ -202,7 +185,17 @@ const FotografoSim = () => {
             </div>
           </div>
           <div className="fot-feature-photo sim-photo-slot">
-            <img src="/images/fotografo-ritratto-studio.webp" alt="Ritratto del fotografo" loading="lazy" decoding="async" className="sim-photo-img fot-bw" />
+            {/* onError: il file non esiste ancora — senza fallback restava
+                l'icona broken-image su un blocco bianco. Quando l'immagine
+                verra' aggiunta in /public/images si mostrera' da sola. */}
+            <img
+              src="/images/fotografo-ritratto-studio.webp"
+              alt="Ritratto del fotografo"
+              loading="lazy"
+              decoding="async"
+              className="sim-photo-img fot-bw"
+              onError={(e) => { e.currentTarget.style.display = 'none'; }}
+            />
             <span className="sim-photo-hint">fotografo · ritratto / studio</span>
           </div>
         </section>

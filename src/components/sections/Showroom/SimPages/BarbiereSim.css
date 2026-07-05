@@ -17,7 +17,9 @@
   background: var(--wh);
   color: var(--bk);
   font-family: var(--body);
-  overflow-x: hidden;
+  /* clip, NON hidden: hidden creerebbe uno scroll-container che uccide
+     le position:sticky interne (stesso bug corretto in FotografoSim). */
+  overflow-x: clip;
 }
 
 .bar-site *,

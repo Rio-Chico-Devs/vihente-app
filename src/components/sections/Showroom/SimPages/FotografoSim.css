@@ -17,7 +17,11 @@
   color: var(--bk);
   font-family: var(--body);
   -webkit-font-smoothing: antialiased;
-  overflow-x: hidden;
+  /* clip, NON hidden: overflow-x:hidden forza overflow-y ad auto e rende
+     .fot-site uno scroll-container (lo scroll vero e' sul SimWrapper),
+     uccidendo TUTTE le position:sticky interne — la nav spariva al primo
+     swipe su mobile. clip taglia senza creare scroll context. */
+  overflow-x: clip;
 }
 
 .fot-site *,
@@ -57,6 +61,7 @@
   padding: .9rem 3rem;
   border-bottom: 1px solid var(--rule);
   background: rgba(250,250,248,.92);
+  -webkit-backdrop-filter: blur(6px);
   backdrop-filter: blur(6px);
   position: sticky;
   top: 0;
@@ -394,6 +399,17 @@
   overflow: hidden;
 }
 
+/* Fallback visivo per gli slot foto grandi: se l'immagine manca o fallisce
+   (404), lo slot resta un pannello caldo con l'hint leggibile invece di un
+   blocco bianco indistinguibile dallo sfondo pagina. */
+.fot-hero-photo,
+.fot-story1-photo,
+.fot-story3-left,
+.fot-story3-right,
+.fot-feature-photo {
+  background: linear-gradient(160deg, var(--pale) 0%, var(--rule) 100%);
+}
+
 /* ─── 8. QUOTE ────────────────────────────────────────────── */
 .fot-quote {
   background: var(--wh);
@@ -486,6 +502,8 @@
   outline: none;
 }
 .fot-contact-input::placeholder { color: var(--gy); }
+/* outline:none senza sostituto = focus invisibile: il bordo si scurisce */
+.fot-contact-input:focus { border-color: var(--ch); box-shadow: inset 0 -2px 0 var(--ch); }
 
 .fot-contact-btn {
   padding: .7rem 1.4rem;
@@ -587,15 +605,29 @@
 @media (max-width: 1024px) {
   .fot-nav { padding: .9rem 2rem; }
   .fot-hero-text { padding: 3rem 2.5rem; }
+  /* Banda 769-1024: la griglia hero resta 56/44 ma la colonna testo si
+     stringe; senza questi clamp "Vizienti" (min 6rem) sfora il viewport
+     tra 769 e ~800px. */
+  .fot-hero-first { font-size: clamp(2.8rem, 5.5vw, 4rem); }
+  .fot-hero-last  { font-size: clamp(4rem, 10vw, 7rem); }
   .fot-feature-text { padding: 4rem 2.5rem; }
   .fot-contact-left, .fot-contact-right { padding: 4rem 2.5rem; }
 }
 
 @media (max-width: 768px) {
+  /* Nav: logo a sinistra (era centrato: finiva SOTTO il bottone fisso
+     "Scegli modello" del SimWrapper a <=390px). Il padding sinistro
+     4.5rem libera la X di chiusura fissa in alto a sinistra. I link
+     nav-left/right restano nascosti: la fascia destra e' occupata dal
+     float fisso del SimWrapper, non c'e' spazio sicuro (scelta esplicita). */
   .fot-nav {
     grid-template-columns: 1fr;
-    justify-items: center;
-    padding: .8rem 1.5rem;
+    justify-items: start;
+    padding: .8rem 1.5rem .8rem 4.5rem;
+    /* niente blur su mobile: costoso in scroll e invisibile con bg .92 */
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+    background: var(--wh);
   }
   .fot-nav-left, .fot-nav-right { display: none; }
 
@@ -614,9 +646,9 @@
   .fot-hero-first { font-size: clamp(2.5rem, 10vw, 4rem); }
   .fot-hero-last  { font-size: clamp(4.5rem, 18vw, 7rem); }
 
-  /* Filter — scrollable horizontal */
+  /* Filter — scrollable horizontal, tap target >=40px (WCAG: 24 minimo) */
   .fot-filter-strip {
-    padding: .7rem 1.5rem;
+    padding: .2rem 1.5rem;
     gap: .5rem;
     overflow-x: auto;
     -webkit-overflow-scrolling: touch;
@@ -624,7 +656,12 @@
     flex-wrap: nowrap;
   }
   .fot-filter-strip::-webkit-scrollbar { display: none; }
-  .fot-filter-tabs { flex-shrink: 0; }
+  .fot-filter-tabs { flex-shrink: 0; gap: .9rem; }
+  .fot-filter-tab {
+    font-size: .78rem;
+    letter-spacing: .16em;
+    padding: .9rem .35rem;
+  }
   .fot-filter-count { flex-shrink: 0; }
 
   .fot-story1-photo { height: 56vw; }
@@ -637,7 +674,10 @@
 
   .fot-story2 { padding: 1.5rem 1.5rem 1rem; }
   .fot-story2-grid { grid-template-columns: repeat(2, 1fr); gap: 3px; }
-  .fot-story2-item:nth-child(3) { display: none; }
+  /* La terza opera non sparisce piu' (display:none nascondeva un lavoro
+     intero): va a tutta larghezza sotto le prime due. */
+  .fot-story2-item:nth-child(3) { grid-column: 1 / -1; }
+  .fot-story2-item:nth-child(3) .fot-story2-photo { aspect-ratio: 16 / 10; height: auto; }
 
   .fot-story3 { grid-template-columns: 1fr; }
   .fot-story3-left { min-height: 60vw; border-bottom: 1px solid var(--rule); }
@@ -647,7 +687,6 @@
     flex-wrap: wrap;
     gap: .4rem;
   }
-  .fot-caption-tags { margin-left: 0; width: 100%; }
 
   .fot-feature {
     grid-template-columns: 1fr;
@@ -660,12 +699,30 @@
   .fot-feature-stats { gap: 1.5rem; }
 
   .fot-quote { padding: 4rem 1.5rem; }
-  .fot-quote-text { font-size: clamp(1.6rem, 7vw, 2.5rem); }
+  /* min 1.35rem (era 1.6): a 360px la riga forzata dal <br/> sforava col
+     font di fallback durante lo swap */
+  .fot-quote-text { font-size: clamp(1.35rem, 6.5vw, 2.5rem); }
 
   .fot-contact { grid-template-columns: 1fr; }
   .fot-contact-left { padding: 3rem 1.5rem 2rem; }
   .fot-contact-right { padding: 2.5rem 1.5rem; }
   .fot-contact-h2 { font-size: 2.8rem; }
+  /* 16px = soglia sotto cui Safari iOS zooma la pagina al focus */
+  .fot-contact-input { font-size: 1rem; }
+  .fot-contact-btn { padding: 1rem 1.4rem; font-size: .72rem; }
+
+  /* Micro-tipografia: le etichette restavano a misura desktop (7.7-9.6px),
+     illeggibili su schermi da 360px */
+  .fot-label, .fot-caption-vol, .fot-filter-count, .fot-quote-attr {
+    font-size: .64rem;
+    letter-spacing: .26em;
+  }
+  .fot-caption-tags, .fot-story2-caption {
+    font-size: .62rem;
+    letter-spacing: .16em;
+  }
+  .fot-stat-lbl, .fot-footer-copy { font-size: .6rem; }
+  .fot-footer-link { font-size: .68rem; }
 
   .fot-footer {
     grid-template-columns: 1fr;
