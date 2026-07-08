@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useGuide } from '../../../contexts/GuideContext';
+import { useGuideActions } from '../../../contexts/GuideContext';
 import PricingPackages from '../../global/PricingPackages/PricingPackages';
 import ServiceTimeline from '../../global/ServiceTimeline/ServiceTimeline';
 import FAQSection from '../../global/FAQSection/FAQSection';
@@ -88,7 +88,7 @@ const PRESENZA_FAQ = [
 
 const PresenzaOnlinePage = () => {
   const navigate = useNavigate();
-  const { setGuide, clearGuide } = useGuide();
+  const { setGuide, clearGuide } = useGuideActions();
 
   useEffect(() => {
     document.body.classList.add('presenza-detail-body');

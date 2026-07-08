@@ -1,6 +1,9 @@
 import { useEffect } from 'react';
+import { useSettings } from '../../../contexts/SettingsContext';
 
 const CustomCursor = () => {
+  const { systemCursor } = useSettings();
+
   useEffect(() => {
     const isTouchDevice = (
       'ontouchstart' in window ||
@@ -10,6 +13,14 @@ const CustomCursor = () => {
     );
 
     if (isTouchDevice) return;
+
+    // Opt-out accessibilita' (Impostazioni -> "Cursore di sistema"):
+    // la classe sul body riattiva i cursori nativi via CSS (index.css)
+    // e il dot custom non viene montato.
+    if (systemCursor) {
+      document.body.classList.add('system-cursor');
+      return () => document.body.classList.remove('system-cursor');
+    }
 
     const cursor = document.createElement('div');
     cursor.className = 'custom-cursor-dot';
@@ -47,7 +58,7 @@ const CustomCursor = () => {
       if (document.body.contains(cursor)) cursor.remove();
       document.body.style.cursor = 'auto';
     };
-  }, []);
+  }, [systemCursor]);
 
   return null;
 };

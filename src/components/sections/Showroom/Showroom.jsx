@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useGuide } from '../../../contexts/GuideContext';
+import { useGuideActions } from '../../../contexts/GuideContext';
 
 const SIM_ROUTES = {
   psicologo:      '/showroom/psicologo',
@@ -371,7 +371,7 @@ const PREVIEWS = {
 
 const Showroom = () => {
   const navigate = useNavigate();
-  const { setGuide, clearGuide } = useGuide();
+  const { setGuide, clearGuide } = useGuideActions();
 
   useEffect(() => {
     const snippets = [

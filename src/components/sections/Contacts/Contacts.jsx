@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { validateContactForm, sanitizeInput } from '../../../utils/validation';
-import { useGuide } from '../../../contexts/GuideContext';
+import { useGuideActions } from '../../../contexts/GuideContext';
 import { useSettings } from '../../../contexts/SettingsContext';
 import './Contacts.css';
 
@@ -25,7 +25,7 @@ const SERVICE_ALIAS = {
 };
 
 const Contacts = () => {
-  const { setGuide, clearGuide } = useGuide();
+  const { setGuide, clearGuide } = useGuideActions();
   const { fxVolume } = useSettings();
   const [searchParams] = useSearchParams();
   const fxVolumeRef = useRef(fxVolume);
@@ -69,10 +69,11 @@ const Contacts = () => {
   }, []);
 
   /* Pre-fill da query string (es. arrivo da una pagina servizio con
-     /contatti?mode=quote&service=Consulenza). Solo al primo mount. */
+     /contatti?mode=quote&service=Consulenza&tier=Audit). Solo al primo mount. */
   useEffect(() => {
     const mode = searchParams.get('mode');
     const service = searchParams.get('service');
+    const tier = searchParams.get('tier');
     if (mode === 'quote') {
       setIsQuoteMode(true);
     }
@@ -81,6 +82,16 @@ const Contacts = () => {
       if (mapped) {
         setFormData(prev => ({ ...prev, service: mapped }));
       }
+    }
+    // Il pacchetto cliccato nella pagina servizio pre-compila il messaggio
+    // (solo se vuoto: mai sovrascrivere testo gia' digitato).
+    if (tier) {
+      const clean = tier.slice(0, 60);
+      setFormData(prev => (
+        prev.message
+          ? prev
+          : { ...prev, message: `Sono interessato al pacchetto "${clean}".\n\n` }
+      ));
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -522,25 +533,31 @@ const Contacts = () => {
                 </span>
               </button>
 
-              {showRateLimit && (
-                <div className="rate-limit-warning">
-                  ⚠ Hai appena inviato una richiesta, aspetta qualche secondo
-                </div>
-              )}
+              {/* Live region sempre montata: gli screen reader annunciano il
+                  contenuto quando cambia. Se i div comparissero dal nulla
+                  (montaggio condizionale senza regione) l'esito dell'invio
+                  resterebbe muto per chi non vede lo schermo. */}
+              <div role="status" aria-live="polite">
+                {showRateLimit && (
+                  <div className="rate-limit-warning">
+                    ⚠ Hai appena inviato una richiesta, aspetta qualche secondo
+                  </div>
+                )}
 
-              {submitStatus === 'success' && !isAnimating && (
-                <div className="success-message">
-                  ✓ {isQuoteMode 
-                    ? 'Richiesta preventivo inviata con successo! Ti risponderò a breve.' 
-                    : 'Messaggio inviato con successo! Ti risponderò il prima possibile.'}
-                </div>
-              )}
+                {submitStatus === 'success' && !isAnimating && (
+                  <div className="success-message">
+                    ✓ {isQuoteMode
+                      ? 'Richiesta preventivo inviata con successo! Ti risponderò a breve.'
+                      : 'Messaggio inviato con successo! Ti risponderò il prima possibile.'}
+                  </div>
+                )}
 
-              {submitStatus === 'error' && !isAnimating && (
-                <div className="rate-limit-warning">
-                  ✗ Errore durante l'invio. Riprova più tardi.
-                </div>
-              )}
+                {submitStatus === 'error' && !isAnimating && (
+                  <div className="rate-limit-warning">
+                    ✗ Errore durante l'invio. Riprova più tardi.
+                  </div>
+                )}
+              </div>
             </div>
           </form>
         </div>

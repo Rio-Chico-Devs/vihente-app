@@ -851,3 +851,16 @@
   .alt-currency-arrow { font-size: 2rem; }
   .alt-currency-input-wrap input[type="number"] { font-size: 1.7rem; width: 6rem; }
 }
+
+/* h1 unico con span (fix doppio-h1 per SEO/a11y): gli span mantengono
+   il layout a due righe del vecchio doppio h1. */
+.alt-hero-headline h1 {
+  margin: 0;
+  font-size: inherit;
+  font-weight: inherit;
+  line-height: inherit;
+}
+.alt-hero-h1-normal,
+.alt-hero-h1-italic {
+  display: block;
+}

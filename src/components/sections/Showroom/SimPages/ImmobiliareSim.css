@@ -1211,3 +1211,16 @@
   .res-kpi-grid { grid-template-columns: 1fr 1fr; }
   .res-zone-photos { grid-template-columns: 1fr; }
 }
+
+/* h1 unico con span (fix doppio-h1 per SEO/a11y): gli span mantengono
+   il layout a due righe del vecchio doppio h1. */
+.res-hero-mid h1 {
+  margin: 0;
+  font-size: inherit;
+  font-weight: inherit;
+  line-height: inherit;
+}
+.res-hero-h1-normal,
+.res-hero-h1-italic {
+  display: block;
+}

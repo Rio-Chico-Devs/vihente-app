@@ -1,7 +1,11 @@
 // VIHENTE APP - Service Worker
 // Gestisce cache degli asset e supporto offline
 
-const CACHE_VERSION = 'v1.0.0';
+// Sostituita a build-time da scripts/stamp-sw.js con un timestamp univoco:
+// senza, i byte di sw.js non cambiano tra i deploy, il browser non installa
+// mai il nuovo SW e la cache vecchia (nome invariato) non viene mai svuotata.
+// Se lo stamp non gira, resta la stringa letterale: funziona comunque.
+const CACHE_VERSION = '__SW_VERSION__';
 const CACHE_NAME = `vihente-app-${CACHE_VERSION}`;
 
 // Asset critici da cachare immediatamente all'installazione
@@ -27,15 +31,17 @@ const CACHE_PATTERNS = {
 // Viene eseguito quando il SW viene installato per la prima volta
 // o quando c'è una nuova versione
 self.addEventListener('install', (event) => {
+  // NB: niente skipWaiting() qui. Con lo skip incondizionato il nuovo SW
+  // non restava mai in 'waiting': il banner "AGGIORNA" di sw-register.js
+  // era codice morto e ogni deploy causava un reload forzato a meta'
+  // sessione (controllerchange -> location.reload). Ora il nuovo SW
+  // aspetta, il banner appare, e lo skip avviene solo se l'utente clicca
+  // AGGIORNA (messaggio SKIP_WAITING gestito piu' sotto).
   event.waitUntil(
     caches.open(CACHE_NAME)
       .then((cache) => {
         // Cacha gli asset critici
         return cache.addAll(CRITICAL_ASSETS);
-      })
-      .then(() => {
-        // Forza il nuovo SW ad attivarsi immediatamente
-        return self.skipWaiting();
       })
       .catch(() => {})
   );
@@ -89,6 +95,14 @@ self.addEventListener('fetch', (event) => {
 
   // Mai cachare le API: fail-through al network senza toccare la cache.
   if (CACHE_PATTERNS.api.test(url.pathname)) {
+    return;
+  }
+
+  // Audio fuori dal SW: le tracce (.opus fino a 4MB) e le voci di Iris
+  // finivano nel ramo network-first che le DUPLICAVA in Cache Storage
+  // (fino a 26MB doppi oltre alla HTTP cache, che ha gia' Expires 7gg
+  // in .htaccess). La HTTP cache basta e avanza.
+  if (/\.(mp3|ogg|opus|wav)$/.test(url.pathname)) {
     return;
   }
 

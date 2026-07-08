@@ -1,11 +1,11 @@
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useGuide } from '../../../../contexts/GuideContext';
+import { useGuideActions } from '../../../../contexts/GuideContext';
 import './ComponentShowcase.css';
 
 const ComponentShowcase = () => {
   const navigate = useNavigate();
-  const { setGuide, clearGuide } = useGuide();
+  const { setGuide, clearGuide } = useGuideActions();
 
   const componentGuide = {
     'slider':          'Gallery/slider con animazioni, transizioni fluide e navigazione touch.',

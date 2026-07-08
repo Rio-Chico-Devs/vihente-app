@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react';
 import './TextSamplerPage.css';
-import { useGuide } from '../../../../../contexts/GuideContext';
+import { useGuideActions } from '../../../../../contexts/GuideContext';
 
 const TextSamplerPage = () => {
-  const { setGuide, clearGuide } = useGuide();
+  const { setGuide, clearGuide } = useGuideActions();
   const [activeEffect, setActiveEffect] = useState('conjoined');
   const [morphingText, setMorphingText] = useState('SAMPLE');
 

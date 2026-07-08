@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useGuide } from '../../../../../contexts/GuideContext';
+import { useGuideActions } from '../../../../../contexts/GuideContext';
 import { WALLPAPERS, WallpaperRenderer } from './shaders';
 import './BackgroundsPage.css';
 
@@ -14,7 +14,7 @@ const DESCRIPTIONS = {
 
 const BackgroundsPage = () => {
   const navigate = useNavigate();
-  const { setGuide, clearGuide } = useGuide();
+  const { setGuide, clearGuide } = useGuideActions();
 
   const canvasRef   = useRef(null);
   const rendererRef = useRef(null);

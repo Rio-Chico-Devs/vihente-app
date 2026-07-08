@@ -1,11 +1,11 @@
 import { useEffect, useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useGuide } from '../../../contexts/GuideContext';
+import { useGuideActions } from '../../../contexts/GuideContext';
 import './ServicesPage.css';
 
 const ServicesPage = () => {
   const navigate = useNavigate();
-  const { setGuide, clearGuide } = useGuide();
+  const { setGuide, clearGuide } = useGuideActions();
   const [effectsReady, setEffectsReady] = useState(false);
   const gridRef = useRef(null);
   
@@ -216,6 +216,8 @@ const ServicesPage = () => {
     <div
       className="services-page-wrapper"
     >
+      {/* h1 per SEO/screen reader: la pagina hub non aveva heading principale */}
+      <h1 className="sr-only">Servizi digitali — consulenze, siti web, social media e multimedia</h1>
       <div className="code-background" id="codeBackground"></div>
       <div id="gridOverlay" className="grid-overlay"></div>
 

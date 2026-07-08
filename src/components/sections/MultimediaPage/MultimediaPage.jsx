@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useGuide } from '../../../contexts/GuideContext';
+import { useGuideActions } from '../../../contexts/GuideContext';
 import PricingPackages from '../../global/PricingPackages/PricingPackages';
 import ServiceTimeline from '../../global/ServiceTimeline/ServiceTimeline';
 import FAQSection from '../../global/FAQSection/FAQSection';
@@ -88,6 +88,18 @@ const MULTIMEDIA_FAQ = [
   },
 ];
 
+/* Slot immagine con fallback: se src e' vuoto (slot ancora da riempire)
+   mostra un placeholder stilizzato invece dell'icona broken-image nativa. */
+const SlotImg = ({ src, alt, className, ...rest }) => (
+  src ? (
+    <img src={src} alt={alt} className={className} decoding="async" {...rest} />
+  ) : (
+    <div className={`${className} slot-empty`} role="img" aria-label={alt}>
+      <span className="slot-empty-label">{alt}</span>
+    </div>
+  )
+);
+
 /* ── Slot immagini grafiche digitali — sostituisci src con i tuoi URL ── */
 const GRAFICHE_SLIDES = [
   { src: '', alt: 'Banner',       description: 'Banner digitale — aggiungi descrizione' },
@@ -112,7 +124,7 @@ const FRAME_MS = 120; // millisecondi per frame
 
 const MultimediaPage = () => {
   const navigate = useNavigate();
-  const { setGuide, clearGuide } = useGuide();
+  const { setGuide, clearGuide } = useGuideActions();
 
   /* Grafiche: slider + modal */
   const [slide, setSlide]   = useState(0);
@@ -162,11 +174,10 @@ const MultimediaPage = () => {
         <div className="img-modal-overlay" onClick={() => setModal(null)}>
           <div className="img-modal" onClick={e => e.stopPropagation()}>
             <button className="modal-close" onClick={() => setModal(null)}>✕</button>
-            <img
+            <SlotImg
               src={GRAFICHE_SLIDES[modal].src}
               alt={GRAFICHE_SLIDES[modal].alt}
               className="modal-img"
-              decoding="async"
             />
             <p className="modal-description">{GRAFICHE_SLIDES[modal].description}</p>
           </div>
@@ -212,11 +223,10 @@ const MultimediaPage = () => {
             <div className="work-showcase">
               <div className="animation-frame">
                 {/* 8 frame — sostituisci src in ANIM_FRAMES */}
-                <img
+                <SlotImg
                   src={ANIM_FRAMES[frame].src}
                   alt={ANIM_FRAMES[frame].alt}
                   className="anim-frame-img"
-                  decoding="async"
                 />
                 <button
                   className={`anim-play-btn${playing ? ' is-playing' : ''}`}
@@ -262,11 +272,10 @@ const MultimediaPage = () => {
               {/* Slider — sostituisci src in GRAFICHE_SLIDES */}
               <div className="graphics-slider">
                 <div className="slider-viewport" onClick={() => setModal(slide)}>
-                  <img
+                  <SlotImg
                     src={GRAFICHE_SLIDES[slide].src}
                     alt={GRAFICHE_SLIDES[slide].alt}
                     className="slider-img"
-                    decoding="async"
                   />
                   <button
                     className="slider-arrow slider-prev"
@@ -312,12 +321,11 @@ const MultimediaPage = () => {
             <div className="work-showcase">
               <div className="illustration-showcase">
                 {/* Inserisci il tuo URL nell'attributo src */}
-                <img
+                <SlotImg
                   src=""
                   alt="Illustrazione — aggiungi descrizione"
                   className="showcase-img"
                   loading="lazy"
-                  decoding="async"
                 />
               </div>
             </div>
@@ -376,12 +384,11 @@ const MultimediaPage = () => {
             <div className="work-showcase">
               <div className="brand-showcase">
                 {/* Inserisci il tuo URL nell'attributo src */}
-                <img
+                <SlotImg
                   src=""
                   alt="Brand Identity — aggiungi descrizione"
                   className="showcase-img"
                   loading="lazy"
-                  decoding="async"
                 />
               </div>
             </div>

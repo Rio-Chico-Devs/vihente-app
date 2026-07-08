@@ -1,9 +1,9 @@
 import { useEffect } from 'react';
-import { useGuide } from '../../../contexts/GuideContext';
+import { useGuideActions } from '../../../contexts/GuideContext';
 import './MyStory.css';
 
 const MyStory = () => {
-  const { setGuide, clearGuide } = useGuide();
+  const { setGuide, clearGuide } = useGuideActions();
   const skills = [
     { name: 'Sviluppatore Web',   guide: 'Ho lavorato per anni nell\'ambito del web design sia nel lato front end che backend, seguo continuamente gli aggiornamenti nel mio campo, è un lavoro continuo, che richiede impegno costante.' },
     { name: 'Social Media',       guide: 'Gestendo vari account social, comprendo e conosco a fondo le complessità della gestione dei social più importanti.' },

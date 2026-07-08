@@ -1,23 +1,5 @@
 /* ============================================
 
-   PURE CSS STATE
-
-   ============================================ */
-
-.trophy-state {
-
-  position: absolute;
-
-  opacity: 0;
-
-  pointer-events: none;
-
-}
-
- 
-
-/* ============================================
-
    MAIN ARENA
 
    ============================================ */
@@ -108,6 +90,21 @@
 
 .trophy-container {
 
+  /* E' un <button>: reset dell'aspetto nativo, mantiene semantica e focus. */
+  background: none;
+
+  border: none;
+
+  padding: 0;
+
+  font: inherit;
+
+  color: inherit;
+
+  text-align: inherit;
+
+  width: 100%;
+
   display: block;
 
   cursor: pointer;
@@ -121,6 +118,14 @@
   animation: trophyReveal 0.6s ease-out forwards;
 
   animation-delay: calc(var(--trophy-index) * 0.08s);
+
+}
+
+.trophy-container:focus-visible {
+
+  outline: 2px solid var(--color-primary, #0ff);
+
+  outline-offset: 4px;
 
 }
 
@@ -532,27 +537,12 @@
 
  
 
-/* Show modal */
+/* Show modal — classe applicata da React al solo modal aperto.
+   (Sostituisce il vecchio radio-hack con selettori :checked/nth-of-type,
+   che tra l'altro saltava l'11esimo elemento: il decimo trofeo non si
+   apriva mai. Ora il modal e' un dialog reale: ESC, focus, aria-modal.) */
 
-.trophy-state:nth-of-type(1):checked ~ .trophy-gallery ~ .trophy-modal:nth-of-type(1),
-
-.trophy-state:nth-of-type(2):checked ~ .trophy-gallery ~ .trophy-modal:nth-of-type(2),
-
-.trophy-state:nth-of-type(3):checked ~ .trophy-gallery ~ .trophy-modal:nth-of-type(3),
-
-.trophy-state:nth-of-type(4):checked ~ .trophy-gallery ~ .trophy-modal:nth-of-type(4),
-
-.trophy-state:nth-of-type(5):checked ~ .trophy-gallery ~ .trophy-modal:nth-of-type(5),
-
-.trophy-state:nth-of-type(6):checked ~ .trophy-gallery ~ .trophy-modal:nth-of-type(6),
-
-.trophy-state:nth-of-type(7):checked ~ .trophy-gallery ~ .trophy-modal:nth-of-type(7),
-
-.trophy-state:nth-of-type(8):checked ~ .trophy-gallery ~ .trophy-modal:nth-of-type(8),
-
-.trophy-state:nth-of-type(9):checked ~ .trophy-gallery ~ .trophy-modal:nth-of-type(9),
-
-.trophy-state:nth-of-type(10):checked ~ .trophy-gallery ~ .trophy-modal:nth-of-type(10) {
+.trophy-modal--open {
 
   opacity: 1;
 

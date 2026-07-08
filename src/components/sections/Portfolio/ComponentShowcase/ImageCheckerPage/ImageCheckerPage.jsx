@@ -1,9 +1,9 @@
 import { useState, useRef, useEffect } from 'react';
 import './ImageCheckerPage.css';
-import { useGuide } from '../../../../../contexts/GuideContext';
+import { useGuideActions } from '../../../../../contexts/GuideContext';
 
 const ImageCheckerPage = () => {
-  const { setGuide, clearGuide } = useGuide();
+  const { setGuide, clearGuide } = useGuideActions();
   const [lensActive, setLensActive] = useState(false);
   const [lensPosition, setLensPosition] = useState({ x: 0, y: 0 });
   const [isTouching, setIsTouching] = useState(false);
@@ -11,8 +11,11 @@ const ImageCheckerPage = () => {
   const imageRef = useRef(null);
   const containerRef = useRef(null);
 
-  // Immagine fornita (MODIFICA QUESTO PATH)
-  const image = '../../../../../screenshots/VIejcO5.png';
+  // Immagine fornita (MODIFICA QUESTO PATH).
+  // Path assoluto dalla webroot: il vecchio relativo con 5 ../ funzionava
+  // solo perche' il browser clampava oltre la root — fragile se la route
+  // cambia profondita'.
+  const image = '/screenshots/VIejcO5.png';
 
   const ZOOM_LEVEL = 2.5;
 

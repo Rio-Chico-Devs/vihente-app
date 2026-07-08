@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './DashboardPage.css';
-import { useGuide } from '../../../../../contexts/GuideContext';
+import { useGuideActions } from '../../../../../contexts/GuideContext';
 
 /* ═══════════════════════════════════════════
    CHART COMPONENTS
@@ -237,7 +237,7 @@ const statusClass = (s) => {
    MAIN COMPONENT
 ═══════════════════════════════════════════ */
 const DashboardPage = () => {
-  const { setGuide, clearGuide } = useGuide();
+  const { setGuide, clearGuide } = useGuideActions();
   const navigate = useNavigate();
   const [period,     setPeriod]     = useState('7d');
   const [fading,     setFading]     = useState(false);

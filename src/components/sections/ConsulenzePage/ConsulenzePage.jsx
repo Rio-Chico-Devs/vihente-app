@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useGuide } from '../../../contexts/GuideContext';
+import { useGuideActions } from '../../../contexts/GuideContext';
 import PricingPackages from '../../global/PricingPackages/PricingPackages';
 import ServiceTimeline from '../../global/ServiceTimeline/ServiceTimeline';
 import FAQSection from '../../global/FAQSection/FAQSection';
@@ -88,7 +88,7 @@ const CONSULENZE_FAQ = [
 
 const ConsulenzePage = () => {
   const navigate = useNavigate();
-  const { setGuide, clearGuide } = useGuide();
+  const { setGuide, clearGuide } = useGuideActions();
 
   useEffect(() => {
     document.body.classList.add('service-detail-body');
@@ -174,16 +174,6 @@ const ConsulenzePage = () => {
     <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
       <path d="M8 18 L24 10 L40 18 L24 26 Z" stroke="var(--color-primary, #0ff)" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
       <path d="M12 20 L12 30 L24 36 L36 30 L36 20" stroke="var(--color-primary, #0ff)" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
-    </svg>
-  );
-
-  const GiftIcon = () => (
-    <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <rect x="10" y="20" width="28" height="20" stroke="var(--color-primary, #0ff)" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
-      <rect x="8" y="14" width="32" height="6" stroke="var(--color-primary, #0ff)" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
-      <line x1="24" y1="14" x2="24" y2="40" stroke="var(--color-primary, #0ff)" strokeWidth="2.5" strokeLinecap="round"/>
-      <path d="M24 14 C24 14, 20 8, 16 10 C12 12, 14 14, 24 14" stroke="var(--color-primary, #0ff)" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
-      <path d="M24 14 C24 14, 28 8, 32 10 C36 12, 34 14, 24 14" stroke="var(--color-primary, #0ff)" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
     </svg>
   );
 

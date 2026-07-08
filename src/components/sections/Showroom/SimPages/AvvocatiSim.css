@@ -1,3 +1,6 @@
+/* NB: il font 'Inter' e' stato rimosso dagli stack: non e' mai stato
+   self-hostato in /public/fonts, quindi il testo renderizzava comunque
+   col fallback system-ui. Ora il fallback e' esplicito. */
 /* ═══════════════════════════════════════════════════════════════
    AvvocatiSim — Studio Legale design language
    Trust + authority + heritage:
@@ -34,7 +37,7 @@
   padding: 0 2.5rem;
   background: #06102A;
   border-bottom: 1px solid rgba(184, 155, 94, 0.18);
-  font-family: 'Inter', system-ui, sans-serif;
+  font-family: system-ui, sans-serif;
   font-size: 0.66rem;
   letter-spacing: 0.18em;
   color: rgba(232, 223, 201, 0.55);
@@ -91,7 +94,7 @@
   color: rgba(232, 223, 201, 0.55);
   letter-spacing: 0.16em;
   text-transform: uppercase;
-  font-family: 'Inter', system-ui, sans-serif;
+  font-family: system-ui, sans-serif;
   margin-top: 0.18rem;
 }
 
@@ -203,7 +206,7 @@
 }
 
 .avv-hero-eyebrow {
-  font-family: 'Inter', system-ui, sans-serif;
+  font-family: system-ui, sans-serif;
   font-size: 0.7rem;
   letter-spacing: 0.32em;
   color: #B89B5E;
@@ -310,7 +313,7 @@
 }
 
 .avv-stat span {
-  font-family: 'Inter', system-ui, sans-serif;
+  font-family: system-ui, sans-serif;
   font-size: 0.7rem;
   color: rgba(232, 223, 201, 0.55);
   letter-spacing: 0.18em;
@@ -336,7 +339,7 @@
 }
 
 .avv-eyebrow {
-  font-family: 'Inter', system-ui, sans-serif;
+  font-family: system-ui, sans-serif;
   font-size: 0.68rem;
   font-weight: 600;
   letter-spacing: 0.32em;
@@ -400,7 +403,7 @@
   position: absolute;
   top: 1.4rem;
   right: 1.4rem;
-  font-family: 'Inter', system-ui, sans-serif;
+  font-family: system-ui, sans-serif;
   font-size: 0.66rem;
   letter-spacing: 0.18em;
   color: rgba(184, 155, 94, 0.42);
@@ -428,7 +431,7 @@
 }
 
 .avv-area-link {
-  font-family: 'Inter', system-ui, sans-serif;
+  font-family: system-ui, sans-serif;
   font-size: 0.7rem;
   color: rgba(184, 155, 94, 0.85);
   letter-spacing: 0.14em;
@@ -535,7 +538,7 @@
 }
 
 .avv-socio-ruolo {
-  font-family: 'Inter', system-ui, sans-serif;
+  font-family: system-ui, sans-serif;
   font-size: 0.66rem;
   letter-spacing: 0.24em;
   color: #B89B5E;
@@ -651,7 +654,7 @@
 }
 
 .avv-ric-eyebrow {
-  font-family: 'Inter', system-ui, sans-serif;
+  font-family: system-ui, sans-serif;
   font-size: 0.66rem;
   letter-spacing: 0.32em;
   color: rgba(184, 155, 94, 0.6);
@@ -744,7 +747,7 @@
 }
 
 .avv-test-azienda {
-  font-family: 'Inter', system-ui, sans-serif;
+  font-family: system-ui, sans-serif;
   font-size: 0.72rem;
   letter-spacing: 0.14em;
   color: rgba(232, 223, 201, 0.45);
@@ -769,7 +772,7 @@
 }
 
 .avv-banner-pre {
-  font-family: 'Inter', system-ui, sans-serif;
+  font-family: system-ui, sans-serif;
   font-size: 0.7rem;
   color: rgba(184, 155, 94, 0.85);
   letter-spacing: 0.3em;
@@ -839,7 +842,7 @@
 }
 
 .avv-footer-tag {
-  font-family: 'Inter', system-ui, sans-serif;
+  font-family: system-ui, sans-serif;
   font-size: 0.7rem !important;
   letter-spacing: 0.18em;
   text-transform: uppercase;
@@ -861,7 +864,7 @@
   align-items: center;
   justify-content: space-between;
   gap: 1rem;
-  font-family: 'Inter', system-ui, sans-serif;
+  font-family: system-ui, sans-serif;
   font-size: 0.68rem;
   letter-spacing: 0.16em;
   color: rgba(232, 223, 201, 0.4);
@@ -908,7 +911,7 @@
 .avv-modal::after  { bottom: -1px; right: -1px; border-left: none; border-top: none; }
 
 .avv-modal-eyebrow {
-  font-family: 'Inter', system-ui, sans-serif;
+  font-family: system-ui, sans-serif;
   font-size: 0.62rem;
   letter-spacing: 0.32em;
   color: #B89B5E;
@@ -945,7 +948,7 @@
 }
 
 .avv-label {
-  font-family: 'Inter', system-ui, sans-serif;
+  font-family: system-ui, sans-serif;
   font-size: 0.66rem;
   font-weight: 600;
   letter-spacing: 0.18em;
@@ -981,7 +984,7 @@
 .avv-select option { background: #06102A; color: #E8DFC9; }
 
 .avv-modal-privacy {
-  font-family: 'Inter', system-ui, sans-serif;
+  font-family: system-ui, sans-serif;
   font-size: 0.66rem;
   color: rgba(232, 223, 201, 0.42);
   font-style: italic;
