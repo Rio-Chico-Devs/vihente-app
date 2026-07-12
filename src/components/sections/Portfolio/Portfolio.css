@@ -3,6 +3,7 @@
 
 .portfolio-page {
   position: relative;
+  min-height: 100vh;
   min-height: 100dvh;
   background: #000;
   display: flex;
@@ -508,7 +509,9 @@
 @media (max-width: 768px) {
   .portfolio-page {
     position: relative;
+    min-height: 100vh;
     min-height: 100dvh;
+    height: 100vh;
     height: 100dvh;
     overflow: hidden;
     padding: 0;
@@ -527,6 +530,7 @@
     right: 0;
     /* 100dvh = dynamic viewport height: corretto su Safari iOS/Chrome Android
        con barra degli indirizzi dinamica. */
+    height: calc(100vh - var(--header-height, 80px) - var(--footer-height, 60px));
     height: calc(100dvh - var(--header-height, 80px) - var(--footer-height, 60px));
     display: grid;
     grid-template-rows: 1fr 1fr 1fr; /* 3 righe ESATTAMENTE uguali - matematicamente perfetto */

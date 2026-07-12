@@ -2,6 +2,7 @@
 
 .eco-site {
   background: #fff;
+  min-height: 100vh;
   min-height: 100dvh;
   font-family: system-ui, -apple-system, 'Segoe UI', Helvetica, sans-serif;
   color: #111;
@@ -511,6 +512,7 @@
   background: #fff;
   max-width: 900px;
   width: 100%;
+  max-height: 90vh;
   max-height: 90dvh;
   overflow-y: auto;
   position: relative;

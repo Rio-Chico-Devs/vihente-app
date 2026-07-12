@@ -20,7 +20,9 @@
   /* clip, NON hidden: overflow-x:hidden forza overflow-y ad auto e rende
      .fot-site uno scroll-container (lo scroll vero e' sul SimWrapper),
      uccidendo TUTTE le position:sticky interne — la nav spariva al primo
-     swipe su mobile. clip taglia senza creare scroll context. */
+     swipe su mobile. clip taglia senza creare scroll context.
+     La riga hidden prima fa da fallback per Safari <16 (che scarta clip). */
+  overflow-x: hidden;
   overflow-x: clip;
 }
 

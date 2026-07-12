@@ -23,7 +23,11 @@
   font-size: 1rem;
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
+  /* hidden = fallback per Safari <16; clip (che vince sui moderni) taglia
+     senza creare uno scroll-container, cosi' le position:sticky interne
+     continuano a funzionare (hidden le uccideva). */
   overflow-x: hidden;
+  overflow-x: clip;
 }
 
 /* ── SHARED LABEL ── */

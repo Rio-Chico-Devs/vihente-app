@@ -4,6 +4,7 @@
 .mystory-section {
   background: var(--color-background, #000);
   color: var(--color-text, #fff);
+  min-height: 100vh;
   min-height: 100dvh;
   position: relative;
   overflow: hidden;
@@ -418,6 +419,7 @@
 @media (max-width: 900px) {
   /* Occupa esattamente il viewport, zero scroll */
   .mystory-section {
+    height: 100vh;
     height: 100dvh;
     padding: 0.6rem;
     padding-top: 100px;

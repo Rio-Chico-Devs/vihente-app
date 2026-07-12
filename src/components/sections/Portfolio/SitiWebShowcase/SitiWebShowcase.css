@@ -47,6 +47,7 @@
 }
 
 .sitiweb-showcase {
+  min-height: 100vh;
   min-height: 100dvh;
   background: var(--bg-black);
   color: var(--text-primary);

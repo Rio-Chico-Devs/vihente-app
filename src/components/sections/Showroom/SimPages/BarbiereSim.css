@@ -18,7 +18,9 @@
   color: var(--bk);
   font-family: var(--body);
   /* clip, NON hidden: hidden creerebbe uno scroll-container che uccide
-     le position:sticky interne (stesso bug corretto in FotografoSim). */
+     le position:sticky interne (stesso bug corretto in FotografoSim).
+     La riga hidden prima fa da fallback per Safari <16 (che scarta clip). */
+  overflow-x: hidden;
   overflow-x: clip;
 }
 

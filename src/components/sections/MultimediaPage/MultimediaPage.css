@@ -11,6 +11,7 @@ body.multimedia-page-body {
 /* Wrapper principale */
 .multimedia-page-wrapper {
     position: relative;
+    min-height: 100vh;
     min-height: 100dvh;
     background: var(--bg-black);
     color: var(--text-primary);
@@ -1024,6 +1025,7 @@ body.multimedia-page-body {
     position: fixed;
     inset: 0;
     background: rgba(0, 0, 0, 0.88);
+    -webkit-backdrop-filter: blur(6px);
     backdrop-filter: blur(6px);
     z-index: 9999;
     display: flex;
@@ -1031,6 +1033,8 @@ body.multimedia-page-body {
     justify-content: center;
     padding: 2rem;
     animation: modalFadeIn 0.2s ease;
+    /* modal aperto: lo scroll non deve propagarsi alla pagina dietro */
+    overscroll-behavior: contain;
 }
 
 @keyframes modalFadeIn {

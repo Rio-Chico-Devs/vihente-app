@@ -13,6 +13,7 @@
 
 .bgp-page {
   position: relative;
+  height: calc(100vh - 140px - 80px);
   height: calc(100dvh - 140px - 80px);
   background: #000;
   overflow: hidden;
@@ -29,6 +30,7 @@
   top: 140px;
   left: 0;
   width: 100vw;
+  height: calc(100vh - 140px - 80px);
   height: calc(100dvh - 140px - 80px);
   display: block;
   z-index: 0;
@@ -336,11 +338,13 @@
      Footer on mobile is TALLER than desktop because footer-bottom becomes a
      2-row column (copyright + legal-small). Empirically ~85px → use 90px buffer. */
   .bgp-page {
+    height: calc(100vh - 70px - 90px);
     height: calc(100dvh - 70px - 90px);
   }
 
   .bgp-canvas {
     top: 70px;
+    height: calc(100vh - 70px - 90px);
     height: calc(100dvh - 70px - 90px);
   }
 

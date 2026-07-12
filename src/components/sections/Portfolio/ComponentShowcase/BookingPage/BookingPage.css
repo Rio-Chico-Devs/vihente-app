@@ -7,6 +7,7 @@
 
 /* ── Wrapper & overlay ── */
 .bk-wrapper {
+  min-height: 100vh;
   min-height: 100dvh;
   background: var(--color-bg, #000);
   position: relative;
@@ -479,6 +480,7 @@
 
 @media (min-width: 768px) {
   .bk-wrapper {
+    height: 100vh;
     height: 100dvh;
     overflow: hidden;
   }

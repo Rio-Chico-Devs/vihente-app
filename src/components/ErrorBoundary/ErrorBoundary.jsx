@@ -137,7 +137,7 @@ class ErrorBoundary extends Component {
 
 const styles = {
   container: {
-    minHeight: '100dvh',
+    minHeight: '100vh',
     background: '#000',
     color: '#fff',
     fontFamily: "'Share Tech Mono', monospace",

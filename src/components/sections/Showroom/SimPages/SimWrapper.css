@@ -13,6 +13,9 @@
   overflow-x: hidden;
   cursor: auto;
   -webkit-overflow-scrolling: touch;
+  /* niente scroll-chaining col body dietro e niente pull-to-refresh
+     accidentale su Android mentre si scrolla la sim */
+  overscroll-behavior: contain;
 }
 
 .simwrap * {
@@ -77,6 +80,7 @@ body.sim-fullscreen-active .iris-container {
 /* ── Body wrapper — sim content ────────────────────────────────── */
 
 .simwrap-body {
+  min-height: 100vh;
   min-height: 100dvh;
   position: relative;
   /* Mobile safe-area buffer so the last line of the sim's own footer

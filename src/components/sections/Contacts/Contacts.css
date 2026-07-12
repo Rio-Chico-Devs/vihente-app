@@ -21,6 +21,7 @@
 .contacts-section {
   background: var(--bg-black);
   color: var(--text-primary);
+  min-height: 100vh;
   min-height: 100dvh;
   position: relative;
   overflow-x: hidden;

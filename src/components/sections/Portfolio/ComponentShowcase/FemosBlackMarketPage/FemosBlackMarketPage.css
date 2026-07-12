@@ -123,6 +123,7 @@
    START SCREEN
    =================================== */
 .start-screen {
+  min-height: 100vh;
   min-height: 100dvh;
   background: #000;
   display: flex;
@@ -299,6 +300,7 @@
    BLACK MARKET MAIN
    =================================== */
 .black-market {
+  min-height: 100vh;
   min-height: 100dvh;
   background: #000;
   color: #fff;
@@ -331,6 +333,7 @@
   position: relative;
   z-index: 3;
   padding: 8rem 2rem;
+  min-height: calc(100vh - 80px);
   min-height: calc(100dvh - 80px);
   animation: personaFadeIn 0.6s ease-out;
 }

@@ -12,6 +12,7 @@
 
 .avv-site {
   background: #0B1733;
+  min-height: 100vh;
   min-height: 100dvh;
   font-family: 'Cormorant Garamond', 'Playfair Display', Georgia, 'Times New Roman', serif;
   color: #E8DFC9;

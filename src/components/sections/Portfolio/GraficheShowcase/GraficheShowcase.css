@@ -6,6 +6,7 @@
 
 .trophy-arena {
 
+  min-height: 100vh;
   min-height: 100dvh;
 
   background: var(--bg-primary);
@@ -471,6 +472,18 @@
 
 }
 
+/* Touch: niente hover — categoria e titolo dell'opera devono essere
+   sempre visibili, altrimenti su mobile le card sono anonime. */
+@media (hover: none) {
+
+  .trophy-preview {
+
+    opacity: 1;
+
+  }
+
+}
+
  
 
 .preview-category {
@@ -532,6 +545,9 @@
   pointer-events: none;
 
   transition: opacity var(--transition-base);
+
+  /* modal aperto: lo scroll/gesture non deve propagarsi alla pagina dietro */
+  overscroll-behavior: contain;
 
 }
 

@@ -2,6 +2,7 @@
 
 .cam-site {
   background: #0A1628;
+  min-height: 100vh;
   min-height: 100dvh;
   font-family: system-ui, -apple-system, 'Segoe UI', sans-serif;
   color: #F8F9FA;

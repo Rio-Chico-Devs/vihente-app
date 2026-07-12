@@ -5,6 +5,7 @@
 .settings-section {
   background: var(--bg-black, #0a0a0a);
   color: var(--text-primary);
+  min-height: 100vh;
   min-height: 100dvh;
   position: relative;
   overflow: hidden;

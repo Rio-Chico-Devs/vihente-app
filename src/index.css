@@ -203,6 +203,9 @@
 
 html {
   scroll-behavior: smooth;
+  /* iOS/Android gonfiano il testo in landscape senza questo (auto-inflation) */
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
 }
 
 body {
@@ -211,6 +214,9 @@ body {
   color: var(--text-primary);
   cursor: none;
   overflow-x: hidden;
+  /* Il flash grigio/blu di sistema al tap stona con l'estetica del sito
+     (che ha gia' i propri feedback di hover/active) */
+  -webkit-tap-highlight-color: transparent;
   transition:
     background-color var(--transition-theme),
     color var(--transition-theme);
