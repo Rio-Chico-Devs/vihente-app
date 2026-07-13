@@ -259,6 +259,11 @@ a:hover {
 
   .privacy-table {
     font-size: 0.85rem;
+    /* la tabella (4 colonne) sfondava il viewport a 360px:
+       scrolla orizzontalmente nel suo box invece di allargare la pagina */
+    display: block;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
   }
 
   .privacy-table th,

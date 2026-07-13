@@ -925,3 +925,14 @@
     font-size: 0.95rem;
   }
 }
+
+/* iOS: sotto i 16px Safari zooma la pagina al focus dell'input e la
+   lascia zoomata. Su touch i campi salgono alla soglia no-zoom. */
+@media (max-width: 768px) {
+  .filter-input,
+  .filter-select,
+  .form-input,
+  .form-select {
+    font-size: 1rem;
+  }
+}
