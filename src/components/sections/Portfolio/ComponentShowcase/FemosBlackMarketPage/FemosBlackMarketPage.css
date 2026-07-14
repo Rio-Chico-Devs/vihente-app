@@ -365,6 +365,7 @@
   background: rgba(0, 0, 0, 0.7);
   border: 2px solid rgba(0, 255, 255, 0.3);
   border-radius: 4px;
+  -webkit-backdrop-filter: blur(10px);
   backdrop-filter: blur(10px);
   animation: personaSlideIn 0.6s ease-out;
 }
@@ -530,6 +531,7 @@
   border-radius: 8px;
   padding: 1rem 1.5rem;
   max-width: 300px;
+  -webkit-backdrop-filter: blur(10px);
   backdrop-filter: blur(10px);
   animation: bubbleFade 0.3s ease;
 }

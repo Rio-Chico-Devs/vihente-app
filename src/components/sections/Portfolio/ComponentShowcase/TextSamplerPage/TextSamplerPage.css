@@ -38,6 +38,7 @@
   border-radius: 8px;
   position: relative;
   overflow: hidden;
+  -webkit-backdrop-filter: blur(10px);
   backdrop-filter: blur(10px);
 }
 
@@ -48,6 +49,7 @@
   padding: 1.5rem;
   display: flex;
   flex-direction: column;
+  -webkit-backdrop-filter: blur(10px);
   backdrop-filter: blur(10px);
   overflow-y: auto;
   overflow-x: hidden;

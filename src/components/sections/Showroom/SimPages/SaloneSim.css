@@ -396,6 +396,7 @@
   align-items: center;
   justify-content: center;
   padding: 1rem;
+  -webkit-backdrop-filter: blur(4px);
   backdrop-filter: blur(4px);
 }
 
@@ -507,4 +508,28 @@
   .sal-servizi-grid { grid-template-columns: 1fr; }
   .sal-team-grid { grid-template-columns: 1fr; }
   .sal-gallery-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+/* ── Integrazioni mobile (audit responsive) ── */
+@media (max-width: 768px) {
+  /* iOS zooma la pagina al focus dei campi sotto i 16px */
+  .sal-select { font-size: 1rem; }
+
+  /* micro-tipografia: 11.2-11.5px illeggibili su schermi piccoli */
+  .sal-label { font-size: 0.78rem; }
+  .sal-footer-orari { font-size: 0.78rem; }
+  .sal-eyebrow, .sal-eyebrow-section { font-size: 0.75rem; }
+
+  /* il modal prenotazione respirava male a 360px */
+  .sal-modal { padding: 1.5rem 1.25rem; }
+}
+
+/* X di chiusura del modal: tap target ~18px, sotto il minimo WCAG (24px).
+   Vale anche su desktop: nessun motivo per un bersaglio cosi' piccolo. */
+.sal-modal-x {
+  min-width: 40px;
+  min-height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }

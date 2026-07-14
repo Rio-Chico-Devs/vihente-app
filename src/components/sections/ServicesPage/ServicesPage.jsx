@@ -235,6 +235,7 @@ const ServicesPage = () => {
         border: '1px solid rgba(0,255,255,0.15)',
         padding: '0.25rem 0.75rem',
         background: 'rgba(0,0,0,0.6)',
+        WebkitBackdropFilter: 'blur(4px)',
         backdropFilter: 'blur(4px)',
         whiteSpace: 'nowrap',
         pointerEvents: 'none',

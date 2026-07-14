@@ -470,6 +470,7 @@
   cursor: pointer;
   transition: all 0.3s ease;
   border-radius: 8px;
+  -webkit-backdrop-filter: blur(10px);
   backdrop-filter: blur(10px);
   position: relative;
   overflow: hidden;

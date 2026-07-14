@@ -121,12 +121,12 @@ const ProductMagnifier = ({ src, nome }) => {
   const imgRef = useRef(null);
   const [lens, setLens] = useState({ x: 0, y: 0, bgX: 0, bgY: 0, w: 0, h: 0, visible: false });
 
-  const handleMouseMove = useCallback((e) => {
+  const moveLens = useCallback((clientX, clientY) => {
     const wrap = wrapRef.current;
     if (!wrap) return;
     const rect = wrap.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
+    const x = clientX - rect.left;
+    const y = clientY - rect.top;
 
     // Replicate the `object-fit: cover` geometry of the base <img> so the
     // magnified view lines up exactly with the crop shown underneath.
@@ -150,6 +150,18 @@ const ProductMagnifier = ({ src, nome }) => {
     });
   }, []);
 
+  const handleMouseMove = useCallback((e) => {
+    moveLens(e.clientX, e.clientY);
+  }, [moveLens]);
+
+  /* Touch: la lente segue il dito (prima era mouse-only e su mobile lo
+     zoom non esisteva). touch-action:none sul wrap (css) evita che il
+     browser scrolli mentre si esplora l'immagine. */
+  const handleTouchMove = useCallback((e) => {
+    const t = e.touches[0];
+    if (t) moveLens(t.clientX, t.clientY);
+  }, [moveLens]);
+
   const handleMouseLeave = useCallback(() => {
     setLens(l => ({ ...l, visible: false }));
   }, []);
@@ -170,6 +182,10 @@ const ProductMagnifier = ({ src, nome }) => {
       ref={wrapRef}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
+      onTouchStart={handleTouchMove}
+      onTouchMove={handleTouchMove}
+      onTouchEnd={handleMouseLeave}
+      onTouchCancel={handleMouseLeave}
     >
       <img src={src} alt={nome} className="sim-photo-img" ref={imgRef} />
       <div className="eco-magnify-hint">
@@ -179,7 +195,7 @@ const ProductMagnifier = ({ src, nome }) => {
           <line x1="8" y1="11" x2="14" y2="11" />
           <line x1="11" y1="8" x2="11" y2="14" />
         </svg>
-        <span>Passa il cursore per ingrandire</span>
+        <span>Tocca o passa il cursore per ingrandire</span>
       </div>
       <div className="eco-magnifier-lens" style={lensStyle} />
     </div>

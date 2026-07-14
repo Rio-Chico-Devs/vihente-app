@@ -58,6 +58,7 @@ body.light-mode {
 #cc-main .cm__overlay,
 #cc-main .pm__overlay {
   background: var(--cc-overlay-bg) !important;
+  -webkit-backdrop-filter: blur(5px) !important;
   backdrop-filter: blur(5px) !important;
 }
 

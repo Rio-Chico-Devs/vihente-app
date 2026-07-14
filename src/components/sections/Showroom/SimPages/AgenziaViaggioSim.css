@@ -50,6 +50,7 @@
   top: 0;
   z-index: 100;
   background: rgba(248, 244, 238, .92);
+  -webkit-backdrop-filter: blur(8px);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
   border-bottom: 1px solid var(--rule);
@@ -863,4 +864,17 @@
 .alt-hero-h1-normal,
 .alt-hero-h1-italic {
   display: block;
+}
+
+/* ── Integrazioni mobile (audit responsive) ── */
+@media (max-width: 768px) {
+  /* Tab filtri destinazioni: 9.6px senza padding = bersaglio ~12px
+     (minimo WCAG 2.2: 24px). Leggibili e toccabili. */
+  .alt-filter-tab {
+    font-size: .78rem;
+    letter-spacing: .14em;
+    padding: .8rem .3rem;
+    display: inline-block;
+  }
+  .alt-label { font-size: .68rem; }
 }

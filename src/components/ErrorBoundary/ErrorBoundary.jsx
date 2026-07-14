@@ -170,6 +170,7 @@ const styles = {
     borderRadius: '8px',
     padding: '3rem 2rem',
     textAlign: 'center',
+    WebkitBackdropFilter: 'blur(10px)',
     backdropFilter: 'blur(10px)',
     boxShadow: '0 0 40px rgba(255, 50, 50, 0.3)'
   },
