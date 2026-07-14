@@ -1,5 +1,5 @@
 import { useEffect, useRef, useCallback, useState } from 'react';
-import { useTour, TOUR_STEPS } from '../../contexts/TourContext';
+import { useTour, isTourMobile } from '../../contexts/TourContext';
 import { useSettings } from '../../contexts/SettingsContext';
 import './TourOverlay.css';
 
@@ -8,7 +8,7 @@ const PANEL_W          = 320;
 const PANEL_H_ESTIMATE = 200;
 
 const TourOverlay = () => {
-  const { active, stepIdx, currentStep, nextStep, prevStep, endTour } = useTour();
+  const { active, stepIdx, steps, currentStep, nextStep, prevStep, endTour } = useTour();
   const { irisVolume } = useSettings();
   const irisVolumeRef  = useRef(irisVolume);
   useEffect(() => { irisVolumeRef.current = irisVolume; }, [irisVolume]);
@@ -27,12 +27,21 @@ const TourOverlay = () => {
   const measureTarget = useCallback(() => {
     if (measureRafRef.current) cancelAnimationFrame(measureRafRef.current);
 
-    if (!currentStep?.target) {
+    // Su mobile molti bersagli desktop sono display:none: usa il target
+    // alternativo dichiarato dallo step (es. hamburger al posto dei link).
+    const targetKey = (isTourMobile() && currentStep?.mobileTarget)
+      ? currentStep.mobileTarget
+      : currentStep?.target;
+
+    if (!targetKey) {
       setRect(null);
       return;
     }
-    const el = document.querySelector(`[data-tour="${currentStep.target}"]`);
-    if (!el) { setRect(null); return; }
+    const el = document.querySelector(`[data-tour="${targetKey}"]`);
+    // Guard di visibilita': un elemento display:none esiste nel DOM ma non
+    // ha client rects — senza questo check lo spotlight illuminava
+    // rettangoli 0x0. Fallback: pannello centrato con overlay pieno.
+    if (!el || el.getClientRects().length === 0) { setRect(null); return; }
 
     el.scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'center' });
 
@@ -131,7 +140,7 @@ const TourOverlay = () => {
   if (!active || !currentStep) return null;
 
   const isFirst = stepIdx === 0;
-  const isLast  = stepIdx === TOUR_STEPS.length - 1;
+  const isLast  = stepIdx === steps.length - 1;
 
   /* ───────────────────────────── panel position ─────────────────────────────
      Place above or below the target depending on space available; clamp X & Y
@@ -139,6 +148,10 @@ const TourOverlay = () => {
   const vW  = window.innerWidth;
   const vH  = window.innerHeight;
   const PAD = currentStep?.spotPad ?? SPOTLIGHT_PAD;
+  // Larghezza effettiva del pannello: mai oltre il viewport (il CSS ha
+  // width: min(320px, calc(100vw - 24px)) — qui serve lo stesso valore
+  // per il clamp orizzontale).
+  const panelW = Math.min(PANEL_W, vW - 24);
 
   let panelStyle, intro = false;
   if (rect) {
@@ -156,7 +169,7 @@ const TourOverlay = () => {
       if (top + PANEL_H_ESTIMATE > vH - 12) top = (cy - ry) - PANEL_H_ESTIMATE - 16;
     }
     top = Math.max(12, Math.min(top, vH - PANEL_H_ESTIMATE - 12));
-    const left = Math.max(12, Math.min(cx - PANEL_W / 2, vW - PANEL_W - 12));
+    const left = Math.max(12, Math.min(cx - panelW / 2, vW - panelW - 12));
     panelStyle = { top: `${top}px`, left: `${left}px` };
   } else {
     intro = true;
@@ -176,7 +189,7 @@ const TourOverlay = () => {
     height: `${rect.h + PAD * 2}px`,
   } : null;
 
-  const progressPct = ((stepIdx + 1) / TOUR_STEPS.length) * 100;
+  const progressPct = ((stepIdx + 1) / steps.length) * 100;
 
   return (
     <div className="tour-root" role="dialog" aria-modal="true" aria-label="Tour guidato">
@@ -193,7 +206,7 @@ const TourOverlay = () => {
 
         <div className="tour-panel-header">
           <span className="tour-panel-step">
-            {String(stepIdx + 1).padStart(2, '0')} / {String(TOUR_STEPS.length).padStart(2, '0')}
+            {String(stepIdx + 1).padStart(2, '0')} / {String(steps.length).padStart(2, '0')}
           </span>
           <button
             type="button"

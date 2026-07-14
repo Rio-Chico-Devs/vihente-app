@@ -343,6 +343,7 @@ const Navbar = () => {
           {/* Mobile-only: Iris eye button + guide text */}
           <button
             className="mobile-iris-btn"
+            data-tour="nav-iris-mobile"
             onClick={handleMobileIrisToggle}
             aria-label={mobileIrisActive ? 'Disattiva Iris' : 'Attiva Iris'}
           >
@@ -675,6 +676,7 @@ const Navbar = () => {
           <div className="mobile-right-group mobile-only">
             <button
               className="theme-toggle-compact"
+              data-tour="nav-theme-compact"
               onClick={toggleTheme}
               aria-label={theme === 'dark' ? 'Attiva Night Mode' : 'Attiva Neon Mode'}
             >
@@ -691,6 +693,7 @@ const Navbar = () => {
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               className="hamburger-button"
+              data-tour="nav-hamburger"
               aria-label={mobileMenuOpen ? 'Chiudi menu' : 'Apri menu'}
               aria-expanded={mobileMenuOpen}
             >

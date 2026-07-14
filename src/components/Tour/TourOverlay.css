@@ -63,7 +63,9 @@
 /* ── Step panel ── */
 .tour-panel {
   position: fixed;
-  width: 320px;
+  /* mai piu' largo del viewport (i 320px fissi sforavano sotto i 344px
+     e a 360px restavano incollati ai bordi) */
+  width: min(320px, calc(100vw - 24px));
   background: rgba(4, 12, 20, 0.96);
   border: 1px solid rgba(0, 255, 255, 0.45);
   border-radius: 10px;
@@ -214,4 +216,39 @@
   background: rgba(0, 255, 255, 0.16);
   border-color: #0ff;
   box-shadow: 0 0 10px rgba(0, 255, 255, 0.25);
+}
+
+/* ── Mobile ── */
+@media (max-width: 768px) {
+  /* Testo piu' leggibile e bottoni a misura di pollice (WCAG 2.2: >=24px,
+     comfort iOS: 44px). Prima erano ~28px di altezza. */
+  .tour-panel-text {
+    font-size: 0.85rem;
+    line-height: 1.7;
+  }
+
+  .tour-btn {
+    font-size: 0.8rem;
+    padding: 0.75rem 1.1rem;
+    min-height: 44px;
+  }
+
+  .tour-btn--back {
+    min-width: 44px;
+    padding: 0.75rem 0.9rem;
+  }
+
+  .tour-icon-btn {
+    width: 36px;
+    height: 36px;
+  }
+  .tour-icon-btn svg {
+    width: 13px;
+    height: 13px;
+  }
+
+  /* Il pannello non deve mai finire sotto la home-indicator */
+  .tour-panel {
+    margin-bottom: env(safe-area-inset-bottom);
+  }
 }
